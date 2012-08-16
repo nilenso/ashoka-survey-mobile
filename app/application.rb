@@ -1,6 +1,9 @@
 require 'rho/rhoapplication'
 
 class AppApplication < Rho::RhoApplication
+
+  attr_accessor :server_url
+
   def initialize
     # Tab items are loaded left->right, @tabs[0] is leftmost tab in the tab-bar
     # Super must be called *after* settings @tabs!
@@ -12,5 +15,10 @@ class AppApplication < Rho::RhoApplication
     # Uncomment to set sync notification callback to /app/Settings/sync_notify.
     # SyncEngine::set_objectnotify_url("/app/Settings/sync_notify")
     SyncEngine.set_notification(-1, "/app/Settings/sync_notify", '')
+  end
+  
+  def has_valid_url?
+    result = Rho::AsyncHttp.get( :url => @server_url )
+    !result["body"].empty?
   end
 end

@@ -21,4 +21,4 @@ symbian:
 android:
   version: 2.3.3
 
-extensions: ["json", "another-extension"]
+extensions: ["json", "fileutils", "mspec"]
