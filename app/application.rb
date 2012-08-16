@@ -1,5 +1,5 @@
 require 'rho/rhoapplication'
-require 'server_url'
+require 'ServerUrl/server_url'
 
 class AppApplication < Rho::RhoApplication
 
