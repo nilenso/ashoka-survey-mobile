@@ -1,16 +1,7 @@
-*.rbc
-*.sassc
-.sass-cache
-capybara-*.html
-.rspec
-/.bundle
-/vendor/bundle
-/log/*
-/tmp/*
-/db/*.sqlite3
-/public/system/*
-/coverage/
-/spec/tmp/*
-**.orig
-rerun.txt
-pickle-email-*.html
+# logs and symlinks
+rholog.txt
+rholog-*
+sim-*
+
+# build output
+bin/
