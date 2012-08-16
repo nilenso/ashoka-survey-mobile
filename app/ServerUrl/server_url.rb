@@ -9,8 +9,12 @@ class ServerUrl
   	@url = url
   end
 
-  def is_set?
+  def set?
   	!@url.nil?
   end
-
+  
+  def valid?
+    result = Rho::AsyncHttp.get( :url => @url )
+    !result["body"].empty?
+  end
 end

@@ -18,7 +18,7 @@ describe AppApplication do
    	it "checks if the server url is set" do
     	new_app = AppApplication.new
       new_app.set_server_url("http://google.com")
-    	new_app.server_url.is_set?.should be_true
+    	new_app.server_url.set?.should be_true
     end
   end
 end

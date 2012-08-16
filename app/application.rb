@@ -1,7 +1,5 @@
 require 'rho/rhoapplication'
 require 'server_url'
-require 'rho/rhocontroller'
-require 'helpers/browser_helper'
 
 class AppApplication < Rho::RhoApplication
 
@@ -25,7 +23,6 @@ class AppApplication < Rho::RhoApplication
   end
   
   def has_valid_url?
-    result = Rho::AsyncHttp.get( :url => @server_url.url )
-    !result["body"].empty?
+    @server_url.valid?
   end
 end

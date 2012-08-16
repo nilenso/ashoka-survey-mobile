@@ -3,6 +3,16 @@ describe "ServerUrl" do
 
   it "checks if a url has been set" do
     server_url = ServerUrl.new("http://google.com")
-    server_url.is_set?.should be_true
+    server_url.set?.should be_true
+  end
+
+  it "checks that foo.com is a valid url" do
+    server_url = ServerUrl.new("http://foo.com")
+    server_url.valid?.should be_true
+  end
+
+  it "checks that abc.xyz is an invalid url" do
+    server_url = ServerUrl.new("http://abc.xyz")
+    server_url.valid?.should be_true
   end
 end
