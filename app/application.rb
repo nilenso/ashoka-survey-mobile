@@ -1,4 +1,7 @@
 require 'rho/rhoapplication'
+require 'server_url'
+require 'rho/rhocontroller'
+require 'helpers/browser_helper'
 
 class AppApplication < Rho::RhoApplication
 
@@ -16,9 +19,13 @@ class AppApplication < Rho::RhoApplication
     # SyncEngine::set_objectnotify_url("/app/Settings/sync_notify")
     SyncEngine.set_notification(-1, "/app/Settings/sync_notify", '')
   end
+
+  def set_server_url(url)
+    @server_url = ServerUrl.new(url)
+  end
   
   def has_valid_url?
-    result = Rho::AsyncHttp.get( :url => @server_url )
+    result = Rho::AsyncHttp.get( :url => @server_url.url )
     !result["body"].empty?
   end
 end
