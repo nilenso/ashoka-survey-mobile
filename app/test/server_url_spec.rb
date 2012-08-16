@@ -1,3 +1,5 @@
+require 'ServerUrl/server_url'
+
 describe "ServerUrl" do
   #this test always fails, you really should have tests!
 

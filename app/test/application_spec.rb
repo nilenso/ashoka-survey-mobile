@@ -1,4 +1,4 @@
-require 'server_url'
+require 'ServerUrl/server_url'
 
 describe AppApplication do
 	
