@@ -14,10 +14,13 @@ function ApplicationWindow() {
 			    var menu = e.menu;
 			    var menuItemRefresh = menu.add({ title: "Refresh" });
 			    menuItemRefresh.addEventListener('click', function(){
-			    	alert("clicked!");
+			    	alert("Clicked on refresh!");
 			    });
 			    //menuItemRefresh.setIcon("images/refresh.png");
 			    var menuItemSettings = menu.add({ title: "Settings" });
+			    menuItemSettings.addEventListener('click', function(){
+			    	alert("Clicked on settings!");
+			    });
 			    //menuItemSettings.setIcon("images/gear.png");
 			}
 		}
