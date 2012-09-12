@@ -11,6 +11,12 @@ function ApplicationWindow() {
 	var settingsWindow = Ti.UI.createWindow({ title: 'Settings' });
 	var settingsView = new SettingsView();
 	settingsWindow.add(settingsView);
+	
+	var settingsSaveButton = Ti.UI.createButton({ systemButton: Titanium.UI.iPhone.SystemButton.SAVE });		
+	settingsSaveButton.addEventListener('click', function(e){
+		Ti.App.fireEvent("save_clicked");
+	});
+	settingsWindow.rightNavButton = settingsSaveButton;
 		
 	//create component instance
 	var self = Ti.UI.createWindow({
@@ -33,6 +39,10 @@ function ApplicationWindow() {
 		window: mainAppWindow
 	});
 	self.add(navGroup);
+	
+	Ti.App.addEventListener('settings_saved', function(){
+		navGroup.close(settingsWindow);
+	})
 	
 	return self;
 }

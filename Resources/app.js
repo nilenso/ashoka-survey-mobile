@@ -33,4 +33,5 @@ if (Ti.version < 1.8) {
 		Window = require('ui/handheld/ApplicationWindow');
 	}
 	new Window().open();
+	Ti.App.Properties.setString('server_url', 'http://survey-web-staging.herokuapp.com/');
 })();
