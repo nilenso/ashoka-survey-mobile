@@ -19,7 +19,7 @@ function SettingsView() {
 		color : '#336699',
 		right : 5,
 		left : 5,
-		value : 'http://survey-web-staging.herokuapp.com/'
+		value : Ti.App.Properties.getString('server_url')
 	});
 	self.add(textField);
 
