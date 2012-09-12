@@ -2,7 +2,10 @@
 function ApplicationWindow() {
 	//load component dependencies
 	var SurveysIndexView = require('ui/common/SurveysIndexView');
+	var SettingsView = require('ui/common/SettingsView')
+
 		
+	
 	//create component instance
 	var self = Ti.UI.createWindow({
 		title: 'Surveys',
@@ -19,7 +22,14 @@ function ApplicationWindow() {
 			    //menuItemRefresh.setIcon("images/refresh.png");
 			    var menuItemSettings = menu.add({ title: "Settings" });
 			    menuItemSettings.addEventListener('click', function(){
-			    	alert("Clicked on settings!");
+			    	  var settingsWindow = Ti.UI.createWindow({ 
+			    	  	title: 'Settings',
+			    	  	navBarHidden: false,
+			    	  	backgroundColor: "#fff"
+			    	  });
+							var settingsView = new SettingsView();
+							settingsWindow.add(settingsView);
+			    		settingsWindow.open();
 			    });
 			    //menuItemSettings.setIcon("images/gear.png");
 			}
