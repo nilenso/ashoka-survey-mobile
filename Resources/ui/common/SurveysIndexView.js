@@ -12,11 +12,6 @@ function SurveysIndexView() {
 	});
 	self.add(label);
 	
-	//Add behavior for UI
-	label.addEventListener('click', function(e) {
-		alert(e.source.text);
-	});
-	
 	return self;
 }
 

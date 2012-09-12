@@ -6,13 +6,16 @@ function ApplicationWindow() {
 	//create component instance
 	var self = Ti.UI.createWindow({
 		title: 'Surveys',
-		backgroundColor:'#ff0000',
+		backgroundColor:'#fff',
 		navBarHidden:false,
 		exitOnClose:true,
 		activity: {
 			onCreateOptionsMenu: function(e) {
 			    var menu = e.menu;
 			    var menuItemRefresh = menu.add({ title: "Refresh" });
+			    menuItemRefresh.addEventListener('click', function(){
+			    	alert("clicked!");
+			    });
 			    //menuItemRefresh.setIcon("images/refresh.png");
 			    var menuItemSettings = menu.add({ title: "Settings" });
 			    //menuItemSettings.setIcon("images/gear.png");
