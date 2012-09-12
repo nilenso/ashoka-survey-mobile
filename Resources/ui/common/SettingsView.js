@@ -23,12 +23,19 @@ function SettingsView() {
 	});
 	self.add(textField);
 
-	Ti.App.addEventListener('save_clicked', function(e) {
-		if (valid = true) {
-			Ti.App.Properties.setString('server_url', self.textField.value());
+	var saveButton = Ti.UI.createButton({
+		title : 'Save',
+		height : 30,
+		width : 200
+	});
+	self.add(saveButton);
+	saveButton.addEventListener('click', function(e) {
+		var server_url = textField.getValue();
+		if(valid = true) {
+			Ti.App.Properties.setString('server_url', server_url);
 			Ti.App.fireEvent('settings_saved');
 		} else {
-			alert('There are errors in these settings.')
+			alert("Your settings are invalid. Please check them before saving.")
 		}
 	});
 
