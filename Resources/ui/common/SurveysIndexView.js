@@ -1,12 +1,12 @@
-//FirstView Component Constructor
-function FirstView() {
+//SurveysIndexView Component Constructor
+function SurveysIndexView() {
 	//create object instance, a parasitic subclass of Observable
 	var self = Ti.UI.createView();
 	
 	//label using localization-ready strings from <app dir>/i18n/en/strings.xml
 	var label = Ti.UI.createLabel({
 		color:'#000000',
-		text:String.format(L('welcome'),'Titanium'),
+		text: 'No surveys have been added yet. Sorry about that!',
 		height:'auto',
 		width:'auto'
 	});
@@ -20,4 +20,4 @@ function FirstView() {
 	return self;
 }
 
-module.exports = FirstView;
+module.exports = SurveysIndexView;
