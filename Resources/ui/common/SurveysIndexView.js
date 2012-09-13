@@ -12,6 +12,14 @@ function SurveysIndexView(model) {
 		data = convertModelDataForTable();
 		table.setData(data);
 	});
+	
+	Ti.App.addEventListener('surveys.fetch.error', function(data){
+		if(data.status >= 400){
+			alert("Your server is bogus. Sorry about that.");
+		} else if (data.status == 0){
+			alert("Couldn't reach the server.");
+		}
+	});
 
 	//create object instance, a parasitic subclass of Observable
 	var self = Ti.UI.createView();

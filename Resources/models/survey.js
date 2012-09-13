@@ -25,9 +25,9 @@ Survey.prototype = {
 				Ti.App.fireEvent('surveys.fetch.success');
 			},
 			// function called when an error occurs, including a timeout
-			onerror : function(e) {
+			onerror : function(e) {				
 				Ti.API.debug(e.error);
-				Ti.App.fireEvent('surveys.fetch.error');
+				Ti.App.fireEvent('surveys.fetch.error', { status: this.status });
 			},
 			timeout : 5000 // in milliseconds
 		});
