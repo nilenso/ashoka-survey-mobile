@@ -31,11 +31,11 @@ function SettingsView() {
 	self.add(saveButton);
 	saveButton.addEventListener('click', function(e) {
 		var server_url = textField.getValue();
-		if(valid = true) {
+		if (server_url.match(/^https?\:\/\/[\w-.]+\.\w{2,4}$/i) == null) {
+			alert("Your settings are invalid. Please check them before saving.");
+		} else {
 			Ti.App.Properties.setString('server_url', server_url);
 			Ti.App.fireEvent('settings_saved');
-		} else {
-			alert("Your settings are invalid. Please check them before saving.")
 		}
 	});
 
