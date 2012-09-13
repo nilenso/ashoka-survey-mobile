@@ -1,20 +1,22 @@
 //SurveysIndexView Component Constructor
-function SurveysIndexView(model) {	
-	Ti.App.addEventListener('surveys.fetch.success', function(e){
-		model.list();
+function SurveysIndexView(model) {
+	Ti.App.addEventListener('surveys.fetch.success', function(e) {
+		var _ = require('lib/underscore')._;
+		var data = _(model.list()).map(function(name){
+			return { title: name }
+		});
+		table.setData(data);
 	});
-	
+
 	//create object instance, a parasitic subclass of Observable
 	var self = Ti.UI.createView();
 
-	//label using localization-ready strings from <app dir>/i18n/en/strings.xml
-	var label = Ti.UI.createLabel({
-		color : '#000000',
-		text : 'No surveys have been added yet. Sorry about that!',
-		height : 'auto',
-		width : 'auto'
+	// now assign that array to the table's data property to add those objects as rows
+	var table = Titanium.UI.createTableView({
+	
 	});
-	self.add(label);
+
+	self.add(table);
 
 	return self;
 }
