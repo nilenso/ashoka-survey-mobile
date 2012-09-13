@@ -6,13 +6,14 @@ var Survey = function() {
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {
+					Ti.API.info("Received text: " + this.responseText);
 					surveys = JSON.parse(this.responseText);
 					Ti.App.fireEvent('surveys.fetch.success');
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {
 					Ti.API.debug(e.error);
-					fireEvent('surveys.fetch.error');
+					Ti.App.fireEvent('surveys.fetch.error');
 				},
 				timeout : 5000 // in milliseconds
 			});

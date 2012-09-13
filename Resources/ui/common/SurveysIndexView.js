@@ -1,9 +1,7 @@
 //SurveysIndexView Component Constructor
-function SurveysIndexView() {
-	var Survey = require('models/survey');
-	var survey = new Survey();
-	Ti.App.addEventListener('surveys.fetch.success', function(){
-		survey.list();
+function SurveysIndexView(model) {	
+	Ti.App.addEventListener('surveys.fetch.success', function(e){
+		model.list();
 	});
 	
 	//create object instance, a parasitic subclass of Observable
@@ -17,9 +15,6 @@ function SurveysIndexView() {
 		width : 'auto'
 	});
 	self.add(label);
-	label.addEventListener('click', function() {
-		survey.fetch();
-	});
 
 	return self;
 }

@@ -3,9 +3,12 @@ function ApplicationWindow() {
 	//load component dependencies
 	var SurveysIndexView = require('ui/common/SurveysIndexView');
 	var SettingsView = require('ui/common/SettingsView')
+	var Survey = require('models/survey');
+	
+	var surveyModel = new Survey();
 	
 	var mainAppWindow = Ti.UI.createWindow({ title: 'Surveys' });
-	var surveysIndexView = new SurveysIndexView();
+	var surveysIndexView = new SurveysIndexView(surveyModel);
 	mainAppWindow.add(surveysIndexView);
 
 	var settingsWindow = Ti.UI.createWindow({ title: 'Settings' });
@@ -19,7 +22,7 @@ function ApplicationWindow() {
 
 	var refreshButton = Ti.UI.createButton({ systemButton: Ti.UI.iPhone.SystemButton.REFRESH });
 	refreshButton.addEventListener('click', function(e){
-		alert("You clicked the button");
+		surveyModel.fetch();
 	});
 	mainAppWindow.rightNavButton = refreshButton;
 

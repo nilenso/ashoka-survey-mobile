@@ -3,6 +3,10 @@ function ApplicationWindow() {
 	//load component dependencies
 	var SurveysIndexView = require('ui/common/SurveysIndexView');
 	var SettingsView = require('ui/common/SettingsView');
+	var Survey = require('models/survey');
+	
+	var surveyModel = new Survey();
+
 	var settingsWindow = Ti.UI.createWindow({
 		title : 'Settings',
 		navBarHidden : false,
@@ -24,7 +28,7 @@ function ApplicationWindow() {
 					title : "Refresh"
 				});
 				menuItemRefresh.addEventListener('click', function() {
-					alert("Clicked on refresh!");
+					surveyModel.fetch();
 				});
 				//menuItemRefresh.setIcon("images/refresh.png");
 				var menuItemSettings = menu.add({
@@ -42,7 +46,7 @@ function ApplicationWindow() {
 		settingsWindow.close();
 	})
 	//construct UI
-	var surveysIndexView = new SurveysIndexView();
+	var surveysIndexView = new SurveysIndexView(surveyModel);
 	self.add(surveysIndexView);
 
 	return self;
