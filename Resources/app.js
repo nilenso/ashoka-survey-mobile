@@ -34,6 +34,6 @@ if (Ti.version < 1.8) {
 	}
 	new Window().open();
 	if(Ti.App.Properties.getString('server_url') == null) { 
-		Ti.App.Properties.setString('server_url', 'http://survey-web-staging.herokuapp.com/');
+		Ti.App.Properties.setString('server_url', 'http://survey-web-staging.herokuapp.com');
 	}
 })();
