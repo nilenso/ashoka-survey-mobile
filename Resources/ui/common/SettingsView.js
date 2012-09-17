@@ -31,7 +31,7 @@ function SettingsView() {
 	self.add(saveButton);
 	saveButton.addEventListener('click', function(e) {
 		var server_url = textField.getValue();
-		if (server_url.match(/^https?\:\/\/[\w-.]+\.\w{2,4}$/i) == null) {
+		if (server_url.match(/^https?\:\/\/[\w-.]+(\.\w{2,4}|\:\d{2,5})$/i) == null) {
 			alert("Your settings are invalid. Please check them before saving.");
 		} else {
 			Ti.App.Properties.setString('server_url', server_url);
