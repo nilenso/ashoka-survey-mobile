@@ -31,7 +31,7 @@ function SurveysIndexView(model) {
 
 	Ti.App.addEventListener('surveys.fetch.error', function(data) {
 		if (data.status >= 400) {
-			alert("Your server is bogus. Sorry about that.");
+			alert("Your server isn't responding. Sorry about that.");
 		} else if (data.status == 0) {
 			alert("Couldn't reach the server.");
 		}
