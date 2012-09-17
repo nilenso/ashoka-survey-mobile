@@ -3,6 +3,7 @@ function ApplicationWindow() {
 	//load component dependencies
 	var SurveysIndexView = require('ui/common/SurveysIndexView');
 	var SettingsView = require('ui/common/SettingsView')
+	var SurveyShowView = require('ui/common/SurveyShowView')
 	var Survey = require('models/survey');
 	
 	var surveyModel = new Survey();
@@ -14,6 +15,10 @@ function ApplicationWindow() {
 	var settingsWindow = Ti.UI.createWindow({ title: 'Settings' });
 	var settingsView = new SettingsView();
 	settingsWindow.add(settingsView);
+	
+	var surveyShowWindow = Ti.UI.createWindow({ title: 'Survey Details' });
+	var surveyShowView = new SurveyShowView();
+	surveyShowWindow.add(surveyShowView);
 		
 	//create component instance
 	var self = Ti.UI.createWindow({
@@ -40,6 +45,10 @@ function ApplicationWindow() {
 	Ti.App.addEventListener('settings_saved', function(){
 		navGroup.close(settingsWindow);
 	})
+	
+	Ti.App.addEventListener('surveys_index_view.table_row_clicked', function() {
+		navGroup.open(surveyShowWindow);
+	});
 	
 	return self;
 }

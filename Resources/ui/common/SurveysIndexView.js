@@ -2,8 +2,8 @@
 function SurveysIndexView(model) {
 	var convertModelDataForTable = function() {
 		var _ = require('lib/underscore')._;
-		return _(model.list()).map(function(name) {
-			return { title : name }
+		return _(model.list()).map(function(survey) {
+			return { title : survey.name, hasDetail: true, surveyID: survey.id }
 		});
 	}
 
@@ -27,6 +27,10 @@ function SurveysIndexView(model) {
 	// now assign that array to the table's data property to add those objects as rows
 	var table = Titanium.UI.createTableView({
 		data : convertModelDataForTable()
+	});
+	
+	table.addEventListener('click', function(e){
+		Ti.App.fireEvent('surveys_index_view.table_row_clicked', {surveyID: e.rowData.surveyID });
 	});
 
 	self.add(table);

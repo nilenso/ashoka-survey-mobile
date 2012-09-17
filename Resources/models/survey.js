@@ -13,21 +13,24 @@ Survey.prototype = {
 			// function called when the response data is available
 			onload : function(e) {
 				Ti.API.info("Received text: " + this.responseText);
-				data = JSON.parse(this.responseText); // Emptying the table for now (until we get all the survey info from the server)
-				
+				data = JSON.parse(this.responseText);
+				// Emptying the table for now (until we get all the survey info from the server)
+
 				that.open_db();
-				that.db.execute('DELETE FROM surveys;');				
+				that.db.execute('DELETE FROM surveys;');
 				that._(data).each(function(survey) {
 					that.db.execute('INSERT INTO surveys (id,name,description,expiry_date) VALUES (?,?,?,?)', survey.id, survey.name, survey.description, survey.expiry_date);
 				});
 				that.close_db();
-				
+
 				Ti.App.fireEvent('surveys.fetch.success');
 			},
 			// function called when an error occurs, including a timeout
-			onerror : function(e) {				
+			onerror : function(e) {
 				Ti.API.debug(e.error);
-				Ti.App.fireEvent('surveys.fetch.error', { status: this.status });
+				Ti.App.fireEvent('surveys.fetch.error', {
+					status : this.status
+				});
 			},
 			timeout : 5000 // in milliseconds
 		});
@@ -42,20 +45,23 @@ Survey.prototype = {
 		this.open_db();
 		var survey = this.db.execute('SELECT id,name,description,expiry_date FROM surveys');
 		while (survey.isValidRow()) {
-			var name = survey.fieldByName('name');
-			//Ti.API.info(survey_name);
-			surveys.push({name: name});
+			surveys.push({
+				name : survey.fieldByName('name'),
+				description : survey.fieldByName('description'),
+				id : survey.fieldByName('id'),
+				expiry_date : survey.fieldByName('expiry_date')
+			});
 			survey.next();
 		}
 		survey.close();
 		this.close_db();
 		return surveys;
 	},
-	
+
 	open_db : function() {
 		this.db = Ti.Database.open('SurveyMobile');
 	},
-	
+
 	close_db : function() {
 		this.db.close();
 	}
