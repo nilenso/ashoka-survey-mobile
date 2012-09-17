@@ -1,7 +1,7 @@
 var Survey = function() {
 	this._ = require('lib/underscore')._;
 	this.open_db();
-	this.db.execute('CREATE TABLE IF NOT EXISTS surveys(id INTEGER PRIMARY KEY, name TEXT);');
+	this.db.execute('CREATE TABLE IF NOT EXISTS surveys(id INTEGER PRIMARY KEY, name TEXT, description TEXT, expiry_date TEXT);');
 	this.close_db();
 }
 
@@ -17,8 +17,8 @@ Survey.prototype = {
 				
 				that.open_db();
 				that.db.execute('DELETE FROM surveys;');				
-				that._(data).each(function(survey_name) {
-					that.db.execute('INSERT INTO surveys (name) VALUES (?)', survey_name);
+				that._(data).each(function(survey) {
+					that.db.execute('INSERT INTO surveys (id,name,description,expiry_date) VALUES (?,?,?,?)', survey.id, survey.name, survey.description, survey.expiry_date);
 				});
 				that.close_db();
 				
@@ -40,11 +40,11 @@ Survey.prototype = {
 	list : function() {
 		var surveys = [];
 		this.open_db();
-		var survey = this.db.execute('SELECT id,name FROM surveys');
+		var survey = this.db.execute('SELECT id,name,description,expiry_date FROM surveys');
 		while (survey.isValidRow()) {
-			var survey_name = survey.fieldByName('name');
+			var name = survey.fieldByName('name');
 			//Ti.API.info(survey_name);
-			surveys.push(survey_name);
+			surveys.push({name: name});
 			survey.next();
 		}
 		survey.close();
