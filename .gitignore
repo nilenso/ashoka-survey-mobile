@@ -1,4 +1,2 @@
 tmp
-build/
-build.log
-*lock
+build*
