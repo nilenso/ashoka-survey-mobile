@@ -25,13 +25,13 @@ function ApplicationWindow() {
 		activity : {
 			onCreateOptionsMenu : function(e) {
 				var menu = e.menu;
-				var menuItemRefresh = menu.add({
-					title : "Refresh"
+				var menuItemSync = menu.add({
+					title : "Sync"
 				});
-				menuItemRefresh.addEventListener('click', function() {
+				menuItemSync.addEventListener('click', function() {
 					surveyModel.fetch();
 				});
-				//menuItemRefresh.setIcon("images/refresh.png");
+				//menuItemSync.setIcon("images/refresh.png");
 				var menuItemSettings = menu.add({
 					title : "Settings"
 				});

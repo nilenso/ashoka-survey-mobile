@@ -54,7 +54,7 @@ function SurveysIndexView(model) {
 	label = Ti.UI.createLabel({
 		color : '#333',
 		font : { fontSize : 18 },
-		text : 'No surveys here. Try refreshing.',
+		text : 'No surveys here. Please perform a sync.',
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 		top : '40%',
 		width : 'auto',

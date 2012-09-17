@@ -25,13 +25,13 @@ function ApplicationWindow() {
 		backgroundColor : '#fff'
 	});
 
-	var refreshButton = Ti.UI.createButton({
+	var syncButton = Ti.UI.createButton({
 		systemButton : Ti.UI.iPhone.SystemButton.REFRESH
 	});
-	refreshButton.addEventListener('click', function(e) {
+	syncButton.addEventListener('click', function(e) {
 		surveyModel.fetch();
 	});
-	mainAppWindow.rightNavButton = refreshButton;
+	mainAppWindow.rightNavButton = syncButton;
 
 	var settingsButton = Ti.UI.createButton({
 		title : 'Settings'
