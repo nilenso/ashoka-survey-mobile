@@ -57,6 +57,13 @@ Survey.prototype = {
 		this.close_db();
 		return surveys;
 	},
+	
+	isEmpty : function() {
+		this.open_db();
+		var count = this.db.execute('SELECT * FROM surveys;').getRowCount();
+		this.close_db();
+		return (count == 0);
+	},
 
 	open_db : function() {
 		this.db = Ti.Database.open('SurveyMobile');
