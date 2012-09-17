@@ -45,8 +45,12 @@ function ApplicationWindow() {
 	Ti.App.addEventListener('settings_saved', function(){
 		navGroup.close(settingsWindow);
 	})
-	
-	Ti.App.addEventListener('surveys_index_view.table_row_clicked', function() {
+
+	Ti.App.addEventListener('surveys_index_view.table_row_clicked', function(e) {
+		var surveyShowWindow = Ti.UI.createWindow({
+			title : 'Survey Details'
+		});
+		surveyShowWindow.add(new SurveyShowView(surveyModel, e.surveyID));
 		navGroup.open(surveyShowWindow);
 	});
 	

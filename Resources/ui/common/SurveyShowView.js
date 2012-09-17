@@ -1,18 +1,33 @@
 //A single survey
-function SurveyShowView() {
-
+function SurveyShowView(model, surveyID) {
+	var convertSurveyDataForTable = function() {
+		var _ = require('lib/underscore')._;
+		var attrs = _(model.list()).find(function(survey) {
+			return survey.id == surveyID
+		});
+		return [{
+			header : 'Name',
+			title : attrs['name']
+		}, {
+			header : 'Description',
+			title : attrs['description']
+		}, {
+			header : 'Expires On',
+			title : attrs['expiry_date']
+		}];
+	}
+	
 	self = Ti.UI.createView({
 		layout : 'vertical'
 	});
-	
-	var label = Ti.UI.createLabel({
-		color : '#000000',
-		text : 'Nothing here yet.',
-		height : 'auto',
-		width : 'auto',
-		left : 5
+
+	// now assign that array to the table's data property to add those objects as rows
+	var table = Titanium.UI.createTableView({
+		data : convertSurveyDataForTable(),
+		style : Titanium.UI.iPhone.TableViewStyle.GROUPED
 	});
-	self.add(label);
+
+	self.add(table);
 
 	return self;
 }
