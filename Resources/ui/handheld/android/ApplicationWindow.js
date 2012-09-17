@@ -4,7 +4,8 @@ function ApplicationWindow() {
 	var SurveysIndexView = require('ui/common/SurveysIndexView');
 	var SettingsView = require('ui/common/SettingsView');
 	var Survey = require('models/survey');
-	
+	var SurveyShowView = require('ui/common/SurveyShowView')
+
 	var surveyModel = new Survey();
 
 	var settingsWindow = Ti.UI.createWindow({
@@ -45,6 +46,17 @@ function ApplicationWindow() {
 	Ti.App.addEventListener('settings_saved', function() {
 		settingsWindow.close();
 	})
+
+	Ti.App.addEventListener('surveys_index_view.table_row_clicked', function(e) {
+		var surveyShowWindow = Ti.UI.createWindow({
+			title : 'Survey Details',
+			navBarHidden : false,
+			backgroundColor : "#fff"
+		});
+		surveyShowWindow.add(new SurveyShowView(surveyModel, e.surveyID));
+		surveyShowWindow.open();
+	});
+
 	//construct UI
 	var surveysIndexView = new SurveysIndexView(surveyModel);
 	self.add(surveysIndexView);
