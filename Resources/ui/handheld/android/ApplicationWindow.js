@@ -31,14 +31,14 @@ function ApplicationWindow() {
 				menuItemSync.addEventListener('click', function() {
 					surveyModel.fetch();
 				});
-				//menuItemSync.setIcon("images/refresh.png");
+				menuItemSync.setIcon("images/refresh.png");
 				var menuItemSettings = menu.add({
 					title : "Settings"
 				});
 				menuItemSettings.addEventListener('click', function() {
 					settingsWindow.open();
 				});
-				//menuItemSettings.setIcon("images/gear.png");
+				menuItemSettings.setIcon("images/settings.png");
 			}
 		}
 	});
