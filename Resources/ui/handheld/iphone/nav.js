@@ -1,12 +1,10 @@
 //Application Window Component Constructor
 function ApplicationWindow() {
 	//load component dependencies
-	var SurveysIndexView = require('ui/common/SurveysIndexView');
+	var SurveysIndexView = require('ui/common/surveys/SurveysIndexView');
 	var SettingsView = require('ui/common/SettingsView')
-	var SurveyShowView = require('ui/common/SurveyShowView')
-	var Survey = require('models/survey');
-
-	var surveyModel = Survey;
+	var SurveyShowView = require('ui/common/surveys/SurveyShowView')
+	var surveyModel = require('models/survey');
 
 	var mainAppWindow = Ti.UI.createWindow({
 		title : 'Surveys'

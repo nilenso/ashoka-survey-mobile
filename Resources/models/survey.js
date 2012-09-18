@@ -17,7 +17,7 @@ var Survey = new Ti.App.joli.model({
 					Ti.API.info("Received text: " + this.responseText);
 					data = JSON.parse(this.responseText);
 					// Emptying the table for now (until we get all the survey info from the server)
-					this.truncate();
+					that.truncate();
 					that.createRecords(data);
 					Ti.App.fireEvent('surveys.fetch.success');
 				},
