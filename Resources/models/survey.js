@@ -17,18 +17,8 @@ var Survey = new Ti.App.joli.model({
 					Ti.API.info("Received text: " + this.responseText);
 					data = JSON.parse(this.responseText);
 					// Emptying the table for now (until we get all the survey info from the server)
-
-					that.truncate();
-					var _ = require('lib/underscore')._;
-					_(data).each(function(survey) {
-						var record = that.newRecord({
-							id : survey.id,
-							name : survey.name,
-							description : survey.description,
-							expiry_date : survey.expiry_date
-						});
-						record.save();
-					});
+					this.truncate();
+					that.createRecords(data);
 					Ti.App.fireEvent('surveys.fetch.success');
 				},
 				// function called when an error occurs, including a timeout
@@ -44,6 +34,20 @@ var Survey = new Ti.App.joli.model({
 			client.open("GET", url);
 			// Send the request.
 			client.send();
+		},
+
+		createRecords : function(data) {
+			var _ = require('lib/underscore')._;
+			var that = this;
+			_(data).each(function(survey) {
+				var record = that.newRecord({
+					id : survey.id,
+					name : survey.name,
+					description : survey.description,
+					expiry_date : survey.expiry_date
+				});
+				record.save();
+			});
 		},
 
 		isEmpty : function() {
