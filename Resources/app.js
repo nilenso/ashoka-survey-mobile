@@ -9,6 +9,9 @@
 *
 */
 
+// Setup database
+Ti.App.joli = require('lib/joli').connect('SurveyMobile');
+
 //bootstrap and check dependencies
 if (Ti.version < 1.8) {
 	alert('Sorry - this application template requires Titanium Mobile SDK 1.8 or later');
@@ -33,7 +36,7 @@ if (Ti.version < 1.8) {
 		Window = require('ui/handheld/ApplicationWindow');
 	}
 	new Window().open();
-	if(Ti.App.Properties.getString('server_url') == null) { 
+	if (Ti.App.Properties.getString('server_url') == null) {
 		Ti.App.Properties.setString('server_url', 'http://survey-web-staging.herokuapp.com');
 	}
 })();

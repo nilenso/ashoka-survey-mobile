@@ -2,7 +2,7 @@
 function SurveysIndexView(model) {
 	var _ = require('lib/underscore')._;
 	var convertModelDataForTable = function() {
-		return _(model.list()).map(function(survey) {
+		return _(model.all()).map(function(survey) {
 			return {
 				title : survey.name,
 				hasDetail : true,
@@ -12,7 +12,6 @@ function SurveysIndexView(model) {
 	}
 	
 	var showMessageIfModelIsEmpty = function() {
-		Ti.API.info("MODEL IS " + model.isEmpty().toString());
 		if(model.isEmpty()) {
 			self.add(label);
 			self.remove(table);

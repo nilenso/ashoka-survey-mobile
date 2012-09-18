@@ -6,7 +6,7 @@ function ApplicationWindow() {
 	var Survey = require('models/survey');
 	var SurveyShowView = require('ui/common/SurveyShowView')
 
-	var surveyModel = new Survey();
+	var surveyModel = Survey;
 
 	var settingsWindow = Ti.UI.createWindow({
 		title : 'Settings',

@@ -2,7 +2,7 @@
 function SurveyShowView(model, surveyID) {
 	var convertSurveyDataForTable = function() {
 		var _ = require('lib/underscore')._;
-		var attrs = _(model.list()).find(function(survey) {
+		var attrs = _(model.all()).find(function(survey) {
 			return survey.id == surveyID
 		});
 		return [{
