@@ -27,7 +27,7 @@ function ApplicationWindow() {
 		systemButton : Ti.UI.iPhone.SystemButton.REFRESH
 	});
 	syncButton.addEventListener('click', function(e) {
-		Survey.fetch();
+		Survey.fetchSurveys();
 	});
 	mainAppWindow.rightNavButton = syncButton;
 

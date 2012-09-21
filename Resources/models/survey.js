@@ -8,7 +8,7 @@ var Survey = new Ti.App.joli.model({
 	},
 
 	methods : {
-		fetch : function() {
+		fetchSurveys : function() {
 			var url = Ti.App.Properties.getString('server_url') + '/api/mobile/surveys';
 			var that = this;
 			var client = Ti.Network.createHTTPClient({

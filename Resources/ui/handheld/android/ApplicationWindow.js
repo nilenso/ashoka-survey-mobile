@@ -27,7 +27,7 @@ function ApplicationWindow() {
 					title : "Sync"
 				});
 				menuItemSync.addEventListener('click', function() {
-					Survey.fetch();
+					Survey.fetchSurveys();
 				});
 				menuItemSync.setIcon("images/refresh.png");
 				var menuItemSettings = menu.add({
