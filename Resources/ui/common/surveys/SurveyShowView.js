@@ -1,8 +1,9 @@
 //A single survey
-function SurveyShowView(model, surveyID) {
+function SurveyShowView(surveyID) {
+	var Survey = require('models/survey');
 	var convertSurveyDataForTable = function() {
 		var _ = require('lib/underscore')._;
-		var attrs = _(model.all()).find(function(survey) {
+		var attrs = _(Survey.all()).find(function(survey) {
 			return survey.id == surveyID
 		});
 		return [{

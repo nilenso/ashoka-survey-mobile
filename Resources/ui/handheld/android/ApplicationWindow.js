@@ -3,7 +3,7 @@ function ApplicationWindow() {
 	//load component dependencies
 	var SurveysIndexView = require('ui/common/surveys/SurveysIndexView');
 	var SettingsView = require('ui/common/SettingsView');
-	var surveyModel = require('models/survey');
+	var Survey = require('models/survey');
 	var SurveyShowView = require('ui/common/surveys/SurveyShowView')
 
 	var settingsWindow = Ti.UI.createWindow({
@@ -27,7 +27,7 @@ function ApplicationWindow() {
 					title : "Sync"
 				});
 				menuItemSync.addEventListener('click', function() {
-					surveyModel.fetch();
+					Survey.fetch();
 				});
 				menuItemSync.setIcon("images/refresh.png");
 				var menuItemSettings = menu.add({
@@ -51,12 +51,12 @@ function ApplicationWindow() {
 			navBarHidden : false,
 			backgroundColor : "#fff"
 		});
-		surveyShowWindow.add(new SurveyShowView(surveyModel, e.surveyID));
+		surveyShowWindow.add(new SurveyShowView(e.surveyID));
 		surveyShowWindow.open();
 	});
 
 	//construct UI
-	var surveysIndexView = new SurveysIndexView(surveyModel);
+	var surveysIndexView = new SurveysIndexView();
 	self.add(surveysIndexView);
 
 	return self;

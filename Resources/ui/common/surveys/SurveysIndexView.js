@@ -1,8 +1,9 @@
 //SurveysIndexView Component Constructor
-function SurveysIndexView(model) {
+function SurveysIndexView() {
+	var Survey = require('models/survey');
 	var _ = require('lib/underscore')._;
 	var convertModelDataForTable = function() {
-		return _(model.all()).map(function(survey) {
+		return _(Survey.all()).map(function(survey) {
 			return {
 				title : survey.name,
 				hasDetail : true,
@@ -12,7 +13,7 @@ function SurveysIndexView(model) {
 	}
 	
 	var showMessageIfModelIsEmpty = function() {
-		if(model.isEmpty()) {
+		if(Survey.isEmpty()) {
 			self.add(label);
 			self.remove(table);
 		} else {

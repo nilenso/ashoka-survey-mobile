@@ -4,12 +4,12 @@ function ApplicationWindow() {
 	var SurveysIndexView = require('ui/common/surveys/SurveysIndexView');
 	var SettingsView = require('ui/common/SettingsView')
 	var SurveyShowView = require('ui/common/surveys/SurveyShowView')
-	var surveyModel = require('models/survey');
+	var Survey = require('models/survey');
 
 	var mainAppWindow = Ti.UI.createWindow({
 		title : 'Surveys'
 	});
-	var surveysIndexView = new SurveysIndexView(surveyModel);
+	var surveysIndexView = new SurveysIndexView();
 	mainAppWindow.add(surveysIndexView);
 
 	var settingsWindow = Ti.UI.createWindow({
@@ -27,7 +27,7 @@ function ApplicationWindow() {
 		systemButton : Ti.UI.iPhone.SystemButton.REFRESH
 	});
 	syncButton.addEventListener('click', function(e) {
-		surveyModel.fetch();
+		Survey.fetch();
 	});
 	mainAppWindow.rightNavButton = syncButton;
 
@@ -52,7 +52,7 @@ function ApplicationWindow() {
 		var surveyShowWindow = Ti.UI.createWindow({
 			title : 'Survey Details'
 		});
-		surveyShowWindow.add(new SurveyShowView(surveyModel, e.surveyID));
+		surveyShowWindow.add(new SurveyShowView(e.surveyID));
 		navGroup.open(surveyShowWindow);
 	});
 
