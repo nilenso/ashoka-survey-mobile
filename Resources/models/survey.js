@@ -36,6 +36,29 @@ var Survey = new Ti.App.joli.model({
 			client.send();
 		},
 
+		fetchQuestions : function(surveyID) {
+			var url = Ti.App.Properties.getString('server_url') + '/api/mobile/surveys/' + surveyID;
+			var client = Ti.Network.createHTTPClient({
+				// function called when the response data is available
+				onload : function(e) {
+					Ti.API.info("Received text: " + this.responseText);
+					data = JSON.parse(this.responseText);
+					var Question = require('models/question');
+					Question.truncate();
+					Question.createRecords(data, surveyID);
+				},
+				// function called when an error occurs, including a timeout
+				onerror : function(e) {
+					Ti.API.info("Error");
+				},
+				timeout : 5000 // in milliseconds
+			});
+			// Prepare the connection.
+			client.open("GET", url);
+			// Send the request.
+			client.send();
+		},
+
 		createRecords : function(data) {
 			var _ = require('lib/underscore')._;
 			var that = this;
@@ -52,27 +75,6 @@ var Survey = new Ti.App.joli.model({
 
 		isEmpty : function() {
 			return this.count() == 0;
-		},
-		
-		fetchQuestions : function(surveyID) {
-			var url = Ti.App.Properties.getString('server_url') + '/api/mobile/surveys/' + surveyID ;
-			Ti.API.info("foooooo" + url)
-			var client = Ti.Network.createHTTPClient({
-				// function called when the response data is available
-				onload : function(e) {
-					Ti.API.info("Received text: " + this.responseText);
-					data = JSON.parse(this.responseText);
-				},
-				// function called when an error occurs, including a timeout
-				onerror : function(e) {
-					Ti.API.info("Foooooo Error");
-				},
-				timeout : 5000 // in milliseconds
-			});
-			// Prepare the connection.
-			client.open("GET", url);
-			// Send the request.
-			client.send();	
 		}
 	}
 });
