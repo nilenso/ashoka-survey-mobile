@@ -25,6 +25,7 @@ function SurveysIndexView(model) {
 		var _ = require('lib/underscore')._;
 		data = convertModelDataForTable();
 		table.setData(data);
+		alert("Sync complete")
 		showMessageIfModelIsEmpty();
 	});
 
