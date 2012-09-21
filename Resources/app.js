@@ -31,9 +31,9 @@ if (Ti.version < 1.8) {
 	// Android uses platform-specific properties to create windows.
 	// All other platforms follow a similar UI pattern.
 	if (osname === 'android') {
-		Window = require('ui/handheld/android/nav');
+		Window = require('ui/handheld/android/ApplicationWindow');
 	} else {
-		Window = require('ui/handheld/iphone/nav');
+		Window = require('ui/handheld/iphone/ApplicationWindow');
 	}
 	new Window().open();
 	if (Ti.App.Properties.getString('server_url') == null) {
