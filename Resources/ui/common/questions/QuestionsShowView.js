@@ -1,14 +1,19 @@
-//A single survey
-function QuestionShowView(questionID) {
+//All the questoin in a survey
+function QuestionsShowView(surveyID) {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
-	var convertQuestionDataForTable = function() {
-		var attrs = Question.findOneById(questionID);
-		return [{
-		  title : attrs['content']
-		}];
-	}
 
+	var convertQuestionDataForTable = function() {
+		var data = [];
+		var questions = Question.findBy('survey_id', surveyID);
+		_(questions).each(function(question) {
+			data.push({
+				title : question['content']
+			});
+			Ti.API.info("foo" + data);
+		});
+		return data;
+	}
 	self = Ti.UI.createView({
 		layout : 'vertical'
 	});
@@ -23,4 +28,4 @@ function QuestionShowView(questionID) {
 	return self;
 }
 
-module.exports = QuestionShowView;
+module.exports = QuestionsShowView;
