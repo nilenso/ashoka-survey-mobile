@@ -42,13 +42,17 @@ function QuestionsShowView(surveyID) {
 	self.add(saveButton);
 
 	saveButton.addEventListener('click', function(e) {
-		var response = []
+		var i = 0;
+		var response = {}
+		response['answer_attributes'] = {}
 		_(answerFields).each(function(answerField) {
-			reponse.push({
+			response['answer_attributes'][i] = {
 				'question_id' : answerField.id,
-				'answer' : answerField.tf.getValue()
-			});
+				'content' : answerField.tf.getValue()
+			};
+			i++;
 		});
+		Ti.API.info(JSON.stringify(response));
 	});
 
 	return self;
