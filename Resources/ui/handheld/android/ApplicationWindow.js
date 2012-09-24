@@ -4,6 +4,7 @@ function ApplicationWindow() {
 	var SurveysIndexView = require('ui/common/surveys/SurveysIndexView');
 	var SettingsView = require('ui/common/SettingsView');
 	var Survey = require('models/survey');
+	var Question = require('models/question');
 	var SurveyShowView = require('ui/common/surveys/SurveyShowView')
 
 	var settingsWindow = Ti.UI.createWindow({

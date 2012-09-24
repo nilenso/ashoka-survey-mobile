@@ -1,3 +1,6 @@
+var _ = require('lib/underscore')._;
+var Question = require('models/question');
+
 var Survey = new Ti.App.joli.model({
 	table : 'survey',
 	columns : {
@@ -18,9 +21,10 @@ var Survey = new Ti.App.joli.model({
 					data = JSON.parse(this.responseText);
 					// Emptying the table for now (until we get all the survey info from the server)
 					that.truncate();
+					Question.truncate();
 					that.createRecords(data);
-					_(data).each(function(survey){
-						fetchQuestions(survey.id);
+					_(data).each(function(survey) {
+						that.fetchQuestions(survey['id']);
 					});
 					Ti.App.fireEvent('surveys.fetch.success');
 				},
@@ -44,10 +48,8 @@ var Survey = new Ti.App.joli.model({
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {
-					Ti.API.info("Received text: " + this.responseText);
+					Ti.API.info("Received text for questions: " + this.responseText);
 					data = JSON.parse(this.responseText);
-					var Question = require('models/question');
-					Question.truncate();
 					Question.createRecords(data, surveyID);
 				},
 				// function called when an error occurs, including a timeout
@@ -63,7 +65,6 @@ var Survey = new Ti.App.joli.model({
 		},
 
 		createRecords : function(data) {
-			var _ = require('lib/underscore')._;
 			var that = this;
 			_(data).each(function(survey) {
 				var record = that.newRecord({
