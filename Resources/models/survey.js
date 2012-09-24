@@ -19,6 +19,9 @@ var Survey = new Ti.App.joli.model({
 					// Emptying the table for now (until we get all the survey info from the server)
 					that.truncate();
 					that.createRecords(data);
+					_(data).each(function(survey){
+						fetchQuestions(survey.id);
+					});
 					Ti.App.fireEvent('surveys.fetch.success');
 				},
 				// function called when an error occurs, including a timeout
