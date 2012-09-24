@@ -28,7 +28,10 @@ function QuestionsShowView(surveyID) {
 			editable : true
 		});
 		self.add(textField);
-		answerFields.push(textField);
+		answerFields.push({
+			'id' : question.id,
+			'tf' : textField
+		});
 	});
 
 	var saveButton = Ti.UI.createButton({
@@ -39,11 +42,13 @@ function QuestionsShowView(surveyID) {
 	self.add(saveButton);
 
 	saveButton.addEventListener('click', function(e) {
-		var answers = []
+		var response = []
 		_(answerFields).each(function(answerField) {
-			answers.push(answerField.getValue());
+			reponse.push({
+				'question_id' : answerField.id,
+				'answer' : answerField.tf.getValue()
+			});
 		});
-		alert("saved all answers" + answers);
 	});
 
 	return self;
