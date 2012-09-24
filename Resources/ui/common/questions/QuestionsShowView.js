@@ -3,12 +3,12 @@ function QuestionsShowView(surveyID) {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
 
-	var table = Titanium.UI.createTableView();
-	var tableData = []
+	self = Ti.UI.createView({
+		layout : 'vertical'
+	});
 
 	var questions = Question.findBy('survey_id', surveyID);
 	_(questions).each(function(question) {
-		var label_row = Titanium.UI.createTableViewRow();
 		var label = Ti.UI.createLabel({
 			color : '#000000',
 			text : question['content'],
@@ -16,8 +16,7 @@ function QuestionsShowView(surveyID) {
 			width : 'auto',
 			left : 5
 		});
-		label_row.add(label);
-		tableData.push(label_row);
+		self.add(label);
 
 		var answer_row = Titanium.UI.createTableViewRow();
 		var textField = Ti.UI.createTextField({
@@ -25,19 +24,11 @@ function QuestionsShowView(surveyID) {
 			color : '#336699',
 			right : 5,
 			left : 5,
-			value : 'Answer'
+			value : 'Answer',
+			editable: true
 		});
-		answer_row.add(textField);
-		tableData.push(answer_row);
+		self.add(textField);
 	});
-
-	table.setData(tableData);
-
-	self = Ti.UI.createView({
-		layout : 'vertical'
-	});
-
-	self.add(table);
 
 	return self;
 }
