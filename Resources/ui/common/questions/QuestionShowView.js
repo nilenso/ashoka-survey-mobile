@@ -2,23 +2,20 @@
 function QuestionShowView(questionID) {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
-	var convertSurveyDataForTable = function() {
-		var attrs = _(Question.all()).find(function(question) {
-			return question.id == questionID
-		});
+	var convertQuestionDataForTable = function() {
+		var attrs = Question.findOneById(questionID);
 		return [{
 		  title : attrs['content']
 		}];
 	}
-	
+
 	self = Ti.UI.createView({
 		layout : 'vertical'
 	});
 
 	// now assign that array to the table's data property to add those objects as rows
 	var table = Titanium.UI.createTableView({
-		data : convertSurveyDataForTable(),
-		style : Titanium.UI.iPhone.TableViewStyle.GROUPED
+		data : convertQuestionDataForTable(),
 	});
 
 	self.add(table);

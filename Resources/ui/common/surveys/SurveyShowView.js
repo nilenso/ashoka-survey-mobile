@@ -3,34 +3,19 @@ function SurveyShowView(surveyID) {
 	var _ = require('lib/underscore')._;
 	var Survey = require('models/survey');
 	var Question = require('models/question');
-	var convertSurveyDataForTable = function() {
-		//var questions = Question.findBy('survey_id', surveyID);
-		var attrs = _(Survey.all()).find(function(survey) {
-			return survey.id == surveyID
-		});
-		return [{
-			header : 'Name',
-			title : attrs['name']
-		}, {
-			header : 'Description',
-			title : attrs['description']
-		}, {
-			header : 'Expires On',
-			title : attrs['expiry_date']
-		}];
-	}
-	
-	self = Ti.UI.createView({
+	var QuestionShowView = require('ui/common/questions/QuestionShowView');
+	var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView');
+
+	self = Ti.UI.createScrollableView({
 		layout : 'vertical'
 	});
 
-	// now assign that array to the table's data property to add those objects as rows
-	var table = Titanium.UI.createTableView({
-		data : convertSurveyDataForTable(),
-		style : Titanium.UI.iPhone.TableViewStyle.GROUPED
-	});
+	self.addView(new SurveyDetailsView(surveyID));
 
-	self.add(table);
+	var questions = Question.findBy('survey_id', surveyID);
+	_(questions).each(function(question) {
+		self.addView(new QuestionShowView(question.id));
+	});
 
 	return self;
 }
