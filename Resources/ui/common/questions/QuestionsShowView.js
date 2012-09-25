@@ -49,7 +49,7 @@ function QuestionsShowView(surveyID) {
 				'content' : field.tf.getValue()
 			}
 		});
-		Response.createRecords(surveyID, answersData);
+		Response.createRecord(surveyID, answersData);
 
 	});
 

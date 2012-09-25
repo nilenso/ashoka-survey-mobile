@@ -1,3 +1,6 @@
+var _ = require('lib/underscore')._;
+var Answer = require('models/answer');
+
 var Response = new Ti.App.joli.model({
 	table : 'responses',
 	columns : {
@@ -6,14 +9,15 @@ var Response = new Ti.App.joli.model({
 	},
 
 	methods : {
-		createRecords : function(surveyID, answerData) {
-			var _ = require('lib/underscore')._;
-			this.newRecord({
+		createRecord : function(surveyID, answerData) {
+			var record = this.newRecord({
 				survey_id : surveyID
-			}).save();
-			_(answerData).each(function(answer) {
-				// Answer.createRecords(answer)
 			});
+			record.save();
+			_(answerData).each(function(answer) {
+				Answer.createRecord(answer, record.id);
+			});
+			Ti.API.info("Resp ID is " + record.id);
 			Ti.API.info("foooo" + this.all());
 		},
 
