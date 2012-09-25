@@ -1,3 +1,4 @@
 tmp
 build*
 .fastdev.lock
+target/
