@@ -2,6 +2,7 @@
 function QuestionsShowView(surveyID) {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
+	var Response = require('models/response');
 
 	self = Ti.UI.createView({
 		layout : 'vertical'
@@ -42,17 +43,14 @@ function QuestionsShowView(surveyID) {
 	self.add(saveButton);
 
 	saveButton.addEventListener('click', function(e) {
-		var i = 0;
-		var response = {}
-		response['answer_attributes'] = {}
-		_(answerFields).each(function(answerField) {
-			response['answer_attributes'][i] = {
-				'question_id' : answerField.id,
-				'content' : answerField.tf.getValue()
-			};
-			i++;
+		var answersData = _(answerFields).map(function(field) {
+			return {
+				'question_id' : field.id,
+				'content' : field.tf.getValue()
+			}
 		});
-		Ti.API.info(JSON.stringify(response));
+		Response.createRecords(surveyID, answersData);
+
 	});
 
 	return self;
