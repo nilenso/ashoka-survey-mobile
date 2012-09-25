@@ -50,7 +50,10 @@ function QuestionsShowView(surveyID) {
 			}
 		});
 		Response.createRecord(surveyID, answersData);
-
+		_(answerFields).each(function(field){
+			field.tf.setValue(null);
+		});
+		Ti.App.fireEvent('QuestionsShowView:savedResponse');		
 	});
 
 	return self;

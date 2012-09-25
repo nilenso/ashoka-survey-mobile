@@ -12,6 +12,10 @@ function SurveyShowView(surveyID) {
 
 	self.addView(new SurveyDetailsView(surveyID));
 	self.addView(new QuestionsShowView(surveyID));
+	
+	Ti.App.addEventListener('QuestionsShowView:savedResponse', function(){
+		self.scrollToView(0);
+	});
 
 	return self;
 }
