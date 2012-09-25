@@ -24,8 +24,34 @@ function SurveyDetailsView(surveyID) {
 		data : convertSurveyDataForTable(),
 	});
 
-	self.add(table);
+	var createResponseButton = Ti.UI.createButton({
+		title : 'Add Response',
+		height : 30,
+		width : 200
+	});
 
+	var row = Titanium.UI.createTableViewRow();
+	row.add(createResponseButton);
+	table.appendRow(row);
+
+	createResponseButton.addEventListener('click', function(e) {
+		Ti.App.fireEvent('SurveyDetailsView:createResponse');
+	});
+
+	var responsesIndexButton = Ti.UI.createButton({
+		title : 'Show all Responses',
+		height : 30,
+		width : 200
+	});
+
+	var row = Titanium.UI.createTableViewRow();
+	row.add(responsesIndexButton);
+	table.appendRow(row);
+
+	responsesIndexButton.addEventListener('click', function(e) {
+	});
+
+	self.add(table);
 	return self;
 }
 
