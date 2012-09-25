@@ -3,7 +3,7 @@ function SurveyShowView(surveyID) {
 	var _ = require('lib/underscore')._;
 	var Survey = require('models/survey');
 	var Question = require('models/question');
-	var QuestionsShowView = require('ui/common/questions/QuestionsShowView');
+	var ResponsesNewView = require('ui/common/responses/ResponsesNewView');
 	var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView');
 
 	self = Ti.UI.createScrollableView({
@@ -11,9 +11,9 @@ function SurveyShowView(surveyID) {
 	});
 
 	self.addView(new SurveyDetailsView(surveyID));
-	self.addView(new QuestionsShowView(surveyID));
+	self.addView(new ResponsesNewView(surveyID));
 	
-	Ti.App.addEventListener('QuestionsShowView:savedResponse', function(){
+	Ti.App.addEventListener('ResponsesNewView:savedResponse', function(){
 		self.scrollToView(0);
 	});
 	

@@ -1,5 +1,5 @@
 //All the questoin in a survey
-function QuestionsShowView(surveyID) {
+function ResponsesNewView(surveyID) {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
 	var Response = require('models/response');
@@ -53,10 +53,10 @@ function QuestionsShowView(surveyID) {
 		_(answerFields).each(function(field){
 			field.tf.setValue(null);
 		});
-		Ti.App.fireEvent('QuestionsShowView:savedResponse');		
+		Ti.App.fireEvent('ResponsesNewView:savedResponse');		
 	});
 
 	return self;
 }
 
-module.exports = QuestionsShowView;
+module.exports = ResponsesNewView;
