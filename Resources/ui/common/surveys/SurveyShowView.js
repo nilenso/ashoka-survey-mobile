@@ -6,27 +6,40 @@ function SurveyShowView(surveyID) {
 	var ResponsesNewView = require('ui/common/responses/ResponsesNewView');
 	var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView');
 	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
+	var ResponseShowView = require('ui/common/responses/ResponseShowView');
 
 	self = Ti.UI.createScrollableView({
 		layout : 'vertical'
 	});
 
-	self.addView(new SurveyDetailsView(surveyID));
-	self.addView(new ResponsesNewView(surveyID));
-	self.addView(new ResponsesIndexView(surveyID));
-	
-	Ti.App.addEventListener('ResponsesNewView:savedResponse', function(){
-		self.scrollToView(0);
+	details = new SurveyDetailsView(surveyID);
+	newResponse = new ResponsesNewView(surveyID);
+	allResponses = new ResponsesIndexView(surveyID);
+	self.addView(details);
+
+	Ti.App.addEventListener('ResponsesNewView:savedResponse', function() {
+		views = [];
+		views.push(details);
+		self.setViews(views);
 	});
-	
-	Ti.App.addEventListener('SurveyDetailsView:createResponse', function(){
-		self.scrollToView(1);
+
+	Ti.App.addEventListener('SurveyDetailsView:createResponse', function() {
+		views = [];
+		views.push(newResponse);
+		self.setViews(views);
 	})
-	
-	Ti.App.addEventListener('SurveyDetailsView:responsesIndex', function(){
-		self.scrollToView(2);
+
+	Ti.App.addEventListener('SurveyDetailsView:responsesIndex', function() {
+		views = [];
+		views.push(allResponses);
+		self.setViews(views);
 	})
-	
+
+	Ti.App.addEventListener('responses_index_view.table_row_clicked', function(data) {
+		views = [];
+		views.push(oneResponse = new ResponseShowView(surveyID));
+		self.setViews(views);
+	});
 
 	return self;
 }

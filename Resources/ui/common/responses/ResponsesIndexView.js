@@ -7,21 +7,20 @@ function ResponsesIndexView(surveyID) {
 		return _(responses).map(function(response) {
 			return {
 				title : response.id,
-				hasDetail : true
+				hasDetail : true,
+				responseID : response.id
 			}
 		});
 	}
-	
 	var showMessageIfModelIsEmpty = function() {
-		if(_(responses).isEmpty()) {
+		if (_(responses).isEmpty()) {
 			self.add(label);
 			self.remove(table);
 		} else {
 			self.remove(label);
-			self.add(table);	
+			self.add(table);
 		}
 	}
-
 	//create object instance, a parasitic subclass of Observable
 	var self = Ti.UI.createView();
 
@@ -30,16 +29,24 @@ function ResponsesIndexView(surveyID) {
 		data : convertModelDataForTable()
 	});
 
+	table.addEventListener('click', function(e) {
+		Ti.App.fireEvent('responses_index_view.table_row_clicked', {
+			responseID : e.rowData.responseID
+		});
+	});
+
 	label = Ti.UI.createLabel({
 		color : '#333',
-		font : { fontSize : 18 },
+		font : {
+			fontSize : 18
+		},
 		text : 'No responses yet.',
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 		top : '40%',
 		width : 'auto',
 		height : 'auto'
 	});
-	
+
 	showMessageIfModelIsEmpty();
 	return self;
 }
