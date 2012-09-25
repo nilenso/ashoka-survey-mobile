@@ -5,6 +5,7 @@ function SurveyShowView(surveyID) {
 	var Question = require('models/question');
 	var ResponsesNewView = require('ui/common/responses/ResponsesNewView');
 	var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView');
+	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
 
 	self = Ti.UI.createScrollableView({
 		layout : 'vertical'
@@ -12,6 +13,7 @@ function SurveyShowView(surveyID) {
 
 	self.addView(new SurveyDetailsView(surveyID));
 	self.addView(new ResponsesNewView(surveyID));
+	self.addView(new ResponsesIndexView(surveyID));
 	
 	Ti.App.addEventListener('ResponsesNewView:savedResponse', function(){
 		self.scrollToView(0);
@@ -20,6 +22,11 @@ function SurveyShowView(surveyID) {
 	Ti.App.addEventListener('SurveyDetailsView:createResponse', function(){
 		self.scrollToView(1);
 	})
+	
+	Ti.App.addEventListener('SurveyDetailsView:responsesIndex', function(){
+		self.scrollToView(2);
+	})
+	
 
 	return self;
 }

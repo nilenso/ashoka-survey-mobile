@@ -49,6 +49,7 @@ function SurveyDetailsView(surveyID) {
 	table.appendRow(row);
 
 	responsesIndexButton.addEventListener('click', function(e) {
+		Ti.App.fireEvent('SurveyDetailsView:responsesIndex');
 	});
 
 	self.add(table);
