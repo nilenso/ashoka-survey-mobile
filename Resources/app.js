@@ -32,10 +32,15 @@ if (Ti.version < 1.8) {
 	// All other platforms follow a similar UI pattern.
 	if (osname === 'android') {
 		Window = require('ui/handheld/android/SurveysIndexWindow');
+		new Window().open();
 	} else {
-		Window = require('ui/handheld/iphone/ApplicationWindow');
-	}
-	new Window().open();
+		Window = Ti.UI.createWindow();
+		navGroup = Ti.UI.iPhone.createNavigationGroup({
+			window: require('ui/handheld/iphone/SurveysIndexWindow')()
+		});
+		Window.add(navGroup);
+		Window.open();
+	}	
 	if (Ti.App.Properties.getString('server_url') == null) {
 		Ti.App.Properties.setString('server_url', 'http://survey-web-staging.herokuapp.com');
 	}
