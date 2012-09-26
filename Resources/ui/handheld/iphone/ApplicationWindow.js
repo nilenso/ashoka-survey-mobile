@@ -6,6 +6,7 @@ function ApplicationWindow() {
 	var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView')
 	var ResponsesNewView = require('ui/common/responses/ResponsesNewView')
 	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView')
+	var ResponseShowView = require('ui/common/responses/ResponseShowView')
 	var Survey = require('models/survey');
 
 	var mainAppWindow = Ti.UI.createWindow({
@@ -74,6 +75,14 @@ function ApplicationWindow() {
 		});
 		responsesIndexWindow.add(new ResponsesIndexView(e.surveyID));
 		navGroup.open(responsesIndexWindow);
+	})
+
+	Ti.App.addEventListener('ResponsesIndexView:table_row_clicked', function(e) {
+		var responseShowWindow = Ti.UI.createWindow({
+			title : 'Details about the Response'
+		});
+		responseShowWindow.add(new ResponseShowView(e.responseID));
+		navGroup.open(responseShowWindow);
 	})
 
 	Ti.App.addEventListener('ResponsesNewView:savedResponse', function() {
