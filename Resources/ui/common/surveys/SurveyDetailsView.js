@@ -21,36 +21,27 @@ function SurveyDetailsView(surveyID) {
 
 	// now assign that array to the table's data property to add those objects as rows
 	var table = Titanium.UI.createTableView({
-		data : convertSurveyDataForTable(),
+		data : convertSurveyDataForTable()
 	});
 
 	var createResponseButton = Ti.UI.createButton({
 		title : 'Add Response',
 		height : 30,
-		width : 200
+		width: '100%'
 	});
-
-	var row = Titanium.UI.createTableViewRow();
-	row.add(createResponseButton);
-	table.appendRow(row);
-
-	createResponseButton.addEventListener('click', function(e) {
-		Ti.App.fireEvent('SurveyDetailsView:createResponse');
-	});
-
+	
 	var responsesIndexButton = Ti.UI.createButton({
-		title : 'Show all Responses',
+		title : 'See all Responses',
 		height : 30,
-		width : 200
+		width: '100%'
 	});
+	
+	buttonsView = Ti.UI.createView({ layout: 'vertical' })
+	buttonsView.add(createResponseButton);
+	buttonsView.add(responsesIndexButton);
 
-	var row = Titanium.UI.createTableViewRow();
-	row.add(responsesIndexButton);
-	table.appendRow(row);
-
-	responsesIndexButton.addEventListener('click', function(e) {
-		Ti.App.fireEvent('SurveyDetailsView:responsesIndex');
-	});
+	table.setFooterView(buttonsView);
+	//table.appendRow(row);
 
 	self.add(table);
 	return self;
