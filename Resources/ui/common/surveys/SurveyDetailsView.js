@@ -42,6 +42,12 @@ function SurveyDetailsView(surveyID) {
 		width : '100%'
 	});
 
+	responsesIndexButton.addEventListener('click', function(e) {
+		Ti.App.fireEvent('SurveyDetailsView:responsesIndex', {
+			surveyID: surveyID
+		});
+	});
+
 	buttonsView = Ti.UI.createView({
 		layout : 'vertical'
 	})

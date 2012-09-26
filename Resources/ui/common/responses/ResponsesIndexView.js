@@ -6,7 +6,7 @@ function ResponsesIndexView(surveyID) {
 	var convertModelDataForTable = function() {
 		return _(responses).map(function(response) {
 			return {
-				title : response.id,
+				title : response.id.toString(),
 				hasDetail : true,
 				responseID : response.id
 			}
@@ -28,6 +28,8 @@ function ResponsesIndexView(surveyID) {
 	var table = Titanium.UI.createTableView({
 		data : convertModelDataForTable()
 	});
+	
+	Ti.API.info(convertModelDataForTable());
 
 	table.addEventListener('click', function(e) {
 		Ti.App.fireEvent('responses_index_view.table_row_clicked', {
