@@ -31,7 +31,7 @@ if (Ti.version < 1.8) {
 	// Android uses platform-specific properties to create windows.
 	// All other platforms follow a similar UI pattern.
 	if (osname === 'android') {
-		Window = require('ui/handheld/android/ApplicationWindow');
+		Window = require('ui/handheld/android/SurveysIndexWindow');
 	} else {
 		Window = require('ui/handheld/iphone/ApplicationWindow');
 	}
