@@ -6,7 +6,7 @@ function ApplicationWindow() {
 	var Survey = require('models/survey');
 	var Question = require('models/question');
 	var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView')
-	var ResponsesNewView = require('ui/common/responses/ResponsesNewView')	
+	var ResponsesNewView = require('ui/common/responses/ResponsesNewView')
 
 	var settingsWindow = Ti.UI.createWindow({
 		title : 'Settings',
@@ -57,8 +57,9 @@ function ApplicationWindow() {
 		surveyDetailsWindow.open();
 	});
 
+	var createResponseWindow;
 	Ti.App.addEventListener('SurveyDetailsView:createResponse', function(e) {
-		var createResponseWindow = Ti.UI.createWindow({
+		createResponseWindow = Ti.UI.createWindow({
 			title : 'Add a Response',
 			navBarHidden : false,
 			backgroundColor : "#fff"
@@ -70,6 +71,11 @@ function ApplicationWindow() {
 	Ti.App.addEventListener('SurveyDetailsView:responsesIndex', function() {
 
 	})
+
+	Ti.App.addEventListener('ResponsesNewView:savedResponse', function() {
+		createResponseWindow.close();
+	})
+	
 	//construct UI
 	var surveysIndexView = new SurveysIndexView();
 	self.add(surveysIndexView);

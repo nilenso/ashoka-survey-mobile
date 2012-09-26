@@ -27,21 +27,28 @@ function SurveyDetailsView(surveyID) {
 	var createResponseButton = Ti.UI.createButton({
 		title : 'Add Response',
 		height : 30,
-		width: '100%'
+		width : '100%'
 	});
-	
+
+	createResponseButton.addEventListener('click', function(e) {
+		Ti.App.fireEvent('SurveyDetailsView:createResponse', {
+			surveyID : surveyID
+		});
+	});
+
 	var responsesIndexButton = Ti.UI.createButton({
 		title : 'See all Responses',
 		height : 30,
-		width: '100%'
+		width : '100%'
 	});
-	
-	buttonsView = Ti.UI.createView({ layout: 'vertical' })
+
+	buttonsView = Ti.UI.createView({
+		layout : 'vertical'
+	})
 	buttonsView.add(createResponseButton);
 	buttonsView.add(responsesIndexButton);
 
 	table.setFooterView(buttonsView);
-	//table.appendRow(row);
 
 	self.add(table);
 	return self;
