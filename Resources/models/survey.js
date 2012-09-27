@@ -1,5 +1,6 @@
 var _ = require('lib/underscore')._;
 var Question = require('models/question');
+var Response = require('models/response')
 
 var Survey = new Ti.App.joli.model({
 	table : 'survey',
@@ -79,6 +80,14 @@ var Survey = new Ti.App.joli.model({
 
 		isEmpty : function() {
 			return this.count() == 0;
+		},
+		
+		syncResponses : function(surveyID) {
+			var responses = Response.findBy('survey_id', surveyID);
+			Ti.API.info(responses)
+			_(responses).each(function(response) {
+				Response.sync(response.id);
+			});
 		}
 	}
 });
