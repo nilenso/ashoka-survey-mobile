@@ -2,8 +2,10 @@
 function ResponsesIndexView(surveyID) {
 	var _ = require('lib/underscore')._;
 	var Response = require('models/response');
-	var responses = Response.findBy('survey_id', surveyID);
+	var Survey = require('models/survey')
+
 	var convertModelDataForTable = function() {
+		var responses = Response.findBy('survey_id', surveyID);
 		return _(responses).map(function(response) {
 			return {
 				title : response.id.toString(),
@@ -13,6 +15,7 @@ function ResponsesIndexView(surveyID) {
 		});
 	}
 	var showMessageIfModelIsEmpty = function() {
+		var responses = Response.findBy('survey_id', surveyID);
 		if (_(responses).isEmpty()) {
 			self.add(label);
 			self.remove(table);

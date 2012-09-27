@@ -44,10 +44,12 @@ var Response = new Ti.App.joli.model({
 				// function called when the response data is available
 				onload : function(e) {
 					Ti.API.info("Received text: " + this.responseText);
+					response.destroy();
+					Ti.App.fireEvent('response.sync.success');
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {
-					Ti.API.info("fooooo errrooorr!!!");
+					Ti.App.fireEvent('response.sync.error');
 				},
 				timeout : 5000 // in milliseconds
 			});

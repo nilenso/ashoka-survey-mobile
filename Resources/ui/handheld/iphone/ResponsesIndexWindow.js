@@ -3,7 +3,8 @@ function ResponsesIndexWindow(surveyID) {
 	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView')
 	var ResponseShowView = require('ui/common/responses/ResponseShowView')
 	var ResponseShowWindow = require('ui/handheld/iphone/ResponseShowWindow')
-
+	var Survey = require('models/survey');
+	
 	var self = Ti.UI.createWindow({
 		title : 'All Responses',
 		backgroundColor : "#fff"
@@ -13,6 +14,14 @@ function ResponsesIndexWindow(surveyID) {
 	var tableRowClickedCallback = function(e) {
 		navGroup.open(new ResponseShowWindow(e.responseID));
 	}
+	
+	var syncButton = Ti.UI.createButton({
+		systemButton : Ti.UI.iPhone.SystemButton.REFRESH
+	});
+	syncButton.addEventListener('click', function(e) {
+		Survey.syncResponses(surveyID);
+	});
+	self.rightNavButton = syncButton;
 
 	Ti.App.addEventListener('ResponsesIndexView:table_row_clicked', tableRowClickedCallback);
 	
