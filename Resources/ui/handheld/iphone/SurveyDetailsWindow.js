@@ -5,16 +5,18 @@ function SurveyDetailsWindow(surveyID) {
 	var ResponsesIndexWindow = require('ui/handheld/iphone/ResponsesIndexWindow')
 
 	var self = Ti.UI.createWindow({
-		title : 'Survey Details'
+		title : 'Survey Details',
+		backgroundColor : "#fff"
+
 	});
 	self.add(new SurveyDetailsView(surveyID));
 
 	var createResponseCallback = function(e) {
 		navGroup.open(new ResponsesNewWindow(e.surveyID));
 	}
-	
+
 	Ti.App.addEventListener('SurveyDetailsView:createResponse', createResponseCallback)
-	
+
 	var responseIndexCallback = function(e) {
 		navGroup.open(new ResponsesIndexWindow(e.surveyID));
 	}

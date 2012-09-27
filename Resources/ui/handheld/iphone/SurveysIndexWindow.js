@@ -9,7 +9,8 @@ function SurveysIndexWindow() {
 	var Survey = require('models/survey');
 
 	var self = Ti.UI.createWindow({
-		title : 'Surveys'
+		title : 'Surveys',
+		backgroundColor : "#fff"
 	});
 
 	var surveysIndexView = new SurveysIndexView();
