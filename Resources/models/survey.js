@@ -23,9 +23,9 @@ var Survey = new Ti.App.joli.model({
 					// Emptying the table for now (until we get all the survey info from the server)
 					that.truncate();
 					Question.truncate();
-					that.createRecords(data);
-					_(data).each(function(survey) {
-						that.fetchQuestions(survey['id']);
+					_(data).each(function(surveyData) {
+						survey = that.createRecord(surveyData);
+						survey.fetchQuestions();
 					});
 					Ti.App.fireEvent('surveys.fetch.success');
 				},
@@ -44,14 +44,59 @@ var Survey = new Ti.App.joli.model({
 			client.send();
 		},
 
-		fetchQuestions : function(surveyID) {
-			var url = Ti.App.Properties.getString('server_url') + '/api/surveys/' + surveyID;
+		createRecord : function(surveyData) {
+			var record = this.newRecord({
+				id : surveyData.id,
+				name : surveyData.name,
+				description : surveyData.description,
+				expiry_date : surveyData.expiry_date
+			});
+			record.save();
+			return record;
+		},
+
+		isEmpty : function() {
+			return this.count() == 0;
+		},
+	},
+	objectMethods : {
+		syncResponses : function() {
+			var responses = Response.findBy('survey_id', this.id);
+			_(responses).each(function(response) {
+				response.sync();
+			});
+			var success_count = 0;
+			var syncSuccessHandler = function() {
+				success_count++;
+				if (success_count == responses.length) {
+					Ti.App.fireEvent("syncResponses.success");
+					Ti.App.removeEventListener("response.sync.success", syncSuccessHandler);
+				}
+			};
+
+			Ti.App.addEventListener("response.sync.success", syncSuccessHandler);
+
+			var error_count = 0;
+			var syncErrorHandler = function() {
+				error_count++;
+				if (error_count == 1) {
+					Ti.App.fireEvent("syncResponses.error");
+					Ti.App.removeEventListener("response.sync.error", syncErrorHandler);
+				}
+			};
+
+			Ti.App.addEventListener("response.sync.error", syncErrorHandler);
+		},
+
+		fetchQuestions : function() {
+			var self = this;
+			var url = Ti.App.Properties.getString('server_url') + '/api/surveys/' + self.id;
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {
 					Ti.API.info("Received text for questions: " + this.responseText);
 					data = JSON.parse(this.responseText);
-					Question.createRecords(data, surveyID);
+					Question.createRecords(data, self.id);
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {
@@ -64,52 +109,6 @@ var Survey = new Ti.App.joli.model({
 			// Send the request.
 			client.send();
 		},
-
-		createRecords : function(data) {
-			var that = this;
-			_(data).each(function(survey) {
-				var record = that.newRecord({
-					id : survey.id,
-					name : survey.name,
-					description : survey.description,
-					expiry_date : survey.expiry_date
-				});
-				record.save();
-			});
-		},
-
-		isEmpty : function() {
-			return this.count() == 0;
-		},
-
-		syncResponses : function(surveyID) {
-			var responses = Response.findBy('survey_id', surveyID);
-			Ti.API.info(responses)
-			_(responses).each(function(response) {
-				Response.sync(response.id);
-			});
-			var success_count = 0;
-			var syncSuccessHandler = function() {
-				success_count++;
-				if (success_count == responses.length) {
-					Ti.App.fireEvent("syncResponses.success");
-					Ti.App.removeEventListener("response.sync.success", syncSuccessHandler);
-				}
-			};
-			
-			Ti.App.addEventListener("response.sync.success", syncSuccessHandler);
-			
-			var error_count = 0;
-			var syncErrorHandler = function() {
-				error_count++;
-				if (error_count == 1) {
-					Ti.App.fireEvent("syncResponses.error");
-					Ti.App.removeEventListener("response.sync.error", syncErrorHandler);
-				}		
-			};
-			
-			Ti.App.addEventListener("response.sync.error", syncErrorHandler);
-		}
 	}
 });
 

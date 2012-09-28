@@ -20,9 +20,11 @@ var Response = new Ti.App.joli.model({
 			});
 			Ti.API.info("Resp ID is " + record.id);
 			Ti.API.info("foooo" + this.all());
-		},
-
-		prepRailsParams : function(answers) {
+		}
+	},
+	objectMethods : {
+		prepRailsParams : function() {
+			var answers = Answer.findBy('response_id', this.id);
 			var answer_attributes = {}
 			_(answers).each(function(answer, index) {
 				answer_attributes[index] = {
@@ -33,24 +35,22 @@ var Response = new Ti.App.joli.model({
 			return answer_attributes;
 		},
 
-		sync : function(responseID) {
+		sync : function() {
 			var url = Ti.App.Properties.getString('server_url') + '/api/responses.json';
-			var that = this;
-			var response = this.findOneById(responseID);
-			Ti.API.info(response);
-			var answers = Answer.findBy('response_id', response.id);
+			var self = this;
 			var params = {}
-			params['answers_attributes'] = this.prepRailsParams(answers);
-			params['mobile_id'] = responseID;
-			params['survey_id'] = response.survey_id;
+			params['answers_attributes'] = this.prepRailsParams();
+			params['mobile_id'] = this.id;
+			params['survey_id'] = this.survey_id;
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {
 					Ti.API.info("Received text: " + this.responseText);
+					var answers = Answer.findBy('response_id', self.id);
 					_(answers).each(function(answer) {
 						answer.destroy();
 					});
-					response.destroy();
+					self.destroy();
 					Ti.App.fireEvent('response.sync.success');
 				},
 				// function called when an error occurs, including a timeout

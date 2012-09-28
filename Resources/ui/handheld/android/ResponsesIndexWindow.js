@@ -17,7 +17,8 @@ function ResponsesIndexWindow(surveyID) {
 					title : "Sync"
 				});
 				menuItemSync.addEventListener('click', function() {
-					Survey.syncResponses(surveyID);
+					survey = Survey.findOneById(surveyID)
+					survey.syncResponses();
 				});
 				menuItemSync.setIcon("images/refresh.png");
 			}
