@@ -2,7 +2,7 @@ function ResponseShowWindow(responseID) {
 	var ResponseShowView = require('ui/common/responses/ResponseShowView')
 
 	self = Ti.UI.createWindow({
-		title : 'All Responses',
+		title : 'Response',
 		navBarHidden : false,
 		backgroundColor : "#fff"
 	});

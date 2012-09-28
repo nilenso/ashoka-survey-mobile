@@ -25,11 +25,14 @@ var Response = new Ti.App.joli.model({
 		prepRailsParams : function(answers) {
 			var answer_attributes = {}
 			_(answers).each(function(answer, index) {
-				answer_attributes[index] = {'content': answer.content, 'question_id': answer.question_id};
+				answer_attributes[index] = {
+					'content' : answer.content,
+					'question_id' : answer.question_id
+				};
 			});
 			return answer_attributes;
-		}, 
-		
+		},
+
 		sync : function(responseID) {
 			var url = Ti.App.Properties.getString('server_url') + '/api/responses.json';
 			var that = this;
@@ -44,6 +47,9 @@ var Response = new Ti.App.joli.model({
 				// function called when the response data is available
 				onload : function(e) {
 					Ti.API.info("Received text: " + this.responseText);
+					_(answers).each(function(answer) {
+						answer.destroy();
+					});
 					response.destroy();
 					Ti.App.fireEvent('response.sync.success');
 				},

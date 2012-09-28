@@ -2,10 +2,11 @@
 function SurveysIndexWindow() {
 	//load component dependencies
 	var SurveysIndexView = require('ui/common/surveys/SurveysIndexView');
-	var SettingsWindow = require('ui/handheld/android/SettingsWindow')
+	var SettingsWindow = require('ui/handheld/android/SettingsWindow');
 	var Survey = require('models/survey');
 	var Question = require('models/question');
-	var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow')
+	var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow');
+	var settingsWindow = SettingsWindow(); 
 
 	//create component instance
 	var self = Ti.UI.createWindow({
@@ -27,7 +28,7 @@ function SurveysIndexWindow() {
 					title : "Settings"
 				});
 				menuItemSettings.addEventListener('click', function() {
-					SettingsWindow().open();
+					settingsWindow.open();
 				});
 				menuItemSettings.setIcon("images/settings.png");
 			}

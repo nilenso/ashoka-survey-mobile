@@ -81,13 +81,34 @@ var Survey = new Ti.App.joli.model({
 		isEmpty : function() {
 			return this.count() == 0;
 		},
-		
+
 		syncResponses : function(surveyID) {
 			var responses = Response.findBy('survey_id', surveyID);
 			Ti.API.info(responses)
 			_(responses).each(function(response) {
 				Response.sync(response.id);
 			});
+			var success_count = 0;
+			var syncSuccessHandler = function() {
+				success_count++;
+				if (success_count == responses.length) {
+					Ti.App.fireEvent("syncResponses.success");
+					Ti.App.removeEventListener("response.sync.success", syncSuccessHandler);
+				}
+			};
+			
+			Ti.App.addEventListener("response.sync.success", syncSuccessHandler);
+			
+			var error_count = 0;
+			var syncErrorHandler = function() {
+				error_count++;
+				if (error_count == 1) {
+					Ti.App.fireEvent("syncResponses.error");
+					Ti.App.removeEventListener("response.sync.error", syncErrorHandler);
+				}		
+			};
+			
+			Ti.App.addEventListener("response.sync.error", syncErrorHandler);
 		}
 	}
 });
