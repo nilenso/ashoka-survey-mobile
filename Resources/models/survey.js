@@ -101,7 +101,7 @@ var Survey = new Ti.App.joli.model({
 
 		fetchQuestions : function() {
 			var self = this;
-			var url = Ti.App.Properties.getString('server_url') + '/api/surveys/' + self.id;
+			var url = Ti.App.Properties.getString('server_url') + '/api/questions';
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {
@@ -118,7 +118,7 @@ var Survey = new Ti.App.joli.model({
 			// Prepare the connection.
 			client.open("GET", url);
 			// Send the request.
-			client.send();
+			client.send({ survey_id: self.id});
 		},
 	}
 });
