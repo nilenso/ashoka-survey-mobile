@@ -31,20 +31,20 @@ function ResponsesIndexWindow(surveyID) {
 	});
 	
 	var syncSuccessHandler = function() {
-		Ti.App.removeEventListener("syncResponses.success", syncSuccessHandler);
+		Ti.App.removeEventListener("survey.responses.sync.success", syncSuccessHandler);
 		self.close();
 		alert("successfully uploaded responses!");
 	};
 	
-	Ti.App.addEventListener("syncResponses.success", syncSuccessHandler);
+	Ti.App.addEventListener("survey.responses.sync.success", syncSuccessHandler);
 	
 	var syncErrorHandler = function() {
-		Ti.App.removeEventListener("syncResponses.error", syncErrorHandler);
+		Ti.App.removeEventListener("survey.responses.sync.error", syncErrorHandler);
 		self.close();
 		alert("error in uploading responses!");
 	};
 	
-	Ti.App.addEventListener("syncResponses.error", syncErrorHandler);
+	Ti.App.addEventListener("survey.responses.sync.error", syncErrorHandler);
 
 	return self;
 }

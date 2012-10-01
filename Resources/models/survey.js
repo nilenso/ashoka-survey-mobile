@@ -65,7 +65,7 @@ var Survey = new Ti.App.joli.model({
 			var syncSuccessHandler = function() {
 				success_count++;
 				if (success_count == responses.length) {
-					Ti.App.fireEvent("syncResponses.success");
+					Ti.App.fireEvent("survey.responses.sync.success");
 					Ti.App.removeEventListener("response.sync.success", syncSuccessHandler);
 				}
 			};
@@ -73,7 +73,7 @@ var Survey = new Ti.App.joli.model({
 			Ti.App.addEventListener("response.sync.success", syncSuccessHandler);
 
 			var syncErrorHandler = function() {
-				Ti.App.fireEvent("syncResponses.error");
+				Ti.App.fireEvent("survey.responses.sync.error");
 				Ti.App.removeEventListener("response.sync.error", syncErrorHandler);
 			};
 
