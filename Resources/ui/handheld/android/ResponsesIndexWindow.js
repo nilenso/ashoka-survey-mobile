@@ -5,7 +5,7 @@ function ResponsesIndexWindow(surveyID) {
 	var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow')
 	var Survey = require('models/survey')
 
-	self = Ti.UI.createWindow({
+	var self = Ti.UI.createWindow({
 		title : 'All Responses',
 		navBarHidden : false,
 		backgroundColor : "#fff",
@@ -30,25 +30,15 @@ function ResponsesIndexWindow(surveyID) {
 		new ResponseShowWindow(e.responseID).open();
 	});
 
-	var syncSuccessHandler = function() {
-		Ti.App.removeEventListener("survey.responses.sync.success", syncSuccessHandler);
+	var syncHandler = function(data) {
+		Ti.App.removeEventListener("survey.responses.sync", syncHandler);
 		self.close();
-		alert("successfully uploaded responses!");
+		alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
 	};
-
-	Ti.App.addEventListener("survey.responses.sync.success", syncSuccessHandler);
-
-	var syncErrorHandler = function() {
-		Ti.App.removeEventListener("survey.responses.sync.error", syncErrorHandler);
-		self.close();
-		alert("error in uploading responses!");
-	};
-
-	Ti.App.addEventListener("survey.responses.sync.error", syncErrorHandler);
+	Ti.App.addEventListener("survey.responses.sync", syncHandler);
 
 	self.addEventListener('close', function() {
-		Ti.App.removeEventListener("survey.responses.sync.success", syncSuccessHandler);
-		Ti.App.removeEventListener("survey.responses.sync.error", syncErrorHandler);
+		Ti.App.removeEventListener("survey.responses.sync", syncHandler);
 	});
 
 	return self;
