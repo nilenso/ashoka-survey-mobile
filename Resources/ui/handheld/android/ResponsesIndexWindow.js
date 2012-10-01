@@ -31,21 +31,17 @@ function ResponsesIndexWindow(surveyID) {
 	});
 	
 	var syncSuccessHandler = function() {
-		alert("successfully uploaded responses!");
 		Ti.App.removeEventListener("syncResponses.success", syncSuccessHandler);
-		var surveyDetailsWindow = SurveyDetailsWindow(surveyID);
 		self.close();
-		surveyDetailsWindow.open();	
+		alert("successfully uploaded responses!");
 	};
 	
 	Ti.App.addEventListener("syncResponses.success", syncSuccessHandler);
 	
 	var syncErrorHandler = function() {
-		alert("error in uploading responses!");
 		Ti.App.removeEventListener("syncResponses.error", syncErrorHandler);
-		var surveyDetailsWindow = SurveyDetailsWindow(surveyID);
 		self.close();
-		surveyDetailsWindow.open();
+		alert("error in uploading responses!");
 	};
 	
 	Ti.App.addEventListener("syncResponses.error", syncErrorHandler);
