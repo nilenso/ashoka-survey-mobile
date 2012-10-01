@@ -18,32 +18,24 @@ function ResponsesIndexWindow(surveyID) {
 		systemButton : Ti.UI.iPhone.SystemButton.REFRESH
 	});
 	syncButton.addEventListener('click', function(e) {
-		survey = Survey.findOneById(surveyID);
+		var survey = Survey.findOneById(surveyID);
 		survey.syncResponses();
 	});
 	self.rightNavButton = syncButton;
 
 	Ti.App.addEventListener('ResponsesIndexView:table_row_clicked', tableRowClickedCallback);
 
+	var syncHandler = function(data) {
+		Ti.App.removeEventListener("survey.responses.sync", syncHandler);
+		navGroup.close(self);
+		alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
+	};
+	Ti.App.addEventListener("survey.responses.sync", syncHandler);
+
 	self.addEventListener('close', function() {
 		Ti.App.removeEventListener('ResponsesIndexView:table_row_clicked', tableRowClickedCallback)
+		Ti.App.removeEventListener("survey.responses.sync", syncHandler);
 	});
-	
-	var syncSuccessHandler = function() {
-		Ti.App.removeEventListener("survey.responses.sync.success", syncSuccessHandler);
-		navGroup.close(self);
-		alert("successfully uploaded responses!");
-	};
-
-	Ti.App.addEventListener("survey.responses.sync.success", syncSuccessHandler);
-
-	var syncErrorHandler = function() {
-		Ti.App.removeEventListener("survey.responses.sync.error", syncErrorHandler);
-		navGroup.close(self);
-		alert("error in uploading responses!");
-	};
-
-	Ti.App.addEventListener("survey.responses.sync.error", syncErrorHandler);
 
 	return self;
 }

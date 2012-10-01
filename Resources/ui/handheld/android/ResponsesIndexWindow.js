@@ -9,7 +9,7 @@ function ResponsesIndexWindow(surveyID) {
 		title : 'All Responses',
 		navBarHidden : false,
 		backgroundColor : "#fff",
-		
+
 		activity : {
 			onCreateOptionsMenu : function(e) {
 				var menu = e.menu;
@@ -29,22 +29,27 @@ function ResponsesIndexWindow(surveyID) {
 	Ti.App.addEventListener('ResponsesIndexView:table_row_clicked', function(e) {
 		new ResponseShowWindow(e.responseID).open();
 	});
-	
+
 	var syncSuccessHandler = function() {
 		Ti.App.removeEventListener("survey.responses.sync.success", syncSuccessHandler);
 		self.close();
 		alert("successfully uploaded responses!");
 	};
-	
+
 	Ti.App.addEventListener("survey.responses.sync.success", syncSuccessHandler);
-	
+
 	var syncErrorHandler = function() {
 		Ti.App.removeEventListener("survey.responses.sync.error", syncErrorHandler);
 		self.close();
 		alert("error in uploading responses!");
 	};
-	
+
 	Ti.App.addEventListener("survey.responses.sync.error", syncErrorHandler);
+
+	self.addEventListener('close', function() {
+		Ti.App.removeEventListener("survey.responses.sync.success", syncSuccessHandler);
+		Ti.App.removeEventListener("survey.responses.sync.error", syncErrorHandler);
+	});
 
 	return self;
 }

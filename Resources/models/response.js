@@ -38,6 +38,7 @@ var Response = new Ti.App.joli.model({
 		sync : function() {
 			var url = Ti.App.Properties.getString('server_url') + '/api/responses.json';
 			var self = this;
+			this.synced = false;
 			var params = {}
 			params['answers_attributes'] = this.prepRailsParams();
 			params['mobile_id'] = this.id;
@@ -49,13 +50,17 @@ var Response = new Ti.App.joli.model({
 					var answers = Answer.findBy('response_id', self.id);
 					_(answers).each(function(answer) {
 						answer.destroy();
-					});
+					});					
+					self.has_error = false;
+					self.synced = true;
+					Ti.App.fireEvent('response.sync', { survey_id: self.survey_id });
 					self.destroy();
-					Ti.App.fireEvent('response.sync.success');
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {
-					Ti.App.fireEvent('response.sync.error');
+					self.has_error = true;
+					self.synced = true;
+					Ti.App.fireEvent('response.sync', { survey_id: self.survey_id });
 				},
 				timeout : 5000 // in milliseconds
 			});
