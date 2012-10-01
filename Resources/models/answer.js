@@ -1,4 +1,5 @@
 var _ = require('lib/underscore')._;
+var Question = require('models/question');
 
 var Answer = new Ti.App.joli.model({
 	table : 'answers',
@@ -18,6 +19,17 @@ var Answer = new Ti.App.joli.model({
 			Ti.API.info("boooo" + _(this.all()).map(function(answer) {
 				return answer.response_id
 			}));
+		},
+		
+		valid : function(answerData) {
+			var question = Question.findOneById(answerData.question_id);
+			if(question.max_length && (answerData.content > question.max_length)) {
+				return false;
+			} else if(question.mandatory && !answerData.content) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 	}
 });

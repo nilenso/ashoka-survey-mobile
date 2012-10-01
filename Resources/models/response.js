@@ -10,16 +10,26 @@ var Response = new Ti.App.joli.model({
 	},
 
 	methods : {
-		createRecord : function(surveyID, answerData) {
+		createRecord : function(surveyID, answersData) {
 			var record = this.newRecord({
 				survey_id : surveyID
 			});
-			record.save();
-			_(answerData).each(function(answer) {
-				Answer.createRecord(answer, record.id);
-			});
-			Ti.API.info("Resp ID is " + record.id);
-			Ti.API.info("foooo" + this.all());
+			if (this.valid(answersData)) {
+				record.save();
+				_(answersData).each(function(answer) {
+					Answer.createRecord(answer, record.id);
+				});
+				Ti.API.info("Resp ID is " + record.id);
+				Ti.API.info("foooo" + this.all());
+			} else {
+				alert("Sorry, there are errors in your response.")
+			}
+		},
+
+		valid : function(answersData) {
+			return _(answersData).all(function(answerData) {
+				return Answer.valid(answerData);
+			})
 		}
 	},
 	objectMethods : {
@@ -50,17 +60,21 @@ var Response = new Ti.App.joli.model({
 					var answers = Answer.findBy('response_id', self.id);
 					_(answers).each(function(answer) {
 						answer.destroy();
-					});					
+					});
 					self.has_error = false;
 					self.synced = true;
-					Ti.App.fireEvent('response.sync', { survey_id: self.survey_id });
+					Ti.App.fireEvent('response.sync', {
+						survey_id : self.survey_id
+					});
 					self.destroy();
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {
 					self.has_error = true;
 					self.synced = true;
-					Ti.App.fireEvent('response.sync', { survey_id: self.survey_id });
+					Ti.App.fireEvent('response.sync', {
+						survey_id : self.survey_id
+					});
 				},
 				timeout : 5000 // in milliseconds
 			});
