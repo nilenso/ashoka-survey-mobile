@@ -3,7 +3,9 @@ var Question = new Ti.App.joli.model({
 	columns : {
 		id : 'INTEGER PRIMARY KEY',
 		content : 'TEXT',
-		survey_id : 'INTEGER'
+		survey_id : 'INTEGER',
+		mandatory : 'INTEGER',
+		max_length : 'INTEGER'
 	},
 
 	methods : {
@@ -14,7 +16,9 @@ var Question = new Ti.App.joli.model({
 				var record = that.newRecord({
 					id : question.id,
 					content : question.content,
-					survey_id : surveyID
+					survey_id : surveyID,
+					max_length : question.max_length,
+					mandatory : question.mandatory
 				});
 				record.save();
 			});

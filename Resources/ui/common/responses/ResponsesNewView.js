@@ -9,12 +9,22 @@ function ResponsesNewView(surveyID) {
 	});
 
 	var answerFields = [];
+	
+	var generateLabelTextForQuestion = function(question) {
+		text = '';
+		text += question['content'];
+		text += question.mandatory ? ' *' : '';
+		if(question.max_length) {
+			text += ' [' + question.max_length + ']';
+		}
+		return text;
+	}	
 
 	var questions = Question.findBy('survey_id', surveyID);
 	_(questions).each(function(question) {
 		var label = Ti.UI.createLabel({
 			color : '#000000',
-			text : question['content'],
+			text : generateLabelTextForQuestion(question),
 			height : 'auto',
 			width : 'auto',
 			left : 5
@@ -38,6 +48,7 @@ function ResponsesNewView(surveyID) {
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
 		height : 30,
+		top: 10,
 		width : '100%'
 	});
 	self.add(saveButton);
