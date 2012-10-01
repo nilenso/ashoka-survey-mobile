@@ -27,7 +27,7 @@ function ResponsesIndexWindow(surveyID) {
 	self.add(new ResponsesIndexView(surveyID));
 
 	Ti.App.addEventListener('ResponsesIndexView:table_row_clicked', function(e) {
-		ResponseShowWindow(e.responseID).open();
+		new ResponseShowWindow(e.responseID).open();
 	});
 	
 	var syncSuccessHandler = function() {

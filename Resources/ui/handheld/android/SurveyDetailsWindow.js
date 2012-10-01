@@ -12,11 +12,11 @@ function SurveyDetailsWindow(surveyID) {
 	self.add(new SurveyDetailsView(surveyID));
 
 	Ti.App.addEventListener('SurveyDetailsView:createResponse', function(e) {
-		ResponsesNewWindow(e.surveyID).open();
+		new ResponsesNewWindow(e.surveyID).open();
 	})
 
 	Ti.App.addEventListener('SurveyDetailsView:responsesIndex', function(e) {
-		ResponsesIndexWindow(e.surveyID).open(); 
+		new ResponsesIndexWindow(e.surveyID).open(); 
 	})
 
 	return self;
