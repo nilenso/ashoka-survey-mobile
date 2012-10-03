@@ -45,6 +45,29 @@ function ResponsesNewView(surveyID) {
 		});
 	});
 
+	var findAnswerFieldByQuestionID = function(questionID) {
+		var targetField;
+		_(answerFields).each(function(answerField) {
+			if (questionID == answerField.id) {
+				Ti.API.info("question id:" + questionID);
+				targetField = answerField;
+			}
+		});
+		return targetField;
+	}
+ 
+	var displayErrors = function(responseErrors) {
+		Ti.API.info("All the errors:" + responseErrors);
+		for (var answerErrors in responseErrors) {
+			Ti.API.info("Answer errors for:" + answerErrors);
+			for (var field in responseErrors[answerErrors]) {
+				var label = findAnswerFieldByQuestionID(answerErrors).label;
+				label.setText(label.getText() + " " + responseErrors[answerErrors][field]);
+				label.setColor("red");
+				Ti.API.info(responseErrors[answerErrors][field]);
+			}
+		}
+	}
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
 		height : 30,
@@ -52,16 +75,6 @@ function ResponsesNewView(surveyID) {
 		width : '100%'
 	});
 	self.add(saveButton);
-
-	var displayErrors = function(responseErrors) {
-		Ti.API.info("All the errors:" + responseErrors);
-		for (var answerErrors in responseErrors) {
-			Ti.API.info("Answer errors for:" + answerErrors);
-			for (var field in responseErrors[answerErrors]) {
-				Ti.API.info(responseErrors[answerErrors][field]);
-			}
-		}
-	}
 
 	saveButton.addEventListener('click', function(e) {
 		var answersData = _(answerFields).map(function(field) {
