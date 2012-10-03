@@ -21,8 +21,9 @@ var Response = new Ti.App.joli.model({
 				});
 				Ti.API.info("Resp ID is " + record.id);
 				Ti.API.info("foooo" + this.all());
+				return true;
 			} else {
-				alert("Sorry, there are errors in your response.")
+				return false;
 			}
 		},
 

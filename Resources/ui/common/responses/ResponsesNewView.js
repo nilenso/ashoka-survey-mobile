@@ -9,17 +9,16 @@ function ResponsesNewView(surveyID) {
 	});
 
 	var answerFields = [];
-	
+
 	var generateLabelTextForQuestion = function(question) {
 		text = '';
 		text += question['content'];
 		text += question.mandatory ? ' *' : '';
-		if(question.max_length) {
+		if (question.max_length) {
 			text += ' [' + question.max_length + ']';
 		}
 		return text;
-	}	
-
+	}
 	var questions = Question.findBy('survey_id', surveyID);
 	_(questions).each(function(question) {
 		var label = Ti.UI.createLabel({
@@ -48,7 +47,7 @@ function ResponsesNewView(surveyID) {
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
 		height : 30,
-		top: 10,
+		top : 10,
 		width : '100%'
 	});
 	self.add(saveButton);
@@ -60,11 +59,14 @@ function ResponsesNewView(surveyID) {
 				'content' : field.tf.getValue()
 			}
 		});
-		Response.createRecord(surveyID, answersData);
-		_(answerFields).each(function(field){
-			field.tf.setValue(null);
-		});
-		Ti.App.fireEvent('ResponsesNewView:savedResponse');		
+		if (!Response.createRecord(surveyID, answersData))
+			alert("There are some errors in this response.");
+		else {
+			_(answerFields).each(function(field) {
+				field.tf.setValue(null);
+			});
+			Ti.App.fireEvent('ResponsesNewView:savedResponse');
+		}
 	});
 
 	return self;
