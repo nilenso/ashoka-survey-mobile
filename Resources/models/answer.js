@@ -20,16 +20,25 @@ var Answer = new Ti.App.joli.model({
 				return answer.response_id
 			}));
 		},
-		
-		valid : function(answerData) {
+
+		validate : function(answerData) {
 			var question = Question.findOneById(answerData.question_id);
-			if(question.max_length && (answerData.content > question.max_length)) {
-				return false;
-			} else if(question.mandatory && !answerData.content) {
-				return false;
-			} else {
-				return true;
+			var errors = {};
+			var hasError = false;
+			if (question.max_length && (answerData.content.length > question.max_length)) {
+				hasError = true;
+				errors['max_length'] = "You have exceeded the maximum length for this question";
 			}
+			if (question.mandatory && !answerData.content) {
+				hasError = true;
+				errors['mandatory'] = "This question is mandatory";
+			}
+			if (hasError)
+				return {
+					'errors' : errors
+				};
+			else
+				return {};
 		}
 	}
 });

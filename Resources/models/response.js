@@ -14,23 +14,31 @@ var Response = new Ti.App.joli.model({
 			var record = this.newRecord({
 				survey_id : surveyID
 			});
-			if (this.valid(answersData)) {
-				record.save();
-				_(answersData).each(function(answer) {
-					Answer.createRecord(answer, record.id);
-				});
-				Ti.API.info("Resp ID is " + record.id);
-				Ti.API.info("foooo" + this.all());
-				return true;
-			} else {
-				return false;
-			}
+			record.save();
+			_(answersData).each(function(answer) {
+				Answer.createRecord(answer, record.id);
+			});
+			Ti.API.info("Resp ID is " + record.id);
+			Ti.API.info("foooo" + this.all());
+			return true;
 		},
 
-		valid : function(answersData) {
-			return _(answersData).all(function(answerData) {
-				return Answer.valid(answerData);
-			})
+		validate : function(answersData) {
+			var errors = {};
+			var hasError = false;
+			_(answersData).each(function(answerData) {
+				var answerErrors = Answer.validate(answerData);
+				if (answerErrors.hasOwnProperty('errors')) {
+					hasError = true;
+					errors[answerData.question_id] = answerErrors['errors'];
+				}
+			});
+			if (hasError)
+				return {
+					'errors' : errors
+				};
+			else
+				return {};
 		}
 	},
 	objectMethods : {

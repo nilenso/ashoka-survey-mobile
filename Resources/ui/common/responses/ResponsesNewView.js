@@ -40,7 +40,8 @@ function ResponsesNewView(surveyID) {
 		self.add(textField);
 		answerFields.push({
 			'id' : question.id,
-			'tf' : textField
+			'tf' : textField,
+			'label' : label
 		});
 	});
 
@@ -52,6 +53,16 @@ function ResponsesNewView(surveyID) {
 	});
 	self.add(saveButton);
 
+	var displayErrors = function(responseErrors) {
+		Ti.API.info("All the errors:" + responseErrors);
+		for (var question_id in responseErrors) {
+			Ti.API.info("Answer errors for:" + question_id);
+			for (var field in responseErrors[question_id]) {
+				Ti.API.info(responseErrors[question_id][field]);
+			}
+		}
+	}
+
 	saveButton.addEventListener('click', function(e) {
 		var answersData = _(answerFields).map(function(field) {
 			return {
@@ -59,9 +70,12 @@ function ResponsesNewView(surveyID) {
 				'content' : field.tf.getValue()
 			}
 		});
-		if (!Response.createRecord(surveyID, answersData))
-			alert("There are some errors in this response.");
-		else {
+		responseErrors = Response.validate(answersData);
+		if (responseErrors.hasOwnProperty('errors')) {
+			displayErrors(responseErrors['errors']);
+			alert("There were some errors in the response.");
+		} else {
+			Response.createRecord(surveyID, answersData);
 			_(answerFields).each(function(field) {
 				field.tf.setValue(null);
 			});
