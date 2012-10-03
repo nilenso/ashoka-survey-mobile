@@ -99,8 +99,8 @@ function ResponsesNewView(surveyID) {
 			}
 		});
 		responseErrors = Response.validate(answersData);
-		if (responseErrors.hasOwnProperty('errors')) {
-			displayErrors(responseErrors['errors']);
+		if (!_.isEmpty(responseErrors)) {
+			displayErrors(responseErrors);
 			alert("There were some errors in the response.");
 		} else {
 			Response.createRecord(surveyID, answersData);

@@ -25,20 +25,13 @@ var Response = new Ti.App.joli.model({
 
 		validate : function(answersData) {
 			var errors = {};
-			var hasError = false;
 			_(answersData).each(function(answerData) {
 				var answerErrors = Answer.validate(answerData);
-				if (answerErrors.hasOwnProperty('errors')) {
-					hasError = true;
-					errors[answerData.question_id] = answerErrors['errors'];
+				if (!_.isEmpty(answerErrors)) {
+					errors[answerData.question_id] = answerErrors;
 				}
 			});
-			if (hasError)
-				return {
-					'errors' : errors
-				};
-			else
-				return {};
+			return errors;
 		}
 	},
 	objectMethods : {

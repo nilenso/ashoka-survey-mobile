@@ -24,21 +24,11 @@ var Answer = new Ti.App.joli.model({
 		validate : function(answerData) {
 			var question = Question.findOneById(answerData.question_id);
 			var errors = {};
-			var hasError = false;
-			if (question.max_length && (answerData.content.length > question.max_length)) {
-				hasError = true;
+			if (question.max_length && (answerData.content.length > question.max_length))
 				errors['max_length'] = "You have exceeded the maximum length for this question";
-			}
-			if (question.mandatory && !answerData.content) {
-				hasError = true;
+			if (question.mandatory && !answerData.content)
 				errors['mandatory'] = "This question is mandatory";
-			}
-			if (hasError)
-				return {
-					'errors' : errors
-				};
-			else
-				return {};
+			return errors;
 		}
 	}
 });
