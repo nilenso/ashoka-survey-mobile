@@ -10,12 +10,15 @@ function ResponsesNewView(surveyID) {
 
 	var answerFields = [];
 
-	var generateLabelTextForQuestion = function(question) {
+	var generateLabelTextForQuestion = function(question, errorText) {
 		text = '';
 		text += question['content'];
 		text += question.mandatory ? ' *' : '';
 		if (question.max_length) {
 			text += ' [' + question.max_length + ']';
+		}
+		if (errorText) {
+			text += '\n' + errorText;
 		}
 		return text;
 	}
@@ -23,7 +26,7 @@ function ResponsesNewView(surveyID) {
 	_(questions).each(function(question) {
 		var label = Ti.UI.createLabel({
 			color : '#000000',
-			text : generateLabelTextForQuestion(question),
+			text : generateLabelTextForQuestion(question, ""),
 			height : 'auto',
 			width : 'auto',
 			left : 5
@@ -55,16 +58,18 @@ function ResponsesNewView(surveyID) {
 		});
 		return targetField;
 	}
- 
 	var displayErrors = function(responseErrors) {
 		Ti.API.info("All the errors:" + responseErrors);
 		for (var answerErrors in responseErrors) {
 			Ti.API.info("Answer errors for:" + answerErrors);
 			for (var field in responseErrors[answerErrors]) {
-				var label = findAnswerFieldByQuestionID(answerErrors).label;
-				label.setText(label.getText() + " " + responseErrors[answerErrors][field]);
+				var question_id = answerErrors;
+				var question = Question.findOneById(question_id);
+				var label = findAnswerFieldByQuestionID(question_id).label;
+				var labelText = generateLabelTextForQuestion(question, responseErrors[question_id][field]);
+				label.setText(labelText);
 				label.setColor("red");
-				Ti.API.info(responseErrors[answerErrors][field]);
+				Ti.API.info(responseErrors[question_id][field]);
 			}
 		}
 	}
