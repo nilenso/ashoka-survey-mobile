@@ -8,7 +8,7 @@ function ResponsesNewView(surveyID) {
 		layout : 'vertical'
 	});
 
-	var answerFields = [];
+	var answerFields = {};
 
 	var generateLabelTextForQuestion = function(question, errorText) {
 		text = '';
@@ -41,29 +41,18 @@ function ResponsesNewView(surveyID) {
 			editable : true
 		});
 		self.add(textField);
-		answerFields.push({
-			'id' : question.id,
-			'tf' : textField,
+		answerFields[question.id] = {
+			'textField' : textField,
 			'label' : label
-		});
+		};
 	});
 
-	var findAnswerFieldByQuestionID = function(questionID) {
-		var targetField;
-		_(answerFields).each(function(answerField) {
-			if (questionID == answerField.id) {
-				Ti.API.info("question id:" + questionID);
-				targetField = answerField;
-			}
-		});
-		return targetField;
-	}
 	var resetErrors = function() {
-		_(answerFields).each(function(answerField) {
-			var question = Question.findOneById(answerField.id);
+		_(answerFields).each(function(fields, questionID) {
+			var question = Question.findOneById(questionID);
 			var labelText = generateLabelTextForQuestion(question);
-			answerField.label.setText(labelText);
-			answerField.label.setColor('#000000');
+			fields.label.setText(labelText);
+			fields.label.setColor('#000000');
 		});
 	}
 
@@ -75,7 +64,7 @@ function ResponsesNewView(surveyID) {
 			for (var field in responseErrors[answerErrors]) {
 				var question_id = answerErrors;
 				var question = Question.findOneById(question_id);
-				var label = findAnswerFieldByQuestionID(question_id).label;
+				var label = answerFields[question_id].label;
 				var labelText = generateLabelTextForQuestion(question, responseErrors[question_id][field]);
 				label.setText(labelText);
 				label.setColor("red");
@@ -92,10 +81,12 @@ function ResponsesNewView(surveyID) {
 	self.add(saveButton);
 
 	saveButton.addEventListener('click', function(e) {
-		var answersData = _(answerFields).map(function(field) {
+		var answersData = _(answerFields).map(function(fields, questionID) {
+			Ti.API.info("questionid:"+questionID);
+			Ti.API.info("content:"+fields['textField'].getValue());
 			return {
-				'question_id' : field.id,
-				'content' : field.tf.getValue()
+				'question_id' : questionID,
+				'content' : fields.textField.getValue()
 			}
 		});
 		responseErrors = Response.validate(answersData);
@@ -104,8 +95,8 @@ function ResponsesNewView(surveyID) {
 			alert("There were some errors in the response.");
 		} else {
 			Response.createRecord(surveyID, answersData);
-			_(answerFields).each(function(field) {
-				field.tf.setValue(null);
+			_(answerFields).each(function(fields, questionID) {
+				fields.textField.setValue(null);
 			});
 			Ti.App.fireEvent('ResponsesNewView:savedResponse');
 		}
