@@ -55,10 +55,10 @@ function ResponsesNewView(surveyID) {
 
 	var displayErrors = function(responseErrors) {
 		Ti.API.info("All the errors:" + responseErrors);
-		for (var question_id in responseErrors) {
-			Ti.API.info("Answer errors for:" + question_id);
-			for (var field in responseErrors[question_id]) {
-				Ti.API.info(responseErrors[question_id][field]);
+		for (var answerErrors in responseErrors) {
+			Ti.API.info("Answer errors for:" + answerErrors);
+			for (var field in responseErrors[answerErrors]) {
+				Ti.API.info(responseErrors[answerErrors][field]);
 			}
 		}
 	}
