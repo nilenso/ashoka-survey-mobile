@@ -58,7 +58,17 @@ function ResponsesNewView(surveyID) {
 		});
 		return targetField;
 	}
+	var resetErrors = function() {
+		_(answerFields).each(function(answerField) {
+			var question = Question.findOneById(answerField.id);
+			var labelText = generateLabelTextForQuestion(question);
+			answerField.label.setText(labelText);
+			answerField.label.setColor('#000000');
+		});
+	}
+
 	var displayErrors = function(responseErrors) {
+		resetErrors();
 		Ti.API.info("All the errors:" + responseErrors);
 		for (var answerErrors in responseErrors) {
 			Ti.API.info("Answer errors for:" + answerErrors);
