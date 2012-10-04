@@ -4,7 +4,7 @@ function ResponsesNewView(surveyID) {
 	var Question = require('models/question');
 	var Response = require('models/response');
 
-	self = Ti.UI.createView({
+	self = Ti.UI.createScrollView({
 		layout : 'vertical'
 	});
 
