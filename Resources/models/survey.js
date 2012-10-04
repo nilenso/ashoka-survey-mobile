@@ -107,7 +107,10 @@ var Survey = new Ti.App.joli.model({
 				onload : function(e) {
 					Ti.API.info("Received text for questions: " + this.responseText);
 					var data = JSON.parse(this.responseText);
-					Question.createRecords(data, self.id);
+					var records = Question.createRecords(data, self.id);
+					_(records).each(function(record){
+						record.fetchImage();
+					});					
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {
