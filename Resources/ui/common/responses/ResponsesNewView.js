@@ -37,7 +37,7 @@ function ResponsesNewView(surveyID) {
 			var imageView = Ti.UI.createImageView({
 				width : 100,
 				height : 100,
-				image : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'imagefor' + question.id.toString())
+				image : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, question.id.toString())
 			});
 			self.add(imageView);
 		}

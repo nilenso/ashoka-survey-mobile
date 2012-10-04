@@ -40,7 +40,7 @@ var Question = new Ti.App.joli.model({
 					onload : function(e) {
 						Ti.API.info("Downloaded image from " + self.image_url);
 						var data = this.responseData;
-						var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, 'imagefor' + self.id.toString());
+						var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, self.id.toString());
 						f.write(data);
 					},
 					// function called when an error occurs, including a timeout
