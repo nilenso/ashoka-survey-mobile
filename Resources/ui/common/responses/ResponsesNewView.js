@@ -33,6 +33,15 @@ function ResponsesNewView(surveyID) {
 		});
 		self.add(label);
 
+		if (question.image_url) {
+			var imageView = Ti.UI.createImageView({
+				width : 100,
+				height : 100,
+				image : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'imagefor' + question.id.toString())
+			});
+			self.add(imageView);
+		}
+
 		var textField = Ti.UI.createTextField({
 			borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 			color : '#336699',
@@ -55,7 +64,6 @@ function ResponsesNewView(surveyID) {
 			fields.label.setColor('#000000');
 		});
 	}
-
 	var displayErrors = function(responseErrors) {
 		resetErrors();
 		Ti.API.info("All the errors:" + responseErrors);
@@ -82,8 +90,8 @@ function ResponsesNewView(surveyID) {
 
 	saveButton.addEventListener('click', function(e) {
 		var answersData = _(answerFields).map(function(fields, questionID) {
-			Ti.API.info("questionid:"+questionID);
-			Ti.API.info("content:"+fields['textField'].getValue());
+			Ti.API.info("questionid:" + questionID);
+			Ti.API.info("content:" + fields['textField'].getValue());
 			return {
 				'question_id' : questionID,
 				'content' : fields.textField.getValue()
