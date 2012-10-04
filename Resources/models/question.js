@@ -33,7 +33,26 @@ var Question = new Ti.App.joli.model({
 	objectMethods : {
 		fetchImage : function() {
 			if (this.image_url) {
-				Ti.API.info("IMAGE URL IS: " + this.image_url.toString());
+				var self = this;
+				var url = Ti.App.Properties.getString('server_url') + self.image_url;
+				var client = Ti.Network.createHTTPClient({
+					// function called when the response data is available
+					onload : function(e) {
+						Ti.API.info("Downloaded image from " + self.image_url);
+						var data = this.responseData;
+						var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, 'imagefor' + self.id.toString());
+						f.write(data);
+					},
+					// function called when an error occurs, including a timeout
+					onerror : function(e) {
+						Ti.API.info("Error downloading image from " + self.image_url);
+					},
+					timeout : 5000 // in milliseconds
+				});
+				// Prepare the connection.
+				client.open("GET", url);
+				// Send the request.
+				client.send();
 			}
 		}
 	}
