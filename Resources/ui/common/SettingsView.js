@@ -25,8 +25,7 @@ function SettingsView() {
 
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
-		height : 30,
-		width : 200
+		width : '100%'
 	});
 	self.add(saveButton);
 	saveButton.addEventListener('click', function(e) {
