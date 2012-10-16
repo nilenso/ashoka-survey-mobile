@@ -47,7 +47,7 @@ function SurveysIndexView() {
 	});
 
 	table.addEventListener('click', function(e) {
-		Ti.App.fireEvent('surveys_index_view.table_row_clicked', {
+		self.fireEvent('surveys_index_view.table_row_clicked', {
 			surveyID : e.rowData.surveyID
 		});
 	});

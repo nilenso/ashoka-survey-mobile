@@ -35,16 +35,17 @@ function SurveysIndexWindow() {
 		}
 	});
 
+	var surveysIndexView = new SurveysIndexView();
+
 	Ti.App.addEventListener('settings_saved', function() {
 		settingsWindow.close();
 	})
 
-	Ti.App.addEventListener('surveys_index_view.table_row_clicked', function(e) {
+	surveysIndexView.addEventListener('surveys_index_view.table_row_clicked', function(e) {
 		SurveyDetailsWindow(e.surveyID).open();
 	});
 
 	//construct UI
-	var surveysIndexView = new SurveysIndexView();
 	self.add(surveysIndexView);
 
 	return self;
