@@ -3,7 +3,8 @@ function ResponsesNewView(surveyID) {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
 	var Response = require('models/response');
-
+	var QuestionWithOptionsView = require('ui/common/QuestionWithOptionsView');
+	
 	self = Ti.UI.createScrollView({
 		layout : 'vertical'
 	});
@@ -43,28 +44,7 @@ function ResponsesNewView(surveyID) {
 		}
 
 		if (question.type == 'RadioQuestion') {
-			var valueField = Ti.UI.createPicker({
-				color : '#336699',
-				right : 5,
-				left : 5
-			});
-
-			var data = [];
-			data.push(Ti.UI.createPickerRow({
-				title : 'None',
-			}));
-			_(question.options()).each(function(option) {
-				data.push(Ti.UI.createPickerRow({
-					title : option.content
-				}));
-			});
-			valueField.getValue = function() {
-				val = valueField.getSelectedRow(null).getTitle();
-				if (val == 'None') val = '';
-				return val;
-			};
-			valueField.add(data);
-			valueField.selectionIndicator = true;
+			var valueField = new QuestionWithOptionsView(question);
 		} else {
 			var valueField = Ti.UI.createTextField({
 				borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
