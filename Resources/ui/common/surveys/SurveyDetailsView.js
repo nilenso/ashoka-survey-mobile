@@ -41,7 +41,7 @@ function SurveyDetailsView(surveyID) {
 	});
 
 	responsesIndexButton.addEventListener('click', function(e) {
-		Ti.App.fireEvent('SurveyDetailsView:responsesIndex', {
+		self.fireEvent('SurveyDetailsView:responsesIndex', {
 			surveyID: surveyID
 		});
 	});

@@ -16,7 +16,7 @@ function SurveyDetailsWindow(surveyID) {
 		new ResponsesNewWindow(e.surveyID).open();
 	})
 
-	Ti.App.addEventListener('SurveyDetailsView:responsesIndex', function(e) {
+	view.addEventListener('SurveyDetailsView:responsesIndex', function(e) {
 		new ResponsesIndexWindow(e.surveyID).open(); 
 	})
 
