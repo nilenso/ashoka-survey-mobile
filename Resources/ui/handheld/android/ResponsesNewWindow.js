@@ -8,9 +8,10 @@ function ResponsesNewWindow(surveyID) {
 		navBarHidden : false,
 		backgroundColor : "#fff"
 	});
-	self.add(new ResponsesNewView(surveyID));
+	view = new ResponsesNewView(surveyID);
+	self.add(view);
 	
-	Ti.App.addEventListener('ResponsesNewView:savedResponse', function() {
+	view.addEventListener('ResponsesNewView:savedResponse', function() {
 		self.close();
 	})
 	

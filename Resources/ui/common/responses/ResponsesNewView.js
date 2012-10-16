@@ -128,7 +128,7 @@ function ResponsesNewView(surveyID) {
 			alert("There were some errors in the response.");
 		} else {
 			Response.createRecord(surveyID, answersData);
-			Ti.App.fireEvent('ResponsesNewView:savedResponse');
+			self.fireEvent('ResponsesNewView:savedResponse');
 		}
 	});
 
