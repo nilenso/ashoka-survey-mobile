@@ -59,10 +59,25 @@ function ResponsesNewView(surveyID) {
 				right : 5,
 				left : 5,
 				editable : true,
-				height : Ti.Platform.displayCaps.platformHeight*0.25
+				height : Ti.Platform.displayCaps.platformHeight * 0.25
 			});
+		} else if (question.type == 'DateQuestion') {
+			var valueField = Ti.UI.createPicker({
+				type : Ti.UI.PICKER_TYPE_DATE,
+				value : new Date(),
+				color : '#336699',
+				right : 5,
+				left : 5,
+			});
+			valueField.addEventListener('change', function(e) {
+				this.value = e.value;
+			});
+			valueField.getValue = function() {
+				var val = this.value.toISOString();
+				return val.substr(0, val.indexOf('T')).replace(/-/g,'/');; 
+			};
 		}
-		Ti.API.info("def height:"+ Ti.UI.createTextField().getHeight())
+
 		self.add(valueField);
 		answerFields[question.id] = {
 			'valueField' : valueField,
