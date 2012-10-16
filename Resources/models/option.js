@@ -1,5 +1,5 @@
 var Option = new Ti.App.joli.model({
-	table : 'Option',
+	table : 'options',
 	columns : {
 		id : 'INTEGER PRIMARY KEY',
 		content : 'TEXT',

@@ -3,7 +3,7 @@ var Question = require('models/question');
 var Response = require('models/response')
 
 var Survey = new Ti.App.joli.model({
-	table : 'survey',
+	table : 'surveys',
 	columns : {
 		id : 'INTEGER PRIMARY KEY',
 		name : 'TEXT',

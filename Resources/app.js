@@ -10,7 +10,7 @@
 */
 
 // Setup database
-Ti.App.joli = require('lib/joli').connect('SurveyMobile', 'db/main.sqlite');
+Ti.App.joli = require('lib/joli').connect('TestDBAfterOptions', 'db/main.sqlite');
 
 //bootstrap and check dependencies
 if (Ti.version < 1.8) {

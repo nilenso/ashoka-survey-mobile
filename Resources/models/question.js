@@ -1,6 +1,6 @@
 var Option = require('models/option');
 var Question = new Ti.App.joli.model({
-	table : 'question',
+	table : 'questions',
 	columns : {
 		id : 'INTEGER PRIMARY KEY',
 		content : 'TEXT',
