@@ -8,7 +8,9 @@ var Question = new Ti.App.joli.model({
 		mandatory : 'INTEGER',
 		max_length : 'INTEGER',
 		image_url : 'TEXT',
-		type : 'TEXT'
+		type : 'TEXT',
+		max_value : 'INTEGER', 
+		min_value : 'INTEGER' 
 	},
 
 	methods : {
@@ -24,7 +26,9 @@ var Question = new Ti.App.joli.model({
 					max_length : question.max_length,
 					mandatory : question.mandatory,
 					image_url : question.image_url,
-					type : question.type
+					type : question.type,
+					min_value : question.min_value,
+					max_value : question.max_value
 				});
 				record.save();
 				records.push(record);

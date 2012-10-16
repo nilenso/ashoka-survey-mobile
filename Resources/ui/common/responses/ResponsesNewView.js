@@ -45,7 +45,7 @@ function ResponsesNewView(surveyID) {
 
 		if (question.type == 'RadioQuestion') {
 			var valueField = new QuestionWithOptionsView(question);
-		} else if (question.type == 'SingleLineQuestion') {
+		} else if (question.type == 'SingleLineQuestion' || question.type == 'NumericQuestion') {
 			var valueField = Ti.UI.createTextField({
 				borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 				color : '#336699',
@@ -77,7 +77,7 @@ function ResponsesNewView(surveyID) {
 				return val.substr(0, val.indexOf('T')).replace(/-/g,'/');; 
 			};
 		}
-
+		
 		self.add(valueField);
 		answerFields[question.id] = {
 			'valueField' : valueField,
