@@ -42,16 +42,37 @@ function ResponsesNewView(surveyID) {
 			self.add(imageView);
 		}
 
-		var textField = Ti.UI.createTextField({
-			borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-			color : '#336699',
-			right : 5,
-			left : 5,
-			editable : true
-		});
-		self.add(textField);
+		if (question.type == 'RadioQuestion') {
+			var valueField = Ti.UI.createPicker({
+				color : '#336699',
+				right : 5,
+				left : 5,
+			});
+
+			var data = [];
+			_(question.options()).each(function(option, i) {
+				data[i] = Ti.UI.createPickerRow({
+					title : option.content
+				})
+			})
+			valueField.getValue = function() {
+				return valueField.getSelectedRow(null).getTitle();
+			}
+			valueField.add(data);
+			valueField.selectionIndicator = true;
+		} else {
+			var valueField = Ti.UI.createTextField({
+				borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+				color : '#336699',
+				right : 5,
+				left : 5,
+				editable : true
+			});
+		}
+
+		self.add(valueField);
 		answerFields[question.id] = {
-			'textField' : textField,
+			'valueField' : valueField,
 			'label' : label
 		};
 	});
@@ -91,10 +112,10 @@ function ResponsesNewView(surveyID) {
 	saveButton.addEventListener('click', function(e) {
 		var answersData = _(answerFields).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
-			Ti.API.info("content:" + fields['textField'].getValue());
+			Ti.API.info("content:" + fields['valueField'].getValue());
 			return {
 				'question_id' : questionID,
-				'content' : fields.textField.getValue()
+				'content' : fields.valueField.getValue()
 			}
 		});
 		responseErrors = Response.validate(answersData);
@@ -103,9 +124,6 @@ function ResponsesNewView(surveyID) {
 			alert("There were some errors in the response.");
 		} else {
 			Response.createRecord(surveyID, answersData);
-			_(answerFields).each(function(fields, questionID) {
-				fields.textField.setValue(null);
-			});
 			Ti.App.fireEvent('ResponsesNewView:savedResponse');
 		}
 	});
