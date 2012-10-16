@@ -24,10 +24,14 @@ var Answer = new Ti.App.joli.model({
 		validate : function(answerData) {
 			var question = Question.findOneById(answerData.question_id);
 			var errors = {};
-			if (question.max_length && (answerData.content.length > question.max_length))
+			if (question.max_length && (answerData.content.length >= question.max_length))
 				errors['max_length'] = "You have exceeded the maximum length for this question";
 			if (question.mandatory && !answerData.content)
 				errors['mandatory'] = "This question is mandatory";
+			if (question.min_value && answerData.content < question.min_value)
+				errors['mandatory'] = "You have exceeded the minimum limit";
+			if (question.max_value && answerData.content > question.max_value)
+				errors['mandatory'] = "You have exceeded the maximum limit";
 			return errors;
 		}
 	}

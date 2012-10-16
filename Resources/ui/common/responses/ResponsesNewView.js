@@ -15,12 +15,10 @@ function ResponsesNewView(surveyID) {
 		text = '';
 		text += question['content'];
 		text += question.mandatory ? ' *' : '';
-		if (question.max_length) {
-			text += ' [' + question.max_length + ']';
-		}
-		if (errorText) {
-			text += '\n' + errorText;
-		}
+		text += question.max_length ? ' [' + question.max_length + ']' : '';
+		text += question.max_value ? ' (<' + question.max_value  + ')' : '';
+		text += question.min_value ? ' (>' + question.min_value  + ')' : '';
+		text += errorText? '\n' + errorText : '';
 		return text;
 	}
 	var questions = Question.findBy('survey_id', surveyID);
