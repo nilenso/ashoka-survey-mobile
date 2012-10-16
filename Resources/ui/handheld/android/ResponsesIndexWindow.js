@@ -24,9 +24,10 @@ function ResponsesIndexWindow(surveyID) {
 			}
 		}
 	});
-	self.add(new ResponsesIndexView(surveyID));
+	var view = new ResponsesIndexView(surveyID) 
+	self.add(view);
 
-	Ti.App.addEventListener('ResponsesIndexView:table_row_clicked', function(e) {
+	view.addEventListener('ResponsesIndexView:table_row_clicked', function(e) {
 		new ResponseShowWindow(e.responseID).open();
 	});
 

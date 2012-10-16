@@ -35,7 +35,7 @@ function ResponsesIndexView(surveyID) {
 	Ti.API.info(convertModelDataForTable());
 
 	table.addEventListener('click', function(e) {
-		Ti.App.fireEvent('ResponsesIndexView:table_row_clicked', {
+		self.fireEvent('ResponsesIndexView:table_row_clicked', {
 			responseID : e.rowData.responseID
 		});
 	});
