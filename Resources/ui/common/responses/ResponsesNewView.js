@@ -4,7 +4,7 @@ function ResponsesNewView(surveyID) {
 	var Question = require('models/question');
 	var Response = require('models/response');
 	var QuestionWithOptionsView = require('ui/common/QuestionWithOptionsView');
-	
+
 	self = Ti.UI.createScrollView({
 		layout : 'vertical'
 	});
@@ -45,7 +45,7 @@ function ResponsesNewView(surveyID) {
 
 		if (question.type == 'RadioQuestion') {
 			var valueField = new QuestionWithOptionsView(question);
-		} else {
+		} else if (question.type == 'SingleLineQuestion') {
 			var valueField = Ti.UI.createTextField({
 				borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 				color : '#336699',
@@ -53,8 +53,16 @@ function ResponsesNewView(surveyID) {
 				left : 5,
 				editable : true
 			});
+		} else if (question.type == 'MultilineQuestion') {
+			var valueField = Ti.UI.createTextArea({
+				color : '#336699',
+				right : 5,
+				left : 5,
+				editable : true,
+				height : Ti.Platform.displayCaps.platformHeight*0.25
+			});
 		}
-
+		Ti.API.info("def height:"+ Ti.UI.createTextField().getHeight())
 		self.add(valueField);
 		answerFields[question.id] = {
 			'valueField' : valueField,
