@@ -1,3 +1,4 @@
+var Option = require('models/option');
 var Question = new Ti.App.joli.model({
 	table : 'question',
 	columns : {
@@ -6,7 +7,8 @@ var Question = new Ti.App.joli.model({
 		survey_id : 'INTEGER',
 		mandatory : 'INTEGER',
 		max_length : 'INTEGER',
-		image_url : 'TEXT'
+		image_url : 'TEXT',
+		type : 'TEXT'
 	},
 
 	methods : {
@@ -21,7 +23,8 @@ var Question = new Ti.App.joli.model({
 					survey_id : surveyID,
 					max_length : question.max_length,
 					mandatory : question.mandatory,
-					image_url : question.image_url
+					image_url : question.image_url,
+					type : question.type
 				});
 				record.save();
 				records.push(record);
@@ -54,6 +57,35 @@ var Question = new Ti.App.joli.model({
 				// Send the request.
 				client.send();
 			}
+		},
+		fetchOptions : function() {
+			var self = this;
+			if (self.type != 'RadioQuestion')
+				return;
+			var url = Ti.App.Properties.getString('server_url') + '/api/options?question_id=' + self.id;
+			var client = Ti.Network.createHTTPClient({
+				// function called when the response data is available
+				onload : function(e) {
+					Ti.API.info("Received text for options: " + this.responseText);
+					var data = JSON.parse(this.responseText);
+					var records = Option.createRecords(data, self.id);
+				},
+				// function called when an error occurs, including a timeout
+				onerror : function(e) {
+					Ti.API.info("Error");
+				},
+				timeout : 5000 // in milliseconds
+			});
+			// Prepare the connection.
+			client.open("GET", url);
+			// Send the request.
+			client.send();
+		},
+
+		options : function() {
+			if (this.type != 'RadioQuestion')
+				return [];
+			return Option.findBy('question_id', this.id);
 		}
 	}
 });
