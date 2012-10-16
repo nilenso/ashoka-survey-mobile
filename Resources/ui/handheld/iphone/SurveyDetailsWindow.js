@@ -9,24 +9,20 @@ function SurveyDetailsWindow(surveyID) {
 		backgroundColor : "#fff"
 
 	});
-	self.add(new SurveyDetailsView(surveyID));
+	var view = new SurveyDetailsView(surveyID);
+	self.add(view);
 
 	var createResponseCallback = function(e) {
 		navGroup.open(new ResponsesNewWindow(e.surveyID));
 	}
 
-	Ti.App.addEventListener('SurveyDetailsView:createResponse', createResponseCallback)
+	view.addEventListener('SurveyDetailsView:createResponse', createResponseCallback)
 
 	var responseIndexCallback = function(e) {
 		navGroup.open(new ResponsesIndexWindow(e.surveyID));
 	}
 
-	Ti.App.addEventListener('SurveyDetailsView:responsesIndex', responseIndexCallback);
-
-	self.addEventListener('close', function() {
-		Ti.App.removeEventListener('SurveyDetailsView:createResponse', createResponseCallback)
-		Ti.App.removeEventListener('SurveyDetailsView:responsesIndex', responseIndexCallback)
-	})
+	view.addEventListener('SurveyDetailsView:responsesIndex', responseIndexCallback);
 
 	return self;
 }

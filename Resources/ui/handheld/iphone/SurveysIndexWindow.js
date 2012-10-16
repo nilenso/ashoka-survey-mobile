@@ -32,7 +32,7 @@ function SurveysIndexWindow() {
 	});
 	self.leftNavButton = settingsButton;
 
-	Ti.App.addEventListener('surveys_index_view.table_row_clicked', function(e) {
+	surveysIndexView.addEventListener('surveys_index_view.table_row_clicked', function(e) {
 		navGroup.open(new SurveyDetailsWindow(e.surveyID));
 	});
 

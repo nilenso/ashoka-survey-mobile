@@ -9,7 +9,8 @@ function ResponsesIndexWindow(surveyID) {
 		title : 'All Responses',
 		backgroundColor : "#fff"
 	});
-	self.add(new ResponsesIndexView(surveyID));
+	var view = new ResponsesIndexView(surveyID) 
+	self.add(view);
 
 	var tableRowClickedCallback = function(e) {
 		navGroup.open(new ResponseShowWindow(e.responseID));
@@ -23,7 +24,7 @@ function ResponsesIndexWindow(surveyID) {
 	});
 	self.rightNavButton = syncButton;
 
-	Ti.App.addEventListener('ResponsesIndexView:table_row_clicked', tableRowClickedCallback);
+	view.addEventListener('ResponsesIndexView:table_row_clicked', tableRowClickedCallback);
 
 	var syncHandler = function(data) {
 		Ti.App.removeEventListener("survey.responses.sync", syncHandler);
@@ -33,7 +34,6 @@ function ResponsesIndexWindow(surveyID) {
 	Ti.App.addEventListener("survey.responses.sync", syncHandler);
 
 	self.addEventListener('close', function() {
-		Ti.App.removeEventListener('ResponsesIndexView:table_row_clicked', tableRowClickedCallback)
 		Ti.App.removeEventListener("survey.responses.sync", syncHandler);
 	});
 

@@ -7,9 +7,9 @@ function ResponsesNewWindow(surveyID) {
 		title : 'New Response',
 		backgroundColor : "#fff"
 	});
-	self.add(new ResponsesNewView(surveyID));
-	
-	Ti.App.addEventListener('ResponsesNewView:savedResponse', function() {
+	var view = new ResponsesNewView(surveyID); 
+	self.add(view);
+	view.addEventListener('ResponsesNewView:savedResponse', function() {
 		navGroup.close(self);
 	})
 	
