@@ -26,7 +26,6 @@ function SurveyDetailsView(surveyID) {
 
 	var createResponseButton = Ti.UI.createButton({
 		title : 'Add Response',
-		height : 30,
 		width : '100%'
 	});
 
@@ -38,7 +37,6 @@ function SurveyDetailsView(surveyID) {
 
 	var responsesIndexButton = Ti.UI.createButton({
 		title : 'See all Responses',
-		height : 30,
 		width : '100%'
 	});
 

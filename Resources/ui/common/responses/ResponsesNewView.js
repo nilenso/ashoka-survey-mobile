@@ -103,7 +103,6 @@ function ResponsesNewView(surveyID) {
 	}
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
-		height : 30,
 		top : 10,
 		width : '100%'
 	});
