@@ -45,8 +45,17 @@ function ResponsesNewView(surveyID) {
 
 		if (question.type == 'RadioQuestion') {
 			var valueField = new QuestionWithOptionsView(question);
-		} else if (question.type == 'SingleLineQuestion' || question.type == 'NumericQuestion') {
+		} else if (question.type == 'SingleLineQuestion') {
 			var valueField = Ti.UI.createTextField({
+				borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+				color : '#336699',
+				right : 5,
+				left : 5,
+				editable : true
+			});
+		} else if (question.type == 'NumericQuestion') {
+			var valueField = Ti.UI.createTextField({
+				keyboardType : Ti.UI.KEYBOARD_NUMBER_PAD,
 				borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 				color : '#336699',
 				right : 5,
@@ -74,10 +83,11 @@ function ResponsesNewView(surveyID) {
 			});
 			valueField.getValue = function() {
 				var val = this.value.toISOString();
-				return val.substr(0, val.indexOf('T')).replace(/-/g,'/');; 
+				return val.substr(0, val.indexOf('T')).replace(/-/g, '/');
+				;
 			};
 		}
-		
+
 		self.add(valueField);
 		answerFields[question.id] = {
 			'valueField' : valueField,
