@@ -46,18 +46,23 @@ function ResponsesNewView(surveyID) {
 			var valueField = Ti.UI.createPicker({
 				color : '#336699',
 				right : 5,
-				left : 5,
+				left : 5
 			});
 
 			var data = [];
-			_(question.options()).each(function(option, i) {
-				data[i] = Ti.UI.createPickerRow({
+			data.push(Ti.UI.createPickerRow({
+				title : 'None',
+			}));
+			_(question.options()).each(function(option) {
+				data.push(Ti.UI.createPickerRow({
 					title : option.content
-				})
-			})
+				}));
+			});
 			valueField.getValue = function() {
-				return valueField.getSelectedRow(null).getTitle();
-			}
+				val = valueField.getSelectedRow(null).getTitle();
+				if (val == 'None') val = '';
+				return val;
+			};
 			valueField.add(data);
 			valueField.selectionIndicator = true;
 		} else {
