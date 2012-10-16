@@ -9,9 +9,10 @@ function SurveyDetailsWindow(surveyID) {
 		navBarHidden : false,
 		backgroundColor : "#fff"
 	});
-	self.add(new SurveyDetailsView(surveyID));
+	var view = new SurveyDetailsView(surveyID);
+	self.add(view);
 
-	Ti.App.addEventListener('SurveyDetailsView:createResponse', function(e) {
+	view.addEventListener('SurveyDetailsView:createResponse', function(e) {
 		new ResponsesNewWindow(e.surveyID).open();
 	})
 
