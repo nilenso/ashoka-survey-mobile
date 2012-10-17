@@ -1,4 +1,5 @@
 var _ = require('lib/underscore')._;
+var Choice = require('models/choice');
 var Question = require('models/question');
 
 var Answer = new Ti.App.joli.model({
@@ -15,10 +16,17 @@ var Answer = new Ti.App.joli.model({
 			var _ = require('lib/underscore')._;
 			var that = this;
 			answerData.response_id = responseID
-			that.newRecord(answerData).save();
-			Ti.API.info("boooo" + _(this.all()).map(function(answer) {
-				return answer.response_id
-			}));
+			if (Question.questionType(answerData['question_id']) == 'MultiChoiceQuestion') {
+				var optionIds = answerData['content'];
+				answerData['content'] = "";
+				var answer = that.newRecord(answerData);
+				answer.save();
+				_(optionIds).each(function(option_id) {
+					Choice.createRecord(answer.id, option_id);
+				});
+			} else {
+				that.newRecord(answerData).save();
+			}
 		},
 
 		validate : function(answerData) {

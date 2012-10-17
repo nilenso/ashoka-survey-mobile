@@ -19,7 +19,6 @@ var Response = new Ti.App.joli.model({
 				Answer.createRecord(answer, record.id);
 			});
 			Ti.API.info("Resp ID is " + record.id);
-			Ti.API.info("foooo" + this.all());
 			return true;
 		},
 

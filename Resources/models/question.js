@@ -35,6 +35,10 @@ var Question = new Ti.App.joli.model({
 			});
 			return records;
 		},
+		
+		questionType : function(questionID) {
+			return Question.findOneById(questionID).type;
+		}
 	},
 
 	objectMethods : {
@@ -88,8 +92,6 @@ var Question = new Ti.App.joli.model({
 		},
 
 		options : function() {
-			if (this.type != 'RadioQuestion' && this.type != 'MultiChoiceQuestion' )
-				return [];
 			return Option.findBy('question_id', this.id);
 		}
 	}

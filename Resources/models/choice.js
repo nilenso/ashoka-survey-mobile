@@ -11,7 +11,6 @@ var Choice = new Ti.App.joli.model({
 
 	methods : {
 		createRecord : function(answerID, optionID) {
-			var _ = require('lib/underscore')._;
 			this.newRecord({
 				option_id: optionID,
 				answer_id: answerID

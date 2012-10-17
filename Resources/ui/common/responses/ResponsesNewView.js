@@ -44,14 +44,15 @@ function ResponsesNewView(surveyID) {
 			self.add(imageView);
 		}
 
+		var valueField;
 		if (question.type == 'RadioQuestion') {
-			var valueField = new QuestionWithOptionsView(question);
+			valueField = new QuestionWithOptionsView(question);
 		} else if (question.type == 'DateQuestion') {
-			var valueField = new DateQuestionView(question);
+			valueField = new DateQuestionView(question);
 		} else if (question.type == 'MultiChoiceQuestion') {
-			var valueField = new MultiChoiceQuestionView(question);
+			valueField = new MultiChoiceQuestionView(question);
 		} else {
-			var valueField = new QuestionView(question);
+			valueField = new QuestionView(question);
 		}
 
 		self.add(valueField);
