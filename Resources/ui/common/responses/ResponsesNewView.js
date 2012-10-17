@@ -3,7 +3,9 @@ function ResponsesNewView(surveyID) {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
 	var Response = require('models/response');
-	var QuestionWithOptionsView = require('ui/common/QuestionWithOptionsView');
+	var QuestionView = require('ui/common/questions/QuestionView');
+	var DateQuestionView = require('ui/common/questions/DateQuestionView');
+	var QuestionWithOptionsView = require('ui/common/questions/QuestionWithOptionsView');
 
 	self = Ti.UI.createScrollView({
 		layout : 'vertical'
@@ -16,9 +18,9 @@ function ResponsesNewView(surveyID) {
 		text += question['content'];
 		text += question.mandatory ? ' *' : '';
 		text += question.max_length ? ' [' + question.max_length + ']' : '';
-		text += question.max_value ? ' (<' + question.max_value  + ')' : '';
-		text += question.min_value ? ' (>' + question.min_value  + ')' : '';
-		text += errorText? '\n' + errorText : '';
+		text += question.max_value ? ' (<' + question.max_value + ')' : '';
+		text += question.min_value ? ' (>' + question.min_value + ')' : '';
+		text += errorText ? '\n' + errorText : '';
 		return text;
 	}
 	var questions = Question.findBy('survey_id', surveyID);
@@ -43,47 +45,10 @@ function ResponsesNewView(surveyID) {
 
 		if (question.type == 'RadioQuestion') {
 			var valueField = new QuestionWithOptionsView(question);
-		} else if (question.type == 'SingleLineQuestion') {
-			var valueField = Ti.UI.createTextField({
-				borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-				color : '#336699',
-				right : 5,
-				left : 5,
-				editable : true
-			});
-		} else if (question.type == 'NumericQuestion') {
-			var valueField = Ti.UI.createTextField({
-				keyboardType : Ti.UI.KEYBOARD_NUMBER_PAD,
-				borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-				color : '#336699',
-				right : 5,
-				left : 5,
-				editable : true
-			});
-		} else if (question.type == 'MultilineQuestion') {
-			var valueField = Ti.UI.createTextArea({
-				color : '#336699',
-				right : 5,
-				left : 5,
-				editable : true,
-				height : Ti.Platform.displayCaps.platformHeight * 0.25
-			});
 		} else if (question.type == 'DateQuestion') {
-			var valueField = Ti.UI.createPicker({
-				type : Ti.UI.PICKER_TYPE_DATE,
-				value : new Date(),
-				color : '#336699',
-				right : 5,
-				left : 5,
-			});
-			valueField.addEventListener('change', function(e) {
-				this.value = e.value;
-			});
-			valueField.getValue = function() {
-				var val = this.value.toISOString();
-				return val.substr(0, val.indexOf('T')).replace(/-/g, '/');
-				;
-			};
+			var valueField = new DateQuestionView(question);
+		} else {
+			var valueField = new QuestionView(question);
 		}
 
 		self.add(valueField);
