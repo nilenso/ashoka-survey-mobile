@@ -38,10 +38,12 @@ var Response = new Ti.App.joli.model({
 			var answers = Answer.findBy('response_id', this.id);
 			var answer_attributes = {}
 			_(answers).each(function(answer, index) {
-				answer_attributes[index] = {
-					'content' : answer.content,
-					'question_id' : answer.question_id
-				};
+				answer_attributes[index] = {};
+				answer_attributes[index]['question_id'] = answer.question_id;
+				if (answer.hasChoices())
+					answer_attributes[index]['option_ids'] = answer.optionIDs();
+				else
+					answer_attributes[index]['content'] = answer.content;
 			});
 			return answer_attributes;
 		},

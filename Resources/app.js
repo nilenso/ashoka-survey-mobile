@@ -10,7 +10,7 @@
 */
 
 // Setup database
-Ti.App.joli = require('lib/joli').connect('TestDBAfterChocies', '/db/main.sqlite');
+Ti.App.joli = require('lib/joli').connect('TestDBAfterChoices', '/db/main.sqlite');
 
 //bootstrap and check dependencies
 if (Ti.version < 1.8) {

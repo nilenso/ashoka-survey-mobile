@@ -16,7 +16,8 @@ var Answer = new Ti.App.joli.model({
 			var _ = require('lib/underscore')._;
 			var that = this;
 			answerData.response_id = responseID
-			if (Question.questionType(answerData['question_id']) == 'MultiChoiceQuestion') {
+			var question = Question.findOneById(answerData['question_id']);
+			if (question.type == 'MultiChoiceQuestion') {
 				var optionIds = answerData['content'];
 				answerData['content'] = "";
 				var answer = that.newRecord(answerData);
@@ -43,6 +44,17 @@ var Answer = new Ti.App.joli.model({
 			if (question.type == 'NumericQuestion' && isNaN(answerData.content))
 				errors['mandatory'] = "You have to enter only a number";
 			return errors;
+		}
+	},
+	objectMethods : {
+		hasChoices : function() {
+			return Question.findOneById(this.question_id).type == 'MultiChoiceQuestion';
+		},
+		
+		optionIDs : function() {
+			return _(Choice.findBy('answer_id', this.id)).map(function(choice) {
+				return choice.option_id;
+			});
 		}
 	}
 });

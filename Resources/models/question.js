@@ -34,10 +34,6 @@ var Question = new Ti.App.joli.model({
 				records.push(record);
 			});
 			return records;
-		},
-		
-		questionType : function(questionID) {
-			return Question.findOneById(questionID).type;
 		}
 	},
 
