@@ -11,10 +11,10 @@ var Option = new Ti.App.joli.model({
 			var _ = require('lib/underscore')._;
 			var that = this;
 			var records = [];
-			_(data).each(function(Option) {
+			_(data).each(function(option) {
 				var record = that.newRecord({
-					id : Option.id,
-					content : Option.content,
+					id : option.id,
+					content : option.content,
 					question_id : questionID,
 				});
 				record.save();
