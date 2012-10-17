@@ -59,7 +59,7 @@ var Response = new Ti.App.joli.model({
 				// function called when the response data is available
 				onload : function(e) {
 					Ti.API.info("Received text: " + this.responseText);
-					var answers = Answer.findBy('response_id', self.id);
+					var answers = self.answers();
 					_(answers).each(function(answer) {
 						answer.destroy();
 					});
@@ -85,6 +85,10 @@ var Response = new Ti.App.joli.model({
 			client.setRequestHeader("Content-Type", "application/json")
 			// Send the request.
 			client.send(JSON.stringify(params));
+		},
+
+		answers : function() {
+			return Answer.findBy('response_id', this.id)
 		}
 	}
 });
