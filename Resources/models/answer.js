@@ -30,19 +30,21 @@ var Answer = new Ti.App.joli.model({
 			}
 		},
 
-		validate : function(answerData) {
+		validate : function(answerData, isComplete) {
 			var question = Question.findOneById(answerData.question_id);
 			var errors = {};
-			if (question.max_length && (answerData.content.length >= question.max_length))
-				errors['max_length'] = "You have exceeded the maximum length for this question";
-			if (question.mandatory && !answerData.content)
+			if (answerData.content) {
+				if (question.max_length && (answerData.content.length >= question.max_length))
+					errors['max_length'] = "You have exceeded the maximum length for this question";
+				if (question.min_value && answerData.content < question.min_value)
+					errors['min_value'] = "You have fallen short of the minimum limit";
+				if (question.max_value && answerData.content > question.max_value)
+					errors['max_value'] = "You have exceeded the maximum limit";
+				if (question.type == 'NumericQuestion' && isNaN(answerData.content))
+					errors['content'] = "You have to enter only a number";
+			}
+			else if (isComplete && question.mandatory)
 				errors['mandatory'] = "This question is mandatory";
-			if (question.min_value && answerData.content < question.min_value)
-				errors['mandatory'] = "You have exceeded the minimum limit";
-			if (question.max_value && answerData.content > question.max_value)
-				errors['mandatory'] = "You have exceeded the maximum limit";
-			if (question.type == 'NumericQuestion' && isNaN(answerData.content))
-				errors['mandatory'] = "You have to enter only a number";
 			return errors;
 		}
 	},
@@ -50,7 +52,7 @@ var Answer = new Ti.App.joli.model({
 		hasChoices : function() {
 			return Question.findOneById(this.question_id).type == 'MultiChoiceQuestion';
 		},
-		
+
 		optionIDs : function() {
 			return _(Choice.findBy('answer_id', this.id)).map(function(choice) {
 				return choice.option_id;

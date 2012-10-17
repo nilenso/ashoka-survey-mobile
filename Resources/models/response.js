@@ -22,10 +22,10 @@ var Response = new Ti.App.joli.model({
 			return true;
 		},
 
-		validate : function(answersData) {
+		validate : function(answersData, isComplete) {
 			var errors = {};
 			_(answersData).each(function(answerData) {
-				var answerErrors = Answer.validate(answerData);
+				var answerErrors = Answer.validate(answerData, isComplete);
 				if (!_.isEmpty(answerErrors)) {
 					errors[answerData.question_id] = answerErrors;
 				}

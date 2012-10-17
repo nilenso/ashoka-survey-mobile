@@ -86,14 +86,7 @@ function ResponsesNewView(surveyID) {
 			}
 		}
 	}
-	var saveButton = Ti.UI.createButton({
-		title : 'Save',
-		top : 10,
-		width : '100%'
-	});
-	self.add(saveButton);
-
-	saveButton.addEventListener('click', function(e) {
+	var validateAndSaveAnswers = function(e) {
 		var answersData = _(answerFields).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
 			Ti.API.info("content:" + fields['valueField'].getValue());
@@ -102,7 +95,8 @@ function ResponsesNewView(surveyID) {
 				'content' : fields.valueField.getValue()
 			}
 		});
-		responseErrors = Response.validate(answersData);
+		var isComplete = (e.source.title == 'Complete');
+		responseErrors = Response.validate(answersData, isComplete);
 		if (!_.isEmpty(responseErrors)) {
 			displayErrors(responseErrors);
 			alert("There were some errors in the response.");
@@ -110,6 +104,32 @@ function ResponsesNewView(surveyID) {
 			Response.createRecord(surveyID, answersData);
 			self.fireEvent('ResponsesNewView:savedResponse');
 		}
+	};
+
+	var actionButtonsView = Ti.UI.createView({
+		layout : 'horizontal',
+		top : 10,
+		left : '2%', 
+		width : '100%'
+	});
+	var saveButton = Ti.UI.createButton({
+		title : 'Save',
+		width : '48%'
+	});
+	actionButtonsView.add(saveButton);
+
+	var completeButton = Ti.UI.createButton({
+		title : 'Complete',
+		width : '48%'
+	});
+	actionButtonsView.add(completeButton);
+	self.add(actionButtonsView);
+
+	completeButton.addEventListener('click', function(event) {
+		validateAndSaveAnswers(event);
+	});
+	saveButton.addEventListener('click', function(event) {
+		validateAndSaveAnswers(event);
 	});
 
 	return self;
