@@ -32,6 +32,8 @@ var Answer = new Ti.App.joli.model({
 				errors['mandatory'] = "You have exceeded the minimum limit";
 			if (question.max_value && answerData.content > question.max_value)
 				errors['mandatory'] = "You have exceeded the maximum limit";
+			if (question.type == 'NumericQuestion' && isNaN(answerData.content))
+				errors['mandatory'] = "You have to enter only a number";
 			return errors;
 		}
 	}
