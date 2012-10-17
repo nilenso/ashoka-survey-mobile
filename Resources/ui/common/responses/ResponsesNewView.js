@@ -6,6 +6,7 @@ function ResponsesNewView(surveyID) {
 	var QuestionView = require('ui/common/questions/QuestionView');
 	var DateQuestionView = require('ui/common/questions/DateQuestionView');
 	var QuestionWithOptionsView = require('ui/common/questions/QuestionWithOptionsView');
+	var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionView');
 
 	self = Ti.UI.createScrollView({
 		layout : 'vertical'
@@ -47,6 +48,8 @@ function ResponsesNewView(surveyID) {
 			var valueField = new QuestionWithOptionsView(question);
 		} else if (question.type == 'DateQuestion') {
 			var valueField = new DateQuestionView(question);
+		} else if (question.type == 'MultiChoiceQuestion') {
+			var valueField = new MultiChoiceQuestionView(question);
 		} else {
 			var valueField = new QuestionView(question);
 		}

@@ -64,7 +64,7 @@ var Question = new Ti.App.joli.model({
 		},
 		fetchOptions : function() {
 			var self = this;
-			if (self.type != 'RadioQuestion')
+			if (self.type != 'RadioQuestion' && self.type != 'MultiChoiceQuestion' )
 				return;
 			var url = Ti.App.Properties.getString('server_url') + '/api/options?question_id=' + self.id;
 			var client = Ti.Network.createHTTPClient({
@@ -88,7 +88,7 @@ var Question = new Ti.App.joli.model({
 		},
 
 		options : function() {
-			if (this.type != 'RadioQuestion')
+			if (this.type != 'RadioQuestion' && this.type != 'MultiChoiceQuestion' )
 				return [];
 			return Option.findBy('question_id', this.id);
 		}
