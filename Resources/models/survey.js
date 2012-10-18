@@ -1,6 +1,7 @@
 var _ = require('lib/underscore')._;
 var Question = require('models/question');
-var Response = require('models/response')
+var Response = require('models/response');
+var Option = require('models/option');
 
 var Survey = new Ti.App.joli.model({
 	table : 'surveys',
@@ -23,6 +24,7 @@ var Survey = new Ti.App.joli.model({
 					// Emptying the table for now (until we get all the survey info from the server)
 					that.truncate();
 					Question.truncate();
+					Option.truncate();
 					_(data).each(function(surveyData) {
 						var survey = that.createRecord(surveyData);
 						survey.fetchQuestions();

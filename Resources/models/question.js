@@ -1,3 +1,4 @@
+var _ = require('lib/underscore')._;
 var Option = require('models/option');
 var Question = new Ti.App.joli.model({
 	table : 'questions',
@@ -70,7 +71,6 @@ var Question = new Ti.App.joli.model({
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {
-					Option.truncate();
 					Ti.API.info("Received text for options: " + this.responseText);
 					var data = JSON.parse(this.responseText);
 					var records = Option.createRecords(data, self.id);
