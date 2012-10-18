@@ -1,5 +1,5 @@
 //QuestionView Component Constructor
-function QuestionView(question) {
+function QuestionView(question, content) {
 
 	var props = {
 		borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
@@ -13,6 +13,8 @@ function QuestionView(question) {
 		props['keyboardType'] = Ti.UI.KEYBOARD_NUMBER_PAD;
 	else if (question.type == 'MultilineQuestion')
 		props['height'] = Ti.Platform.displayCaps.platformHeight * 0.25;
+		
+	if (content) props['value'] = content;
 
 	var self = Ti.UI.createTextField(props);
 	return self;

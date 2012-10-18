@@ -24,6 +24,18 @@ function ResponseShowView(responseID) {
 	});
 
 	self.add(table);
+	
+	var responseEditButton = Ti.UI.createButton({
+		title : 'Edit this Response',
+		width : '100%'
+	});
+
+	responseEditButton.addEventListener('click', function(e) {
+		self.fireEvent('ResponseShowView:responseEdit', {
+			responseID : responseID
+		});
+	});
+	table.setFooterView(responseEditButton);
 	return self;
 }
 

@@ -57,6 +57,11 @@ var Answer = new Ti.App.joli.model({
 			return _(Choice.findBy('answer_id', this.id)).map(function(choice) {
 				return choice.option_id;
 			});
+		},
+		
+		question : function() {
+			return Question.findOneById(this.question_id);
+			
 		}
 	}
 });

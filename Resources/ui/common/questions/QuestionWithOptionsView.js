@@ -1,6 +1,6 @@
 //QuestionWithOptionsView Component Constructor
 var _ = require('lib/underscore')._;
-function QuestionWithOptionsView(question) {
+function QuestionWithOptionsView(question, content) {
 
 	var self = Ti.UI.createPicker({
 		color : '#336699',
@@ -21,6 +21,13 @@ function QuestionWithOptionsView(question) {
 	});
 	self.add(data);
 	self.selectionIndicator = true;
+	
+	if (content) {
+		_(data).each(function(option, index) {
+			if (option.title == content) 
+				self.setSelectedRow(0, index);
+		});
+	}
 
 	self.getValue = function() {
 		val = self.getSelectedRow(null).getTitle();
