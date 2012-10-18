@@ -1,7 +1,7 @@
 //DateQuestionView Component Constructor
 function DateQuestionView(question) {
 
-	self = Ti.UI.createPicker({
+	var self = Ti.UI.createPicker({
 		type : Ti.UI.PICKER_TYPE_DATE,
 		value : new Date(),
 		color : '#336699',

@@ -2,7 +2,7 @@
 var _ = require('lib/underscore')._;
 function QuestionWithOptionsView(question) {
 
-	self = Ti.UI.createPicker({
+	var self = Ti.UI.createPicker({
 		color : '#336699',
 		right : 5,
 		left : 5

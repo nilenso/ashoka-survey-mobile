@@ -8,7 +8,7 @@ function ResponsesNewView(surveyID) {
 	var QuestionWithOptionsView = require('ui/common/questions/QuestionWithOptionsView');
 	var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionView');
 
-	self = Ti.UI.createScrollView({
+	var self = Ti.UI.createScrollView({
 		layout : 'vertical'
 	});
 
@@ -123,7 +123,8 @@ function ResponsesNewView(surveyID) {
 		width : '48%'
 	});
 	actionButtonsView.add(completeButton);
-	self.add(actionButtonsView);
+	self.add(saveButton);
+	self.add(completeButton);
 
 	completeButton.addEventListener('click', function(event) {
 		validateAndSaveAnswers(event);
