@@ -101,7 +101,7 @@ function ResponsesNewView(surveyID) {
 			displayErrors(responseErrors);
 			alert("There were some errors in the response.");
 		} else {
-			Response.createRecord(surveyID, answersData);
+			Response.createRecord(surveyID, isComplete, answersData);
 			self.fireEvent('ResponsesNewView:savedResponse');
 		}
 	};

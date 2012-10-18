@@ -6,13 +6,15 @@ var Response = new Ti.App.joli.model({
 	columns : {
 		id : 'INTEGER PRIMARY KEY',
 		survey_id : 'INTEGER',
-		web_id : 'INTEGER'
+		web_id : 'INTEGER',
+		complete : 'INTEGER'
 	},
 
 	methods : {
-		createRecord : function(surveyID, answersData) {
+		createRecord : function(surveyID, isComplete, answersData) {
 			var record = this.newRecord({
-				survey_id : surveyID
+				survey_id : surveyID,
+				complete : isComplete
 			});
 			record.save();
 			_(answersData).each(function(answer) {
@@ -55,21 +57,24 @@ var Response = new Ti.App.joli.model({
 			var params = {}
 			params['answers_attributes'] = this.prepRailsParams();
 			params['mobile_id'] = this.id;
+			params['complete'] = this.complete;
 			params['survey_id'] = this.survey_id;
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {
 					Ti.API.info("Received text: " + this.responseText);
-					var answers = self.answers();
-					_(answers).each(function(answer) {
-						answer.destroy();
-					});
 					self.has_error = false;
 					self.synced = true;
 					Ti.App.fireEvent('response.sync', {
 						survey_id : self.survey_id
 					});
-					self.destroy();
+					if (self.complete) {
+						var answers = self.answers();
+						_(answers).each(function(answer) {
+							answer.destroy();
+						});
+						self.destroy();
+					}
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {
