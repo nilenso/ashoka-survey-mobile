@@ -3,15 +3,13 @@ function OptionView(option) {
 	var self = Ti.UI.createTableViewRow();
 
 	var size = Ti.Platform.displayCaps.platformHeight * 0.05
-	var checkBox = Ti.UI.createImageView({
-		height : size,
-		width : size,
-		left : 5,
-		backgroundColor : 'white',
-		borderColor : '#666',
-		borderWidth : 2,
-		borderRadius : 5,
-		isChecked : false
+	var checkBox = Ti.UI.createWebView({
+		url : '/templates/checkbox.html',
+		height : '30dp',
+		showScrollbars : false,
+		width : '30dp',
+		enableZoomControls : false,
+		disableBounce: true
 	});
 	self.add(checkBox);
 
@@ -23,19 +21,8 @@ function OptionView(option) {
 		left : size * 1.5
 	});
 
-	checkBox.addEventListener('click', function(e) {
-		Ti.API.info("status:" + e.source.isChecked);
-		if (e.source.isChecked == false) {
-			Ti.API.info(e.source);
-			e.source.backgroundColor = '#666';
-			e.source.isChecked = true;
-		} else {
-			e.source.backgroundColor = 'white';
-			e.source.isChecked = false;
-		}
-	});
-
 	self.add(label);
+
 	return self;
 }
 
