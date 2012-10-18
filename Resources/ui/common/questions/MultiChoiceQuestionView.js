@@ -18,7 +18,7 @@ function MultiChoiceQuestionView(question) {
 	self.getValue = function() {
 		var option_ids = [];
 		_(optionViews).each(function(row, option_id) {
-			if (row.children[0].isChecked)
+			if (row.children[0].getValue() === true)
 				option_ids.push(option_id);
 		});
 		return option_ids;
