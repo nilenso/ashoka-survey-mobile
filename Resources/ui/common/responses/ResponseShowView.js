@@ -14,7 +14,7 @@ function ResponseShowView(responseID) {
 		});
 		return responses;
 	}
-	self = Ti.UI.createView({
+	var self = Ti.UI.createView({
 		layout : 'vertical'
 	});
 

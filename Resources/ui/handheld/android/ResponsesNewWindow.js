@@ -3,7 +3,7 @@ function ResponsesNewWindow(surveyID) {
 	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView')
 	var ResponsesNewView = require('ui/common/responses/ResponsesNewView')
 
-	self = Ti.UI.createWindow({
+	var self = Ti.UI.createWindow({
 		title : 'New Response',
 		navBarHidden : false,
 		backgroundColor : "#fff"

@@ -1,6 +1,6 @@
 //OptionView Component Constructor
 function OptionView(option) {
-	self = Ti.UI.createTableViewRow();
+	var self = Ti.UI.createTableViewRow();
 
 	var size = Ti.Platform.displayCaps.platformHeight * 0.05
 	var checkBox = Ti.UI.createImageView({
