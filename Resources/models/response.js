@@ -55,8 +55,6 @@ var Response = new Ti.App.joli.model({
 			var self = this;
 			this.synced = false;
 			var params = {};
-			if (self.web_id)
-				params['id'] = self.web_id;
 			params['answers_attributes'] = this.prepRailsParams();
 			params['status'] = this.status;
 			params['survey_id'] = this.survey_id;
