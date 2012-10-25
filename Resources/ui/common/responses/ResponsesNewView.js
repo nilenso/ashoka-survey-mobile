@@ -86,7 +86,7 @@ function ResponsesNewView(surveyID) {
 			}
 		}
 	}
-	var validateAndSaveAnswers = function(e) {
+	var validateAndSaveAnswers = function(e, isComplete) {
 		var answersData = _(answerFields).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
 			Ti.API.info("content:" + fields['valueField'].getValue());
@@ -95,7 +95,6 @@ function ResponsesNewView(surveyID) {
 				'content' : fields.valueField.getValue()
 			}
 		});
-		var isComplete = (e.source.title == 'Complete');
 		responseErrors = Response.validate(answersData, isComplete);
 		if (!_.isEmpty(responseErrors)) {
 			displayErrors(responseErrors);
@@ -122,15 +121,16 @@ function ResponsesNewView(surveyID) {
 		title : 'Complete',
 		width : '48%'
 	});
+
 	actionButtonsView.add(completeButton);
 	self.add(saveButton);
 	self.add(completeButton);
 
 	completeButton.addEventListener('click', function(event) {
-		validateAndSaveAnswers(event);
+		validateAndSaveAnswers(event, true);
 	});
 	saveButton.addEventListener('click', function(event) {
-		validateAndSaveAnswers(event);
+		validateAndSaveAnswers(event, false);
 	});
 
 	return self;
