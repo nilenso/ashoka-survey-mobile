@@ -61,7 +61,7 @@ var Response = new Ti.App.joli.model({
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {
-					Ti.API.info("Received text: " + this.responseText);
+					Ti.API.info("Synced response successfully: " + this.responseText);
 					self.has_error = false;
 					self.synced = true;
 					Ti.App.fireEvent('response.sync', {
@@ -73,10 +73,15 @@ var Response = new Ti.App.joli.model({
 							answer.destroy();
 						});
 						self.destroy();
+					} else {
+						var received_response = JSON.parse(this.responseText);
+						self.web_id = received_response['id'];
+						self.status = received_response['status'];
 					}
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {
+					Ti.API.info("Erroneous Response: " + this.responseText);
 					self.has_error = true;
 					self.synced = true;
 					Ti.App.fireEvent('response.sync', {
@@ -87,7 +92,7 @@ var Response = new Ti.App.joli.model({
 			});
 			// Prepare the connection.
 			client.open("POST", url);
-			client.setRequestHeader("Content-Type", "application/json")
+			client.setRequestHeader("Content-Type", "application/json");
 			// Send the request.
 			client.send(JSON.stringify(params));
 		},
