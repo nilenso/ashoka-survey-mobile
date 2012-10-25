@@ -51,7 +51,7 @@ var Response = new Ti.App.joli.model({
 		},
 
 		sync : function() {
-			var url = Ti.App.Properties.getString('server_url') + '/api/responses.json';
+			var url = Ti.App.Properties.getString('server_url') + '/api/responses';
 			var self = this;
 			this.synced = false;
 			var params = {};
@@ -102,7 +102,9 @@ var Response = new Ti.App.joli.model({
 				timeout : 5000 // in milliseconds
 			});
 
-			var method = self.web_id ? "PUT" : "POST"
+			var method = self.web_id ? "PUT" : "POST";
+			url += self.web_id ? "/" + self.web_id : "";
+			url += ".json";
 			Ti.API.info("method: " + method);
 			client.open(method, url);
 			client.setRequestHeader("Content-Type", "application/json");
