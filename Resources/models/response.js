@@ -54,7 +54,9 @@ var Response = new Ti.App.joli.model({
 			var url = Ti.App.Properties.getString('server_url') + '/api/responses.json';
 			var self = this;
 			this.synced = false;
-			var params = {}
+			var params = {};
+			if (self.web_id)
+				params['id'] = self.web_id;
 			params['answers_attributes'] = this.prepRailsParams();
 			params['status'] = this.status;
 			params['survey_id'] = this.survey_id;
@@ -75,8 +77,17 @@ var Response = new Ti.App.joli.model({
 						self.destroy();
 					} else {
 						var received_response = JSON.parse(this.responseText);
-						self.web_id = received_response['id'];
-						self.status = received_response['status'];
+						self.fromArray({
+							'id' : self.id,
+							'survey_id' : self.survey_id,
+							'web_id' : received_response['id'],
+							'status' : received_response['status'],
+						});
+						// self.web_id = received_response['id'];
+						// self.status = received_response['status'];
+						Ti.API.info("before save WEB ID: " + self.web_id);
+						self.save()
+						Ti.API.info("after save WEB ID: " + self.web_id);
 					}
 				},
 				// function called when an error occurs, including a timeout
@@ -91,7 +102,8 @@ var Response = new Ti.App.joli.model({
 				timeout : 5000 // in milliseconds
 			});
 
-			var method = self.web_id? "PUT" : "POST"
+			var method = self.web_id ? "PUT" : "POST"
+			Ti.API.info("method: " + method);
 			client.open(method, url);
 			client.setRequestHeader("Content-Type", "application/json");
 			client.send(JSON.stringify(params));
