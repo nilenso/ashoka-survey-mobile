@@ -30,7 +30,7 @@ var Answer = new Ti.App.joli.model({
 			}
 		},
 
-		validate : function(answerData, isComplete) {
+		validate : function(answerData, status) {
 			var question = Question.findOneById(answerData.question_id);
 			var errors = {};
 			if (answerData.content) {
@@ -43,7 +43,7 @@ var Answer = new Ti.App.joli.model({
 				if (question.type == 'NumericQuestion' && isNaN(answerData.content))
 					errors['content'] = "You have to enter only a number";
 			}
-			else if (isComplete && question.mandatory)
+			else if (status == "complete" && question.mandatory)
 				errors['mandatory'] = "This question is mandatory";
 			return errors;
 		}
