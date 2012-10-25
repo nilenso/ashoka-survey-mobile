@@ -67,7 +67,7 @@ var Response = new Ti.App.joli.model({
 					Ti.App.fireEvent('response.sync', {
 						survey_id : self.survey_id
 					});
-					if (self.complete) {
+					if (self.status == "complete") {
 						var answers = self.answers();
 						_(answers).each(function(answer) {
 							answer.destroy();
