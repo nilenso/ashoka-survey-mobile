@@ -90,10 +90,10 @@ var Response = new Ti.App.joli.model({
 				},
 				timeout : 5000 // in milliseconds
 			});
-			// Prepare the connection.
-			client.open("POST", url);
+
+			var method = self.web_id? "PUT" : "POST"
+			client.open(method, url);
 			client.setRequestHeader("Content-Type", "application/json");
-			// Send the request.
 			client.send(JSON.stringify(params));
 		},
 
