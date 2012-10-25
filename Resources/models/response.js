@@ -56,7 +56,6 @@ var Response = new Ti.App.joli.model({
 			this.synced = false;
 			var params = {}
 			params['answers_attributes'] = this.prepRailsParams();
-			params['mobile_id'] = this.id;
 			params['status'] = this.status;
 			params['survey_id'] = this.survey_id;
 			var client = Ti.Network.createHTTPClient({
