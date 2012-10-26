@@ -66,6 +66,7 @@ var Response = new Ti.App.joli.model({
         ans.update(answer.content);
       });
       this.save();
+      Ti.App.fireEvent('updatedResponse');
       Ti.API.info("response updated at" + this.updated_at);
     },
 

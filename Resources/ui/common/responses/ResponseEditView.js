@@ -107,7 +107,6 @@ function ResponseEditView(responseID) {
       var response = Response.findOneById(responseID);
       response.update(status, answersData);
       self.fireEvent('ResponsesEditView:savedResponse');
-      Ti.API.info("should have fired event here");
     }
   };
 
