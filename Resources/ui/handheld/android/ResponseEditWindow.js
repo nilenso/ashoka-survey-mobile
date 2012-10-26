@@ -11,11 +11,11 @@ function ResponseEditWindow(responseID) {
 	view = new ResponseEditView(responseID);
 	self.add(view);
 	
-	view.addEventListener('ResponseEditView:savedResponse', function() {
+	view.addEventListener('ResponsesEditView:savedResponse', function() {
 		self.close();
-	})
+	});
 	
 	return self;
 }
 
-module.exports = ResponseEditWindow; 
+module.exports = ResponseEditWindow;
