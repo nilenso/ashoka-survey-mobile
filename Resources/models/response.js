@@ -39,11 +39,14 @@ var Response = new Ti.App.joli.model({
   },
   objectMethods : {
     prepRailsParams : function() {
-      var answers = Answer.findBy('response_id', this.id);
       var answer_attributes = {}
-      _(answers).each(function(answer, index) {
+      _(this.answers()).each(function(answer, index) {
         answer_attributes[index] = {};
         answer_attributes[index]['question_id'] = answer.question_id;
+        answer_attributes[index]['updated_at'] = answer.updated_at;
+        Ti.API.info("My web_id is:"+answer.web_id);
+        if (answer.web_id)
+          answer_attributes[index]['web_id'] = answer.web_id;
         if (answer.hasChoices())
           answer_attributes[index]['option_ids'] = answer.optionIDs();
         else
@@ -61,9 +64,9 @@ var Response = new Ti.App.joli.model({
         'status' : status,
         'updated_at' : (new Date()).toString()
       });
-      _(answersData).each(function(answer) {
-        var ans = Answer.findOneById(answer.id);
-        ans.update(answer.content);
+      _(answersData).each(function(answerData) {
+        var answer = Answer.findOneById(answerData.id);
+        answer.update(answerData.content);
       });
       this.save();
       Ti.App.fireEvent('updatedResponse');
@@ -103,8 +106,16 @@ var Response = new Ti.App.joli.model({
               'status' : received_response['status'],
               'updated_at' : (new Date()).toString()
             });
-            // self.web_id = received_response['id'];
-            // self.status = received_response['status'];
+            _(self.answers()).each(function(answer, index) {
+              answer.fromArray({
+                'web_id' : received_response.answers[index].id,
+                'content' : received_response.answers[index].content,
+                'updated_at' : (new Date()).toString(),
+              });
+              Ti.API.info("got id:"+received_response.answers[index].id);
+              Ti.API.info("Web id:"+answer.web_id);
+              answer.save();
+            });
             Ti.API.info("before save WEB ID: " + self.web_id);
             self.save();
             Ti.API.info("after save WEB ID: " + self.web_id);

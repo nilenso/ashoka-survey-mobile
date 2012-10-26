@@ -8,7 +8,8 @@ var Answer = new Ti.App.joli.model({
     id : 'INTEGER PRIMARY KEY',
     content : 'TEXT',
     response_id : 'INTEGER',
-    question_id : 'INTEGER'
+    question_id : 'INTEGER',
+    web_id : 'INTEGER',
     updated_at : 'TEXT'
   },
 
@@ -21,12 +22,14 @@ var Answer = new Ti.App.joli.model({
       if (question.type == 'MultiChoiceQuestion') {
         var optionIds = answerData['content'];
         answerData['content'] = "";
+        answerData['updated_at'] = (new Date()).toString();
         var answer = that.newRecord(answerData);
         answer.save();
         _(optionIds).each(function(option_id) {
           Choice.createRecord(answer.id, option_id);
         });
       } else {
+        answerData['updated_at'] = (new Date()).toString();
         that.newRecord(answerData).save();
       }
     },
@@ -57,6 +60,7 @@ var Answer = new Ti.App.joli.model({
         'content' : content,
         'response_id' : this.response_id,
         'question_id' : this.question_id,
+        'updated_at' : (new Date()).toString()
       });
       this.save();
       Ti.API.info("answer saved with content" + this.content);
