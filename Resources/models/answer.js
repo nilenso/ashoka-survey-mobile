@@ -9,6 +9,7 @@ var Answer = new Ti.App.joli.model({
     content : 'TEXT',
     response_id : 'INTEGER',
     question_id : 'INTEGER'
+    updated_at : 'TEXT'
   },
 
   methods : {
