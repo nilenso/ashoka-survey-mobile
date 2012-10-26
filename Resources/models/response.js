@@ -7,14 +7,16 @@ var Response = new Ti.App.joli.model({
 		id : 'INTEGER PRIMARY KEY',
 		survey_id : 'INTEGER',
 		web_id : 'INTEGER',
-		status : 'TEXT'
+		status : 'TEXT',
+		updated_at : 'TEXT'
 	},
 
 	methods : {
 		createRecord : function(surveyID, status, answersData) {
 			var record = this.newRecord({
 				survey_id : surveyID,
-				status : status
+				status : status,
+				updated_at : (new Date()).toString()
 			});
 			record.save();
 			_(answersData).each(function(answer) {
@@ -58,6 +60,7 @@ var Response = new Ti.App.joli.model({
 			params['answers_attributes'] = this.prepRailsParams();
 			params['status'] = this.status;
 			params['survey_id'] = this.survey_id;
+			params['updated_at'] = this.updated_at;
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {
@@ -80,6 +83,7 @@ var Response = new Ti.App.joli.model({
 							'survey_id' : self.survey_id,
 							'web_id' : received_response['id'],
 							'status' : received_response['status'],
+							'updated_at' : (new Date()).toString()
 						});
 						// self.web_id = received_response['id'];
 						// self.status = received_response['status'];
