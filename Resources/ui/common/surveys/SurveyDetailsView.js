@@ -46,9 +46,9 @@ function SurveyDetailsView(surveyID) {
 		});
 	});
 
-	buttonsView = Ti.UI.createView({
+	var buttonsView = Ti.UI.createView({
 		layout : 'vertical'
-	})
+	});
 	buttonsView.add(createResponseButton);
 	buttonsView.add(responsesIndexButton);
 

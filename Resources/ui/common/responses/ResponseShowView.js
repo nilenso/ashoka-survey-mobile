@@ -22,8 +22,6 @@ function ResponseShowView(responseID) {
 	var table = Titanium.UI.createTableView({
 		data : convertResponseDataForTable()
 	});
-
-	self.add(table);
 	
 	var responseEditButton = Ti.UI.createButton({
 		title : 'Edit this Response',
@@ -35,7 +33,14 @@ function ResponseShowView(responseID) {
 			responseID : responseID
 		});
 	});
-	table.setFooterView(responseEditButton);
+	var buttonsView = Ti.UI.createView({
+		layout : 'vertical'
+	});
+	buttonsView.add(responseEditButton);
+
+	table.setFooterView(buttonsView);
+
+	self.add(table);
 	return self;
 }
 
