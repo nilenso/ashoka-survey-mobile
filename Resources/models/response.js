@@ -44,9 +44,8 @@ var Response = new Ti.App.joli.model({
         answer_attributes[index] = {};
         answer_attributes[index]['question_id'] = answer.question_id;
         answer_attributes[index]['updated_at'] = answer.updated_at;
-        Ti.API.info("My web_id is:"+answer.web_id);
         if (answer.web_id)
-          answer_attributes[index]['web_id'] = answer.web_id;
+          answer_attributes[index]['id'] = answer.web_id;
         if (answer.hasChoices())
           answer_attributes[index]['option_ids'] = answer.optionIDs();
         else
@@ -107,18 +106,18 @@ var Response = new Ti.App.joli.model({
               'updated_at' : (new Date()).toString()
             });
             _(self.answers()).each(function(answer, index) {
-              answer.fromArray({
+              answer.destroy();
+              Answer.newRecord({
+                'response_id' : self.id,
+                'question_id' : received_response.answers[index].question_id,
                 'web_id' : received_response.answers[index].id,
                 'content' : received_response.answers[index].content,
                 'updated_at' : (new Date()).toString(),
-              });
-              Ti.API.info("got id:"+received_response.answers[index].id);
-              Ti.API.info("Web id:"+answer.web_id);
-              answer.save();
+              }).save();
             });
-            Ti.API.info("before save WEB ID: " + self.web_id);
+            Ti.API.info("before save response WEB ID: " + self.web_id);
             self.save();
-            Ti.API.info("after save WEB ID: " + self.web_id);
+            Ti.API.info("after save response WEB ID: " + self.web_id);
           }
         },
         // function called when an error occurs, including a timeout
