@@ -1,7 +1,7 @@
 //MultiChoiceQuestionView Component Constructor
 var _ = require('lib/underscore')._;
 var OptionView = require('ui/common/questions/OptionView');
-function MultiChoiceQuestionView(question) {
+function MultiChoiceQuestionView(question, optionIDs) {
 
 	var self = Ti.UI.createTableView({
 		height : Titanium.UI.SIZE
@@ -10,7 +10,8 @@ function MultiChoiceQuestionView(question) {
 	var optionViews = {};
 
 	_(question.options()).each(function(option) {
-		optionViews[option.id] = new OptionView(option);
+		var checked = optionIDs && _(optionIDs).contains(option.id);
+		optionViews[option.id] = new OptionView(option, checked);		
 	});
 	
 	self.setData(_(optionViews).values());

@@ -1,11 +1,11 @@
 //OptionView Component Constructor
-function OptionView(option) {
+function OptionView(option, checked) {
 	var self = Ti.UI.createTableViewRow();
 
 	if (Ti.Platform.osname == 'android') {
-		var checkbox = androidCheckbox();
+		var checkbox = androidCheckbox(checked);
 	} else {
-		var checkbox = iPhoneCheckbox();
+		var checkbox = iPhoneCheckbox(checked);
 	}
 
 	self.add(checkbox);
@@ -23,7 +23,7 @@ function OptionView(option) {
 
 	return self;
 
-	function iPhoneCheckbox() {
+	function iPhoneCheckbox(checked) {
 		var checkbox = Ti.UI.createButton({
 			title : '',
 			height: 30,
@@ -54,11 +54,13 @@ function OptionView(option) {
 				e.source.off();
 			}
 		});
+		
+		if(checked) checkbox.on();
 
 		return checkbox;
 	}
 
-	function androidCheckbox() {
+	function androidCheckbox(checked) {
 		var basicSwitch = Ti.UI.createSwitch({
 			value : false,
 			style: Ti.UI.Android.SWITCH_STYLE_CHECKBOX,
@@ -68,6 +70,8 @@ function OptionView(option) {
 			titleOn : "",
 			titleOff : ""
 		});
+		
+		if(checked) basicSwitch.setValue(true);
 
 		return basicSwitch;
 	}
