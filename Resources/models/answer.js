@@ -77,6 +77,7 @@ var Answer = new Ti.App.joli.model({
 					'content' : '',
 					'response_id' : this.response_id,
 					'question_id' : this.question_id,
+					'web_id' : this.web_id,
 					'updated_at' : (new Date()).toString()
 				});
 			} else {
@@ -85,6 +86,7 @@ var Answer = new Ti.App.joli.model({
 					'content' : content,
 					'response_id' : this.response_id,
 					'question_id' : this.question_id,
+					'web_id' : this.web_id,
 					'updated_at' : (new Date()).toString()
 				});
 			}

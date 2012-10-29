@@ -73,6 +73,7 @@ var Response = new Ti.App.joli.model({
     },
 
     sync : function() {
+      //TODO: REFACTOR THIS.
       var url = Ti.App.Properties.getString('server_url') + '/api/responses';
       var self = this;
       this.synced = false;
