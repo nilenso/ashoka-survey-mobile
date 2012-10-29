@@ -9,7 +9,7 @@ function ResponseShowView(responseID) {
     var responses = _(answers).map(function(answer) {
       return {
         'header' : Question.findOneById(answer.question_id).content,
-        'title' : answer.content
+        'title' : answer.content || ''
       }
     });
     return responses;
