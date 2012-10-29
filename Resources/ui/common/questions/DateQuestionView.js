@@ -1,5 +1,5 @@
 //DateQuestionView Component Constructor
-function DateQuestionView(question) {
+function DateQuestionView(question, content) {
 
 	var self = Ti.UI.createPicker({
 		type : Ti.UI.PICKER_TYPE_DATE,
@@ -14,8 +14,8 @@ function DateQuestionView(question) {
 	self.getValue = function() {
 		var val = this.value.toISOString();
 		return val.substr(0, val.indexOf('T')).replace(/-/g, '/');
-		;
 	};
+	if (content) self.setValue(new Date(content));
 
 	return self;
 }
