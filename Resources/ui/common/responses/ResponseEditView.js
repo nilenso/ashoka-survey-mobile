@@ -110,23 +110,17 @@ function ResponseEditView(responseID) {
     }
   };
 
-  var actionButtonsView = Ti.UI.createView({
-    layout : 'horizontal',
-    top : 10,
-    left : '2%',
-    width : '100%'
-  });
+
   var saveButton = Ti.UI.createButton({
     title : 'Save',
     width : '48%'
   });
-  actionButtonsView.add(saveButton);
 
   var completeButton = Ti.UI.createButton({
     title : 'Complete',
     width : '48%'
   });
-  actionButtonsView.add(completeButton);
+ 
   self.add(saveButton);
   self.add(completeButton);
 
