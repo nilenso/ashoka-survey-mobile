@@ -9,7 +9,7 @@ function ResponseEditWindow(responseID) {
 	});
 	var view = new ResponseEditView(responseID); 
 	self.add(view);
-	view.addEventListener('ResponseEditView:savedResponse', function() {
+	view.addEventListener('ResponsesEditView:savedResponse', function() {
 		navGroup.close(self);
 	})
 	
