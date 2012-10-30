@@ -59,6 +59,7 @@ var Answer = new Ti.App.joli.model({
 			Ti.API.info("updating answer");
 			
 			var question = Question.findOneById(this.question_id);
+			var updated_at = content == this.content ? this.updated_at : (new Date()).toString();
 
 			if (question.type == 'MultiChoiceQuestion') {
 				var optionIds = content;
@@ -78,7 +79,7 @@ var Answer = new Ti.App.joli.model({
 					'response_id' : this.response_id,
 					'question_id' : this.question_id,
 					'web_id' : this.web_id,
-					'updated_at' : (new Date()).toString()
+					'updated_at' : updated_at
 				});
 			} else {
 				this.fromArray({
@@ -87,7 +88,7 @@ var Answer = new Ti.App.joli.model({
 					'response_id' : this.response_id,
 					'question_id' : this.question_id,
 					'web_id' : this.web_id,
-					'updated_at' : (new Date()).toString()
+					'updated_at' : updated_at
 				});
 			}
 			this.save();
