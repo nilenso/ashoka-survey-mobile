@@ -64,8 +64,17 @@ var Answer = new Ti.App.joli.model({
 			if (question.type == 'MultiChoiceQuestion') {
 				var optionIds = content;
 				var that = this;
-				
-				_(Choice.findBy('answer_id', this.id)).each(function(choice){
+
+				existing_optionIDs = _(Choice.findBy('answer_id', this.id)).map(function(choice) {
+					return choice.option_id;
+				})
+
+				Ti.API.info('Merge IDs');
+				Ti.API.info(existing_optionIDs.sort());
+				Ti.API.info(optionIds.sort());
+				var updated_at = optionIds.sort() == existing_optionIDs.sort() ? this.updated_at : (new Date()).toString();
+
+				_(Choice.findBy('answer_id', this.id)).each(function(choice) {
 					choice.destroy();
 				});
 								
