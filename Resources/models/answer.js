@@ -57,7 +57,7 @@ var Answer = new Ti.App.joli.model({
 			Ti.API.info("CONTENT IS ");
 			Ti.API.info(content);
 			Ti.API.info("updating answer");
-			
+
 			var question = Question.findOneById(this.question_id);
 			var updated_at = content == this.content ? this.updated_at : (new Date()).toString();
 
@@ -77,11 +77,11 @@ var Answer = new Ti.App.joli.model({
 				_(Choice.findBy('answer_id', this.id)).each(function(choice) {
 					choice.destroy();
 				});
-								
+
 				_(optionIds).each(function(option_id) {
 					Choice.createRecord(that.id, option_id);
 				});
-				
+
 				this.fromArray({
 					'id' : this.id,
 					'content' : '',
@@ -117,6 +117,12 @@ var Answer = new Ti.App.joli.model({
 		question : function() {
 			return Question.findOneById(this.question_id);
 
+		},
+		
+		destroy_choices : function() {
+			return _(Choice.findBy('answer_id', this.id)).each(function(choice) {
+				choice.destroy();
+			});	
 		}
 	}
 });

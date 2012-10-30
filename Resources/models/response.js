@@ -1,5 +1,6 @@
 var _ = require('lib/underscore')._;
 var Answer = require('models/answer');
+var Choice = require('models/choice');
 
 var Response = new Ti.App.joli.model({
   table : 'responses',
@@ -96,6 +97,7 @@ var Response = new Ti.App.joli.model({
             _(answers).each(function(answer) {
               answer.destroy();
             });
+            
             self.destroy();
           } else {
             var received_response = JSON.parse(this.responseText);
@@ -106,15 +108,24 @@ var Response = new Ti.App.joli.model({
               'status' : received_response['status'],
               'updated_at' : (new Date()).toString()
             });
+            
+            
             _(self.answers()).each(function(answer, index) {
-              answer.destroy();
-              Answer.newRecord({
+              answer.destroy_choices();
+              answer.destroy();                          
+              var new_answer = Answer.newRecord({
                 'response_id' : self.id,
                 'question_id' : received_response.answers[index].question_id,
                 'web_id' : received_response.answers[index].id,
                 'content' : received_response.answers[index].content,
                 'updated_at' : (new Date()).toString(),
-              }).save();
+              });
+              new_answer.save();
+              
+              _(received_response.answers[index].choices).each(function(choice) {
+              	choice.answer_id = new_answer.id;  
+			  	Choice.newRecord(choice).save();              	
+              })              
             });
             Ti.API.info("before save response WEB ID: " + self.web_id);
             self.save();
