@@ -96,12 +96,7 @@ var Response = new Ti.App.joli.model({
           var received_response = JSON.parse(this.responseText);
           
           if (received_response['status'] == "complete") {
-            var answers = self.answers();
-            _(answers).each(function(answer) {
-              answer.destroy();
-              answer.destroy_choices();
-            });
-            
+            self.destroy_answers();            
             self.destroy();
           } else {            
             self.fromArray({
@@ -137,8 +132,14 @@ var Response = new Ti.App.joli.model({
         },
         // function called when an error occurs, including a timeout
         onerror : function(e) {
-          Ti.API.info("Erroneous Response: " + this.responseText);
-          self.has_error = true;
+          if(this.status == '410') { // Response deleted on server
+          	Ti.API.info("Response deleted on server: " + this.responseText);
+          	self.destroy_answers();
+          	self.destroy();
+          } else {
+          	Ti.API.info("Erroneous Response: " + this.responseText);
+          	self.has_error = true;
+          }
           self.synced = true;
           Ti.App.fireEvent('response.sync', {
             survey_id : self.survey_id
@@ -158,6 +159,12 @@ var Response = new Ti.App.joli.model({
 
     answers : function() {
       return Answer.findBy('response_id', this.id)
+    },
+    
+    destroy_answers : function() {
+    	_(this.answers()).each(function(answer){
+    		answer.destroy();
+    	})
     }
   }
 });
