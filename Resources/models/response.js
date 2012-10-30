@@ -96,6 +96,7 @@ var Response = new Ti.App.joli.model({
             var answers = self.answers();
             _(answers).each(function(answer) {
               answer.destroy();
+              answer.destroy_choices();
             });
             
             self.destroy();
