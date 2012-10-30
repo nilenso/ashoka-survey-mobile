@@ -13,6 +13,10 @@ function ResponseShowWindow(responseID) {
 	view.addEventListener('ResponseShowView:responseEdit', function(e){
 		navGroup.open(new ResponseEditWindow(e.responseID));	
 	})
+	
+	view.addEventListener('ResponseShowView:responseDeleted', function(e){
+		navGroup.close(self);
+	})
 
 
 	return self;

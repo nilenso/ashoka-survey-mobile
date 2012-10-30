@@ -4,6 +4,7 @@ function ResponseShowView(responseID) {
   var Survey = require('models/survey');
   var Answer = require('models/answer');
   var Question = require('models/question');
+  var Response = require('models/response');
   var convertResponseDataForTable = function() {
     var answers = Answer.findBy('response_id', responseID);
     var responses = _(answers).map(function(answer) {
@@ -33,10 +34,29 @@ function ResponseShowView(responseID) {
       responseID : responseID
     });
   });
+  
+  var responseDeleteButton = Ti.UI.createButton({
+    title : 'Delete this Response',
+    width : '100%'
+  });
+
+  responseDeleteButton.addEventListener('click', function(e) {
+  	var response = Response.findOneById(responseID);
+  	_(response.answers()).each(function(answer){
+  		answer.destroy_choices();
+  	});
+  	response.destroy_answers();
+  	response.destroy();
+    self.fireEvent('ResponseShowView:responseDeleted', {
+      responseID : responseID
+    });
+  });
+  
   var buttonsView = Ti.UI.createView({
     layout : 'vertical'
   });
   buttonsView.add(responseEditButton);
+  buttonsView.add(responseDeleteButton);
 
   table.setFooterView(buttonsView);
 

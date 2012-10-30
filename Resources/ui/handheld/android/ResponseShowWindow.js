@@ -13,6 +13,10 @@ function ResponseShowWindow(responseID) {
 	view.addEventListener('ResponseShowView:responseEdit', function(e){
 		new ResponseEditWindow(e.responseID).open();	
 	})
+	
+	view.addEventListener('ResponseShowView:responseDeleted', function(e){
+		self.close();
+	})
 
 	return self;
 }
