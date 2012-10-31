@@ -2,6 +2,7 @@
 function ResponsesNewView(surveyID) {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
+	var Survey = require('models/survey');
 	var Response = require('models/response');
 	var QuestionView = require('ui/common/questions/QuestionView');
 	var DateQuestionView = require('ui/common/questions/DateQuestionView');
@@ -9,7 +10,8 @@ function ResponsesNewView(surveyID) {
 	var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionView');
 
 	var self = Ti.UI.createScrollView({
-		layout : 'vertical'
+		layout : 'vertical',
+		height : Titanium.UI.SIZE
 	});
 
 	var answerFields = {};
@@ -24,13 +26,14 @@ function ResponsesNewView(surveyID) {
 		text += errorText ? '\n' + errorText : '';
 		return text;
 	}
-	var questions = Question.findBy('survey_id', surveyID);
+	var survey = Survey.findOneById(surveyID);
+	var questions = survey.firstLevelQuestions();
 	_(questions).each(function(question) {
 		var label = Ti.UI.createLabel({
 			color : '#000000',
 			text : generateLabelTextForQuestion(question, ""),
-			height : 'auto',
-			width : 'auto',
+			height : Titanium.UI.SIZE,
+			width : Titanium.UI.SIZE,
 			left : 5
 		});
 		self.add(label);

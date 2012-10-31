@@ -27,6 +27,13 @@ var Option = new Ti.App.joli.model({
 			});
 			return records;
 		},
+	},
+	
+	objectMethods : {
+		subQuestions : function() {
+			var Question = require('models/question');
+			return Question.findBy('parent_id', this.id);
+		}
 	}
 });
 

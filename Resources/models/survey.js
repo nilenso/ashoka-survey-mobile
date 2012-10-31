@@ -126,6 +126,14 @@ var Survey = new Ti.App.joli.model({
 			// Send the request.
 			client.send();
 		},
+		
+		firstLevelQuestions : function() {
+			var questions = Question.findBy('survey_id', this.id);
+			var questionList = _.select(questions, function(question) {
+				return question.parent_id == null;
+			});
+			return questionList;
+		}
 	}
 });
 
