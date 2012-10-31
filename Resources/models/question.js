@@ -11,11 +11,12 @@ var Question = new Ti.App.joli.model({
 		image_url : 'TEXT',
 		type : 'TEXT',
 		max_value : 'INTEGER', 
-		min_value : 'INTEGER' 
+		min_value : 'INTEGER',
+		parent_id : 'INTEGER' 
 	},
 
 	methods : {
-		createRecords : function(data, surveyID) {
+		createRecords : function(data, surveyID, parentID) {
 			var _ = require('lib/underscore')._;
 			var that = this;
 			var records = [];
@@ -29,7 +30,8 @@ var Question = new Ti.App.joli.model({
 					image_url : question.image_url,
 					type : question.type,
 					min_value : question.min_value,
-					max_value : question.max_value
+					max_value : question.max_value,
+					parent_id : parentID
 				});
 				record.save();
 				records.push(record);

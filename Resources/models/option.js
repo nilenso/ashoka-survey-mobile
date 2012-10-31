@@ -18,6 +18,11 @@ var Option = new Ti.App.joli.model({
 					question_id : questionID,
 				});
 				record.save();
+				var Question = require('models/question');
+				surveyID = Question.findById(questionID).survey_id;
+				if (!_.isEmpty(option.questions)) {
+					Question.createRecords(option.questions, surveyID, record.id);
+				}
 				records.push(record);
 			});
 			return records;
