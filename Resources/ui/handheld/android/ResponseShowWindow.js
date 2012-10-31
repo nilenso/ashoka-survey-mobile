@@ -9,13 +9,14 @@ function ResponseShowWindow(responseID) {
 	});
 	var view = new ResponseShowView(responseID);
 	self.add(view);
-	
-	view.addEventListener('ResponseShowView:responseEdit', function(e){
-		new ResponseEditWindow(e.responseID).open();	
+
+	view.addEventListener('ResponseShowView:responseEdit', function(e) {
+		new ResponseEditWindow(e.responseID).open();
 	})
-	
-	view.addEventListener('ResponseShowView:responseDeleted', function(e){
+
+	view.addEventListener('ResponseShowView:responseDeleted', function(e) {
 		self.close();
+		Ti.App.fireEvent('ResponseShowWindow:closed');
 	})
 
 	return self;

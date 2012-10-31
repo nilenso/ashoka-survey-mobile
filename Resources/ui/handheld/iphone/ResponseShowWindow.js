@@ -16,6 +16,7 @@ function ResponseShowWindow(responseID) {
 	
 	view.addEventListener('ResponseShowView:responseDeleted', function(e){
 		navGroup.close(self);
+		Ti.App.fireEvent('ResponseShowWindow:closed');
 	})
 
 

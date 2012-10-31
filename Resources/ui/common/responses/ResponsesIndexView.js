@@ -51,6 +51,10 @@ function ResponsesIndexView(surveyID) {
 		width : 'auto',
 		height : 'auto'
 	});
+	
+	Ti.App.addEventListener('ResponseShowWindow:closed', function(){
+		table.setData(convertModelDataForTable());
+	});
 
 	showMessageIfModelIsEmpty();
 	return self;
