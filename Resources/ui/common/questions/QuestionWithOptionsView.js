@@ -39,7 +39,7 @@ function QuestionWithOptionsView(question, content) {
 
 	picker.addEventListener('change', function() {
 		var top_margin = 0;
-		var option = Option.findOneById(picker.getSelectedRow(null).getId());
+		var option = Option.findOneById(picker.getSelectedRow(null).id);
 		_(self.getChildren()).each(function(childView) {
 			if (childView != picker)
 				self.remove(childView);
