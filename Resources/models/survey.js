@@ -111,7 +111,6 @@ var Survey = new Ti.App.joli.model({
 					var data = JSON.parse(this.responseText);
 					var records = Question.createRecords(data, self.id);
 					_(records).each(function(record){
-						record.fetchOptions();
 						record.fetchImage();
 					});					
 				},

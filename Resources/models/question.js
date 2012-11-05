@@ -35,6 +35,7 @@ var Question = new Ti.App.joli.model({
 				});
 				record.save();
 				records.push(record);
+			  record.fetchOptions();
 			});
 			return records;
 		}
