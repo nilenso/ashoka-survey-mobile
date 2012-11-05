@@ -41,7 +41,7 @@ function QuestionView(question, answer) {
   var valueField;
   content = answer ? answer.content : null;
 
-  if (question.type == 'RadioQuestion') {
+  if (question.type == 'RadioQuestion' || question.type == 'DropDownQuestion') {
     valueField = new QuestionWithOptionsView(question, content);
   } else if (question.type == 'DateQuestion') {
     valueField = new DateQuestionView(question, content);
