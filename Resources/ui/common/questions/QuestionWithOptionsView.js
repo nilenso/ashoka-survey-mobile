@@ -6,15 +6,13 @@ function QuestionWithOptionsView(question, content) {
 	var view_height = 400;
 	var self = Ti.UI.createView({
 		layout : 'vertical',
-		height : view_height
+		height : Titanium.UI.SIZE
 	});
 
 	var picker = Ti.UI.createPicker({
 		color : '#336699',
 		right : 5,
-		left : 5,
-		height : Titanium.UI.SIZE
-
+		left : 5
 	});
 
 	var data = [];
@@ -49,8 +47,6 @@ function QuestionWithOptionsView(question, content) {
 			var questionView = Ti.UI.createLabel({
 				color : '#000000',
 				text : question.content,
-				height : Titanium.UI.SIZE,
-				width : Titanium.UI.SIZE,
 				left : 5
 			});
 			self.add(questionView);

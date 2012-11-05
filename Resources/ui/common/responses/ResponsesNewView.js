@@ -29,8 +29,6 @@ function ResponsesNewView(surveyID) {
 		var label = Ti.UI.createLabel({
 			color : '#000000',
 			text : generateLabelTextForQuestion(question, ""),
-			height : Titanium.UI.SIZE,
-			width : Titanium.UI.SIZE,
 			left : 5
 		});
 		self.add(label);
