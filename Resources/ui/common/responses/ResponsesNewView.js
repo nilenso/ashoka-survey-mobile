@@ -5,9 +5,6 @@ function ResponsesNewView(surveyID) {
 	var Survey = require('models/survey');
 	var Response = require('models/response');
 	var QuestionView = require('ui/common/questions/QuestionView');
-	var DateQuestionView = require('ui/common/questions/DateQuestionView');
-	var QuestionWithOptionsView = require('ui/common/questions/QuestionWithOptionsView');
-	var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionView');
 
 	var self = Ti.UI.createScrollView({
 		layout : 'vertical',
@@ -47,16 +44,7 @@ function ResponsesNewView(surveyID) {
 			self.add(imageView);
 		}
 
-		var valueField;
-		if (question.type == 'RadioQuestion') {
-			valueField = new QuestionWithOptionsView(question);
-		} else if (question.type == 'DateQuestion') {
-			valueField = new DateQuestionView(question);
-		} else if (question.type == 'MultiChoiceQuestion') {
-			valueField = new MultiChoiceQuestionView(question);
-		} else {
-			valueField = new QuestionView(question);
-		}
+		var valueField = new QuestionView(question);
 
 		self.add(valueField);
 		answerFields[question.id] = {

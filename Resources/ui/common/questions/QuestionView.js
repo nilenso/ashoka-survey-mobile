@@ -1,23 +1,25 @@
+var BasicQuestionView = require('ui/common/questions/BasicQuestionView');
+var DateQuestionView = require('ui/common/questions/DateQuestionView');
+var QuestionWithOptionsView = require('ui/common/questions/QuestionWithOptionsView');
+var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionView');
+
 //QuestionView Component Constructor
-function QuestionView(question, content) {
+function QuestionView(question, answer) {
+  var self;
+  content = answer? answer.content : null;
+  
+  if (question.type == 'RadioQuestion') {
+    self = new QuestionWithOptionsView(question, content);
+  } else if (question.type == 'DateQuestion') {
+    self = new DateQuestionView(question, content);
+  } else if (question.type == 'MultiChoiceQuestion') {
+    var optionIDs = answer ? answer.optionIDs() : null;
+    self = new MultiChoiceQuestionView(question, optionIDs);
+  } else {
+    self = new BasicQuestionView(question, content);
+  }
 
-	var props = {
-		borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-		color : '#336699',
-		right : 5,
-		left : 5,
-		editable : true
-	};
-
-	if (question.type == 'NumericQuestion')
-		props['keyboardType'] = Ti.UI.KEYBOARD_NUMBER_PAD;
-	else if (question.type == 'MultilineQuestion')
-		props['height'] = Ti.Platform.displayCaps.platformHeight * 0.25;
-		
-	if (content) props['value'] = content;
-
-	var self = Ti.UI.createTextField(props);
-	return self;
+  return self;
 }
 
 module.exports = QuestionView;
