@@ -17,6 +17,8 @@ function QuestionView(question, answer) {
   }
   var self = Ti.UI.createView({
     layout : 'vertical',
+    type : 'question',
+    id : question.id,
     height : Titanium.UI.SIZE
   });
 

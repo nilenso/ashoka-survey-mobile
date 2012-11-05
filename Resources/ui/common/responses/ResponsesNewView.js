@@ -11,17 +11,11 @@ function ResponsesNewView(surveyID) {
     height : Titanium.UI.SIZE
   });
 
-  var answerFields = {};
-
   var survey = Survey.findOneById(surveyID);
   var questions = survey.firstLevelQuestions();
   _(questions).each(function(question) {
     var questionView = new QuestionView(question);
     self.add(questionView);
-    answerFields[question.id] = {
-      'label' : _(questionView.children).first(),
-      'valueField' : _(questionView.children).last()
-    };
   });
 
   var resetErrors = function() {
@@ -48,8 +42,23 @@ function ResponsesNewView(surveyID) {
       }
     }
   }
+  var questionViews = function(parentView) {
+    var foo = {}
+    _(parentView.getChildren()).each(function(view) {
+      if (view.type == 'question') {
+        foo[view.id] = {
+          'label' : _(view.children).first(),
+          'valueField' : _(view.children).last()
+        };
+        Ti.API.info("label and value" + _(view.children).first() + _(view.children).last());
+      }
+      _(foo).extend(questionViews(view));
+    });
+    return foo;
+  };
+
   var validateAndSaveAnswers = function(e, status) {
-    var answersData = _(answerFields).map(function(fields, questionID) {
+    var answersData = _(questionViews(self)).map(function(fields, questionID) {
       Ti.API.info("questionid:" + questionID);
       Ti.API.info("content:" + fields['valueField'].getValue());
       return {
