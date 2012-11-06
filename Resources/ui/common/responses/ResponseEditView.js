@@ -4,6 +4,7 @@ function ResponseEditView(responseID) {
   var Question = require('models/question');
   var Answer = require('models/answer');
   var Response = require('models/response');
+  var Survey = require('models/survey');
   var QuestionView = require('ui/common/questions/QuestionView');
   var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
   var responseViewHelper = new ResponseViewHelper;
@@ -11,10 +12,12 @@ function ResponseEditView(responseID) {
   var self = Ti.UI.createScrollView({
     layout : 'vertical'
   });
-
-  var answers = Answer.findBy('response_id', responseID);
-  _(answers).each(function(answer) {
-    var question = answer.question();
+  
+  var response = Response.findOneById(responseID);
+  var survey = Survey.findOneById(response.survey_id);
+  var questions = survey.firstLevelQuestions();
+  _(questions).each(function(question) {
+    var answer = response.answerForQuestion(question.id); 
     var questionView = new QuestionView(question, answer);
     self.add(questionView);
   });

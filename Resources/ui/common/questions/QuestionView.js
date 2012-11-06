@@ -40,10 +40,10 @@ function QuestionView(question, answer) {
   }
 
   var valueField;
-  content = answer ? answer.content : null;
+  var content = answer ? answer.content : null;
 
   if (question.type == 'RadioQuestion' || question.type == 'DropDownQuestion') {
-    valueField = new QuestionWithOptionsView(question, content);
+    valueField = new QuestionWithOptionsView(question, answer);
   } else if (question.type == 'DateQuestion') {
     valueField = new DateQuestionView(question, content);
   } else if (question.type == 'MultiChoiceQuestion') {

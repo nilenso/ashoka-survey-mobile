@@ -1,8 +1,11 @@
 //QuestionWithOptionsView Component Constructor
 var _ = require('lib/underscore')._;
 var Option = require('models/option');
+var Response = require('models/response');
 
-function QuestionWithOptionsView(question, content) {
+function QuestionWithOptionsView(question, answer) {
+  var content = answer ? answer.content : null;
+  var response = answer ? Response.findOneById(answer.response_id) : null;
   var view_height = 400;
   var self = Ti.UI.createView({
     layout : 'vertical',
@@ -34,27 +37,32 @@ function QuestionWithOptionsView(question, content) {
   picker.selectionIndicator = true;
 
   self.add(picker);
+  var showSubQuestions = function(selRow) {
+    if(!(selRow instanceof Ti.UI.PickerRow)) selRow = picker.getSelectedRow(0);
+    var option = Option.findOneById(selRow.id);
 
-  picker.addEventListener('change', function() {
-    var top_margin = 0;
-    var option = Option.findOneById(picker.getSelectedRow(null).id);
     _(self.getChildren()).each(function(childView) {
       if (childView != picker)
         self.remove(childView);
     });
     var QuestionView = require('ui/common/questions/QuestionView');
-    var questions = option.subQuestions();
-    _(questions).each(function(question) {
-      self.add(new QuestionView(question));
+    var subQuestions = option.subQuestions();
+    _(subQuestions).each(function(subQuestion) {
+      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
+      self.add(new QuestionView(subQuestion, subQuestionAnswer));
     });
-    return self;
-  });
+  };
+
+  picker.addEventListener('change', showSubQuestions);
 
   if (content) {
+    var selectedRow = null;
     _(data).each(function(option, index) {
       if (option.title == content)
         picker.setSelectedRow(0, index);
+        selectedRow = option;
     });
+    showSubQuestions(selectedRow);
   }
 
   self.getValue = function() {

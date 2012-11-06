@@ -111,13 +111,13 @@ var Response = new Ti.App.joli.model({
           Ti.App.fireEvent('response.sync', {
             survey_id : self.survey_id
           });
-          
+
           var received_response = JSON.parse(this.responseText);
-          
+
           if (received_response['status'] == "complete") {
-            self.destroy_answers();            
+            self.destroy_answers();
             self.destroy();
-          } else {            
+          } else {
             self.fromArray({
               'id' : self.id,
               'survey_id' : self.survey_id,
@@ -125,11 +125,10 @@ var Response = new Ti.App.joli.model({
               'status' : received_response['status'],
               'updated_at' : (new Date()).toString()
             });
-            
-            
+
             _(self.answers()).each(function(answer, index) {
               answer.destroy_choices();
-              answer.destroy();                          
+              answer.destroy();
               var new_answer = Answer.newRecord({
                 'response_id' : self.id,
                 'question_id' : received_response.answers[index].question_id,
@@ -138,11 +137,11 @@ var Response = new Ti.App.joli.model({
                 'updated_at' : (new Date()).toString(),
               });
               new_answer.save();
-              
+
               _(received_response.answers[index].choices).each(function(choice) {
-              	choice.answer_id = new_answer.id;  
-			  	Choice.newRecord(choice).save();              	
-              })              
+                choice.answer_id = new_answer.id;
+                Choice.newRecord(choice).save();
+              })
             });
             Ti.API.info("before save response WEB ID: " + self.web_id);
             self.save();
@@ -151,13 +150,13 @@ var Response = new Ti.App.joli.model({
         },
         // function called when an error occurs, including a timeout
         onerror : function(e) {
-          if(this.status == '410') { // Response deleted on server
-          	Ti.API.info("Response deleted on server: " + this.responseText);
-          	self.destroy_answers();
-          	self.destroy();
+          if (this.status == '410') {// Response deleted on server
+            Ti.API.info("Response deleted on server: " + this.responseText);
+            self.destroy_answers();
+            self.destroy();
           } else {
-          	Ti.API.info("Erroneous Response: " + this.responseText);
-          	self.has_error = true;
+            Ti.API.info("Erroneous Response: " + this.responseText);
+            self.has_error = true;
           }
           self.synced = true;
           Ti.App.fireEvent('response.sync', {
@@ -179,11 +178,17 @@ var Response = new Ti.App.joli.model({
     answers : function() {
       return Answer.findBy('response_id', this.id)
     },
-    
+
     destroy_answers : function() {
-    	_(this.answers()).each(function(answer){
-    		answer.destroy();
-    	})
+      _(this.answers()).each(function(answer) {
+        answer.destroy();
+      })
+    },
+    
+    answerForQuestion : function(questionID) {
+      return _(this.answers()).find(function(answer) {
+        return answer.question_id == questionID;
+      });
     }
   }
 });
