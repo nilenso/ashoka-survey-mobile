@@ -28,7 +28,7 @@ function ResponseEditView(responseID) {
   });
 
   var resetErrors = function() {
-    _(answerFields).each(function(fields, questionID) {
+    _(questionViews(self)).each(function(fields, questionID) {
       var question = Question.findOneById(questionID);
       var labelText = generateLabelTextForQuestion(question);
       fields.label.setText(labelText);
@@ -43,7 +43,7 @@ function ResponseEditView(responseID) {
       for (var field in responseErrors[answerErrors]) {
         var question_id = answerErrors;
         var question = Question.findOneById(question_id);
-        var label = answerFields[question_id].label;
+        var label = questionViews(self)[question_id].label;
         var labelText = generateLabelTextForQuestion(question, responseErrors[question_id][field]);
         label.setText(labelText);
         label.setColor("red");
