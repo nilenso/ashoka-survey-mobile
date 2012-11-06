@@ -10,8 +10,6 @@ function ResponseEditView(responseID) {
     layout : 'vertical'
   });
 
-  var answerFields = {};
-
   var generateLabelTextForQuestion = function(question, errorText) {
     text = '';
     text += question['content'];
@@ -25,32 +23,8 @@ function ResponseEditView(responseID) {
   var answers = Answer.findBy('response_id', responseID);
   _(answers).each(function(answer) {
     var question = answer.question();
-    var label = Ti.UI.createLabel({
-      color : '#000000',
-      text : generateLabelTextForQuestion(question, ""),
-      height : 'auto',
-      width : 'auto',
-      left : 5
-    });
-    self.add(label);
-
-    if (question.image_url) {
-      var imageView = Ti.UI.createImageView({
-        width : 100,
-        height : 100,
-        image : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, question.id.toString())
-      });
-      self.add(imageView);
-    }
-
-    var valueField = new QuestionView(question, answer);
-
-    self.add(valueField);
-    answerFields[question.id] = {
-      'valueField' : valueField,
-      'label' : label,
-      'answerID' : answer.id
-    };
+    var questionView = new QuestionView(question, answer);
+    self.add(questionView);
   });
 
   var resetErrors = function() {
@@ -77,8 +51,24 @@ function ResponseEditView(responseID) {
       }
     }
   }
+  var questionViews = function(parentView) {
+    var foo = {}
+    _(parentView.getChildren()).each(function(view) {
+      if (view.type == 'question') {
+        foo[view.id] = {
+          'label' : _(view.children).first(),
+          'valueField' : _(view.children).last(),
+          'answerID' : view.answerID
+        };
+        Ti.API.info("label and value" + _(view.children).first() + _(view.children).last());
+      }
+      _(foo).extend(questionViews(view));
+    });
+    return foo;
+  };
+
   var validateAndUpdateAnswers = function(e, status) {
-    var answersData = _(answerFields).map(function(fields, questionID) {
+    var answersData = _(questionViews(self)).map(function(fields, questionID) {
       Ti.API.info("questionid:" + questionID);
       Ti.API.info("content:" + fields['valueField'].getValue());
       return {

@@ -19,7 +19,8 @@ function QuestionView(question, answer) {
     layout : 'vertical',
     type : 'question',
     id : question.id,
-    height : Titanium.UI.SIZE
+    height : Titanium.UI.SIZE,
+    answerID : answer ? answer.id : null
   });
 
   var label = Ti.UI.createLabel({
