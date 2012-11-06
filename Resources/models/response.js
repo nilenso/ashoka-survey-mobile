@@ -64,13 +64,32 @@ var Response = new Ti.App.joli.model({
         'status' : status,
         'updated_at' : (new Date()).toString()
       });
+      var self = this;
       _(answersData).each(function(answerData) {
         var answer = Answer.findOneById(answerData.id);
-        answer.update(answerData.content);
+        if (answer)
+          answer.update(answerData.content);
+        else
+          Answer.createRecord(answerData, self.id);
       });
+      this.deleteObsoleteAnswers(answersData);
       this.save();
       Ti.App.fireEvent('updatedResponse');
       Ti.API.info("response updated at" + this.updated_at);
+    },
+
+    deleteObsoleteAnswers : function(answersData) {
+      var answerIDs = _(answersData).map(function(answerData) {
+        if(answerData.id) return answerData.id;
+      });
+      var obsoleteAnswers = _(this.answers()).select(function(answer) {
+        Ti.API.info("answer id " + answer.id);
+        return !_(answerIDs).include(answer.id);
+      });
+      _(obsoleteAnswers).each(function(answer) {
+        answer.destroy_choices();
+        answer.destroy();
+      });
     },
 
     sync : function() {
