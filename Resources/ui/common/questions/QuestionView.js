@@ -3,6 +3,7 @@ var PhotoQuestionView = require('ui/common/questions/PhotoQuestionView');
 var DateQuestionView = require('ui/common/questions/DateQuestionView');
 var QuestionWithOptionsView = require('ui/common/questions/QuestionWithOptionsView');
 var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionView');
+var RatingQuestionView = require('ui/common/questions/RatingQuestionView');
 
 //QuestionView Component Constructor
 function QuestionView(question, answer) {
@@ -49,6 +50,8 @@ function QuestionView(question, answer) {
     valueField = new DateQuestionView(question, content);
   } else if (question.type == 'PhotoQuestion') {
     valueField = new PhotoQuestionView(question);
+  } else if (question.type == 'RatingQuestion') {
+    valueField = new RatingQuestionView(question, content);
   } else if (question.type == 'MultiChoiceQuestion') {
     var optionIDs = answer ? answer.optionIDs() : null;
     valueField = new MultiChoiceQuestionView(question, optionIDs);
