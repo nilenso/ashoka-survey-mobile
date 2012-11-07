@@ -1,17 +1,26 @@
 //BasicQuestionView Component Constructor
 function PhotoQuestionView(question, content) {
 
-	var self = Ti.UI.createButton({
+	var self = Ti.UI.createView({
+		layout : 'vertical',
+		height : Titanium.UI.SIZE
+	});
+
+	var pictureButton = Ti.UI.createButton({
 		title : 'Take a Picture',
 		width : '48%'
 	});
 
-	self.addEventListener('click', function() {
+	self.add(pictureButton);
+
+	pictureButton.addEventListener('click', function() {
 		Ti.Media.showCamera({
-			succes : function(event) {
+			success : function(event) {
 				if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
 					var image = event.media;
 					var imageView = Ti.UI.createImageView({
+						width : 100,
+						height : 100,
 						image : event.media
 					});
 					self.add(imageView);
