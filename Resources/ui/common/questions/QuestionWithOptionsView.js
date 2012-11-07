@@ -37,10 +37,10 @@ function QuestionWithOptionsView(question, answer) {
   picker.selectionIndicator = true;
 
   self.add(picker);
-  var showSubQuestions = function(selRow) {
-    if(!(selRow instanceof Ti.UI.PickerRow)) selRow = picker.getSelectedRow(0);
-    var option = Option.findOneById(selRow.id);
-
+  var showSubQuestions = function(selectedRow) {
+    if(!(selectedRow instanceof Ti.UI.PickerRow)) selectedRow = picker.getSelectedRow(0);
+    var option = Option.findOneById(selectedRow.id);
+	Ti.API.info("Showing sub questions for" + option.content);
     _(self.getChildren()).each(function(childView) {
       if (childView != picker)
         self.remove(childView);
@@ -58,9 +58,10 @@ function QuestionWithOptionsView(question, answer) {
   if (content) {
     var selectedRow = null;
     _(data).each(function(option, index) {
-      if (option.title == content)
-        picker.setSelectedRow(0, index);
+      if (option.title == content) {
+      	picker.setSelectedRow(0, index);
         selectedRow = option;
+      } 
     });
     showSubQuestions(selectedRow);
   }
