@@ -115,38 +115,46 @@ var Response = new Ti.App.joli.model({
 
 					var received_response = JSON.parse(this.responseText);
 
+					self.fromArray({
+						'id' : self.id,
+						'survey_id' : self.survey_id,
+						'web_id' : received_response['id'],
+						'status' : received_response['status'],
+						'updated_at' : (new Date()).toString()
+					});
+
+					_(self.answers()).each(function(answer, index) {
+						var image = answer.image;
+						answer.destroy_choices();
+						answer.destroy();
+						var new_answer = Answer.newRecord({
+							'response_id' : self.id,
+							'question_id' : received_response.answers[index].question_id,
+							'web_id' : received_response.answers[index].id,
+							'content' : received_response.answers[index].content,
+							'updated_at' : (new Date()).toString(),
+							'image' : image
+						});
+						new_answer.save();
+
+						_(received_response.answers[index].choices).each(function(choice) {
+							choice.answer_id = new_answer.id;
+							Choice.newRecord(choice).save();
+						})
+					});
+
+					Ti.API.info("before save response WEB ID: " + self.web_id);
+					self.save();
+					Ti.API.info("after save response WEB ID: " + self.web_id);
+
+					_(self.answers()).each(function(answer) {
+						Ti.API.info("Uploading the image");
+						answer.uploadImage(received_response['status']);
+					});
+
 					if (received_response['status'] == "complete") {
 						self.destroy_answers();
 						self.destroy();
-					} else {
-						self.fromArray({
-							'id' : self.id,
-							'survey_id' : self.survey_id,
-							'web_id' : received_response['id'],
-							'status' : received_response['status'],
-							'updated_at' : (new Date()).toString()
-						});
-
-						_(self.answers()).each(function(answer, index) {
-							answer.destroy_choices();
-							answer.destroy();
-							var new_answer = Answer.newRecord({
-								'response_id' : self.id,
-								'question_id' : received_response.answers[index].question_id,
-								'web_id' : received_response.answers[index].id,
-								'content' : received_response.answers[index].content,
-								'updated_at' : (new Date()).toString(),
-							});
-							new_answer.save();
-
-							_(received_response.answers[index].choices).each(function(choice) {
-								choice.answer_id = new_answer.id;
-								Choice.newRecord(choice).save();
-							})
-						});
-						Ti.API.info("before save response WEB ID: " + self.web_id);
-						self.save();
-						Ti.API.info("after save response WEB ID: " + self.web_id);
 					}
 				},
 				// function called when an error occurs, including a timeout

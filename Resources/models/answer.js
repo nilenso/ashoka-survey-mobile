@@ -10,7 +10,8 @@ var Answer = new Ti.App.joli.model({
 		response_id : 'INTEGER',
 		question_id : 'INTEGER',
 		web_id : 'INTEGER',
-		updated_at : 'TEXT'
+		updated_at : 'TEXT',
+		image : 'TEXT'
 	},
 
 	methods : {
@@ -28,6 +29,13 @@ var Answer = new Ti.App.joli.model({
 				_(optionIds).each(function(option_id) {
 					Choice.createRecord(answer.id, option_id);
 				});
+			} else if (question.type == 'PhotoQuestion') {
+				var image = answerData['content'];
+				answerData['content'] = "";
+				answerData['image'] = image;
+				answerData['updated_at'] = (new Date()).toString();
+				var answer = that.newRecord(answerData);
+				answer.save();
 			} else {
 				answerData['updated_at'] = (new Date()).toString();
 				that.newRecord(answerData).save();
@@ -107,6 +115,9 @@ var Answer = new Ti.App.joli.model({
 		hasChoices : function() {
 			return Question.findOneById(this.question_id).type == 'MultiChoiceQuestion';
 		},
+		isImage : function() {
+			return Question.findOneById(this.question_id).type == 'PhotoQuestion';
+		},
 
 		optionIDs : function() {
 			return _(Choice.findBy('answer_id', this.id)).map(function(choice) {
@@ -118,11 +129,37 @@ var Answer = new Ti.App.joli.model({
 			return Question.findOneById(this.question_id);
 
 		},
-		
+
 		destroy_choices : function() {
 			return _(Choice.findBy('answer_id', this.id)).each(function(choice) {
 				choice.destroy();
-			});	
+			});
+		},
+
+		uploadImage : function(status) {
+			if (this.isImage()) {
+				var client = Ti.Network.createHTTPClient();
+
+				client.onload = function(e) {
+					Ti.API.info("Succceesssss fully saved IMAGE!" + e);
+				};
+
+				client.onerror = function(e) {
+					Ti.API.info("Error saving IMAGE! :( ");
+					Ti.API.info(e.error);
+				};
+
+				var image = Titanium.Filesystem.getFile(this.image);
+				read_image = image.read();
+
+				var url = Ti.App.Properties.getString('server_url') + '/api/responses/' + this.response_id.toString() + '/image_upload';
+				client.open('POST', url);
+				client.setRequestHeader("enctype", "multipart/form-data;");
+				client.send({
+					media : read_image,
+					answer_id : this.web_id
+				});
+			}
 		}
 	}
 });
