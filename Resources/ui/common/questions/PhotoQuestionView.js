@@ -1,3 +1,4 @@
+var _ = require('lib/underscore')._;
 //BasicQuestionView Component Constructor
 function PhotoQuestionView(question, content) {
 
@@ -17,6 +18,10 @@ function PhotoQuestionView(question, content) {
 		Ti.Media.showCamera({
 			success : function(event) {
 				if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
+					_(self.getChildren()).each(function(childView) {
+						if (childView != pictureButton)
+							self.remove(childView);
+					});
 					var imageView = Ti.UI.createImageView({
 						width : 100,
 						height : 100,
@@ -39,7 +44,7 @@ function PhotoQuestionView(question, content) {
 	});
 
 	self.getValue = function() {
-		filename = "image"+question.id + ".jpg"
+		filename = "image" + question.id + ".jpg"
 		var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
 		file.write(self.image);
 		return file.nativePath;
