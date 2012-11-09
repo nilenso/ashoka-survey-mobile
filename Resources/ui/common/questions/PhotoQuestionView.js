@@ -1,6 +1,6 @@
 var _ = require('lib/underscore')._;
 //BasicQuestionView Component Constructor
-function PhotoQuestionView(question, content) {
+function PhotoQuestionView(question, image) {
 
 	var self = Ti.UI.createView({
 		layout : 'vertical',
@@ -43,8 +43,18 @@ function PhotoQuestionView(question, content) {
 		});
 	});
 
+	if (image) {
+		var imageView = Ti.UI.createImageView({
+			width : 100,
+			height : 100,
+			image : image
+		});
+		self.add(imageView);
+		self.image = image;
+	}
+
 	self.getValue = function() {
-		filename = "image" + question.id + ".jpg"
+		filename = "iamge_" + (new Date()).valueOf() + ".jpg"
 		var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
 		file.write(self.image);
 		return file.nativePath;

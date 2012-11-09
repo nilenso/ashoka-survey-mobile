@@ -77,9 +77,6 @@ var Answer = new Ti.App.joli.model({
 					return choice.option_id;
 				})
 
-				Ti.API.info('Merge IDs');
-				Ti.API.info(existing_optionIDs.sort());
-				Ti.API.info(optionIds.sort());
 				var updated_at = optionIds.sort() == existing_optionIDs.sort() ? this.updated_at : (new Date()).toString();
 
 				_(Choice.findBy('answer_id', this.id)).each(function(choice) {
@@ -97,6 +94,20 @@ var Answer = new Ti.App.joli.model({
 					'question_id' : this.question_id,
 					'web_id' : this.web_id,
 					'updated_at' : updated_at
+				});
+			} else if (question.type == 'PhotoQuestion') {
+				var image = content;
+				var that = this;
+				var updated_at = image == this.image ? this.updated_at : (new Date()).toString();
+
+				this.fromArray({
+					'id' : this.id,
+					'content' : '',
+					'response_id' : this.response_id,
+					'question_id' : this.question_id,
+					'web_id' : this.web_id,
+					'updated_at' : updated_at,
+					'image' : image
 				});
 			} else {
 				this.fromArray({
