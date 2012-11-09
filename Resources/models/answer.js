@@ -139,9 +139,14 @@ var Answer = new Ti.App.joli.model({
 		uploadImage : function(status) {
 			if (this.isImage()) {
 				var client = Ti.Network.createHTTPClient();
+				var self = this;
 
 				client.onload = function(e) {
 					Ti.API.info("Succceesssss fully saved IMAGE!" + e);
+					if (status == "complete") {
+						var imageFile = Titanium.Filesystem.getFile(self.image);
+						imageFile.deleteFile();
+					}
 				};
 
 				client.onerror = function(e) {
