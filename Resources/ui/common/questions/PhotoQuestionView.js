@@ -12,6 +12,29 @@ function PhotoQuestionView(question, image) {
 		width : '48%'
 	});
 
+	var addImageView = function(image) {
+		var imageView = Ti.UI.createImageView({
+			width : 100,
+			height : 100,
+			image : image
+		});
+		self.add(imageView);
+		self.image = image;
+
+		var clearPictureButton = Ti.UI.createButton({
+			title : 'Clear the Picture',
+			width : '48%'
+		});
+
+		self.add(clearPictureButton);
+
+		clearPictureButton.addEventListener('click', function() {
+			self.image = null;
+			self.remove(imageView);
+			self.remove(clearPictureButton);
+		})
+	};
+
 	self.add(pictureButton);
 
 	pictureButton.addEventListener('click', function() {
@@ -22,13 +45,7 @@ function PhotoQuestionView(question, image) {
 						if (childView != pictureButton)
 							self.remove(childView);
 					});
-					var imageView = Ti.UI.createImageView({
-						width : 100,
-						height : 100,
-						image : event.media
-					});
-					self.add(imageView);
-					self.image = event.media;
+					addImageView(event.media);
 				} else {
 					alert("got the wrong type back :" + event.mediaType);
 				}
@@ -44,20 +61,17 @@ function PhotoQuestionView(question, image) {
 	});
 
 	if (image) {
-		var imageView = Ti.UI.createImageView({
-			width : 100,
-			height : 100,
-			image : image
-		});
-		self.add(imageView);
-		self.image = image;
+		addImageView(image);
 	}
 
 	self.getValue = function() {
-		filename = "iamge_" + (new Date()).valueOf() + ".jpg"
-		var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
-		file.write(self.image);
-		return file.nativePath;
+		if (self.image) {
+			filename = "image_" + (new Date()).valueOf() + ".jpg"
+			var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
+			file.write(self.image);
+			return file.nativePath;
+		}
+		return null;
 	};
 
 	return self;

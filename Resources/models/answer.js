@@ -76,7 +76,6 @@ var Answer = new Ti.App.joli.model({
 				existing_optionIDs = _(Choice.findBy('answer_id', this.id)).map(function(choice) {
 					return choice.option_id;
 				})
-
 				var updated_at = optionIds.sort() == existing_optionIDs.sort() ? this.updated_at : (new Date()).toString();
 
 				_(Choice.findBy('answer_id', this.id)).each(function(choice) {
@@ -148,7 +147,7 @@ var Answer = new Ti.App.joli.model({
 		},
 
 		uploadImage : function(status) {
-			if (this.isImage()) {
+			if (this.isImage() && this.image) {
 				var client = Ti.Network.createHTTPClient();
 				var self = this;
 
@@ -164,7 +163,7 @@ var Answer = new Ti.App.joli.model({
 					Ti.API.info("Error saving IMAGE! :( ");
 					Ti.API.info(e.error);
 				};
-
+				
 				var image = Titanium.Filesystem.getFile(this.image);
 				read_image = image.read();
 

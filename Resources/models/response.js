@@ -88,7 +88,7 @@ var Response = new Ti.App.joli.model({
 				return !_(answerIDs).include(answer.id);
 			});
 			_(obsoleteAnswers).each(function(answer) {
-				answer.destroy_choices();
+				answer.destroyChoices();
 				answer.destroy();
 			});
 		},
@@ -125,7 +125,7 @@ var Response = new Ti.App.joli.model({
 
 					_(self.answers()).each(function(answer, index) {
 						var image = answer.image;
-						answer.destroy_choices();
+						answer.destroyChoices();
 						answer.destroy();
 						var new_answer = Answer.newRecord({
 							'response_id' : self.id,
