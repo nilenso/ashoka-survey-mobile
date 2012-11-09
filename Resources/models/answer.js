@@ -141,7 +141,7 @@ var Answer = new Ti.App.joli.model({
 
 		},
 
-		destroy_choices : function() {
+		destroyChoices : function() {
 			return _(Choice.findBy('answer_id', this.id)).each(function(choice) {
 				choice.destroy();
 			});

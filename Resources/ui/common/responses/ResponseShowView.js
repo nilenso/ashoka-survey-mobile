@@ -54,10 +54,7 @@ function ResponseShowView(responseID) {
 
 	responseDeleteButton.addEventListener('click', function(e) {
 		var response = Response.findOneById(responseID);
-		_(response.answers()).each(function(answer) {
-			answer.destroy_choices();
-		});
-		response.destroy_answers();
+		response.destroyAnswers();
 		response.destroy();
 		self.fireEvent('ResponseShowView:responseDeleted', {
 			responseID : responseID

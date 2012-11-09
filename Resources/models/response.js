@@ -188,8 +188,11 @@ var Response = new Ti.App.joli.model({
 			return Answer.findBy('response_id', this.id)
 		},
 
-		destroy_answers : function() {
+		destroyAnswers : function() {
 			_(this.answers()).each(function(answer) {
+				answer.destroyChoices();
+				if (answer.isImage())
+					Ti.Filesystem.getFile(answer.image).deleteFile();
 				answer.destroy();
 			})
 		},
