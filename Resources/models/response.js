@@ -191,7 +191,7 @@ var Response = new Ti.App.joli.model({
 		destroyAnswers : function() {
 			_(this.answers()).each(function(answer) {
 				answer.destroyChoices();
-				if (answer.isImage())
+				if (answer.isImage() && answer.image)
 					Ti.Filesystem.getFile(answer.image).deleteFile();
 				answer.destroy();
 			})
