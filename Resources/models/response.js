@@ -153,7 +153,7 @@ var Response = new Ti.App.joli.model({
 					});
 
 					if (received_response['status'] == "complete") {
-						self.destroy_answers();
+						self.destroyAnswers();
 						self.destroy();
 					}
 				},
@@ -161,7 +161,7 @@ var Response = new Ti.App.joli.model({
 				onerror : function(e) {
 					if (this.status == '410') {// Response deleted on server
 						Ti.API.info("Response deleted on server: " + this.responseText);
-						self.destroy_answers();
+						self.destroyAnswers();
 						self.destroy();
 					} else {
 						Ti.API.info("Erroneous Response: " + this.responseText);
