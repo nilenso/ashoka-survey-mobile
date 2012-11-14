@@ -11,7 +11,8 @@ var Answer = new Ti.App.joli.model({
 		question_id : 'INTEGER',
 		web_id : 'INTEGER',
 		updated_at : 'TEXT',
-		image : 'TEXT'
+		image : 'TEXT',
+		photo_updated_at : 'TEXT'
 	},
 
 	methods : {
@@ -33,6 +34,7 @@ var Answer = new Ti.App.joli.model({
 				var image = answerData['content'];
 				answerData['content'] = "";
 				answerData['image'] = image;
+				answerData['photo_updated_at'] = (new Date()).toString(); 
 				answerData['updated_at'] = (new Date()).toString();
 				var answer = that.newRecord(answerData);
 				answer.save();
@@ -146,33 +148,57 @@ var Answer = new Ti.App.joli.model({
 			});
 		},
 
-		uploadImage : function(status) {
+		getRemoteImage : function(imageUrl) {
+			var self = this;
+			var filename = this.image
+			if (!filename) filename = "image_" + (new Date()).valueOf() + ".jpg";
+			var file = Titanium.Filesystem.getFile(filename);
+			var client = Titanium.Network.createHTTPClient();
+			client.onload = function() {
+				file.write(this.responseData);
+				self.image = file.nativePath;
+				self.save();
+			}
+			var url = Ti.App.Properties.getString('server_url') + imageUrl
+			client.open('GET', url);
+			client.send();
+		},
+		uploadImage : function(status, webId) {
 			if (this.isImage() && this.image) {
 				var client = Ti.Network.createHTTPClient();
 				var self = this;
 
 				client.onload = function(e) {
+					Ti.API.info("Response recieved for image : " + this.responseText);
 					Ti.API.info("Succceesssss fully saved IMAGE!" + e);
+
+					var received_response = JSON.parse(this.responseText);
+					
+					self.photo_updated_at = received_response['photo_updated_at'];
+
 					if (status == "complete") {
 						var imageFile = Titanium.Filesystem.getFile(self.image);
 						imageFile.deleteFile();
+					} else {
+						self.getRemoteImage(received_response.image_url);
 					}
+					Ti.API.info(this.image);
 				};
 
 				client.onerror = function(e) {
 					Ti.API.info("Error saving IMAGE! :( ");
 					Ti.API.info(e.error);
 				};
-				
+
 				var image = Titanium.Filesystem.getFile(this.image);
 				read_image = image.read();
-
-				var url = Ti.App.Properties.getString('server_url') + '/api/responses/' + this.response_id.toString() + '/image_upload';
-				client.open('POST', url);
+				var imageUrl = Ti.App.Properties.getString('server_url') + '/api/responses/' + webId + '/image_upload';
+				client.open('PUT', imageUrl);
 				client.setRequestHeader("enctype", "multipart/form-data;");
 				client.send({
 					media : read_image,
-					answer_id : this.web_id
+					answer_id : this.web_id,
+					photo_updated_at : this.photo_updated_at
 				});
 			}
 		}

@@ -114,7 +114,7 @@ var Response = new Ti.App.joli.model({
 					});
 
 					var received_response = JSON.parse(this.responseText);
-
+					
 					self.fromArray({
 						'id' : self.id,
 						'survey_id' : self.survey_id,
@@ -122,9 +122,11 @@ var Response = new Ti.App.joli.model({
 						'status' : received_response['status'],
 						'updated_at' : (new Date()).toString()
 					});
+					self.save();
 
 					_(self.answers()).each(function(answer, index) {
 						var image = answer.image;
+						var photoUpdatedAt = answer.photo_updated_at;
 						answer.destroyChoices();
 						answer.destroy();
 						var new_answer = Answer.newRecord({
@@ -133,7 +135,8 @@ var Response = new Ti.App.joli.model({
 							'web_id' : received_response.answers[index].id,
 							'content' : received_response.answers[index].content,
 							'updated_at' : (new Date()).toString(),
-							'image' : image
+							'image' : image,
+							'photo_updated_at' : photoUpdatedAt
 						});
 						new_answer.save();
 
@@ -143,13 +146,9 @@ var Response = new Ti.App.joli.model({
 						})
 					});
 
-					Ti.API.info("before save response WEB ID: " + self.web_id);
-					self.save();
-					Ti.API.info("after save response WEB ID: " + self.web_id);
-
 					_(self.answers()).each(function(answer) {
 						Ti.API.info("Uploading the image");
-						answer.uploadImage(received_response['status']);
+						answer.uploadImage(received_response['status'], received_response['id']);
 					});
 
 					if (received_response['status'] == "complete") {
@@ -178,7 +177,6 @@ var Response = new Ti.App.joli.model({
 			var method = self.web_id ? "PUT" : "POST";
 			url += self.web_id ? "/" + self.web_id : "";
 			url += ".json";
-			Ti.API.info("method: " + method);
 			client.open(method, url);
 			client.setRequestHeader("Content-Type", "application/json");
 			client.send(JSON.stringify(params));
