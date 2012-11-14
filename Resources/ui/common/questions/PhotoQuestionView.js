@@ -61,7 +61,8 @@ function PhotoQuestionView(question, image) {
 	});
 
 	if (image) {
-		addImageView(image);
+		var imageFile = Ti.Filesystem.getFile(image);
+		addImageView(imageFile.read());
 	}
 
 	self.getValue = function() {
