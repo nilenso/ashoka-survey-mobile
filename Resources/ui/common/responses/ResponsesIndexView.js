@@ -7,8 +7,12 @@ function ResponsesIndexView(surveyID) {
 	var convertModelDataForTable = function() {
 		var responses = Response.findBy('survey_id', surveyID);
 		return _(responses).map(function(response) {
+			var answersData = _(response.identifierAnswers()).map(function(answer){
+				return answer.question().content +  ": "  + answer.content;
+			});
 			return {
-				title : response.id.toString(),
+				header : "Response #" + response.id.toString(),
+				title: answersData.join("\n"),
 				hasDetail : true,
 				responseID : response.id
 			}
@@ -31,8 +35,6 @@ function ResponsesIndexView(surveyID) {
 	var table = Titanium.UI.createTableView({
 		data : convertModelDataForTable()
 	});
-	
-	Ti.API.info(convertModelDataForTable());
 
 	table.addEventListener('click', function(e) {
 		self.fireEvent('ResponsesIndexView:table_row_clicked', {
@@ -51,8 +53,8 @@ function ResponsesIndexView(surveyID) {
 		width : 'auto',
 		height : 'auto'
 	});
-	
-	Ti.App.addEventListener('ResponseShowWindow:closed', function(){
+
+	Ti.App.addEventListener('ResponseShowWindow:closed', function() {
 		table.setData(convertModelDataForTable());
 	});
 

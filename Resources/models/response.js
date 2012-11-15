@@ -199,6 +199,12 @@ var Response = new Ti.App.joli.model({
 			return _(this.answers()).find(function(answer) {
 				return answer.question_id == questionID;
 			});
+		},
+		
+		identifierAnswers : function() {
+			return _(this.answers()).select(function(answer){
+				return answer.question().identifier;
+			})
 		}
 	}
 });
