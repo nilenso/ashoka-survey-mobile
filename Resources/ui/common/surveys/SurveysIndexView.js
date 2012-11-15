@@ -2,6 +2,8 @@
 function SurveysIndexView() {
 	var Survey = require('models/survey');
 	var _ = require('lib/underscore')._;
+	var progressBar = require('ui/common/components/ProgressBar')
+
 	var convertModelDataForTable = function() {
 		return _(Survey.all()).map(function(survey) {
 			return {
@@ -21,7 +23,7 @@ function SurveysIndexView() {
 		}
 	}
 
-	Ti.App.addEventListener('surveys.fetch.success', function(e) {
+	progressBar.addEventListener('sync:complete', function(e) {
 		var _ = require('lib/underscore')._;
 		data = convertModelDataForTable();
 		table.setData(data);
@@ -40,51 +42,10 @@ function SurveysIndexView() {
 	//create object instance, a parasitic subclass of Observable
 	var self = Ti.UI.createView();
 	
-
-	// now assign that array to the table's data property to add those objects as rows
-	var progressBar = Titanium.UI.createProgressBar({
-		bottom: 2,
-		width : '100%',
-		height : 'auto',
-		min : 0,
-		max : 10,
-		value : 0,
-		keepScreenOn: true,
-		color : '#fff',
-		message : 'Fetching your surveys...',
-		font : {
-			fontSize : 14,
-			fontWeight : 'bold'
-		}
-	});
-	var hideProgressBarIfComplete = function(){
-		if(progressBar.getMax() == progressBar.getValue()) {
-			progressBar.setValue(0);			
-			progressBar.hide();
-		}
-	}
-	
-	
-	Ti.App.addEventListener('surveys.fetch.start', function(e){
+	Ti.App.addEventListener('surveys.fetch.start', function(e) {
 		self.add(progressBar);
 		progressBar.show();
 	});
-	
-	Ti.App.addEventListener('surveys.fetch.done', function(e){
-		progressBar.setMax(e.number_of_surveys);
-		hideProgressBarIfComplete();
-	});
-	
-	Ti.App.addEventListener('surveys.questions.fetch.done', function(e) {
-		progressBar.setValue(progressBar.getValue() + 1);
-		progressBar.setMax(progressBar.getMax() + e.number_of_option_questions);
-		hideProgressBarIfComplete();
-	});
-	
-	Ti.App.addEventListener('surveys.question.options.fetch.done', function(e){
-		progressBar.setValue(progressBar.getValue() + 1);
-		hideProgressBarIfComplete();
-	})
 	
 	
 	var table = Titanium.UI.createTableView({
