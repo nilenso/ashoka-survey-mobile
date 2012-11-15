@@ -14,6 +14,7 @@ var Survey = new Ti.App.joli.model({
 
 	methods : {
 		fetchSurveys : function() {
+			Ti.App.fireEvent('surveys.fetch.start');
 			var url = Ti.App.Properties.getString('server_url') + '/api/surveys';
 			var that = this;
 			var client = Ti.Network.createHTTPClient({

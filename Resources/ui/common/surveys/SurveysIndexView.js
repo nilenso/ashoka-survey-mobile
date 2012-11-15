@@ -49,6 +49,7 @@ function SurveysIndexView() {
 		min : 0,
 		max : 10,
 		value : 0,
+		keepScreenOn: true,
 		color : '#fff',
 		message : 'Fetching your surveys...',
 		font : {
@@ -63,10 +64,14 @@ function SurveysIndexView() {
 		}
 	}
 	
-	Ti.App.addEventListener('surveys.fetch.done', function(e){
+	
+	Ti.App.addEventListener('surveys.fetch.start', function(e){
 		self.add(progressBar);
-		progressBar.setMax(e.number_of_surveys);
 		progressBar.show();
+	});
+	
+	Ti.App.addEventListener('surveys.fetch.done', function(e){
+		progressBar.setMax(e.number_of_surveys);
 		hideProgressBarIfComplete();
 	});
 	
