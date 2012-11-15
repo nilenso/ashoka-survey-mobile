@@ -8,7 +8,7 @@ function ResponsesIndexView(surveyID) {
 		var responses = Response.findBy('survey_id', surveyID);
 		return _(responses).map(function(response) {
 			var answersData = _(response.identifierAnswers()).map(function(answer){
-				return answer.question().content +  ": "  + answer.content;
+				return answer.question().content +  ": "  + answer.contentForDisplay();
 			});
 			return {
 				header : "Response #" + response.id.toString(),

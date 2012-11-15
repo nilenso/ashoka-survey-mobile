@@ -1,6 +1,7 @@
 var _ = require('lib/underscore')._;
 var Choice = require('models/choice');
 var Question = require('models/question');
+var Option = require('models/option');
 
 var Answer = new Ti.App.joli.model({
 	table : 'answers',
@@ -140,6 +141,18 @@ var Answer = new Ti.App.joli.model({
 		question : function() {
 			return Question.findOneById(this.question_id);
 
+		},
+		
+		contentForDisplay : function() {
+			if(this.isImage()) {
+				return '';
+			} else if(this.hasChoices()) {
+				return _(this.optionIDs()).map(function(optionId){
+					return Option.findOneById(optionId).content;
+				}).join(', ');
+			} else {
+				return this.content;
+			}
 		},
 
 		destroyChoices : function() {
