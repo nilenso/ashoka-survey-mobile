@@ -79,6 +79,7 @@ var Question = new Ti.App.joli.model({
 					Ti.API.info("Received text for options: " + this.responseText);
 					var data = JSON.parse(this.responseText);
 					var records = Option.createRecords(data, self.id);
+					Ti.App.fireEvent('surveys.question.options.fetch.done');
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {

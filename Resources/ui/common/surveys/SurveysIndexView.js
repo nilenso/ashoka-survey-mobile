@@ -11,14 +11,13 @@ function SurveysIndexView() {
 			}
 		});
 	}
-	
 	var showMessageIfModelIsEmpty = function() {
-		if(Survey.isEmpty()) {
+		if (Survey.isEmpty()) {
 			self.add(label);
 			self.remove(table);
 		} else {
 			self.remove(label);
-			self.add(table);	
+			self.add(table);
 		}
 	}
 
@@ -26,7 +25,7 @@ function SurveysIndexView() {
 		var _ = require('lib/underscore')._;
 		data = convertModelDataForTable();
 		table.setData(data);
-		alert("Sync complete")
+		// alert("Sync complete")
 		showMessageIfModelIsEmpty();
 	});
 
@@ -40,8 +39,39 @@ function SurveysIndexView() {
 
 	//create object instance, a parasitic subclass of Observable
 	var self = Ti.UI.createView();
+	
 
 	// now assign that array to the table's data property to add those objects as rows
+	var progressBar = Titanium.UI.createProgressBar({
+		bottom: 0,
+		width : 250,
+		height : 'auto',
+		min : 0,
+		max : 10,
+		value : 0,
+		color : '#fff',
+		message : 'Fetching your surveys...',
+		font : {
+			fontSize : 14,
+			fontWeight : 'bold'
+		}
+	});
+	
+	Ti.App.addEventListener('surveys.fetch.done', function(e){
+		self.add(progressBar);
+		progressBar.setMax(e.number_of_surveys);
+		progressBar.show();
+	});
+	
+	Ti.App.addEventListener('surveys.questions.fetch.done', function(e) {
+		progressBar.setValue(progressBar.getValue() + 1);
+		progressBar.setMax(progressBar.getMax() + e.number_of_option_questions);
+	});
+	
+	Ti.App.addEventListener('surveys.question.options.fetch.done', function(e){
+		progressBar.setValue(progressBar.getValue() + 1);
+	})
+	
 	var table = Titanium.UI.createTableView({
 		data : convertModelDataForTable()
 	});
@@ -54,14 +84,16 @@ function SurveysIndexView() {
 
 	label = Ti.UI.createLabel({
 		color : '#333',
-		font : { fontSize : 18 },
+		font : {
+			fontSize : 18
+		},
 		text : 'No surveys here. Please perform a sync.',
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 		top : '40%',
 		width : 'auto',
 		height : 'auto'
 	});
-	
+
 	showMessageIfModelIsEmpty();
 	return self;
 }
