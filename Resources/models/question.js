@@ -12,7 +12,8 @@ var Question = new Ti.App.joli.model({
 		type : 'TEXT',
 		max_value : 'INTEGER', 
 		min_value : 'INTEGER',
-		parent_id : 'INTEGER' 
+		parent_id : 'INTEGER',
+		identifier : 'INTEGER' 
 	},
 
 	methods : {
@@ -31,7 +32,8 @@ var Question = new Ti.App.joli.model({
 					type : question.type,
 					min_value : question.min_value,
 					max_value : question.max_value,
-					parent_id : parentID
+					parent_id : parentID,
+					identifier : question.identifier
 				});
 				record.save();
 				records.push(record);
