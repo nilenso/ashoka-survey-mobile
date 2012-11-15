@@ -8,22 +8,19 @@ function ResponseShowView(responseID) {
 	var convertResponseDataForTable = function() {
 		var answers = Answer.findBy('response_id', responseID);
 		var responses = _(answers).map(function(answer) {
+			var row = Ti.UI.createTableViewRow({
+				header : Question.findOneById(answer.question_id).content,
+				title : answer.contentForDisplay() || ''
+			});
 			if (answer.isImage()) {
-				var row = Ti.UI.createTableViewRow({
-					'header' : Question.findOneById(answer.question_id).content
-				});
 				var imageView = Ti.UI.createImageView({
 					width : 100,
 					height : 100,
 					image : answer.image
 				});
 				row.add(imageView);
-				return(row);
 			}
-			return {
-				'header' : Question.findOneById(answer.question_id).content,
-				'title' : answer.content || ''
-			}
+			return (row);
 		});
 		return responses;
 	}

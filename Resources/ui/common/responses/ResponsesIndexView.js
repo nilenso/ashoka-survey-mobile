@@ -7,15 +7,28 @@ function ResponsesIndexView(surveyID) {
 	var convertModelDataForTable = function() {
 		var responses = Response.findBy('survey_id', surveyID);
 		return _(responses).map(function(response) {
-			var answersData = _(response.identifierAnswers()).map(function(answer){
-				return answer.question().content +  ": "  + answer.contentForDisplay();
-			});
-			return {
+			var row = Ti.UI.createTableViewRow({
 				header : "Response #" + response.id.toString(),
-				title: answersData.join("\n"),
-				hasDetail : true,
+				height : Titanium.UI.SIZE,
+				layout : 'vertical',
 				responseID : response.id
-			}
+			});
+
+			var answersData = _(response.identifierAnswers()).each(function(answer) {
+				var label = Ti.UI.createLabel({
+					text : answer.question().content + ": " + answer.contentForDisplay()
+				});
+				row.add(label);
+				if (answer.isImage()) {
+					var imageView = Ti.UI.createImageView({
+						width : 100,
+						height : 100,
+						image : answer.image
+					});
+					row.add(imageView);
+				}
+			});
+			return (row);
 		});
 	}
 	var showMessageIfModelIsEmpty = function() {
