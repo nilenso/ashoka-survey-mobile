@@ -56,21 +56,29 @@ function SurveysIndexView() {
 			fontWeight : 'bold'
 		}
 	});
+	var hideProgressBarIfComplete = function(){
+		if(progressBar.getMax() == progressBar.getValue())
+			progressBar.hide();
+	}
 	
 	Ti.App.addEventListener('surveys.fetch.done', function(e){
 		self.add(progressBar);
 		progressBar.setMax(e.number_of_surveys);
 		progressBar.show();
+		hideProgressBarIfComplete();
 	});
 	
 	Ti.App.addEventListener('surveys.questions.fetch.done', function(e) {
 		progressBar.setValue(progressBar.getValue() + 1);
 		progressBar.setMax(progressBar.getMax() + e.number_of_option_questions);
+		hideProgressBarIfComplete();
 	});
 	
 	Ti.App.addEventListener('surveys.question.options.fetch.done', function(e){
 		progressBar.setValue(progressBar.getValue() + 1);
+		hideProgressBarIfComplete();
 	})
+	
 	
 	var table = Titanium.UI.createTableView({
 		data : convertModelDataForTable()
