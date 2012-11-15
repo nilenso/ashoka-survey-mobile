@@ -15,18 +15,22 @@ function ResponsesIndexView(surveyID) {
 			});
 
 			var answersData = _(response.identifierAnswers()).each(function(answer) {
+				var view = Ti.UI.createView({
+					layout: 'horizontal'
+				});
 				var label = Ti.UI.createLabel({
 					text : answer.question().content + ": " + answer.contentForDisplay()
 				});
-				row.add(label);
+				view.add(label);
 				if (answer.isImage()) {
 					var imageView = Ti.UI.createImageView({
 						width : 100,
 						height : 100,
 						image : answer.image
 					});
-					row.add(imageView);
+					view.add(imageView);
 				}
+				row.add(view);
 			});
 			return (row);
 		});
