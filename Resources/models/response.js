@@ -202,9 +202,14 @@ var Response = new Ti.App.joli.model({
 		},
 		
 		identifierAnswers : function() {
-			return _(this.answers()).select(function(answer){
+			var identifiers = _(this.answers()).select(function(answer){
 				return answer.question().identifier;
-			})
+			});
+			if(_(identifiers).isEmpty()) {
+				identifiers = this.answers().slice(0,5);				
+			}
+			return identifiers;
+			
 		}
 	}
 });
