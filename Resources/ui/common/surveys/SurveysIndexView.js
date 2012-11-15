@@ -36,15 +36,15 @@ function SurveysIndexView() {
 			alert("Couldn't reach the server.");
 		}
 	});
-
+	
 	//create object instance, a parasitic subclass of Observable
 	var self = Ti.UI.createView();
 	
 
 	// now assign that array to the table's data property to add those objects as rows
 	var progressBar = Titanium.UI.createProgressBar({
-		bottom: 0,
-		width : 250,
+		bottom: 2,
+		width : '100%',
 		height : 'auto',
 		min : 0,
 		max : 10,
@@ -57,8 +57,10 @@ function SurveysIndexView() {
 		}
 	});
 	var hideProgressBarIfComplete = function(){
-		if(progressBar.getMax() == progressBar.getValue())
+		if(progressBar.getMax() == progressBar.getValue()) {
+			progressBar.setValue(0);			
 			progressBar.hide();
+		}
 	}
 	
 	Ti.App.addEventListener('surveys.fetch.done', function(e){
