@@ -32,6 +32,7 @@ function SurveysIndexView() {
 	});
 
 	Ti.App.addEventListener('surveys.fetch.error', function(data) {
+		progressBar.hide();
 		if (data.status >= 400) {
 			alert("Your server isn't responding. Sorry about that.");
 		} else if (data.status == 0) {
