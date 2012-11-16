@@ -43,11 +43,13 @@ function SurveysIndexView() {
 	//create object instance, a parasitic subclass of Observable
 	var self = Ti.UI.createView();
 	
-	Ti.App.addEventListener('surveys.fetch.start', function(e) {
+	var showProgressBar = function(e) {
 		self.add(progressBar);
 		progressBar.show();
-	});
+		Ti.App.removeEventListener('surveys:fetch:start', showProgressBar);
+	};
 	
+	Ti.App.addEventListener('surveys.fetch.start', showProgressBar);
 	
 	var table = Titanium.UI.createTableView({
 		data : convertModelDataForTable()
