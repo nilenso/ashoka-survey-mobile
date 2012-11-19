@@ -1,3 +1,5 @@
+var _ = require('lib/underscore')._;
+
 var Option = new Ti.App.joli.model({
 	table : 'options',
 	columns : {
@@ -32,7 +34,9 @@ var Option = new Ti.App.joli.model({
 	objectMethods : {
 		subQuestions : function() {
 			var Question = require('models/question');
-			return Question.findBy('parent_id', this.id);
+			var questions = Question.findBy('parent_id', this.id);
+			var sortedQuestions = _(questions).sortBy(function(question){ return question.order_number; });
+			return sortedQuestions;
 		}
 	}
 });
