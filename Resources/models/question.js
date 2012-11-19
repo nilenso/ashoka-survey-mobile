@@ -62,6 +62,9 @@ var Question = new Ti.App.joli.model({
 					},
 					// function called when an error occurs, including a timeout
 					onerror : function(e) {
+						Ti.App.fireEvent('surveys.fetch.error', {
+							status : this.status
+						});
 						Ti.API.info("Error downloading image from " + self.image_url);
 					},
 					timeout : 5000 // in milliseconds
@@ -99,6 +102,9 @@ var Question = new Ti.App.joli.model({
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {
 					Ti.API.info("Error");
+					Ti.App.fireEvent('surveys.fetch.error', {
+						status : this.status
+					});
 				},
 				timeout : 5000 // in milliseconds
 			});

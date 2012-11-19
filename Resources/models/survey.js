@@ -132,6 +132,9 @@ var Survey = new Ti.App.joli.model({
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {
+					Ti.App.fireEvent('surveys.fetch.error', {
+						status : this.status
+					});
 					Ti.API.info("Error");
 				},
 				timeout : 5000 // in milliseconds

@@ -39,6 +39,10 @@ var ProgressBarView = function() {
 			self.fireEvent('sync:complete');
 		}
 	}
+	
+	self.reset = function(){
+		progressBar.setValue(0);
+	};
 
 	Ti.App.addEventListener('surveys.fetch.start', function(e) {
 		titleLabel.setText("Fetching surveys...");

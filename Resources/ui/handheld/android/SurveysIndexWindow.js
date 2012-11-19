@@ -8,6 +8,7 @@ function SurveysIndexWindow() {
 	var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow');
 	var settingsWindow = SettingsWindow(); 
 
+	var surveysIndexView = new SurveysIndexView();
 	//create component instance
 	var self = Ti.UI.createWindow({
 		title : 'Surveys',
@@ -22,6 +23,7 @@ function SurveysIndexWindow() {
 				});
 				menuItemSync.addEventListener('click', function() {
 					Survey.fetchSurveys();
+					surveysIndexView.addErrorListener();
 				});
 				menuItemSync.setIcon("images/refresh.png");
 				var menuItemSettings = menu.add({
@@ -35,7 +37,6 @@ function SurveysIndexWindow() {
 		}
 	});
 
-	var surveysIndexView = new SurveysIndexView();
 
 	Ti.App.addEventListener('settings_saved', function() {
 		settingsWindow.close();
