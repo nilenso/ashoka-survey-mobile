@@ -2,7 +2,7 @@
 function SurveysIndexView() {
 	var Survey = require('models/survey');
 	var _ = require('lib/underscore')._;
-	var progressBar = require('ui/common/components/ProgressBar')
+	var progressBarView = require('ui/common/components/ProgressBar');
 
 	var convertModelDataForTable = function() {
 		return _(Survey.all()).map(function(survey) {
@@ -23,16 +23,15 @@ function SurveysIndexView() {
 		}
 	}
 
-	progressBar.addEventListener('sync:complete', function(e) {
+	progressBarView.addEventListener('sync:complete', function(e) {
 		var _ = require('lib/underscore')._;
 		data = convertModelDataForTable();
 		table.setData(data);
-		// alert("Sync complete")
 		showMessageIfModelIsEmpty();
 	});
 
 	Ti.App.addEventListener('surveys.fetch.error', function(data) {
-		progressBar.hide();
+		progressBarView.hide();
 		if (data.status >= 400) {
 			alert("Your server isn't responding. Sorry about that.");
 		} else if (data.status == 0) {
@@ -44,8 +43,8 @@ function SurveysIndexView() {
 	var self = Ti.UI.createView();
 	
 	var showProgressBar = function(e) {
-		self.add(progressBar);
-		progressBar.show();
+		self.add(progressBarView);
+		progressBarView.show();
 		Ti.App.removeEventListener('surveys:fetch:start', showProgressBar);
 	};
 	

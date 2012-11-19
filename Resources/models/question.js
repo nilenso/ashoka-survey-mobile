@@ -10,7 +10,7 @@ var Question = new Ti.App.joli.model({
 		max_length : 'INTEGER',
 		image_url : 'TEXT',
 		type : 'TEXT',
-		max_value : 'INTEGER', 
+		max_value : 'INTEGER',
 		min_value : 'INTEGER',
 		parent_id : 'INTEGER',
 		identifier : 'INTEGER',
@@ -39,7 +39,7 @@ var Question = new Ti.App.joli.model({
 				});
 				record.save();
 				records.push(record);
-			  record.fetchOptions();
+				record.fetchOptions();
 			});
 			return records;
 		}
@@ -57,6 +57,7 @@ var Question = new Ti.App.joli.model({
 						var data = this.responseData;
 						var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, self.id.toString());
 						f.write(data);
+						Ti.App.fireEvent('surveys.question.image.fetch.done');
 					},
 					// function called when an error occurs, including a timeout
 					onerror : function(e) {
@@ -71,17 +72,28 @@ var Question = new Ti.App.joli.model({
 			}
 		},
 		fetchOptions : function() {
+			Ti.App.fireEvent('surveys.questions.options.fetch.start');
 			var self = this;
-			if (self.type != 'RadioQuestion' && self.type != 'DropDownQuestion' && self.type != 'MultiChoiceQuestion' )
+			if (self.type != 'RadioQuestion' && self.type != 'DropDownQuestion' && self.type != 'MultiChoiceQuestion')
 				return;
 			var url = Ti.App.Properties.getString('server_url') + '/api/options?question_id=' + self.id;
+			var numberOfOptionSubQuestions = 0;
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {
 					Ti.API.info("Received text for options: " + this.responseText);
 					var data = JSON.parse(this.responseText);
 					var records = Option.createRecords(data, self.id);
-					Ti.App.fireEvent('surveys.question.options.fetch.done');
+					_(records).each(function(record) {
+						_(record.subQuestions()).each(function(subQuestion) {
+							if (subQuestion.type == 'RadioQuestion' || subQuestion.type == 'DropDownQuestion' || subQuestion.type == 'MultiChoiceQuestion') {
+								numberOfOptionSubQuestions++;
+							}
+						});
+					});
+					Ti.App.fireEvent('surveys.questions.options.fetch.done', {
+						number_of_option_sub_questions : numberOfOptionSubQuestions
+					});
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {

@@ -65,6 +65,7 @@ var Survey = new Ti.App.joli.model({
 	},
 	objectMethods : {
 		syncResponses : function() {
+			Ti.App.fireEvent('responses.sync.start');
 			var success_count = 0;
 			var self = this;
 
@@ -104,6 +105,7 @@ var Survey = new Ti.App.joli.model({
 		},
 
 		fetchQuestions : function() {
+			Ti.App.fireEvent('surveys.questions.fetch.start');
 			var self = this;
 			var url = Ti.App.Properties.getString('server_url') + '/api/questions?survey_id=' + self.id;
 			var client = Ti.Network.createHTTPClient({
