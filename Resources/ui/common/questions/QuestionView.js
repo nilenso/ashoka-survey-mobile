@@ -9,6 +9,7 @@ var RatingQuestionView = require('ui/common/questions/RatingQuestionView');
 function QuestionView(question, answer) {
 	var generateLabelTextForQuestion = function(question, errorText) {
 		text = '';
+		text += question.number() + ') ';
 		text += question['content'];
 		text += question.mandatory ? ' *' : '';
 		text += question.max_length ? ' [' + question.max_length + ']' : '';

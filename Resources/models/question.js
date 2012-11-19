@@ -118,6 +118,12 @@ var Question = new Ti.App.joli.model({
 			return Option.findBy('question_id', this.id);
 		},
 		
+		parentQuestion : function() {
+			var parentOption = Option.findOneById(this.parent_id);
+			var parentQuestion = Question.findOneById(parentOption.question_id);
+			return parentQuestion;
+		},
+		
 		subQuestions : function() {
 			var subQuestionsForAllOptions = _.chain(this.options()).map(function(option){ return option.subQuestions(); }).flatten().value();
 			return subQuestionsForAllOptions;
@@ -125,6 +131,26 @@ var Question = new Ti.App.joli.model({
 		
 		withSubQuestions : function() {
 			return _([ this, this.subQuestions()]).flatten();
+		},
+		
+		withSiblings : function() {
+			if(this.parent_id === null){
+				var Survey = require('models/survey');
+				var survey = Survey.findOneById(this.survey_id);
+				return survey.firstLevelQuestions();	
+			} else {
+				var questions = Question.findBy('parent_id', this.parent_id);
+				return _(questions).sortBy(function(question) { return question.order_number; });
+			}
+		},
+		
+		number : function() {
+			var siblingIDs = _(this.withSiblings()).map(function(question){ return question.id; s});
+			if(this.parent_id === null){
+				return (siblingIDs.indexOf(this.id)) + 1;
+			} else {				
+				return this.parentQuestion().number() + '.' + ((siblingIDs.indexOf(this.id)) + 1);
+			}
 		}
 	}
 });
