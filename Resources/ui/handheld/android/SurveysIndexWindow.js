@@ -18,7 +18,7 @@ function SurveysIndexWindow() {
 			onCreateOptionsMenu : function(e) {
 				var menu = e.menu;
 				var menuItemSync = menu.add({
-					title : "Sync"
+					title : "Fetch Surveys"
 				});
 				menuItemSync.addEventListener('click', function() {
 					Survey.fetchSurveys();
