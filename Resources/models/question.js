@@ -34,7 +34,8 @@ var Question = new Ti.App.joli.model({
 					min_value : question.min_value,
 					max_value : question.max_value,
 					parent_id : parentID,
-					identifier : question.identifier
+					identifier : question.identifier,
+					order_number : question.order_number
 				});
 				record.save();
 				records.push(record);
