@@ -13,7 +13,8 @@ var Question = new Ti.App.joli.model({
 		max_value : 'INTEGER', 
 		min_value : 'INTEGER',
 		parent_id : 'INTEGER',
-		identifier : 'INTEGER' 
+		identifier : 'INTEGER',
+		order_number : 'INTEGER' 
 	},
 
 	methods : {
