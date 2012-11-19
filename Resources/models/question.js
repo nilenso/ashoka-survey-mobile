@@ -48,6 +48,7 @@ var Question = new Ti.App.joli.model({
 	objectMethods : {
 		fetchImage : function() {
 			if (this.image_url) {
+				Ti.App.fireEvent('surveys.question.image.fetch.start');
 				var self = this;
 				var url = Ti.App.Properties.getString('server_url') + self.image_url;
 				var client = Ti.Network.createHTTPClient({

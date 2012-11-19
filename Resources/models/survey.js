@@ -113,16 +113,21 @@ var Survey = new Ti.App.joli.model({
 				onload : function(e) {
 					Ti.API.info("Received text for questions: " + this.responseText);
 					var data = JSON.parse(this.responseText);
-					var number_of_option_questions = 0 
+					var number_of_option_questions = 0
+					var number_of_images = 0
 					var records = Question.createRecords(data, self.id);
 					_(records).each(function(record) {
-						if(record.type == 'RadioQuestion' || record.type == 'DropDownQuestion' || record.type == 'MultiChoiceQuestion'){
+						if (record.type == 'RadioQuestion' || record.type == 'DropDownQuestion' || record.type == 'MultiChoiceQuestion') {
 							number_of_option_questions++;
 						}
-						record.fetchImage();
+						if (record.image_url) {
+							number_of_images++;
+							record.fetchImage();
+						}
 					});
 					Ti.App.fireEvent('surveys.questions.fetch.done', {
-						number_of_option_questions: number_of_option_questions
+						number_of_option_questions : number_of_option_questions,
+						number_of_images : number_of_images
 					});
 				},
 				// function called when an error occurs, including a timeout
