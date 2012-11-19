@@ -6,7 +6,8 @@ function ResponseShowView(responseID) {
 	var Question = require('models/question');
 	var Response = require('models/response');
 	var convertResponseDataForTable = function() {
-		var answers = Answer.findBy('response_id', responseID);
+		var response = Response.findOneById(responseID);
+		var answers = response.answers();
 		var responses = _(answers).map(function(answer) {
 			var row = Ti.UI.createTableViewRow({
 				header : Question.findOneById(answer.question_id).content,

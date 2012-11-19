@@ -183,7 +183,9 @@ var Response = new Ti.App.joli.model({
 		},
 
 		answers : function() {
-			return Answer.findBy('response_id', this.id)
+			var answers = Answer.findBy('response_id', this.id);
+			var sortedAnswers = _(answers).sortBy(function(answer){ return answer.question().order_number; });
+			return sortedAnswers;
 		},
 
 		destroyAnswers : function() {
