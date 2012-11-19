@@ -142,7 +142,8 @@ var Survey = new Ti.App.joli.model({
 			var questionList = _.select(questions, function(question) {
 				return question.parent_id == null;
 			});
-			return questionList;
+			var sortedQuestionList = _(questionList).sortBy(function(question){ return question.order_number });
+			return sortedQuestionList;
 		}
 	}
 });
