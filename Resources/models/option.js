@@ -37,6 +37,18 @@ var Option = new Ti.App.joli.model({
 			var questions = Question.findBy('parent_id', this.id);
 			var sortedQuestions = _(questions).sortBy(function(question){ return question.order_number; });
 			return sortedQuestions;
+		},
+		
+		subQuestions : function() {
+			var Question = require('models/question');
+			var questions = Question.findBy('parent_id', this.id);
+
+			var sortedQuestions = _(questions).sortBy(function(question){ return question.order_number; });	
+			
+			var subQuestions = _.chain(sortedQuestions).map(function(question) {
+				return question.withSubQuestions();
+			}).flatten().value();
+			return subQuestions;
 		}
 	}
 });

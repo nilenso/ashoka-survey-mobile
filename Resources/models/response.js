@@ -182,9 +182,23 @@ var Response = new Ti.App.joli.model({
 			client.send(JSON.stringify(params));
 		},
 
+		questions : function() {
+			var Survey = require('models/survey');
+			var survey = Survey.findOneById(this.survey_id);
+			var firstLevelQuestions = survey.firstLevelQuestions();
+			var questions = _.chain(firstLevelQuestions).map(function(question) {
+				return question.withSubQuestions();
+			}).flatten().value();
+					
+			return questions;
+		},
+
 		answers : function() {
+			var questionIDs = _(this.questions()).map(function(question){ return question.id; });
 			var answers = Answer.findBy('response_id', this.id);
-			var sortedAnswers = _(answers).sortBy(function(answer){ return answer.question().order_number; });
+			var sortedAnswers = _(answers).sortBy(function(answer) {
+				return questionIDs.indexOf(answer.question().id);
+			});
 			return sortedAnswers;
 		},
 
@@ -202,16 +216,16 @@ var Response = new Ti.App.joli.model({
 				return answer.question_id == questionID;
 			});
 		},
-		
+
 		identifierAnswers : function() {
-			var identifiers = _(this.answers()).select(function(answer){
+			var identifiers = _(this.answers()).select(function(answer) {
 				return answer.question().identifier;
 			});
-			if(_(identifiers).isEmpty()) {
-				identifiers = this.answers().slice(0,5);				
+			if (_(identifiers).isEmpty()) {
+				identifiers = this.answers().slice(0, 5);
 			}
 			return identifiers;
-			
+
 		}
 	}
 });

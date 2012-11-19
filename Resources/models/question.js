@@ -116,6 +116,15 @@ var Question = new Ti.App.joli.model({
 
 		options : function() {
 			return Option.findBy('question_id', this.id);
+		},
+		
+		subQuestions : function() {
+			var subQuestionsForAllOptions = _.chain(this.options()).map(function(option){ return option.subQuestions(); }).flatten().value();
+			return subQuestionsForAllOptions;
+		},
+		
+		withSubQuestions : function() {
+			return _([ this, this.subQuestions()]).flatten();
 		}
 	}
 });
