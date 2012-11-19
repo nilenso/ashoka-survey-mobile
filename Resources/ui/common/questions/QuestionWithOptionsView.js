@@ -46,7 +46,7 @@ function QuestionWithOptionsView(question, answer) {
         self.remove(childView);
     });
     var QuestionView = require('ui/common/questions/QuestionView');
-    var subQuestions = option.subQuestions();
+    var subQuestions = option.firstLevelSubQuestions();
     _(subQuestions).each(function(subQuestion) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
       self.add(new QuestionView(subQuestion, subQuestionAnswer));

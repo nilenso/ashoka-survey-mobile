@@ -32,7 +32,7 @@ var Option = new Ti.App.joli.model({
 	},
 	
 	objectMethods : {
-		subQuestions : function() {
+		firstLevelSubQuestions : function() {
 			var Question = require('models/question');
 			var questions = Question.findBy('parent_id', this.id);
 			var sortedQuestions = _(questions).sortBy(function(question){ return question.order_number; });
