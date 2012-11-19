@@ -36,7 +36,7 @@ var ProgressBarView = function() {
 		if (progressBar.getMax() == progressBar.getValue()) {
 			progressBar.setValue(0);
 			self.hide();
-			progressBar.fireEvent('sync:complete');
+			self.fireEvent('sync:complete');
 		}
 	}
 
@@ -62,12 +62,11 @@ var ProgressBarView = function() {
 	});
 
 	Ti.App.addEventListener('surveys.questions.options.fetch.start', function(e) {
-		titleLabel.setText("Fetching options...");
+		titleLabel.setText("Fetching options and sub questions...");
 		hideProgressBarIfComplete();
 	});
 	
 	Ti.App.addEventListener('surveys.questions.options.fetch.done', function(e) {
-		titleLabel.setText("Fetching options and sub questions...");
 		progressBar.max = progressBar.getMax() + e.number_of_option_sub_questions;
 		progressBar.setValue(progressBar.getValue() + 1);
 		Ti.API.info("After options : MAX is now: " + progressBar.getMax());
