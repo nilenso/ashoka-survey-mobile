@@ -23,7 +23,7 @@ var ProgressBarView = function() {
     width : '100%',
     height : 'auto',
     min : 0,
-    max : 10,
+    // max : 1,
     value : 0,
     keepScreenOn : true,
     color : '#fff',
@@ -49,29 +49,22 @@ var ProgressBarView = function() {
     hideProgressBarIfComplete();
   };
 
-  Ti.App.addEventListener('surveys.fetch.done', function(e) {
-    progressBar.max = e.number_of_surveys;
+  self.setMax = function(max) {
+    progressBar.max = max;
     hideProgressBarIfComplete();
-  });
+  };
 
-  Ti.App.addEventListener('surveys.questions.fetch.done', function(e) {
-    progressBar.max = progressBar.getMax() + e.number_of_option_questions + e.number_of_images;
-    progressBar.setValue(progressBar.getValue() + 1);
+  self.updateMax = function(max) {
+    progressBar.max = progressBar.getMax() + max;
+    Ti.API.info("Progress bar MAX is now: " + progressBar.getMax());
     hideProgressBarIfComplete();
-  });
+  };
 
-  Ti.App.addEventListener('surveys.questions.options.fetch.done', function(e) {
-    progressBar.max = progressBar.getMax() + e.number_of_option_sub_questions;
-    progressBar.setValue(progressBar.getValue() + 1);
-    Ti.API.info("After options : MAX is now: " + progressBar.getMax());
+  self.updateValue = function(value) {
+    progressBar.setValue(progressBar.getValue() + value);
     Ti.API.info("Progress bar value is now: " + progressBar.getValue());
     hideProgressBarIfComplete();
-  });
-
-  Ti.App.addEventListener('surveys.question.image.fetch.done', function(e) {
-    progressBar.setValue(progressBar.getValue() + 1);
-    hideProgressBarIfComplete();
-  });
+  };
 
   self.add(titleLabel);
   self.add(progressBar);

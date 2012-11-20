@@ -27,9 +27,7 @@ var Survey = new Ti.App.joli.model({
 					that.truncate();
 					Question.truncate();
 					Option.truncate();
-					Ti.App.fireEvent('surveys.fetch.done', {
-						number_of_surveys : data.length
-					});
+					progressBarView.setMax(data.length);
 					_(data).each(function(surveyData) {
 						var survey = that.createRecord(surveyData);
 						survey.fetchQuestions();
@@ -127,10 +125,8 @@ var Survey = new Ti.App.joli.model({
 							record.fetchImage();
 						}
 					});
-					Ti.App.fireEvent('surveys.questions.fetch.done', {
-						number_of_option_questions : number_of_option_questions,
-						number_of_images : number_of_images
-					});
+					progressBarView.updateMax(number_of_option_questions + number_of_images);
+					progressBarView.updateValue(1);
 				},
 				// function called when an error occurs, including a timeout
 				onerror : function(e) {

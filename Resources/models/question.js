@@ -60,7 +60,7 @@ var Question = new Ti.App.joli.model({
 						var data = this.responseData;
 						var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, self.id.toString());
 						f.write(data);
-						Ti.App.fireEvent('surveys.question.image.fetch.done');
+						progressBarView.updateValue(1);
 					},
 					// function called when an error occurs, including a timeout
 					onerror : function(e) {
@@ -98,6 +98,9 @@ var Question = new Ti.App.joli.model({
 							}
 						});
 					});
+					
+					progressBarView.updateMax(numberOfOptionSubQuestions);
+					progressBarView.updateValue(1);
 					Ti.App.fireEvent('surveys.questions.options.fetch.done', {
 						number_of_option_sub_questions : numberOfOptionSubQuestions
 					});
