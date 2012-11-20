@@ -23,7 +23,6 @@ var ProgressBarView = function() {
     width : '100%',
     height : 'auto',
     min : 0,
-    // max : 1,
     value : 0,
     keepScreenOn : true,
     color : '#fff',
