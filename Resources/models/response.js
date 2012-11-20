@@ -9,7 +9,9 @@ var Response = new Ti.App.joli.model({
 		survey_id : 'INTEGER',
 		web_id : 'INTEGER',
 		status : 'TEXT',
-		updated_at : 'TEXT'
+		updated_at : 'TEXT',
+		latitude : 'REAL',
+		longitude : 'REAL'
 	},
 
 	methods : {
