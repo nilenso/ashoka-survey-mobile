@@ -1,74 +1,88 @@
 //All the questoin in a survey
 function ResponsesNewView(surveyID) {
-  var _ = require('lib/underscore')._;
-  var Question = require('models/question');
-  var Survey = require('models/survey');
-  var Response = require('models/response');
-  var QuestionView = require('ui/common/questions/QuestionView');
-  var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
-  var responseViewHelper = new ResponseViewHelper;
+	var _ = require('lib/underscore')._;
+	var Question = require('models/question');
+	var Survey = require('models/survey');
+	var Response = require('models/response');
+	var QuestionView = require('ui/common/questions/QuestionView');
+	var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
+	var responseViewHelper = new ResponseViewHelper;
 
-  var self = Ti.UI.createScrollView({
-    layout : 'vertical',
-    height : Titanium.UI.SIZE
-  });
+	//Number of questions in a page
+	var PAGE_SIZE = 5;
 
-  var survey = Survey.findOneById(surveyID);
-  var questions = survey.firstLevelQuestions();
-  _(questions).each(function(question) {
-    var questionView = new QuestionView(question);
-    self.add(questionView);
-  });
+	var self = Ti.UI.createView({
+		layout : 'vertical'
+	})
 
-  var validateAndSaveAnswers = function(e, status) {
-    var questionViews = responseViewHelper.getQuestionViews(self);
-    var answersData = _(questionViews).map(function(fields, questionID) {
-      Ti.API.info("questionid:" + questionID);
-      Ti.API.info("content:" + fields['valueField'].getValue());
-      return {
-        'question_id' : questionID,
-        'content' : fields.valueField.getValue()
-      }
-    });
-    responseErrors = Response.validate(answersData, status);
-    if (!_.isEmpty(responseErrors)) {
-      responseViewHelper.displayErrors(responseErrors, questionViews);
-      alert("There were some errors in the response.");
-    } else {
-      Response.createRecord(surveyID, status, answersData);
-      self.fireEvent('ResponsesNewView:savedResponse');
-    }
-  };
+	var scrollableView = Ti.UI.createScrollableView({
+		showPagingControl : true
+	});
+	self.add(scrollableView);
 
-  var actionButtonsView = Ti.UI.createView({
-    layout : 'horizontal',
-    top : 10,
-    left : '2%',
-    width : '100%'
-  });
-  var saveButton = Ti.UI.createButton({
-    title : 'Save',
-    width : '48%'
-  });
-  actionButtonsView.add(saveButton);
+	var survey = Survey.findOneById(surveyID);
+	var questions = survey.firstLevelQuestions();
 
-  var completeButton = Ti.UI.createButton({
-    title : 'Complete',
-    width : '48%'
-  });
+	var pagedQuestions = _.chain(questions).groupBy(function(a, b) {
+		return Math.floor(b / PAGE_SIZE);
+	}).toArray().value();
 
-  actionButtonsView.add(completeButton);
-  self.add(saveButton);
-  self.add(completeButton);
+	var saveButton = Ti.UI.createButton({
+		title : 'Save',
+		width : '48%'
+	});
 
-  completeButton.addEventListener('click', function(event) {
-    validateAndSaveAnswers(event, "complete");
-  });
-  saveButton.addEventListener('click', function(event) {
-    validateAndSaveAnswers(event, "incomplete");
-  });
+	var completeButton = Ti.UI.createButton({
+		title : 'Complete',
+		width : '48%'
+	});
 
-  return self;
+	_(pagedQuestions).each(function(questions, pageNumber) {
+		var questionsView = Ti.UI.createView({
+			layout : 'vertical'
+		});
+
+		_(questions).each(function(question) {
+			var questionView = new QuestionView(question);
+			questionsView.add(questionView);
+		})
+
+		if(pageNumber + 1 === pagedQuestions.length){
+			questionsView.add(completeButton);
+			questionsView.add(saveButton);
+		}
+
+		scrollableView.addView(questionsView);
+	});
+
+	var validateAndSaveAnswers = function(e, status) {
+		var questionViews = responseViewHelper.getQuestionViews(self);
+		var answersData = _(questionViews).map(function(fields, questionID) {
+			Ti.API.info("questionid:" + questionID);
+			Ti.API.info("content:" + fields['valueField'].getValue());
+			return {
+				'question_id' : questionID,
+				'content' : fields.valueField.getValue()
+			}
+		});
+		responseErrors = Response.validate(answersData, status);
+		if (!_.isEmpty(responseErrors)) {
+			responseViewHelper.displayErrors(responseErrors, questionViews);
+			alert("There were some errors in the response.");
+		} else {
+			Response.createRecord(surveyID, status, answersData);
+			self.fireEvent('ResponsesNewView:savedResponse');
+		}
+	};
+
+	completeButton.addEventListener('click', function(event) {
+		validateAndSaveAnswers(event, "complete");
+	});
+	saveButton.addEventListener('click', function(event) {
+		validateAndSaveAnswers(event, "incomplete");
+	});
+
+	return self;
 }
 
 module.exports = ResponsesNewView;
