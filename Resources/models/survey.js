@@ -26,7 +26,7 @@ var Survey = new Ti.App.joli.model({
 					that.truncate();
 					Question.truncate();
 					Option.truncate();
-					progressBarView.setMax(data.length);
+					progressBarView.updateMax(data.length);
 					_(data).each(function(surveyData) {
 						var survey = that.createRecord(surveyData);
 						survey.fetchQuestions();
@@ -57,7 +57,7 @@ var Survey = new Ti.App.joli.model({
 
 		isEmpty : function() {
 			return this.count() == 0;
-		},
+		}
 	},
 	objectMethods : {
 		syncResponses : function() {
@@ -83,7 +83,7 @@ var Survey = new Ti.App.joli.model({
 			};
 
 			Ti.App.addEventListener("response.sync", syncHandler);
-      progressBarView.setMax(_(this.responses()).size());
+      progressBarView.updateMax(_(this.responses()).size());
 			_(this.responses()).each(function(response) {
 				response.sync();
 			});

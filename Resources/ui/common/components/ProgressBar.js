@@ -33,7 +33,7 @@ var ProgressBarView = function() {
   });
   var hideProgressBarIfComplete = function() {
     if (progressBar.getMax() == progressBar.getValue()) {
-      progressBar.setValue(0);
+      self.reset();
       self.hide();
       self.fireEvent('sync:complete');
     }
@@ -41,6 +41,7 @@ var ProgressBarView = function() {
 
   self.reset = function() {
     progressBar.setValue(0);
+    progressBar.max = undefined;
   };
 
   self.setMessage = function(message) {
@@ -48,15 +49,11 @@ var ProgressBarView = function() {
     hideProgressBarIfComplete();
   };
 
-  self.setMax = function(max) {
-    progressBar.max = max;
-    hideProgressBarIfComplete();
-  };
-
   self.updateMax = function(max) {
-    progressBar.max = progressBar.getMax() + max;
+    var currentMax = typeof progressBar.getMax() !== 'undefined' ? progressBar.getMax() : 0;
+    progressBar.max = currentMax + max;
     Ti.API.info("Progress bar MAX is now: " + progressBar.getMax());
-    hideProgressBarIfComplete();
+    // hideProgressBarIfComplete();
   };
 
   self.updateValue = function(value) {
