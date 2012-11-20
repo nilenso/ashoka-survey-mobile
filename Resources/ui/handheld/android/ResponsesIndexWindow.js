@@ -19,6 +19,7 @@ function ResponsesIndexWindow(surveyID) {
 				menuItemSync.addEventListener('click', function() {
 					survey = Survey.findOneById(surveyID)
 					survey.syncResponses();
+          // surveysIndexView.addErrorListener();
 				});
 				menuItemSync.setIcon("images/refresh.png");
 			}

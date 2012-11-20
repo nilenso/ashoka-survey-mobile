@@ -24,7 +24,6 @@ function SurveysIndexView() {
 	}
 
 	progressBarView.addEventListener('sync:complete', function(e) {
-		var _ = require('lib/underscore')._;
 		data = convertModelDataForTable();
 		table.setData(data);
 		showMessageIfModelIsEmpty();
