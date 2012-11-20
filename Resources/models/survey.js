@@ -70,7 +70,10 @@ var Survey = new Ti.App.joli.model({
 			var syncHandler = function(data) {
 			  progressBarView.updateValue(1);
 				Ti.API.info("All RESPONSES SYNCED: " + self.allResponsesSynced().toString())
-				if (data.survey_id == self.id) {
+				if (data.message) {
+          Ti.App.fireEvent("survey.responses.sync", {message: data.message});
+          Ti.App.removeEventListener("response.sync", syncHandler);
+        } else if (data.survey_id == self.id) {
 					if (self.allResponsesSynced()) {
 						Ti.App.fireEvent("survey.responses.sync", self.syncSummary());
 						Ti.API.info("SUMMARY: " + self.syncSummary());

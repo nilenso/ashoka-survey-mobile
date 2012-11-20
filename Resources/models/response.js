@@ -158,19 +158,26 @@ var Response = new Ti.App.joli.model({
 						self.destroy();
 					}
 				},
-				// function called when an error occurs, including a timeout
 				onerror : function(e) {
+				  var message;
 					if (this.status == '410') {// Response deleted on server
+					  //TODO display verbose error for this case
 						Ti.API.info("Response deleted on server: " + this.responseText);
 						self.destroyAnswers();
 						self.destroy();
-					} else {
+					} else if (this.status >= 400) {
+            message = "Your server isn't responding. Sorry about that.";
+          } else if (this.status == 0) {
+            message = "Couldn't reach the server.";
+          } else {
 						Ti.API.info("Erroneous Response: " + this.responseText);
 						self.has_error = true;
 					}
 					self.synced = true;
+					Ti.App.fireEvent('responses.sync.error');
 					Ti.App.fireEvent('response.sync', {
-						survey_id : self.survey_id
+						survey_id : self.survey_id,
+						message : message
 					});
 				},
 				timeout : 5000 // in milliseconds

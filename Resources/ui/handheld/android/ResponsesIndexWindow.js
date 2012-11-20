@@ -19,13 +19,13 @@ function ResponsesIndexWindow(surveyID) {
 				menuItemSync.addEventListener('click', function() {
 					survey = Survey.findOneById(surveyID)
 					survey.syncResponses();
-          // surveysIndexView.addErrorListener();
 				});
 				menuItemSync.setIcon("images/refresh.png");
 			}
 		}
 	});
-	var view = new ResponsesIndexView(surveyID) 
+	
+	var view = new ResponsesIndexView(surveyID);
 	self.add(view);
 
 	view.addEventListener('ResponsesIndexView:table_row_clicked', function(e) {
@@ -35,7 +35,10 @@ function ResponsesIndexWindow(surveyID) {
 	var syncHandler = function(data) {
 		Ti.App.removeEventListener("survey.responses.sync", syncHandler);
 		self.close();
-		alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
+		if (data.message)
+		  alert(data.message);
+		else
+		  alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
 	};
 	Ti.App.addEventListener("survey.responses.sync", syncHandler);
 

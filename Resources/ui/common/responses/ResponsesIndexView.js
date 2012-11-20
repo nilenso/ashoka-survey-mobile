@@ -51,19 +51,9 @@ function ResponsesIndexView(surveyID) {
     data = convertModelDataForTable();
     table.setData(data);
     showMessageIfModelIsEmpty();
-    // Ti.App.removeEventListener('responses.sync.error', errorListener);
   });
 
-  // var errorListener = function(data) {
-  // progressBarView.hide();
-  // progressBarView.reset();
-  // if (data.status >= 400) {
-  // alert("Your server isn't responding. Sorry about that.");
-  // } else if (data.status == 0) {
-  // alert("Couldn't reach the server.");
-  // }
-  // Ti.App.removeEventListener('surveys.fetch.error', errorListener);
-  // };
+  var self = Ti.UI.createView();
 
   var showProgressBar = function(e) {
     self.add(progressBarView);
@@ -73,15 +63,6 @@ function ResponsesIndexView(surveyID) {
 
   Ti.App.addEventListener('responses.sync.start', showProgressBar);
 
-  //create object instance, a parasitic subclass of Observable
-  var self = Ti.UI.createView();
-  
-    // self.addErrorListener = function() {
-    // Ti.App.addEventListener('surveys.fetch.error', errorListener);
-  // };
-
-
-  // now assign that array to the table's data property to add those objects as rows
   var table = Titanium.UI.createTableView({
     data : convertModelDataForTable()
   });
