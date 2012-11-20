@@ -2,6 +2,7 @@ var _ = require('lib/underscore')._;
 var Question = require('models/question');
 var Response = require('models/response');
 var Option = require('models/option');
+var progressBarView = require('ui/common/components/ProgressBar');
 
 var Survey = new Ti.App.joli.model({
 	table : 'surveys',
@@ -15,6 +16,7 @@ var Survey = new Ti.App.joli.model({
 	methods : {
 		fetchSurveys : function() {
 			Ti.App.fireEvent('surveys.fetch.start');
+			progressBarView.setMessage("Fetching surveys...");
 			var url = Ti.App.Properties.getString('server_url') + '/api/surveys';
 			var that = this;
 			var client = Ti.Network.createHTTPClient({
@@ -105,7 +107,7 @@ var Survey = new Ti.App.joli.model({
 		},
 
 		fetchQuestions : function() {
-			Ti.App.fireEvent('surveys.questions.fetch.start');
+			progressBarView.setMessage("Fetching questions...");
 			var self = this;
 			var url = Ti.App.Properties.getString('server_url') + '/api/questions?survey_id=' + self.id;
 			var client = Ti.Network.createHTTPClient({

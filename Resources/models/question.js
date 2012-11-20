@@ -1,5 +1,7 @@
 var _ = require('lib/underscore')._;
 var Option = require('models/option');
+var progressBarView = require('ui/common/components/ProgressBar');
+
 var Question = new Ti.App.joli.model({
 	table : 'questions',
 	columns : {
@@ -48,7 +50,7 @@ var Question = new Ti.App.joli.model({
 	objectMethods : {
 		fetchImage : function() {
 			if (this.image_url) {
-				Ti.App.fireEvent('surveys.question.image.fetch.start');
+				progressBarView.setMessage("Fetching an image...");
 				var self = this;
 				var url = Ti.App.Properties.getString('server_url') + self.image_url;
 				var client = Ti.Network.createHTTPClient({
@@ -76,7 +78,8 @@ var Question = new Ti.App.joli.model({
 			}
 		},
 		fetchOptions : function() {
-			Ti.App.fireEvent('surveys.questions.options.fetch.start');
+			progressBarView.setMessage("Fetching options and sub questions...");
+
 			var self = this;
 			if (self.type != 'RadioQuestion' && self.type != 'DropDownQuestion' && self.type != 'MultiChoiceQuestion')
 				return;
