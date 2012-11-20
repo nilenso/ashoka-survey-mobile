@@ -41,9 +41,14 @@ function ResponseViewHelper() {
 		}
 	};
 
-	var getQuestionViews = function(parentView) {
-		var foo = {}
-		_(parentView.getChildren()).each(function(view) {
+	var getQuestionViews = function(parent) {
+		var foo = {};
+		if(parent instanceof Array) {
+		  var views = _.chain(parent).map(function(scrollView) { return scrollView.children; }).flatten().value();
+		} else {
+		  var views = parent.children || [];
+		}
+		_(views).each(function(view) {
 			if (view.type == 'question') {
 				foo[view.id] = {
 					'label' : _(view.children).first(),
@@ -57,7 +62,7 @@ function ResponseViewHelper() {
 		return foo;
 	};
 
-	var paginate = function(questions, accumulator, scrollableView, buttons) {
+	var paginate = function(questions, scrollableView, buttons) {
 		var PAGE_SIZE = 6;
 		
 		var pagedQuestions = _.chain(questions).groupBy(function(a, b) {
@@ -71,7 +76,6 @@ function ResponseViewHelper() {
 
 			_(questions).each(function(question) {
 				var questionView = new QuestionView(question);
-				accumulator.add(questionView);
 				questionsView.add(questionView);
 			})
 			
