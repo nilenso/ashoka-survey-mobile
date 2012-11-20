@@ -50,7 +50,7 @@ function ResponsesNewView(surveyID) {
 	};
 	
 	var validateAndSaveAnswers = function(e, status) {
-		var questionViews = responseViewHelper.getQuestionViews(self);
+		var questionViews = responseViewHelper.getQuestionViews(allQuestionViews);
 		var answersData = _(questionViews).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
 			Ti.API.info("content:" + fields['valueField'].getValue());
