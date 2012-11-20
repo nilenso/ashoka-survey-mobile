@@ -20,8 +20,8 @@ function ResponsesNewView(surveyID) {
 	var survey = Survey.findOneById(surveyID);
 	var questions = survey.firstLevelQuestions();
 	
-	var allQuestionViews = Ti.UI.createView();	
-
+	var allQuestionViews = Ti.UI.createView();
+	
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
 		width : '48%'
@@ -34,8 +34,23 @@ function ResponsesNewView(surveyID) {
 	
 	responseViewHelper.paginate(questions, allQuestionViews, scrollableView, [saveButton, completeButton]);
 
+	var getCurrentLocation = function() {
+		var location = {};
+		Titanium.Geolocation.getCurrentPosition(function(e) {
+			if (e.error) {
+				Ti.API.info("Error getting location");
+				return;
+			}
+			location.longitude = e.coords.longitude;
+			location.latitude = e.coords.latitude;
+			Ti.API.info("longitude = " + e.coords.longitude);
+			Ti.API.info("latitude = " + e.coords.latitude);
+		});
+		return location;
+	};
+	
 	var validateAndSaveAnswers = function(e, status) {
-		var questionViews = responseViewHelper.getQuestionViews(allQuestionViews);
+		var questionViews = responseViewHelper.getQuestionViews(self);
 		var answersData = _(questionViews).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
 			Ti.API.info("content:" + fields['valueField'].getValue());
@@ -44,6 +59,7 @@ function ResponsesNewView(surveyID) {
 				'content' : fields.valueField.getValue()
 			}
 		});
+		var responseLocation = getCurrentLocation();
 		responseErrors = Response.validate(answersData, status);
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
@@ -57,6 +73,7 @@ function ResponsesNewView(surveyID) {
 	completeButton.addEventListener('click', function(event) {
 		validateAndSaveAnswers(event, "complete");
 	});
+	
 	saveButton.addEventListener('click', function(event) {
 		validateAndSaveAnswers(event, "incomplete");
 	});
