@@ -1,6 +1,7 @@
 var _ = require('lib/underscore')._;
 var Answer = require('models/answer');
 var Choice = require('models/choice');
+var progressBarView = require('ui/common/components/ProgressBar');
 
 var Response = new Ti.App.joli.model({
 	table : 'responses',

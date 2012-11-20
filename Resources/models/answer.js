@@ -2,6 +2,8 @@ var _ = require('lib/underscore')._;
 var Choice = require('models/choice');
 var Question = require('models/question');
 var Option = require('models/option');
+var progressBarView = require('ui/common/components/ProgressBar');
+
 
 var Answer = new Ti.App.joli.model({
 	table : 'answers',
@@ -178,10 +180,13 @@ var Answer = new Ti.App.joli.model({
 		},
 		uploadImage : function(status, webId) {
 			if (this.isImage() && this.image) {
+        progressBarView.setMessage("Uploading image...");
+        progressBarView.updateMax(1);
 				var client = Ti.Network.createHTTPClient();
 				var self = this;
 
 				client.onload = function(e) {
+				  progressBarView.updateValue(1);
 					Ti.API.info("Response recieved for image : " + this.responseText);
 					Ti.API.info("Succceesssss fully saved IMAGE!" + e);
 
@@ -199,6 +204,7 @@ var Answer = new Ti.App.joli.model({
 				};
 
 				client.onerror = function(e) {
+				  progressBarView.updateValue(1);
 					Ti.API.info("Error saving IMAGE! :( ");
 					Ti.API.info(e.error);
 				};

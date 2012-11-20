@@ -45,6 +45,7 @@ var ProgressBarView = function() {
   };
 
   self.setMessage = function(message) {
+    self.show();
     titleLabel.setText(message);
     hideProgressBarIfComplete();
   };
