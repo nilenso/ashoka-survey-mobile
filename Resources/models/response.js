@@ -15,17 +15,18 @@ var Response = new Ti.App.joli.model({
 	},
 
 	methods : {
-		createRecord : function(surveyID, status, answersData) {
+		createRecord : function(surveyID, status, answersData, location) {
 			var record = this.newRecord({
 				survey_id : surveyID,
 				status : status,
-				updated_at : (new Date()).toString()
+				updated_at : (new Date()).toString(),
+				latitude : location.latitude,
+				longitude : location.longitude
 			});
 			record.save();
 			_(answersData).each(function(answer) {
 				Answer.createRecord(answer, record.id);
 			});
-			Ti.API.info("Resp ID is " + record.id);
 			return true;
 		},
 
@@ -105,6 +106,8 @@ var Response = new Ti.App.joli.model({
 			params['status'] = this.status;
 			params['survey_id'] = this.survey_id;
 			params['updated_at'] = this.updated_at;
+			params['longitude'] = this.longitude;
+			params['latitude'] = this.latitude;
 			var client = Ti.Network.createHTTPClient({
 				// function called when the response data is available
 				onload : function(e) {

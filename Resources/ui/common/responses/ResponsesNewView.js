@@ -63,7 +63,7 @@ function ResponsesNewView(surveyID) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
 			alert("There were some errors in the response.");
 		} else {
-			Response.createRecord(surveyID, status, answersData);
+			Response.createRecord(surveyID, status, answersData, responseLocation);
 			self.fireEvent('ResponsesNewView:savedResponse');
 		}
 	};
