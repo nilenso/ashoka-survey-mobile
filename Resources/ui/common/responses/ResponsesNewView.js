@@ -48,7 +48,7 @@ function ResponsesNewView(surveyID) {
 	};
 	
 	var validateAndSaveAnswers = function(e, status) {
-		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getChildren());
+		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
 		var answersData = _(questionViews).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
 			Ti.API.info("content:" + fields['valueField'].getValue());
@@ -58,7 +58,7 @@ function ResponsesNewView(surveyID) {
 			}
 		});
 		var responseLocation = getCurrentLocation();
-		responseErrors = Response.validate(answersData, status);
+		var responseErrors = Response.validate(answersData, status);
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
 			alert("There were some errors in the response.");

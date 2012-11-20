@@ -43,10 +43,10 @@ function ResponseViewHelper() {
 
 	var getQuestionViews = function(parent) {
 		var foo = {};
-		if(parent instanceof Array) {
+		if(_(parent).isArray()) {
 		  var views = _.chain(parent).map(function(scrollView) { return scrollView.children; }).flatten().value();
 		} else {
-		  var views = parent.children || [];
+		  var views = parent.getChildren() || [];
 		}
 		_(views).each(function(view) {
 			if (view.type == 'question') {
