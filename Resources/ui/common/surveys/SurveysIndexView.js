@@ -48,12 +48,15 @@ function SurveysIndexView() {
 	};
 
 	var showProgressBar = function(e) {
+		progressBarView.reset();
 		self.add(progressBarView);
 		progressBarView.show();
 		Ti.App.removeEventListener('surveys:fetch:start', showProgressBar);
+	  Ti.App.removeEventListener('all.responses.sync.start', showProgressBar);
 	};
 
 	Ti.App.addEventListener('surveys.fetch.start', showProgressBar);
+	Ti.App.addEventListener('all.responses.sync.start', showProgressBar);
 
 	var table = Titanium.UI.createTableView({
 		data : convertModelDataForTable()

@@ -26,6 +26,15 @@ function SurveysIndexWindow() {
 					surveysIndexView.addErrorListener();
 				});
 				menuItemSync.setIcon("images/refresh.png");
+
+        var menuItemSync = menu.add({
+          title : "Sync Responses"
+        });
+        menuItemSync.addEventListener('click', function() {
+          Survey.syncAllResponses();
+        });
+        menuItemSync.setIcon("images/refresh.png");
+
 				var menuItemSettings = menu.add({
 					title : "Settings"
 				});

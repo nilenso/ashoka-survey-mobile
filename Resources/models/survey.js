@@ -57,34 +57,46 @@ var Survey = new Ti.App.joli.model({
 
 		isEmpty : function() {
 			return this.count() == 0;
+		},
+		
+		syncAllResponses : function() {
+			Ti.App.fireEvent('all.responses.sync.start');
+			var count = 0;
+			_(this.all()).each(function(survey) {
+			  count += _(survey.responses()).size();
+			});
+			Ti.API.info("Total ressponses to be synced:" + count); 
+		  _(this.all()).each(function(survey) {
+		    survey.syncResponses();
+		  });
 		}
 	},
 	objectMethods : {
 		syncResponses : function() {
 			Ti.App.fireEvent('responses.sync.start');
-      progressBarView.setMessage("Syncing responses...");
+      progressBarView.setMessage("Syncing responses for:\n" + this.name);
 
 			var success_count = 0;
 			var self = this;
 
 			var syncHandler = function(data) {
 			  progressBarView.updateValue(1);
+			  Ti.API.info("Progress value updated by one here");
 				Ti.API.info("All RESPONSES SYNCED: " + self.allResponsesSynced().toString())
 				if (data.message) {
           Ti.App.fireEvent("survey.responses.sync", {message: data.message});
-          Ti.App.removeEventListener("response.sync", syncHandler);
         } else if (data.survey_id == self.id) {
 					if (self.allResponsesSynced()) {
 						Ti.App.fireEvent("survey.responses.sync", self.syncSummary());
 						Ti.API.info("SUMMARY: " + self.syncSummary());
-						Ti.App.removeEventListener("response.sync", syncHandler);
 					};
 				}
+        Ti.App.removeEventListener("response.sync", syncHandler);
 			};
 
-			Ti.App.addEventListener("response.sync", syncHandler);
       progressBarView.updateMax(_(this.responses()).size());
 			_(this.responses()).each(function(response) {
+  			Ti.App.addEventListener("response.sync", syncHandler);
 				response.sync();
 			});
 		},
