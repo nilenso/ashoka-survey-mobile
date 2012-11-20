@@ -40,7 +40,7 @@ function ResponsesNewView(surveyID) {
 	});
 
 	_(pagedQuestions).each(function(questions, pageNumber) {
-		var questionsView = Ti.UI.createView({
+		var questionsView = Ti.UI.createScrollView({
 			layout : 'vertical'
 		});
 
