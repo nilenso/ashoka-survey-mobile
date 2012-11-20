@@ -22,6 +22,8 @@ function ResponsesNewView(surveyID) {
 
 	var survey = Survey.findOneById(surveyID);
 	var questions = survey.firstLevelQuestions();
+	
+	var allQuestionViews = Ti.UI.createView();
 
 	var pagedQuestions = _.chain(questions).groupBy(function(a, b) {
 		return Math.floor(b / PAGE_SIZE);
@@ -44,6 +46,7 @@ function ResponsesNewView(surveyID) {
 
 		_(questions).each(function(question) {
 			var questionView = new QuestionView(question);
+			allQuestionViews.add(questionView);
 			questionsView.add(questionView);
 		})
 
@@ -56,7 +59,7 @@ function ResponsesNewView(surveyID) {
 	});
 
 	var validateAndSaveAnswers = function(e, status) {
-		var questionViews = responseViewHelper.getQuestionViews(self);
+		var questionViews = responseViewHelper.getQuestionViews(allQuestionViews);
 		var answersData = _(questionViews).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
 			Ti.API.info("content:" + fields['valueField'].getValue());
