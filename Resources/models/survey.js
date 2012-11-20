@@ -23,7 +23,6 @@ var Survey = new Ti.App.joli.model({
 				onload : function(e) {
 					Ti.API.info("Received text: " + this.responseText);
 					var data = JSON.parse(this.responseText);
-					// Emptying the table for now (until we get all the survey info from the server)
 					that.truncate();
 					Question.truncate();
 					Option.truncate();
@@ -33,7 +32,6 @@ var Survey = new Ti.App.joli.model({
 						survey.fetchQuestions();
 					});
 				},
-				// function called when an error occurs, including a timeout
 				onerror : function(e) {
 					Ti.API.debug(e.error);
 					Ti.App.fireEvent('surveys.fetch.error', {
@@ -42,9 +40,7 @@ var Survey = new Ti.App.joli.model({
 				},
 				timeout : 5000 // in milliseconds
 			});
-			// Prepare the connection.
 			client.open("GET", url);
-			// Send the request.
 			client.send();
 		},
 
@@ -109,7 +105,6 @@ var Survey = new Ti.App.joli.model({
 			var self = this;
 			var url = Ti.App.Properties.getString('server_url') + '/api/questions?survey_id=' + self.id;
 			var client = Ti.Network.createHTTPClient({
-				// function called when the response data is available
 				onload : function(e) {
 					Ti.API.info("Received text for questions: " + this.responseText);
 					var data = JSON.parse(this.responseText);
@@ -128,7 +123,6 @@ var Survey = new Ti.App.joli.model({
 					progressBarView.updateMax(number_of_option_questions + number_of_images);
 					progressBarView.updateValue(1);
 				},
-				// function called when an error occurs, including a timeout
 				onerror : function(e) {
 					Ti.App.fireEvent('surveys.fetch.error', {
 						status : this.status
@@ -137,9 +131,7 @@ var Survey = new Ti.App.joli.model({
 				},
 				timeout : 5000 // in milliseconds
 			});
-			// Prepare the connection.
 			client.open("GET", url);
-			// Send the request.
 			client.send();
 		},
 

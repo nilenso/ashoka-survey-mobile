@@ -54,7 +54,6 @@ var Question = new Ti.App.joli.model({
 				var self = this;
 				var url = Ti.App.Properties.getString('server_url') + self.image_url;
 				var client = Ti.Network.createHTTPClient({
-					// function called when the response data is available
 					onload : function(e) {
 						Ti.API.info("Downloaded image from " + self.image_url);
 						var data = this.responseData;
@@ -62,7 +61,6 @@ var Question = new Ti.App.joli.model({
 						f.write(data);
 						progressBarView.updateValue(1);
 					},
-					// function called when an error occurs, including a timeout
 					onerror : function(e) {
 						Ti.App.fireEvent('surveys.fetch.error', {
 							status : this.status
@@ -71,9 +69,7 @@ var Question = new Ti.App.joli.model({
 					},
 					timeout : 5000 // in milliseconds
 				});
-				// Prepare the connection.
 				client.open("GET", url);
-				// Send the request.
 				client.send();
 			}
 		},
@@ -105,7 +101,6 @@ var Question = new Ti.App.joli.model({
 						number_of_option_sub_questions : numberOfOptionSubQuestions
 					});
 				},
-				// function called when an error occurs, including a timeout
 				onerror : function(e) {
 					Ti.API.info("Error");
 					Ti.App.fireEvent('surveys.fetch.error', {
@@ -114,9 +109,7 @@ var Question = new Ti.App.joli.model({
 				},
 				timeout : 5000 // in milliseconds
 			});
-			// Prepare the connection.
 			client.open("GET", url);
-			// Send the request.
 			client.send();
 		},
 
