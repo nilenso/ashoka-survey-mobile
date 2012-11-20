@@ -8,9 +8,6 @@ function ResponsesNewView(surveyID) {
 	var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
 	var responseViewHelper = new ResponseViewHelper;
 
-	//Number of questions in a page
-	var PAGE_SIZE = 5;
-
 	var self = Ti.UI.createView({
 		layout : 'vertical'
 	})
@@ -23,11 +20,7 @@ function ResponsesNewView(surveyID) {
 	var survey = Survey.findOneById(surveyID);
 	var questions = survey.firstLevelQuestions();
 	
-	var allQuestionViews = Ti.UI.createView();
-
-	var pagedQuestions = _.chain(questions).groupBy(function(a, b) {
-		return Math.floor(b / PAGE_SIZE);
-	}).toArray().value();
+	var allQuestionViews = Ti.UI.createView();	
 
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
@@ -38,25 +31,8 @@ function ResponsesNewView(surveyID) {
 		title : 'Complete',
 		width : '48%'
 	});
-
-	_(pagedQuestions).each(function(questions, pageNumber) {
-		var questionsView = Ti.UI.createScrollView({
-			layout : 'vertical'
-		});
-
-		_(questions).each(function(question) {
-			var questionView = new QuestionView(question);
-			allQuestionViews.add(questionView);
-			questionsView.add(questionView);
-		})
-
-		if(pageNumber + 1 === pagedQuestions.length){
-			questionsView.add(completeButton);
-			questionsView.add(saveButton);
-		}
-
-		scrollableView.addView(questionsView);
-	});
+	
+	responseViewHelper.paginate(questions, allQuestionViews, scrollableView, [saveButton, completeButton]);
 
 	var validateAndSaveAnswers = function(e, status) {
 		var questionViews = responseViewHelper.getQuestionViews(allQuestionViews);
