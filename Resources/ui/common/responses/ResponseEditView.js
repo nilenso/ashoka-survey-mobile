@@ -27,12 +27,10 @@ function ResponseEditView(responseID) {
 	var survey = Survey.findOneById(response.survey_id);
 	var questions = survey.firstLevelQuestions();
 
-	var allQuestionViews = Ti.UI.createView();
-
-	responseViewHelper.paginate(questions, allQuestionViews, self, [saveButton, completeButton]);
+	responseViewHelper.paginate(questions, self, [saveButton, completeButton]);
 
 	var validateAndUpdateAnswers = function(e, status) {
-		var questionViews = responseViewHelper.getQuestionViews(allQuestionViews);
+		var questionViews = responseViewHelper.getQuestionViews(self.getChildren());
 		var answersData = _(questionViews).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
 			Ti.API.info("content:" + fields['valueField'].getValue());
