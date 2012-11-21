@@ -19,18 +19,18 @@ function QuestionWithOptionsView(question, answer) {
   self.add(button);
 
   var data = [];
-  var selectedIndex = 0;
 
   var options = question.options();
   options.unshift({ content: "None" });
   var optionTitles = options.map(function(option){ return option.content; });
   
+  var selectedIndex = content ? optionTitles.indexOf(content) : 0;
 
   button.addEventListener('click', function() {
     
     var optionsDialog = Ti.UI.createOptionDialog({
       options : optionTitles,
-      selectedIndex : content ? optionTitles.indexOf(content) : selectedIndex,
+      selectedIndex : selectedIndex,
       title : question.content
     });
     
