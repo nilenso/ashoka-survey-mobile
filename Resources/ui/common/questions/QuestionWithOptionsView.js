@@ -48,8 +48,7 @@ function QuestionWithOptionsView(question, answer) {
   });
 
   var showSubQuestions = function(selectedRowID) {
-    var optionID = options[selectedRowID].id;
-    var option = Option.findOneById(optionID);
+    var option = options[selectedRowID];
     Ti.API.info("Showing sub questions for" + option.content);
     _(self.getChildren()).each(function(childView) {
       if (childView != button)
@@ -67,7 +66,7 @@ function QuestionWithOptionsView(question, answer) {
     if (selectedIndex == 0){
       return '';
     } else {
-      return optionsTitles[selectedIndex];
+      return optionTitles[selectedIndex];
     }
   };
 
