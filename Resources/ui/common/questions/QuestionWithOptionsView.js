@@ -13,7 +13,7 @@ function QuestionWithOptionsView(question, answer) {
   });
 
   var button = Ti.UI.createButton({
-    title : "None",
+    title : content || "None",
     width : '80%'
   });
   self.add(button);
