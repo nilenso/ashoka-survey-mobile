@@ -62,7 +62,7 @@ function ResponseViewHelper() {
 		return foo;
 	};
 
-	var paginate = function(questions, scrollableView, buttons) {
+	var paginate = function(questions, scrollableView, buttons, response) {
 		var PAGE_SIZE = 6;
 		
 		var pagedQuestions = _.chain(questions).groupBy(function(a, b) {
@@ -75,7 +75,8 @@ function ResponseViewHelper() {
 			});
 
 			_(questions).each(function(question) {
-				var questionView = new QuestionView(question);
+			  var answer = response ? response.answerForQuestion(question.id) : undefined;
+				var questionView = new QuestionView(question, answer);
 				questionsView.add(questionView);
 			})
 			

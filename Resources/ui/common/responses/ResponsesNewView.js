@@ -30,7 +30,7 @@ function ResponsesNewView(surveyID) {
 		width : '48%'
 	});
 	
-	responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton]);
+	responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton], null);
 
 	var getCurrentLocation = function() {
 		var location = {};

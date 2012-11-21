@@ -27,7 +27,7 @@ function ResponseEditView(responseID) {
 	var survey = Survey.findOneById(response.survey_id);
 	var questions = survey.firstLevelQuestions();
 
-	responseViewHelper.paginate(questions, self, [saveButton, completeButton]);
+	responseViewHelper.paginate(questions, self, [saveButton, completeButton], response);
 
 	var validateAndUpdateAnswers = function(e, status) {
 		var questionViews = responseViewHelper.getQuestionViews(self.getViews());
