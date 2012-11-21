@@ -61,15 +61,9 @@ var Survey = new Ti.App.joli.model({
 		
 		syncAllResponses : function() {
 			Ti.App.fireEvent('all.responses.sync.start');
-			var count = 0;
-			_(this.all()).each(function(survey) {
-			  count += _(survey.responses()).size();
-			});
-			Ti.API.info("Total ressponses to be synced:" + count); 
 		  _(this.all()).each(function(survey) {
 		    survey.syncResponses();
 		  });
-		  progressBarView.keepVisible = true;
 		}
 	},
 	objectMethods : {
@@ -97,6 +91,10 @@ var Survey = new Ti.App.joli.model({
 
       progressBarView.updateMax(_(this.responses()).size());
 			_(this.responses()).each(function(response) {
+			  Ti.API.info("response hs an image answer : " + response.hasImageAnswer());
+			  if (response.hasImageAnswer()) {
+  			   progressBarView.keepVisible = true;
+			  }
   			Ti.App.addEventListener("response.sync", syncHandler);
 				response.sync();
 			});
