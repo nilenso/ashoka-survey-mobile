@@ -30,7 +30,7 @@ function ResponseEditView(responseID) {
 	responseViewHelper.paginate(questions, self, [saveButton, completeButton]);
 
 	var validateAndUpdateAnswers = function(e, status) {
-		var questionViews = responseViewHelper.getQuestionViews(self.getChildren());
+		var questionViews = responseViewHelper.getQuestionViews(self.getViews());
 		var answersData = _(questionViews).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
 			Ti.API.info("content:" + fields['valueField'].getValue());
