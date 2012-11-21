@@ -61,6 +61,8 @@ var Survey = new Ti.App.joli.model({
 		
 		syncAllResponses : function() {
 			Ti.App.fireEvent('all.responses.sync.start');
+			var surveyCount = _(this.all()).size();
+		  progressBarView.updateMax(surveyCount);
 		  _(this.all()).each(function(survey) {
 		    survey.syncResponses();
 		  });
@@ -98,6 +100,7 @@ var Survey = new Ti.App.joli.model({
   			Ti.App.addEventListener("response.sync", syncHandler);
 				response.sync();
 			});
+			progressBarView.updateValue(1);
 		},
 
 		responses : function() {
