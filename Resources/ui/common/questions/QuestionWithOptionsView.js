@@ -12,35 +12,34 @@ function QuestionWithOptionsView(question, answer) {
     height : Titanium.UI.SIZE
   });
 
-  var picker = Ti.UI.createPicker({
-    color : '#336699',
-    right : 5,
-    left : 5
+  var button = Ti.UI.createButton({
+    title : "Pick",
+    width : '80%'
   });
+  self.add(button);
 
   var data = [];
 
-  data.push(Ti.UI.createPickerRow({
-    title : 'None'
-  }));
+  var options = question.options();
 
-  _(question.options()).each(function(option) {
-    Ti.API.info("foo");
-    var optionRow = Ti.UI.createPickerRow({
-      title : option.content,
-      id : option.id
+  button.addEventListener('click', function() {
+    var optionsDialog = Ti.UI.createOptionDialog({
+      options : options.map(function(option){ return option.content; }),
+      title : question.content
     });
-    data.push(optionRow);
+    
+    optionsDialog.addEventListener('click', function(e){
+      Ti.API.info(e.index);
+    })
+    
+    optionsDialog.show();
   });
 
-  picker.add(data);
-  picker.selectionIndicator = true;
-
-  self.add(picker);
   var showSubQuestions = function(selectedRow) {
-    if(!(selectedRow instanceof Ti.UI.PickerRow)) selectedRow = picker.getSelectedRow(0);
+    if (!( selectedRow instanceof Ti.UI.PickerRow))
+      selectedRow = picker.getSelectedRow(0);
     var option = Option.findOneById(selectedRow.id);
-	Ti.API.info("Showing sub questions for" + option.content);
+    Ti.API.info("Showing sub questions for" + option.content);
     _(self.getChildren()).each(function(childView) {
       if (childView != picker)
         self.remove(childView);
@@ -53,15 +52,13 @@ function QuestionWithOptionsView(question, answer) {
     });
   };
 
-  picker.addEventListener('change', showSubQuestions);
-
   if (content) {
     var selectedRow = null;
     _(data).each(function(option, index) {
       if (option.title == content) {
-      	picker.setSelectedRow(0, index);
+        picker.setSelectedRow(0, index);
         selectedRow = option;
-      } 
+      }
     });
     showSubQuestions(selectedRow);
   }
