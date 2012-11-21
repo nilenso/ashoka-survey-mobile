@@ -123,7 +123,9 @@ var Response = new Ti.App.joli.model({
             'survey_id' : self.survey_id,
             'web_id' : received_response['id'],
             'status' : received_response['status'],
-            'updated_at' : (new Date()).toString()
+            'updated_at' : (new Date()).toString(),
+            'latitude' : self.latitude,
+            'longitude' : self.longitude
           });
           self.save();
 

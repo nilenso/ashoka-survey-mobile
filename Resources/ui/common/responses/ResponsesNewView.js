@@ -47,6 +47,8 @@ function ResponsesNewView(surveyID) {
 		return location;
 	};
 	
+	var responseLocation = getCurrentLocation();
+	
 	var validateAndSaveAnswers = function(e, status) {
 		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
 		var answersData = _(questionViews).map(function(fields, questionID) {
@@ -57,7 +59,6 @@ function ResponsesNewView(surveyID) {
 				'content' : fields.valueField.getValue()
 			}
 		});
-		var responseLocation = getCurrentLocation();
 		var responseErrors = Response.validate(answersData, status);
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
