@@ -13,35 +13,46 @@ function QuestionWithOptionsView(question, answer) {
   });
 
   var button = Ti.UI.createButton({
-    title : "Pick",
+    title : "None",
     width : '80%'
   });
   self.add(button);
 
   var data = [];
+  var selectedIndex = 0;
 
   var options = question.options();
+  options.unshift({ content: "None" });
+  var optionTitles = options.map(function(option){ return option.content; });
+  
 
   button.addEventListener('click', function() {
+    
     var optionsDialog = Ti.UI.createOptionDialog({
-      options : options.map(function(option){ return option.content; }),
+      options : optionTitles,
+      selectedIndex : content ? optionTitles.indexOf(content) : selectedIndex,
       title : question.content
     });
     
+    if(content) {
+      showSubQuestions(optionTitles.indexOf(content));
+    }
+    
     optionsDialog.addEventListener('click', function(e){
-      Ti.API.info(e.index);
+      selectedIndex = e.index;      
+      button.setTitle(optionTitles[selectedIndex]);
+      showSubQuestions(selectedIndex);
     })
     
     optionsDialog.show();
   });
 
-  var showSubQuestions = function(selectedRow) {
-    if (!( selectedRow instanceof Ti.UI.PickerRow))
-      selectedRow = picker.getSelectedRow(0);
-    var option = Option.findOneById(selectedRow.id);
+  var showSubQuestions = function(selectedRowID) {
+    var optionID = options[selectedRowID].id;
+    var option = Option.findOneById(optionID);
     Ti.API.info("Showing sub questions for" + option.content);
     _(self.getChildren()).each(function(childView) {
-      if (childView != picker)
+      if (childView != button)
         self.remove(childView);
     });
     var QuestionView = require('ui/common/questions/QuestionView');
@@ -52,22 +63,12 @@ function QuestionWithOptionsView(question, answer) {
     });
   };
 
-  if (content) {
-    var selectedRow = null;
-    _(data).each(function(option, index) {
-      if (option.title == content) {
-        picker.setSelectedRow(0, index);
-        selectedRow = option;
-      }
-    });
-    showSubQuestions(selectedRow);
-  }
-
   self.getValue = function() {
-    val = picker.getSelectedRow(null).getTitle();
-    if (val == 'None')
-      val = '';
-    return val;
+    if (selectedIndex == 0){
+      return '';
+    } else {
+      return optionsTitles[selectedIndex];
+    }
   };
 
   return self;
