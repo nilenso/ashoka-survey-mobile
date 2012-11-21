@@ -5,7 +5,8 @@ var ProgressBarView = function() {
     backgroundColor : 'black',
     // opacity : 0.4,
     width : '100%',
-    height : '100%'
+    height : '100%',
+    keepVisible : false
   });
 
   var titleLabel = Ti.UI.createLabel({
@@ -32,7 +33,7 @@ var ProgressBarView = function() {
     }
   });
   var hideProgressBarIfComplete = function() {
-    if (progressBar.getMax() == progressBar.getValue()) {
+    if (!self.keepVisible && progressBar.getMax() == progressBar.getValue()) {
       self.reset();
       self.hide();
       self.fireEvent('sync:complete');

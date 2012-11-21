@@ -69,12 +69,13 @@ var Survey = new Ti.App.joli.model({
 		  _(this.all()).each(function(survey) {
 		    survey.syncResponses();
 		  });
+		  progressBarView.keepVisible = true;
 		}
 	},
 	objectMethods : {
 		syncResponses : function() {
 			Ti.App.fireEvent('responses.sync.start');
-      progressBarView.setMessage("Syncing responses for:\n" + this.name);
+      progressBarView.setMessage("Syncing responses...");
 
 			var success_count = 0;
 			var self = this;

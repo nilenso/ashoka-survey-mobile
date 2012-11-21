@@ -115,9 +115,6 @@ var Response = new Ti.App.joli.model({
 					Ti.API.info("Synced response successfully: " + this.responseText);
 					self.has_error = false;
 					self.synced = true;
-					Ti.App.fireEvent('response.sync', {
-						survey_id : self.survey_id
-					});
 
 					var received_response = JSON.parse(this.responseText);
 					
@@ -153,14 +150,22 @@ var Response = new Ti.App.joli.model({
 					});
 
 					_(self.answers()).each(function(answer) {
-						Ti.API.info("Uploading the image");
-						answer.uploadImage(received_response['status'], received_response['id']);
+					  if (answer.isImage() && answer.image) {
+					    Ti.API.info("Progress uploading image");
+              progressBarView.setMessage("Uploading images...");
+              progressBarView.updateMax(1);
+  						answer.uploadImage(received_response['status'], received_response['id']);
+						}
 					});
 
 					if (received_response['status'] == "complete") {
 						self.destroyAnswers();
 						self.destroy();
 					}
+					
+					Ti.App.fireEvent('response.sync', {
+						survey_id : self.survey_id
+					});
 				},
 				onerror : function(e) {
 				  var message;
