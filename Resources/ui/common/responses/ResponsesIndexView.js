@@ -58,7 +58,7 @@ function ResponsesIndexView(surveyID) {
   var showProgressBar = function(e) {
     self.add(progressBarView);
     progressBarView.show();
-    Ti.App.removeEventListener('responses.sync.start', showProgressBar);
+    // Ti.App.removeEventListener('responses.sync.start', showProgressBar);
   };
 
   Ti.App.addEventListener('responses.sync.start', showProgressBar);
