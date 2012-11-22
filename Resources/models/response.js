@@ -97,8 +97,93 @@ var Response = new Ti.App.joli.model({
       });
     },
 
+    syncOnLoad : function(data) {
+      var self = data.response;
+      var responseText = data.responseText;
+      Ti.API.info("Synced response successfully: " + responseText);
+      self.has_error = false;
+      self.synced = true;
+
+      var received_response = JSON.parse(responseText);
+      Ti.API.info("Response parsed successfully");
+
+      self.fromArray({
+        'id' : self.id,
+        'survey_id' : self.survey_id,
+        'web_id' : received_response['id'],
+        'status' : received_response['status'],
+        'updated_at' : (new Date()).toString(),
+        'latitude' : self.latitude,
+        'longitude' : self.longitude
+      });
+      self.save();
+
+      _(self.answers()).each(function(answer, index) {
+        var image = answer.image;
+        var photoUpdatedAt = answer.photo_updated_at;
+        answer.destroyChoices();
+        answer.destroy();
+        var new_answer = Answer.newRecord({
+          'response_id' : self.id,
+          'question_id' : received_response.answers[index].question_id,
+          'web_id' : received_response.answers[index].id,
+          'content' : received_response.answers[index].content,
+          'updated_at' : (new Date()).toString(),
+          'image' : image,
+          'photo_updated_at' : photoUpdatedAt
+        });
+        new_answer.save();
+
+        _(received_response.answers[index].choices).each(function(choice) {
+          choice.answer_id = new_answer.id;
+          Choice.newRecord(choice).save();
+        })
+      });
+
+      _(self.answers()).each(function(answer) {
+        if (answer.isImage() && answer.image) {
+          Ti.API.info("Progress uploading image");
+          progressBarView.setMessage("Uploading images...");
+          progressBarView.updateMax(1);
+          answer.uploadImage(received_response['status'], received_response['id']);
+        }
+      });
+
+      if (received_response['status'] == "complete") {
+        self.destroyAnswers();
+        self.destroy();
+      }
+      Ti.App.fireEvent('response.sync', {
+        survey_id : self.survey_id
+      });
+
+    },
+
+    syncOnError : function(data) {
+      var message;
+      var self = data.response;
+      var responseText = data.responseText;
+      if (this.status == '410') {// Response deleted on server
+        Ti.API.info("Response deleted on server: " + responseText);
+        self.destroyAnswers();
+        self.destroy();
+      } else if (this.status >= 400) {
+        message = "Your server isn't responding. Sorry about that.";
+      } else if (this.status == 0) {
+        message = "Couldn't reach the server.";
+      } else {
+        Ti.API.info("Erroneous Response: " + responseText);
+        self.has_error = true;
+        message = "Some error occured";
+      }
+      self.synced = true;
+      Ti.App.fireEvent('response.sync', {
+        survey_id : self.survey_id,
+        message : message
+      });
+    },
+
     sync : function() {
-      //TODO: REFACTOR THIS.
       var url = Ti.App.Properties.getString('server_url') + '/api/responses';
       var self = this;
       this.synced = false;
@@ -111,84 +196,17 @@ var Response = new Ti.App.joli.model({
       params['latitude'] = this.latitude;
       var client = Ti.Network.createHTTPClient({
         // function called when the response data is available
-        onload : function(e) {
-          Ti.API.info("Synced response successfully: " + this.responseText);
-          self.has_error = false;
-          self.synced = true;
 
-          var received_response = JSON.parse(this.responseText);
-
-          self.fromArray({
-            'id' : self.id,
-            'survey_id' : self.survey_id,
-            'web_id' : received_response['id'],
-            'status' : received_response['status'],
-            'updated_at' : (new Date()).toString(),
-            'latitude' : self.latitude,
-            'longitude' : self.longitude
+        onload : function() {
+          self.syncOnLoad({
+            response : self,
+            responseText : this.responseText
           });
-          self.save();
-
-          _(self.answers()).each(function(answer, index) {
-            var image = answer.image;
-            var photoUpdatedAt = answer.photo_updated_at;
-            answer.destroyChoices();
-            answer.destroy();
-            var new_answer = Answer.newRecord({
-              'response_id' : self.id,
-              'question_id' : received_response.answers[index].question_id,
-              'web_id' : received_response.answers[index].id,
-              'content' : received_response.answers[index].content,
-              'updated_at' : (new Date()).toString(),
-              'image' : image,
-              'photo_updated_at' : photoUpdatedAt
-            });
-            new_answer.save();
-
-            _(received_response.answers[index].choices).each(function(choice) {
-              choice.answer_id = new_answer.id;
-              Choice.newRecord(choice).save();
-            })
-          });
-
-          _(self.answers()).each(function(answer) {
-            if (answer.isImage() && answer.image) {
-              Ti.API.info("Progress uploading image");
-              progressBarView.setMessage("Uploading images...");
-              progressBarView.updateMax(1);
-              answer.uploadImage(received_response['status'], received_response['id']);
-            }
-          });
-
-          if (received_response['status'] == "complete") {
-            self.destroyAnswers();
-            self.destroy();
-          }
-          Ti.App.fireEvent('response.sync', {
-            survey_id : self.survey_id
-          });
-
         },
-        onerror : function(e) {
-          var message;
-          if (this.status == '410') {// Response deleted on server
-            //TODO display verbose error for this case
-            Ti.API.info("Response deleted on server: " + this.responseText);
-            self.destroyAnswers();
-            self.destroy();
-          } else if (this.status >= 400) {
-            message = "Your server isn't responding. Sorry about that.";
-          } else if (this.status == 0) {
-            message = "Couldn't reach the server.";
-          } else {
-            Ti.API.info("Erroneous Response: " + this.responseText);
-            self.has_error = true;
-          }
-          self.synced = true;
-          Ti.App.fireEvent('responses.sync.error');
-          Ti.App.fireEvent('response.sync', {
-            survey_id : self.survey_id,
-            message : message
+        onerror : function() {
+          self.syncOnError({
+            response : self,
+            responseText : this.responseText
           });
         },
         timeout : 5000 // in milliseconds

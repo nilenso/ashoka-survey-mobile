@@ -1,52 +1,55 @@
 function ResponsesIndexWindow(surveyID) {
-	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView')
-	var ResponseShowView = require('ui/common/responses/ResponseShowView')
-	var ResponseShowWindow = require('ui/handheld/android/ResponseShowWindow')
-	var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow')
-	var Survey = require('models/survey')
+  var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView')
+  var ResponseShowView = require('ui/common/responses/ResponseShowView')
+  var ResponseShowWindow = require('ui/handheld/android/ResponseShowWindow')
+  var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow')
+  var Survey = require('models/survey');
+  var NetworkHelper = require('helpers/NetworkHelper');
 
-	var self = Ti.UI.createWindow({
-		title : 'All Responses',
-		navBarHidden : false,
-		backgroundColor : "#fff",
+  var self = Ti.UI.createWindow({
+    title : 'All Responses',
+    navBarHidden : false,
+    backgroundColor : "#fff",
 
-		activity : {
-			onCreateOptionsMenu : function(e) {
-				var menu = e.menu;
-				var menuItemSync = menu.add({
-					title : "Sync"
-				});
-				menuItemSync.addEventListener('click', function() {
-					survey = Survey.findOneById(surveyID)
-					survey.syncResponses();
-				});
-				menuItemSync.setIcon("images/refresh.png");
-			}
-		}
-	});
-	
-	var view = new ResponsesIndexView(surveyID);
-	self.add(view);
+    activity : {
+      onCreateOptionsMenu : function(e) {
+        var menu = e.menu;
+        var menuItemSync = menu.add({
+          title : "Sync"
+        });
+        menuItemSync.addEventListener('click', function() {
+          survey = Survey.findOneById(surveyID)
+          NetworkHelper.pingSurveyWeb( onSuccess = function() {
+            survey.syncResponses();
+          });
+        });
+        menuItemSync.setIcon("images/refresh.png");
+      }
+    }
+  });
 
-	view.addEventListener('ResponsesIndexView:table_row_clicked', function(e) {
-		new ResponseShowWindow(e.responseID).open();
-	});
+  var view = new ResponsesIndexView(surveyID);
+  self.add(view);
 
-	var syncHandler = function(data) {
-		Ti.App.removeEventListener("survey.responses.sync", syncHandler);
-		self.close();
-		if (data.message)
-		  alert(data.message);
-		else
-		  alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
-	};
-	Ti.App.addEventListener("survey.responses.sync", syncHandler);
+  view.addEventListener('ResponsesIndexView:table_row_clicked', function(e) {
+    new ResponseShowWindow(e.responseID).open();
+  });
 
-	self.addEventListener('close', function() {
-		Ti.App.removeEventListener("survey.responses.sync", syncHandler);
-	});
+  var syncHandler = function(data) {
+    Ti.App.removeEventListener("survey.responses.sync", syncHandler);
+    self.close();
+    if (data.message)
+      alert(data.message);
+    else
+      alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
+  };
+  Ti.App.addEventListener("survey.responses.sync", syncHandler);
 
-	return self;
+  self.addEventListener('close', function() {
+    Ti.App.removeEventListener("survey.responses.sync", syncHandler);
+  });
+
+  return self;
 }
 
 module.exports = ResponsesIndexWindow;
