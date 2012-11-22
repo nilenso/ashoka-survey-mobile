@@ -63,11 +63,13 @@ var Survey = new Ti.App.joli.model({
     },
 
     syncAllResponses : function() {
-      Ti.App.fireEvent('all.responses.sync.start');
-      var surveyCount = _(this.all()).size();
-      progressBarView.updateMax(surveyCount);
-      _(this.all()).each(function(survey) {
-        survey.syncResponses();
+      NetworkHelper.pingSurveyWeb( onSuccess = function() {
+        Ti.App.fireEvent('all.responses.sync.start');
+        var surveyCount = _(this.all()).size();
+        progressBarView.updateMax(surveyCount);
+        _(this.all()).each(function(survey) {
+          survey.syncResponses();
+        });
       });
     }
   },
