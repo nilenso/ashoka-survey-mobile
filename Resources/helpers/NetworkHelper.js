@@ -7,9 +7,12 @@ var NetworkHelper = {
     
     var client = Ti.Network.createHTTPClient({
       onload : success,
-      onerror : error,
+      onerror : error || function(){
+        alert("Couldn't reach the server");
+      },
       timeout : 5000
     });
+    
     client.open('HEAD', Ti.App.Properties.getString('server_url'));
     client.send();
   }

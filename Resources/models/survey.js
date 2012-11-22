@@ -3,6 +3,7 @@ var Question = require('models/question');
 var Response = require('models/response');
 var Option = require('models/option');
 var progressBarView = require('ui/common/components/ProgressBar');
+var NetworkHelper = require('helpers/NetworkHelper');
 
 var Survey = new Ti.App.joli.model({
   table : 'surveys',
@@ -15,33 +16,35 @@ var Survey = new Ti.App.joli.model({
 
   methods : {
     fetchSurveys : function() {
-      Ti.App.fireEvent('surveys.fetch.start');
-      progressBarView.setMessage("Fetching surveys...");
-      var url = Ti.App.Properties.getString('server_url') + '/api/surveys';
       var that = this;
-      var client = Ti.Network.createHTTPClient({
-        onload : function(e) {
-          Ti.API.info("Received text: " + this.responseText);
-          var data = JSON.parse(this.responseText);
-          that.truncate();
-          Question.truncate();
-          Option.truncate();
-          progressBarView.updateMax(data.length);
-          _(data).each(function(surveyData) {
-            var survey = that.createRecord(surveyData);
-            survey.fetchQuestions();
-          });
-        },
-        onerror : function(e) {
-          Ti.API.debug(e.error);
-          Ti.App.fireEvent('surveys.fetch.error', {
-            status : this.status
-          });
-        },
-        timeout : 5000 // in milliseconds
+      NetworkHelper.pingSurveyWeb( onSuccess = function() {
+        Ti.App.fireEvent('surveys.fetch.start');
+        progressBarView.setMessage("Fetching surveys...");
+        var url = Ti.App.Properties.getString('server_url') + '/api/surveys';
+        var client = Ti.Network.createHTTPClient({
+          onload : function(e) {
+            Ti.API.info("Received text: " + this.responseText);
+            var data = JSON.parse(this.responseText);
+            that.truncate();
+            Question.truncate();
+            Option.truncate();
+            progressBarView.updateMax(data.length);
+            _(data).each(function(surveyData) {
+              var survey = that.createRecord(surveyData);
+              survey.fetchQuestions();
+            });
+          },
+          onerror : function(e) {
+            Ti.API.debug(e.error);
+            Ti.App.fireEvent('surveys.fetch.error', {
+              status : this.status
+            });
+          },
+          timeout : 5000 // in milliseconds
+        });
+        client.open("GET", url);
+        client.send();
       });
-      client.open("GET", url);
-      client.send();
     },
 
     createRecord : function(surveyData) {
