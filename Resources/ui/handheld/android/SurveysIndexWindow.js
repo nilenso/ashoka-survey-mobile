@@ -7,7 +7,7 @@ function SurveysIndexWindow() {
 	var Question = require('models/question');
 	var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow');
 	var settingsWindow = SettingsWindow();
-	var loginView = require('ui/handheld/android/LoginView');
+	var LoginView = require('ui/common/LoginView');
 	var surveysIndexView = new SurveysIndexView();
 	//create component instance
 	var self = Ti.UI.createWindow({
@@ -34,7 +34,16 @@ function SurveysIndexWindow() {
 					Survey.syncAllResponses();
 				});
 				menuItemSync.setIcon("images/refresh.png");
-
+				
+				var login = menu.add({
+					title : "Login"
+				});
+				login.addEventListener('click', function() {
+					var loginView = new LoginView();
+					self.add(loginView);
+				});
+				login.setIcon("images/login.jpg");
+				
 				var menuItemSettings = menu.add({
 					title : "Settings"
 				});
@@ -53,20 +62,6 @@ function SurveysIndexWindow() {
 	surveysIndexView.addEventListener('surveys_index_view.table_row_clicked', function(e) {
 		SurveyDetailsWindow(e.surveyID).open();
 	});
-
-	var loginButton = Ti.UI.createButton({
-		title : 'Login',
-		top : 110,
-		width : 90,
-		height : 35,
-		borderRadius : 1,
-	});
-
-	loginButton.addEventListener('click', function() {
-		loginView.open();
-	});
-	
-	self.add(loginButton);
 	
 	//construct UI
 	self.add(surveysIndexView);
