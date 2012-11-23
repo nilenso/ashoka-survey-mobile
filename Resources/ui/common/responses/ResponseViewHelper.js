@@ -3,7 +3,7 @@ function ResponseViewHelper() {
 	var Question = require('models/question');
 	var QuestionView = require('ui/common/questions/QuestionView');
 	
-	var PAGE_SIZE = 6;
+	var PAGE_SIZE = 7;
 
 	var generateLabelTextForQuestion = function(question, errorText) {
 		text = '';
