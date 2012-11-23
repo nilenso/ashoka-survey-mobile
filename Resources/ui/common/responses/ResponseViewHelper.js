@@ -2,6 +2,8 @@ function ResponseViewHelper() {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
 	var QuestionView = require('ui/common/questions/QuestionView');
+	
+	var PAGE_SIZE = 6;
 
 	var generateLabelTextForQuestion = function(question, errorText) {
 		text = '';
@@ -63,7 +65,6 @@ function ResponseViewHelper() {
 	};
 
 	var paginate = function(questions, scrollableView, buttons, response) {
-		var PAGE_SIZE = 6;
 		
 		var pagedQuestions = _.chain(questions).groupBy(function(a, b) {
 			return Math.floor(b / PAGE_SIZE);
@@ -86,13 +87,29 @@ function ResponseViewHelper() {
 
 			scrollableView.addView(questionsView);
 		});
-	}
+	};
+	
+	var scrollToFirstErrorPage = function(scrollableView, errors){
+	  Ti.API.info(errors);	  
+	  if(!errors || _(errors).isEmpty()) return;
+	  Ti.API.info("SCROLLING!");
+	  var questionID = _(errors).keys()[0];
+	  var question = Question.findOneById(questionID);
+	  var questionNumber = question.number();
+	  var topLevelQuestionNumber = _(questionNumber).isArray() ? parseInt(questionNumber.match(/^\d+/)[0]) : questionNumber;
+	  var pageNumber = Math.floor((topLevelQuestionNumber - 1) / PAGE_SIZE);
+	  var views = scrollableView.getViews();
+	  Ti.API.info(pageNumber)
+	  scrollableView.scrollToView(views[pageNumber]);
+	};
+	
 	var self = {
 		getQuestionViews : getQuestionViews,
 		displayErrors : displayErrors,
 		resetErrors : resetErrors,
 		generateLabelTextForQuestion : generateLabelTextForQuestion,
-		paginate : paginate
+		paginate : paginate,
+		scrollToFirstErrorPage : scrollToFirstErrorPage
 	};
 	return self;
 }

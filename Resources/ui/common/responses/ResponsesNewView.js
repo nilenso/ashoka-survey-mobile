@@ -62,6 +62,7 @@ function ResponsesNewView(surveyID) {
 		var responseErrors = Response.validate(answersData, status);
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
+		  responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
 			alert("There were some errors in the response.");
 		} else {
 			Response.createRecord(surveyID, status, answersData, responseLocation);
