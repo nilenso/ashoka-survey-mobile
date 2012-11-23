@@ -43,6 +43,7 @@ function ResponseEditView(responseID) {
 		responseErrors = Response.validate(answersData, status);
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
+			responseViewHelper.scrollToFirstErrorPage(self, responseErrors);
 			alert("There were some errors in the response.");
 		} else {
 			var response = Response.findOneById(responseID);
