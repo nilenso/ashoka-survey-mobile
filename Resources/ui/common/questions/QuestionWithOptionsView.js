@@ -61,6 +61,10 @@ function QuestionWithOptionsView(question, answer) {
       self.add(new QuestionView(subQuestion, subQuestionAnswer));
     });
   };
+  
+  if(content) {
+    showSubQuestions(selectedIndex);
+  }
 
   self.getValue = function() {
     if (selectedIndex == 0){
