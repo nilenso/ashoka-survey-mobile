@@ -54,6 +54,7 @@ function QuestionWithOptionsView(question, answer) {
       if (childView != button)
         self.remove(childView);
     });
+    if(option.content == "None" && selectedRowID == 0) return; //No sub-questions for the "None" option
     var QuestionView = require('ui/common/questions/QuestionView');
     var subQuestions = option.firstLevelSubQuestions();
     _(subQuestions).each(function(subQuestion) {
