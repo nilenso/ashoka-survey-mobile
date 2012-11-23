@@ -89,18 +89,9 @@ function ResponseViewHelper() {
 		});
 	};
 	
-	var scrollToFirstErrorPage = function(scrollableView, errors){
-	  Ti.API.info(errors);	  
-	  if(!errors || _(errors).isEmpty()) return;
-	  Ti.API.info("SCROLLING!");
-	  var questionID = _(errors).keys()[0];
-	  var question = Question.findOneById(questionID);
-	  var questionNumber = question.number();
-	  var topLevelQuestionNumber = _(questionNumber).isArray() ? parseInt(questionNumber.match(/^\d+/)[0]) : questionNumber;
-	  var pageNumber = Math.floor((topLevelQuestionNumber - 1) / PAGE_SIZE);
+	var scrollToFirstErrorPage = function(scrollableView, errors){	  
 	  var views = scrollableView.getViews();
-	  Ti.API.info(pageNumber)
-	  scrollableView.scrollToView(views[pageNumber]);
+	  scrollableView.scrollToView(views[0]);
 	};
 	
 	var self = {
