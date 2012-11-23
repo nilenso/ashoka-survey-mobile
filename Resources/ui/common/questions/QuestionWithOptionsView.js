@@ -21,29 +21,29 @@ function QuestionWithOptionsView(question, answer) {
   var data = [];
 
   var options = question.options();
-  options.unshift({ content: "None" });
-  var optionTitles = options.map(function(option){ return option.content; });
-  
+  options.unshift({
+    content : "None"
+  });
+  var optionTitles = options.map(function(option) {
+    return option.content;
+  });
+
   var selectedIndex = content ? optionTitles.indexOf(content) : 0;
 
   button.addEventListener('click', function() {
-    
+
     var optionsDialog = Ti.UI.createOptionDialog({
       options : optionTitles,
       selectedIndex : selectedIndex,
       title : question.content
     });
-    
-    if(content) {
-      showSubQuestions(optionTitles.indexOf(content));
-    }
-    
-    optionsDialog.addEventListener('click', function(e){
-      selectedIndex = e.index;      
+
+    optionsDialog.addEventListener('click', function(e) {
+      selectedIndex = e.index;
       button.setTitle(optionTitles[selectedIndex]);
       showSubQuestions(selectedIndex);
     })
-    
+
     optionsDialog.show();
   });
 
@@ -61,13 +61,13 @@ function QuestionWithOptionsView(question, answer) {
       self.add(new QuestionView(subQuestion, subQuestionAnswer));
     });
   };
-  
-  if(content) {
+
+  if (content) {
     showSubQuestions(selectedIndex);
   }
 
   self.getValue = function() {
-    if (selectedIndex == 0){
+    if (selectedIndex == 0) {
       return '';
     } else {
       return optionTitles[selectedIndex];
