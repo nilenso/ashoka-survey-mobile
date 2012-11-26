@@ -6,7 +6,7 @@ function SurveyDetailsWindow(surveyID) {
 
 	var self = Ti.UI.createWindow({
 		title : 'Survey Details',
-		navBarHidden : false,
+		navBarHidden : true,
 		backgroundColor : "#fff"
 	});
 	var view = new SurveyDetailsView(surveyID);

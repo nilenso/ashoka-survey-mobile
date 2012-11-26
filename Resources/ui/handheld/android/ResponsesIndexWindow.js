@@ -8,7 +8,7 @@ function ResponsesIndexWindow(surveyID) {
 
   var self = Ti.UI.createWindow({
     title : 'All Responses',
-    navBarHidden : false,
+    navBarHidden : true,
     backgroundColor : "#fff",
 
     activity : {

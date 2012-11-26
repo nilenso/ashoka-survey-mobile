@@ -4,7 +4,7 @@ function ResponseShowWindow(responseID) {
 
 	var self = Ti.UI.createWindow({
 		title : 'Response',
-		navBarHidden : false,
+		navBarHidden : true,
 		backgroundColor : "#fff"
 	});
 	var view = new ResponseShowView(responseID);
