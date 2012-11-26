@@ -27,7 +27,6 @@ function SettingsView() {
     });
     return confirmDialog;
   }
-  
   //label using localization-ready strings from <app dir>/i18n/en/strings.xml
   var label = Ti.UI.createLabel({
     color : '#000000',
@@ -58,7 +57,7 @@ function SettingsView() {
     if (server_url.match(/^https?\:\/\/[\w-.]+(\.\w{2,4}|\:\d{2,5})$/i) == null) {
       alert("Your settings are invalid. Please check them before saving.");
     } else if (Ti.App.Properties.getString('server_url') === server_url) {
-              self.fireEvent('settings_saved');
+      self.fireEvent('settings_saved');
     } else {
       createConfirmDialog().show();
     }
