@@ -1,87 +1,92 @@
 //SurveysIndexView Component Constructor
 function SurveysIndexView() {
-	var Survey = require('models/survey');
-	var _ = require('lib/underscore')._;
-	var progressBarView = require('ui/common/components/ProgressBar');
+  var Survey = require('models/survey');
+  var _ = require('lib/underscore')._;
+  var progressBarView = require('ui/common/components/ProgressBar');
 
-	var convertModelDataForTable = function() {
-		return _(Survey.all()).map(function(survey) {
-			return {
-				title : survey.name,
-				hasDetail : true,
-				surveyID : survey.id
-			}
-		});
-	}
-	var showMessageIfModelIsEmpty = function() {
-		if (Survey.isEmpty()) {
-			self.add(label);
-			self.remove(table);
-		} else {
-			self.remove(label);
-			self.add(table);
-		}
-	}
+  var convertModelDataForTable = function() {
+    return _(Survey.all()).map(function(survey) {
+      return {
+        title : survey.name,
+        hasDetail : true,
+        surveyID : survey.id
+      }
+    });
+  }
+  var showMessageIfModelIsEmpty = function() {
+    if (Survey.isEmpty()) {
+      self.add(label);
+      self.remove(table);
+    } else {
+      self.remove(label);
+      self.add(table);
+    }
+  }
+  var refreshSurveys = function() {
+    var data = convertModelDataForTable();
+    table.setData(data);
+    showMessageIfModelIsEmpty();
+  }
 
-	progressBarView.addEventListener('sync:complete', function(e) {
-		data = convertModelDataForTable();
-		table.setData(data);
-		showMessageIfModelIsEmpty();
-		Ti.App.removeEventListener('surveys.fetch.error', errorListener);
-	});
+  Ti.App.addEventListener('settings.refreshSurveys', refreshSurveys);
 
-	var errorListener = function(data) {
-		progressBarView.hide();
-		progressBarView.reset();
-		if (data.status >= 400) {
-			alert("Your server isn't responding. Sorry about that.");
-		} else if (data.status == 0) {
-			alert("Couldn't reach the server.");
-		}
-		Ti.App.removeEventListener('surveys.fetch.error', errorListener);
-	};
+  progressBarView.addEventListener('sync:complete', function(e) {
+    refreshSurveys();
+    Ti.App.removeEventListener('surveys.fetch.error', errorListener);
+  });
 
-	var self = Ti.UI.createView();
+  var errorListener = function(data) {
+    progressBarView.hide();
+    progressBarView.reset();
+    if (data.status >= 400) {
+      alert("Your server isn't responding. Sorry about that.");
+    } else if (data.status == 0) {
+      alert("Couldn't reach the server.");
+    }
+    Ti.App.removeEventListener('surveys.fetch.error', errorListener);
+  };
 
-	self.addErrorListener = function() {
-		Ti.App.addEventListener('surveys.fetch.error', errorListener);
-	};
+  var self = Ti.UI.createView();
 
-	var showProgressBar = function(e) {
-		progressBarView.reset();
-		self.add(progressBarView);
-		progressBarView.show();
-		Ti.App.removeEventListener('surveys:fetch:start', showProgressBar);
-	  Ti.App.removeEventListener('all.responses.sync.start', showProgressBar);
-	};
+  self.addErrorListener = function() {
+    Ti.App.addEventListener('surveys.fetch.error', errorListener);
+  };
 
-	Ti.App.addEventListener('surveys.fetch.start', showProgressBar);
-	Ti.App.addEventListener('all.responses.sync.start', showProgressBar);
+  var showProgressBar = function(e) {
+    progressBarView.reset();
+    self.add(progressBarView);
+    progressBarView.show();
+    Ti.App.removeEventListener('surveys:fetch:start', showProgressBar);
+    Ti.App.removeEventListener('all.responses.sync.start', showProgressBar);
+  };
 
-	var table = Titanium.UI.createTableView({
-		data : convertModelDataForTable()
-	});
+  Ti.App.addEventListener('surveys.fetch.start', showProgressBar);
+  Ti.App.addEventListener('all.responses.sync.start', showProgressBar);
 
-	table.addEventListener('click', function(e) {
-		self.fireEvent('surveys_index_view.table_row_clicked', {
-			surveyID : e.rowData.surveyID
-		});
-	});
+  var table = Titanium.UI.createTableView({
+    data : convertModelDataForTable()
+  });
 
-	label = Ti.UI.createLabel({
-		color : '#333',
-		font : {
-			fontSize : 18
-		},
-		text : 'No surveys here. Please perform a sync.',
-		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		top : '40%',
-		width : 'auto',
-		height : 'auto'
-	});
+  table.addEventListener('click', function(e) {
+    self.fireEvent('surveys_index_view.table_row_clicked', {
+      surveyID : e.rowData.surveyID
+    });
+  });
 
-	showMessageIfModelIsEmpty();
-	return self;
+  label = Ti.UI.createLabel({
+    color : '#333',
+    font : {
+      fontSize : 18
+    },
+    text : 'No surveys here. Please perform a sync.',
+    textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+    top : '40%',
+    width : 'auto',
+    height : 'auto'
+  });
+
+  showMessageIfModelIsEmpty();
+  return self;
 }
 
 module.exports = SurveysIndexView;

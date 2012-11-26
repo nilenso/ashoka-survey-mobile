@@ -1,4 +1,6 @@
 //SettingsView Component Constructor
+var DatabaseHelper = require('helpers/DatabaseHelper');
+
 function SettingsView() {
   var self = Ti.UI.createView({
     layout : 'vertical'
@@ -18,7 +20,9 @@ function SettingsView() {
       } else {
         var server_url = textField.getValue();
         Ti.App.Properties.setString('server_url', server_url);
+        DatabaseHelper.clearDatabase();
         self.fireEvent('settings_saved');
+        Ti.App.fireEvent('settings.refreshSurveys');
       }
     });
     return confirmDialog;
