@@ -7,7 +7,7 @@ function SurveysIndexWindow() {
 	var Question = require('models/question');
 	var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow');
 	var settingsWindow = SettingsWindow();
-	var LoginView = require('ui/common/LoginView');
+	var loginWindow = require('ui/handheld/android/LoginWindow');
 	var surveysIndexView = new SurveysIndexView();
 	//create component instance
 	var self = Ti.UI.createWindow({
@@ -39,8 +39,7 @@ function SurveysIndexWindow() {
 					title : "Login"
 				});
 				login.addEventListener('click', function() {
-					var loginView = new LoginView();
-					self.add(loginView);
+					new loginWindow().open();
 				});
 				login.setIcon("images/login.jpg");
 				
