@@ -17,14 +17,14 @@ function SurveysIndexWindow() {
 		activity : {
 			onCreateOptionsMenu : function(e) {
 				var menu = e.menu;
-				var menuItemSync = menu.add({
+				var menuItemFetch = menu.add({
 					title : "Fetch Surveys"
 				});
-				menuItemSync.addEventListener('click', function() {
+				menuItemFetch.addEventListener('click', function() {
 					Survey.fetchSurveys();
 					surveysIndexView.addErrorListener();
 				});
-				menuItemSync.setIcon("images/refresh.png");
+				menuItemFetch.setIcon("/images/fetch.png");
 
 				var menuItemSync = menu.add({
 					title : "Sync Responses"
@@ -32,7 +32,7 @@ function SurveysIndexWindow() {
 				menuItemSync.addEventListener('click', function() {
 					Survey.syncAllResponses();
 				});
-				menuItemSync.setIcon("images/refresh.png");
+				menuItemSync.setIcon("/images/refresh.png");
 				
 				var login = menu.add({
 					title : "Login"
@@ -40,7 +40,7 @@ function SurveysIndexWindow() {
 				login.addEventListener('click', function() {
 					new loginWindow().open();
 				});
-				login.setIcon("images/login.jpg");
+				login.setIcon("/images/login.png");
 				
 				var menuItemSettings = menu.add({
 					title : "Settings"
@@ -48,7 +48,7 @@ function SurveysIndexWindow() {
 				menuItemSettings.addEventListener('click', function() {
 					settingsWindow.open();
 				});
-				menuItemSettings.setIcon("images/settings.png");
+				menuItemSettings.setIcon("/images/settings.png");
 			}
 		}
 	});
