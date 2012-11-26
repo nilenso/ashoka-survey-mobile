@@ -48,7 +48,7 @@ function SurveysIndexView() {
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
   };
 
-  var self =  new TopLevelView('List of Surveys');
+  var self = new TopLevelView('List of Surveys');
 
   self.addErrorListener = function() {
     Ti.App.addEventListener('surveys.fetch.error', errorListener);
