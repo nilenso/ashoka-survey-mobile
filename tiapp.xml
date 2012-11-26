@@ -7,7 +7,7 @@
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>2.1.3.GA</sdk-version>
+    <sdk-version>2.1.4.GA</sdk-version>
     <id>com.c42.surveyMobile</id>
     <name>survey-mobile</name>
     <version>1.0</version>
@@ -15,7 +15,7 @@
     <url>http://c42.in</url>
     <description>not specified</description>
     <copyright>2012 by tim</copyright>
-    <icon>appicon.png</icon>
+    <icon>Default.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
     <statusbar-style>default</statusbar-style>

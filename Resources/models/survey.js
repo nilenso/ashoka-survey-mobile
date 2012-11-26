@@ -43,6 +43,7 @@ var Survey = new Ti.App.joli.model({
           timeout : 5000 // in milliseconds
         });
         client.open("GET", url);
+        client.setRequestHeader('Cookie', Ti.App.Properties.getString('auth_cookie'));
         client.send();
       });
     },

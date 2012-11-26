@@ -55,7 +55,7 @@ var ProgressBarView = function() {
     var currentMax = typeof progressBar.getMax() !== 'undefined' ? progressBar.getMax() : 0;
     progressBar.max = currentMax + max;
     Ti.API.info("Progress bar MAX is now: " + progressBar.getMax());
-    // hideProgressBarIfComplete();
+    hideProgressBarIfComplete();
   };
 
   self.updateValue = function(value) {
