@@ -5,6 +5,8 @@ function ResponseShowView(responseID) {
 	var Answer = require('models/answer');
 	var Question = require('models/question');
 	var Response = require('models/response');
+  var TopLevelView = require('ui/common/components/TopLevelView');
+
 	var convertResponseDataForTable = function() {
 		var response = Response.findOneById(responseID);
 		var answers = response.answers();
@@ -25,9 +27,8 @@ function ResponseShowView(responseID) {
 		});
 		return responses;
 	}
-	var self = Ti.UI.createView({
-		layout : 'vertical'
-	});
+	
+	var self = new TopLevelView('Response Details');
 
 	// now assign that array to the table's data property to add those objects as rows
 	var table = Titanium.UI.createTableView({

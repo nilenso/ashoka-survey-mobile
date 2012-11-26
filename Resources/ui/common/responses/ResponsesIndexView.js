@@ -3,6 +3,7 @@ function ResponsesIndexView(surveyID) {
   var _ = require('lib/underscore')._;
   var Response = require('models/response');
   var Survey = require('models/survey');
+  var TopLevelView = require('ui/common/components/TopLevelView');
   var progressBarView = require('ui/common/components/ProgressBar');
 
   var convertModelDataForTable = function() {
@@ -53,7 +54,7 @@ function ResponsesIndexView(surveyID) {
     showMessageIfModelIsEmpty();
   });
 
-  var self = Ti.UI.createView();
+  var self = new TopLevelView('List of Responses');
 
   var showProgressBar = function(e) {
     self.add(progressBarView);
