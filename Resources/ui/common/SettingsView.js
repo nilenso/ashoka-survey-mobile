@@ -57,9 +57,9 @@ function SettingsView() {
     var server_url = textField.getValue();
     if (server_url.match(/^https?\:\/\/[\w-.]+(\.\w{2,4}|\:\d{2,5})$/i) == null) {
       alert("Your settings are invalid. Please check them before saving.");
+    } else if (Ti.App.Properties.getString('server_url') === server_url) {
+              self.fireEvent('settings_saved');
     } else {
-      Ti.API.info('Reached srihari');
-      // self.add(confirmDialog);
       createConfirmDialog().show();
     }
   });
