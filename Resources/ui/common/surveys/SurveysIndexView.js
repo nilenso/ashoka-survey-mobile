@@ -3,6 +3,7 @@ function SurveysIndexView() {
   var Survey = require('models/survey');
   var HeaderView = require('ui/common/components/HeaderView');
   var _ = require('lib/underscore')._;
+  var TopLevelView = require('ui/common/components/TopLevelView');
   var progressBarView = require('ui/common/components/ProgressBar');
 
   var convertModelDataForTable = function() {
@@ -47,10 +48,7 @@ function SurveysIndexView() {
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
   };
 
-  var self = Ti.UI.createView( { layout:'vertical'
-  });
-
-  self.add(new HeaderView());
+  var self =  new TopLevelView('List of Surveys');
 
   self.addErrorListener = function() {
     Ti.App.addEventListener('surveys.fetch.error', errorListener);
