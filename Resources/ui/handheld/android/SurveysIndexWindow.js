@@ -46,11 +46,6 @@ function SurveysIndexWindow() {
 		}
 	});
 
-
-	Ti.App.addEventListener('settings_saved', function() {
-		settingsWindow.close();
-	})
-
 	surveysIndexView.addEventListener('surveys_index_view.table_row_clicked', function(e) {
 		SurveyDetailsWindow(e.surveyID).open();
 	});
