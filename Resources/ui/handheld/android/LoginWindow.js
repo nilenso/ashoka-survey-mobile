@@ -10,6 +10,10 @@ function LoginWindow() {
 	var loginView = new LoginView();
 	self.add(loginView);
 	
+	loginView.addEventListener('login:completed', function() {
+	  self.close();
+	});
+	
 	return self;
 }
 
