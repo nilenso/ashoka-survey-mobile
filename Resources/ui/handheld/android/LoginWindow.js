@@ -2,8 +2,7 @@ function LoginWindow() {
 	var LoginView = require('ui/common/LoginView');
 	
 	var self = Ti.UI.createWindow({
-		title : 'Login',
-		navBarHidden : false,
+		navBarHidden : true,
 		backgroundColor : "#fff"
 	});
 	

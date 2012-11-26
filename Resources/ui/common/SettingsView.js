@@ -1,10 +1,9 @@
 //SettingsView Component Constructor
+var TopLevelView = require('ui/common/components/TopLevelView');
 var DatabaseHelper = require('helpers/DatabaseHelper');
 
 function SettingsView() {
-  var self = Ti.UI.createView({
-    layout : 'vertical'
-  });
+  var self = new TopLevelView('Settings');
 
   var createConfirmDialog = function() {
     var confirmDialog = Ti.UI.createAlertDialog({

@@ -1,10 +1,10 @@
+var TopLevelView = require('ui/common/components/TopLevelView');
+
 function LoginView() {
 	
 	var loginUrl = Ti.App.Properties.getString('server_url') + '/api/login';
 	
-	var self = Titanium.UI.createView({
-		layout : 'vertical'
-	});
+	var self = new TopLevelView('Login');
 	
 	var emailField = Ti.UI.createTextField({
 		width : '80%',
