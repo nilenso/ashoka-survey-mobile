@@ -13,7 +13,7 @@ function SurveysIndexWindow() {
 	var self = Ti.UI.createWindow({
 		title : 'Surveys',
 		backgroundColor : '#fff',
-		navBarHidden : false,
+		navBarHidden : true,
 		exitOnClose : true,
 		activity : {
 			onCreateOptionsMenu : function(e) {
