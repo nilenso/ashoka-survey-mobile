@@ -7,7 +7,6 @@ function ResponsesIndexWindow(surveyID) {
   var NetworkHelper = require('helpers/NetworkHelper');
 
   var self = Ti.UI.createWindow({
-    title : 'All Responses',
     navBarHidden : true,
     backgroundColor : "#fff",
 

@@ -11,7 +11,6 @@ function SurveysIndexWindow() {
 	var surveysIndexView = new SurveysIndexView();
 	//create component instance
 	var self = Ti.UI.createWindow({
-		title : 'Surveys',
 		backgroundColor : '#fff',
 		navBarHidden : true,
 		exitOnClose : true,

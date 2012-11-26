@@ -3,7 +3,6 @@ function ResponseShowWindow(responseID) {
 	var ResponseEditWindow = require('ui/handheld/android/ResponseEditWindow')
 
 	var self = Ti.UI.createWindow({
-		title : 'Response',
 		navBarHidden : true,
 		backgroundColor : "#fff"
 	});

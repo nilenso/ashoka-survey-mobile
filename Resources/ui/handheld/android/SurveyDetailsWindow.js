@@ -5,7 +5,6 @@ function SurveyDetailsWindow(surveyID) {
 	var ResponsesIndexWindow = require('ui/handheld/android/ResponsesIndexWindow')
 
 	var self = Ti.UI.createWindow({
-		title : 'Survey Details',
 		navBarHidden : true,
 		backgroundColor : "#fff"
 	});
