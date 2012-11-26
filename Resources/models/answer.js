@@ -207,6 +207,7 @@ var Answer = new Ti.App.joli.model({
         progressBarView.updateValue(1);
         Ti.API.info("Error saving IMAGE! :( ");
         Ti.API.info(e.error);
+        progressBarView.keepVisible = false;
       };
 
       var image = Titanium.Filesystem.getFile(this.image);

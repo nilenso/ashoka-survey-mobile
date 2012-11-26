@@ -2,6 +2,8 @@ function ResponseViewHelper() {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
 	var QuestionView = require('ui/common/questions/QuestionView');
+	
+	var PAGE_SIZE = 7;
 
 	var generateLabelTextForQuestion = function(question, errorText) {
 		text = '';
@@ -62,8 +64,7 @@ function ResponseViewHelper() {
 		return foo;
 	};
 
-	var paginate = function(questions, scrollableView, buttons) {
-		var PAGE_SIZE = 6;
+	var paginate = function(questions, scrollableView, buttons, response) {
 		
 		var pagedQuestions = _.chain(questions).groupBy(function(a, b) {
 			return Math.floor(b / PAGE_SIZE);
@@ -75,7 +76,8 @@ function ResponseViewHelper() {
 			});
 
 			_(questions).each(function(question) {
-				var questionView = new QuestionView(question);
+			  var answer = response ? response.answerForQuestion(question.id) : undefined;
+				var questionView = new QuestionView(question, answer);
 				questionsView.add(questionView);
 			})
 			
@@ -85,13 +87,20 @@ function ResponseViewHelper() {
 
 			scrollableView.addView(questionsView);
 		});
-	}
+	};
+	
+	var scrollToFirstErrorPage = function(scrollableView, errors){	  
+	  var views = scrollableView.getViews();
+	  scrollableView.scrollToView(views[0]);
+	};
+	
 	var self = {
 		getQuestionViews : getQuestionViews,
 		displayErrors : displayErrors,
 		resetErrors : resetErrors,
 		generateLabelTextForQuestion : generateLabelTextForQuestion,
-		paginate : paginate
+		paginate : paginate,
+		scrollToFirstErrorPage : scrollToFirstErrorPage
 	};
 	return self;
 }

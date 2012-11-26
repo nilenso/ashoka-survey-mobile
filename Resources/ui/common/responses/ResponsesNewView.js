@@ -30,7 +30,7 @@ function ResponsesNewView(surveyID) {
 		width : '48%'
 	});
 	
-	responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton]);
+	responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton], null);
 
 	var getCurrentLocation = function() {
 		var location = {};
@@ -47,6 +47,8 @@ function ResponsesNewView(surveyID) {
 		return location;
 	};
 	
+	var responseLocation = getCurrentLocation();
+	
 	var validateAndSaveAnswers = function(e, status) {
 		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
 		var answersData = _(questionViews).map(function(fields, questionID) {
@@ -57,10 +59,10 @@ function ResponsesNewView(surveyID) {
 				'content' : fields.valueField.getValue()
 			}
 		});
-		var responseLocation = getCurrentLocation();
 		var responseErrors = Response.validate(answersData, status);
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
+		  responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
 			alert("There were some errors in the response.");
 		} else {
 			Response.createRecord(surveyID, status, answersData, responseLocation);

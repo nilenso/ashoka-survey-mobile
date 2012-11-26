@@ -12,39 +12,49 @@ function QuestionWithOptionsView(question, answer) {
     height : Titanium.UI.SIZE
   });
 
-  var picker = Ti.UI.createPicker({
-    color : '#336699',
-    right : 5,
-    left : 5
+  var button = Ti.UI.createButton({
+    title : content || "None",
+    width : '80%'
   });
+  self.add(button);
 
   var data = [];
 
-  data.push(Ti.UI.createPickerRow({
-    title : 'None'
-  }));
-
-  _(question.options()).each(function(option) {
-    Ti.API.info("foo");
-    var optionRow = Ti.UI.createPickerRow({
-      title : option.content,
-      id : option.id
-    });
-    data.push(optionRow);
+  var options = question.options();
+  options.unshift({
+    content : "None"
+  });
+  var optionTitles = options.map(function(option) {
+    return option.content;
   });
 
-  picker.add(data);
-  picker.selectionIndicator = true;
+  var selectedIndex = content ? optionTitles.indexOf(content) : 0;
 
-  self.add(picker);
-  var showSubQuestions = function(selectedRow) {
-    if(!(selectedRow instanceof Ti.UI.PickerRow)) selectedRow = picker.getSelectedRow(0);
-    var option = Option.findOneById(selectedRow.id);
-	Ti.API.info("Showing sub questions for" + option.content);
+  button.addEventListener('click', function() {
+
+    var optionsDialog = Ti.UI.createOptionDialog({
+      options : optionTitles,
+      selectedIndex : selectedIndex,
+      title : question.content
+    });
+
+    optionsDialog.addEventListener('click', function(e) {
+      selectedIndex = e.index;
+      button.setTitle(optionTitles[selectedIndex]);
+      showSubQuestions(selectedIndex);
+    })
+
+    optionsDialog.show();
+  });
+
+  var showSubQuestions = function(selectedRowID) {
+    var option = options[selectedRowID];
+    Ti.API.info("Showing sub questions for" + option.content);
     _(self.getChildren()).each(function(childView) {
-      if (childView != picker)
+      if (childView != button)
         self.remove(childView);
     });
+    if(option.content == "None" && selectedRowID == 0) return; //No sub-questions for the "None" option
     var QuestionView = require('ui/common/questions/QuestionView');
     var subQuestions = option.firstLevelSubQuestions();
     _(subQuestions).each(function(subQuestion) {
@@ -53,24 +63,16 @@ function QuestionWithOptionsView(question, answer) {
     });
   };
 
-  picker.addEventListener('change', showSubQuestions);
-
   if (content) {
-    var selectedRow = null;
-    _(data).each(function(option, index) {
-      if (option.title == content) {
-      	picker.setSelectedRow(0, index);
-        selectedRow = option;
-      } 
-    });
-    showSubQuestions(selectedRow);
+    showSubQuestions(selectedIndex);
   }
 
   self.getValue = function() {
-    val = picker.getSelectedRow(null).getTitle();
-    if (val == 'None')
-      val = '';
-    return val;
+    if (selectedIndex == 0) {
+      return '';
+    } else {
+      return optionTitles[selectedIndex];
+    }
   };
 
   return self;

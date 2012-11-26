@@ -27,7 +27,7 @@ function ResponseEditView(responseID) {
 	var survey = Survey.findOneById(response.survey_id);
 	var questions = survey.firstLevelQuestions();
 
-	responseViewHelper.paginate(questions, self, [saveButton, completeButton]);
+	responseViewHelper.paginate(questions, self, [saveButton, completeButton], response);
 
 	var validateAndUpdateAnswers = function(e, status) {
 		var questionViews = responseViewHelper.getQuestionViews(self.getViews());
@@ -43,6 +43,7 @@ function ResponseEditView(responseID) {
 		responseErrors = Response.validate(answersData, status);
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
+			responseViewHelper.scrollToFirstErrorPage(self, responseErrors);
 			alert("There were some errors in the response.");
 		} else {
 			var response = Response.findOneById(responseID);
