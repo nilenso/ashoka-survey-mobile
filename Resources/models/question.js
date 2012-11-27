@@ -70,8 +70,9 @@ var Question = new Ti.App.joli.model({
           timeout : 5000 // in milliseconds
         });
         client.open("GET", url);
-        client.setRequestHeader('Cookie', Ti.App.Properties.getString('auth_cookie'));
-        client.send();
+        client.send({
+          access_token : Ti.App.Properties.getString('access_token')
+        });
       }
     },
     fetchOptions : function() {
@@ -111,8 +112,9 @@ var Question = new Ti.App.joli.model({
         timeout : 5000 // in milliseconds
       });
       client.open("GET", url);
-      client.setRequestHeader('Cookie', Ti.App.Properties.getString('auth_cookie'));
-      client.send();
+      client.send({
+        access_token : Ti.App.Properties.getString('access_token')
+      });
     },
 
     options : function() {
@@ -151,7 +153,7 @@ var Question = new Ti.App.joli.model({
 
     number : function() {
       var siblingIDs = _(this.withSiblings()).map(function(question) {
-        return question.id; s
+        return question.id;
       });
       if (this.parent_id === null) {
         return (siblingIDs.indexOf(this.id)) + 1;

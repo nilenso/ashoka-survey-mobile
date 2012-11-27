@@ -37,9 +37,9 @@ function LoginView() {
       client.autoRedirect = false;
 
       client.onload = function() {
-        var cookie = this.getResponseHeader('Set-Cookie');
-        Ti.App.Properties.setString('auth_cookie', cookie);
-        Ti.App.Properties.setString('auth_cookie_created_at', new Date().toString());
+        var response = JSON.parse(this.responseText);
+        Ti.App.Properties.setString('access_token', response.access_token);
+        Ti.App.Properties.setString('access_token_created_at', new Date().toString());
         self.fireEvent('login:completed');
       }
 

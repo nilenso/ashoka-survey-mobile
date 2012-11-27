@@ -1,13 +1,13 @@
 
 var LoginHelper = {
   loggedIn : function() {
-    var cookie = Ti.App.Properties.getString('auth_cookie');
-    var cookieCreatedAt = Ti.App.Properties.getString('auth_cookie_created_at');
+    var accessToken = Ti.App.Properties.getString('access_token');
+    var accessTokenCreatedAt = Ti.App.Properties.getString('access_token_created_at');
     
-    if (!cookie)
+    if (!accessToken)
       return false;
       
-    if(new Date() - new Date(cookieCreatedAt) > 3600000) { //Expire the cookie after 1 hour.
+    if(new Date() - new Date(accessTokenCreatedAt) > 3600000) { //Expire the token after 1 hour.
       alert("Your session has expired. You need to login again to fetch or sync any data.");
       LoginHelper.expireSession();
       return false;  
@@ -42,8 +42,8 @@ var LoginHelper = {
   },
   
   expireSession : function() {
-    Ti.App.Properties.setString('auth_cookie', null);
-    Ti.App.Properties.setString('auth_cookie_created_at', null); 
+    Ti.App.Properties.setString('access_token', null);
+    Ti.App.Properties.setString('access_token_created_at', null); 
   }
   
 }

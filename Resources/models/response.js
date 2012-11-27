@@ -194,6 +194,8 @@ var Response = new Ti.App.joli.model({
       params['updated_at'] = this.updated_at;
       params['longitude'] = this.longitude;
       params['latitude'] = this.latitude;
+      params['access_token'] = Ti.App.Properties.getString('access_token');
+
       var client = Ti.Network.createHTTPClient({
         // function called when the response data is available
 
@@ -217,7 +219,6 @@ var Response = new Ti.App.joli.model({
       url += ".json";
       client.open(method, url);
       client.setRequestHeader("Content-Type", "application/json");
-      client.setRequestHeader('Cookie', Ti.App.Properties.getString('auth_cookie'));
       client.send(JSON.stringify(params));
     },
 
