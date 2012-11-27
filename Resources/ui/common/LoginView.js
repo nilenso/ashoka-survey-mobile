@@ -45,7 +45,7 @@ function LoginView() {
         var response = JSON.parse(this.responseText);
         Ti.App.Properties.setString('access_token', response.access_token);
         Ti.App.Properties.setString('access_token_created_at', new Date().toString());
-        self.fireEvent('login:completed');
+        topLevelView.fireEvent('login:completed');
       }
 
       client.onerror = function() {
