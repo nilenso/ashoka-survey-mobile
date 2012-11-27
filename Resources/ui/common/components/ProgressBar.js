@@ -6,7 +6,8 @@ var ProgressBarView = function() {
     // opacity : 0.4,
     width : '100%',
     height : '100%',
-    keepVisible : false
+    keepVisible : false,
+    zIndex : 99999999
   });
 
   var titleLabel = Ti.UI.createLabel({
