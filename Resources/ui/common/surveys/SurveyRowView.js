@@ -22,7 +22,7 @@ function SurveysRowView(survey) {
 
   var responseCountLabel = Ti.UI.createLabel({
     text : '[' + survey.responseCount() + ']',
-    color : Palette.PRIMARY_COLOR,
+    color : Palette.PRIMARY_COLOR_LIGHT,
     right : '5dip',
     font : {
       fontSize : '10dip'
@@ -30,7 +30,7 @@ function SurveysRowView(survey) {
   });
   var expiryDateLabel = Ti.UI.createLabel({
     text : 'Expires on: ' + survey.expiry_date,
-    color : Palette.PRIMARY_COLOR,
+    color : Palette.PRIMARY_COLOR_LIGHT,
     left : '5dip',
     font : {
       fontSize : '10dip'
