@@ -1,0 +1,26 @@
+var Palette = {
+  BLACK : "#000",
+  GRAY_XDARK : "#222",
+  GRAY_DARK : "#444",
+  GRAY : "#666",
+  GRAY_MLIGHT : "#999",
+  GRAY_LIGHT : "#CCC",
+  GRAY_XLIGHT : "#EEE",
+  GRAY_XXLIGHT : "#F7F7F7",
+  WHITE : "#FFF",
+
+  HIGHLIGHT : "#FFE",
+  YELLOW : "#FF0",
+
+  DANGER : "#C00",
+  DANGER_LIGHT : "#FCC",
+
+  PRIMARY_COLOR : "#1F4E61",
+  PRIMARY_COLOR_LIGHT : "#2E6377",
+
+  SECONDARY_COLOR_DARK : "#8C8872",
+  SECONDARY_COLOR : "#BFBCA7",
+  SECONDARY_COLOR_LIGHT : "#EEEEDF"
+}
+
+module.exports = Palette
