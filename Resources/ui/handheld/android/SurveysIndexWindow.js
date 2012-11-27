@@ -9,6 +9,8 @@ function SurveysIndexWindow() {
 	var settingsWindow = SettingsWindow();
 	var loginWindow = require('ui/handheld/android/LoginWindow');
 	var surveysIndexView = new SurveysIndexView();
+	var loggedIn = require('helpers/LoginHelper').loggedIn;
+	
 	//create component instance
 	var self = Ti.UI.createWindow({
 		backgroundColor : '#fff',
@@ -18,7 +20,8 @@ function SurveysIndexWindow() {
 			onCreateOptionsMenu : function(e) {
 				var menu = e.menu;
 				var menuItemFetch = menu.add({
-					title : "Fetch Surveys"
+					title : "Fetch Surveys",
+					groupId : 1
 				});
 				menuItemFetch.addEventListener('click', function() {
 					Survey.fetchSurveys();
@@ -27,7 +30,8 @@ function SurveysIndexWindow() {
 				menuItemFetch.setIcon("/images/fetch.png");
 
 				var menuItemSync = menu.add({
-					title : "Sync Responses"
+					title : "Sync Responses",
+					groupId : 1
 				});
 				menuItemSync.addEventListener('click', function() {
 					Survey.syncAllResponses();
@@ -48,7 +52,11 @@ function SurveysIndexWindow() {
 				menuItemSettings.addEventListener('click', function() {
 					settingsWindow.open();
 				});
-				menuItemSettings.setIcon("/images/settings.png");
+				menuItemSettings.setIcon("/images/settings.png");				
+			},
+			onPrepareOptionsMenu : function(e) {
+			  var menu = e.menu;
+        menu.setGroupEnabled(1, loggedIn());
 			}
 		}
 	});
