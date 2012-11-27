@@ -11,11 +11,11 @@ var NetworkHelper = {
       return;
     };
 
-    NetworkHelper.pingWithoutLoggedInCheck(success, error);
+    NetworkHelper.pingSurveyWebWithoutLoggedInCheck(success, error);
 
   },
 
-  pingWithoutLoggedInCheck : function(success, error) {
+  pingSurveyWebWithoutLoggedInCheck : function(success, error) {
     if (!Titanium.Network.online) {
       if (error) {
         error.call();
