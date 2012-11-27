@@ -5,14 +5,18 @@ function SurveysIndexView() {
   var _ = require('lib/underscore')._;
   var TopLevelView = require('ui/common/components/TopLevelView');
   var progressBarView = require('ui/common/components/ProgressBar');
+  var Palette = require('ui/common/components/Palette');
 
   var convertModelDataForTable = function() {
     return _(Survey.all()).map(function(survey) {
-      return {
+      var row = Ti.UI.createTableViewRow({
+        color : Palette.PRIMARY_COLOR,
+        backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
         title : survey.name,
         hasDetail : true,
         surveyID : survey.id
-      }
+      });
+      return (row);
     });
   }
   var showMessageIfModelIsEmpty = function() {
@@ -66,7 +70,7 @@ function SurveysIndexView() {
   Ti.App.addEventListener('all.responses.sync.start', showProgressBar);
 
   var table = Titanium.UI.createTableView({
-    top : '43dip',
+    top : '48dip',
     data : convertModelDataForTable()
   });
 
@@ -77,7 +81,7 @@ function SurveysIndexView() {
   });
 
   label = Ti.UI.createLabel({
-    color : '#333',
+    color : Palette.PRIMARY_COLOR,
     font : {
       fontSize : 18
     },
