@@ -1,10 +1,8 @@
 var HeaderView = function(title) {
   var Palette = require('ui/common/components/Palette');
+  var SeparatorView = require('ui/common/components/SeparatorView');
 
-  var coloredPadding = Ti.UI.createView({
-    backgroundColor : Palette.PRIMARY_COLOR,
-    height : '10dip'
-  });
+  var coloredPadding = new SeparatorView(Palette.PRIMARY_COLOR, '10dip');
 
   var self = Ti.UI.createView({
     backgroundColor : Palette.PRIMARY_COLOR,
@@ -37,10 +35,7 @@ var HeaderView = function(title) {
     height : Ti.UI.SIZE
   });
 
-  var separatorLine = Ti.UI.createView({
-    backgroundColor : '#eee',
-    height : '2dip'
-  });
+  var separatorLine = new SeparatorView(Palette.GRAY_XLIGHT, '2dip');
 
   self.add(coloredPadding);
   appNameContainer.add(logo);

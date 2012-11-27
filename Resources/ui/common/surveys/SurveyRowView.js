@@ -6,7 +6,7 @@ function SurveysRowView(survey) {
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     hasDetail : true,
     surveyID : survey.id,
-    layout : 'vertical'
+    layout : 'vertical',
   });
   var surveyNameLabel = Ti.UI.createLabel({
     text : survey.name,
