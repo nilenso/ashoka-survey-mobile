@@ -38,6 +38,7 @@ function LoginView() {
       client.onload = function() {
         var cookie = this.getResponseHeader('Set-Cookie');
         Ti.App.Properties.setString('auth_cookie', cookie);
+        Ti.App.Properties.setString('auth_cookie_created_at', new Date().toString());
         self.fireEvent('login:completed');
       }
 
