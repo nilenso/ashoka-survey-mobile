@@ -1,4 +1,4 @@
-var SeparatorView = function(height, color) {
+var SeparatorView = function(color, height) {
 
   var self = Ti.UI.createView({
     backgroundColor : color,

@@ -1,5 +1,6 @@
 var Survey = require('models/survey');
 var Palette = require('ui/common/components/Palette');
+var SeparatorView = require('ui/common/components/SeparatorView');
 
 function SurveysRowView(survey) {
   var self = Ti.UI.createTableViewRow({
@@ -7,40 +8,45 @@ function SurveysRowView(survey) {
     hasDetail : true,
     surveyID : survey.id,
     layout : 'vertical',
+    height : '50dip'
   });
   var surveyNameLabel = Ti.UI.createLabel({
-    text : survey.name,
-    color : Palette.PRIMARY_COLOR,
-    left : '5dip',
-    font : {
-      fontSize : '15dip'
-    }
-  });
-  var surveyInfoView = Ti.UI.createView({
-    width : '100%'
-  });
+  text : survey.name,
+  color : Palette.PRIMARY_COLOR,
+  left : '5dip',
+  top : '5dip',
+  font : { fontSize :'15dip'
+  }
+});
+var surveyInfoView = Ti.UI.createView({
+  width : '100%'
+});
 
-  var responseCountLabel = Ti.UI.createLabel({
-    text : '[' + survey.responseCount() + ']',
-    color : Palette.PRIMARY_COLOR_LIGHT,
-    right : '5dip',
-    font : {
-      fontSize : '10dip'
-    }
-  });
-  var expiryDateLabel = Ti.UI.createLabel({
-    text : 'Expires on: ' + survey.expiry_date,
-    color : Palette.PRIMARY_COLOR_LIGHT,
-    left : '5dip',
-    font : {
-      fontSize : '10dip'
-    }
-  });
-  self.add(surveyNameLabel);
-  surveyInfoView.add(expiryDateLabel);
-  surveyInfoView.add(responseCountLabel);
-  self.add(surveyInfoView);
-  return (self);
+var responseCountLabel = Ti.UI.createLabel({
+  text : '[' + survey.responseCount() + ']',
+  color : Palette.PRIMARY_COLOR_LIGHT,
+  right : '5dip',
+  font : {
+    fontSize : '10dip'
+  }
+});
+var expiryDateLabel = Ti.UI.createLabel({
+  text : 'Expires on: ' + survey.expiry_date,
+  color : Palette.PRIMARY_COLOR_LIGHT,
+  left : '5dip',
+  font : {
+    fontSize : '10dip'
+  }
+});
+
+var rowSeparator = new SeparatorView(Palette.WHITE, '5dip');
+
+self.add(rowSeparator);
+self.add(surveyNameLabel);
+surveyInfoView.add(expiryDateLabel);
+surveyInfoView.add(responseCountLabel);
+self.add(surveyInfoView);
+return (self);
 }
 
 module.exports = SurveysRowView;
