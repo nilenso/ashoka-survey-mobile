@@ -10,6 +10,7 @@ function SurveysIndexWindow() {
 	var loginWindow = require('ui/handheld/android/LoginWindow');
 	var surveysIndexView = new SurveysIndexView();
 	var loggedIn = require('helpers/LoginHelper').loggedIn;
+	var loginHelper = require('helpers/LoginHelper');
 	
 	//ID Constants
 	
@@ -61,7 +62,7 @@ function SurveysIndexWindow() {
 				});
 				logout.setIcon("/images/logout.png");
 				logout.addEventListener('click', function() {
-				  LoginHelper.logout(); 
+				  loginHelper.logout(); 
 				});
 				
 				var menuItemSettings = menu.add({

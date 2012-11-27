@@ -7,12 +7,16 @@ var Choice = require('models/choice');
 
 var DatabaseHelper = {
   clearDatabase : function() {
-    Survey.truncate();
-    Question.truncate();
-    Option.truncate();
+    DatabaseHelper.clearDownloadedData();
     Response.truncate();
     Answer.truncate();
     Choice.truncate(); 
+  },
+  
+  clearDownloadedData : function() {
+    Survey.truncate();
+    Question.truncate();
+    Option.truncate();
   }
 }
 
