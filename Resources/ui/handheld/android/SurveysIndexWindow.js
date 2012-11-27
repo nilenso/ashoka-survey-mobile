@@ -31,7 +31,7 @@ function SurveysIndexWindow() {
 
 				var menuItemSync = menu.add({
 					title : "Sync Responses",
-					groupId : 1
+					groupId : 2
 				});
 				menuItemSync.addEventListener('click', function() {
 					Survey.syncAllResponses();
@@ -56,7 +56,8 @@ function SurveysIndexWindow() {
 			},
 			onPrepareOptionsMenu : function(e) {
 			  var menu = e.menu;
-        menu.setGroupEnabled(1, loggedIn());
+        menu.setGroupEnabled(2, (Survey.count() !== 0) && loggedIn()); // Allow syncing responses if logged in AND there are some surveys in the DB.
+        menu.setGroupEnabled(1, loggedIn()); // Allow fetching surveys if logged in.
 			}
 		}
 	});
