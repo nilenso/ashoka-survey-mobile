@@ -102,7 +102,6 @@ var Survey = new Ti.App.joli.model({
 
       progressBarView.updateMax(_(this.responses()).size());
       _(this.responses()).each(function(response) {
-        Ti.API.info("response hs an image answer : " + response.hasImageAnswer());
         if (response.hasImageAnswer()) {
           progressBarView.keepVisible = true;
         }

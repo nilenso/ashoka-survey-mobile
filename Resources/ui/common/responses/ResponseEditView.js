@@ -12,6 +12,7 @@ function ResponseEditView(responseID) {
 
   var self = new TopLevelView('Edit Response'); 
 	var scrollableView = Ti.UI.createScrollableView({
+	  top : '45dip',
 		showPagingControl : true
 	});
   self.add(scrollableView);
@@ -33,7 +34,7 @@ function ResponseEditView(responseID) {
 	responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton], response);
 
 	var validateAndUpdateAnswers = function(e, status) {
-		var questionViews = responseViewHelper.getQuestionViews(self.getViews());
+		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
 		var answersData = _(questionViews).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
 			Ti.API.info("content:" + fields['valueField'].getValue());
@@ -46,7 +47,7 @@ function ResponseEditView(responseID) {
 		responseErrors = Response.validate(answersData, status);
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
-			responseViewHelper.scrollToFirstErrorPage(self, responseErrors);
+			responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
 			alert("There were some errors in the response.");
 		} else {
 			var response = Response.findOneById(responseID);

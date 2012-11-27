@@ -12,6 +12,7 @@ function ResponsesNewView(surveyID) {
 	var self = new TopLevelView('New Response'); 
 
 	var scrollableView = Ti.UI.createScrollableView({
+	  top : '45dip',
 		showPagingControl : true
 	});
 	self.add(scrollableView);

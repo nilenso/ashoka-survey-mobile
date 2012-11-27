@@ -22,6 +22,7 @@ function SurveyDetailsView(surveyID) {
 
 	// now assign that array to the table's data property to add those objects as rows
 	var table = Titanium.UI.createTableView({
+	  top : '45dip',
 		data : convertSurveyDataForTable()
 	});
 

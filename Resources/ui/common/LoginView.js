@@ -2,12 +2,13 @@ var TopLevelView = require('ui/common/components/TopLevelView');
 var NetworkHelper = require('helpers/NetworkHelper');
 
 function LoginView() {
-
+  
   var loginUrl = Ti.App.Properties.getString('server_url') + '/api/login';
 
   var self = new TopLevelView('Login');
 
   var emailField = Ti.UI.createTextField({
+    top : '45dip',
     width : '80%',
     hintText : 'Email',
     top : 20
