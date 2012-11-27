@@ -17,7 +17,7 @@ var Survey = new Ti.App.joli.model({
   methods : {
     fetchSurveys : function() {
       var that = this;
-      NetworkHelper.pingSurveyWeb( onSuccess = function() {
+      NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
         Ti.App.fireEvent('surveys.fetch.start');
         progressBarView.setMessage("Fetching surveys...");
         var url = Ti.App.Properties.getString('server_url') + '/api/surveys';
@@ -64,7 +64,7 @@ var Survey = new Ti.App.joli.model({
     },
 
     syncAllResponses : function() {
-      NetworkHelper.pingSurveyWeb( onSuccess = function() {
+      NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
         Ti.App.fireEvent('all.responses.sync.start');
         var surveyCount = _(this.all()).size();
         progressBarView.updateMax(surveyCount);

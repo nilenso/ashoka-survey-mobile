@@ -18,7 +18,7 @@ function ResponsesIndexWindow(surveyID) {
         });
         menuItemSync.addEventListener('click', function() {
           survey = Survey.findOneById(surveyID)
-          NetworkHelper.pingSurveyWeb( onSuccess = function() {
+          NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
             survey.syncResponses();
           });
         });

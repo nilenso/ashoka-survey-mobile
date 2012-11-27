@@ -1,18 +1,38 @@
+var loggedIn = require('helpers/LoginHelper').loggedIn;
+
 var NetworkHelper = {
-  pingSurveyWeb : function(success, error) {
-    if(!Titanium.Network.online){
-      error && error.call();
+  pingSurveyWebWithLoggedInCheck : function(success, error) {
+    if (!loggedIn()) {
+      if (error) {
+        error.call();
+      } else {
+        alert("You aren't logged in.");
+      }
       return;
     };
-    
+
+    NetworkHelper.pingWithoutLoggedInCheck(success, error);
+
+  },
+
+  pingWithoutLoggedInCheck : function(success, error) {
+    if (!Titanium.Network.online) {
+      if (error) {
+        error.call();
+      } else {
+        alert("Network isn't online.");
+      }
+      return;
+    };
     var client = Ti.Network.createHTTPClient({
       onload : success,
-      onerror : error || function(){
+      onerror : error ||
+      function() {
         alert("Couldn't reach the server");
       },
       timeout : 5000
     });
-    
+
     client.open('HEAD', Ti.App.Properties.getString('server_url'));
     client.send();
   }
