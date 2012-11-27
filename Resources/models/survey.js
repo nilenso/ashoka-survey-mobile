@@ -64,11 +64,12 @@ var Survey = new Ti.App.joli.model({
     },
 
     syncAllResponses : function() {
+      var self = this;
       NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
         Ti.App.fireEvent('all.responses.sync.start');
-        var surveyCount = _(this.all()).size();
+        var surveyCount = _(self.all()).size();
         progressBarView.updateMax(surveyCount);
-        _(this.all()).each(function(survey) {
+        _(self.all()).each(function(survey) {
           survey.syncResponses();
         });
       });
