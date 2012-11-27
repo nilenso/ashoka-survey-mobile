@@ -6,11 +6,10 @@ function ResponsesNewView(surveyID) {
 	var Response = require('models/response');
 	var QuestionView = require('ui/common/questions/QuestionView');
 	var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
+  var TopLevelView = require('ui/common/components/TopLevelView');
 	var responseViewHelper = new ResponseViewHelper;
 
-	var self = Ti.UI.createView({
-		layout : 'vertical'
-	})
+	var self = new TopLevelView('New Response'); 
 
 	var scrollableView = Ti.UI.createScrollableView({
 		showPagingControl : true
@@ -19,7 +18,7 @@ function ResponsesNewView(surveyID) {
 
 	var survey = Survey.findOneById(surveyID);
 	var questions = survey.firstLevelQuestions();
-	
+
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
 		width : '48%'

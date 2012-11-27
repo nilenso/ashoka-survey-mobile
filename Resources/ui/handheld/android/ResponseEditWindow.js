@@ -4,8 +4,7 @@ function ResponseEditWindow(responseID) {
 	var ResponseEditView = require('ui/common/responses/ResponseEditView')
 
 	var self = Ti.UI.createWindow({
-		title : 'Edit Response',
-		navBarHidden : false,
+		navBarHidden : true,
 		backgroundColor : "#fff"
 	});
 	view = new ResponseEditView(responseID);

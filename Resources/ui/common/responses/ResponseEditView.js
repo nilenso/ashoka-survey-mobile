@@ -7,11 +7,14 @@ function ResponseEditView(responseID) {
 	var Survey = require('models/survey');
 	var QuestionView = require('ui/common/questions/QuestionView');
 	var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
+  var TopLevelView = require('ui/common/components/TopLevelView');
 	var responseViewHelper = new ResponseViewHelper;
 
-	var self = Ti.UI.createScrollableView({
+  var self = new TopLevelView('Edit Response'); 
+	var scrollableView = Ti.UI.createScrollableView({
 		showPagingControl : true
 	});
+  self.add(scrollableView);
 
 	var saveButton = Ti.UI.createButton({
 		title : 'Save',
@@ -27,7 +30,7 @@ function ResponseEditView(responseID) {
 	var survey = Survey.findOneById(response.survey_id);
 	var questions = survey.firstLevelQuestions();
 
-	responseViewHelper.paginate(questions, self, [saveButton, completeButton], response);
+	responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton], response);
 
 	var validateAndUpdateAnswers = function(e, status) {
 		var questionViews = responseViewHelper.getQuestionViews(self.getViews());
