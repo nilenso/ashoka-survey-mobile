@@ -80,7 +80,7 @@ function SurveysIndexView() {
     font : {
       fontSize : 18
     },
-    text : 'No surveys here. Please perform a sync.',
+    text : 'Nothing here yet. Please fetch surveys from the menu.',
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
     top : '40%',
     width : 'auto',
