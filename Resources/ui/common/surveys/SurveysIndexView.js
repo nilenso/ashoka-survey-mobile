@@ -10,12 +10,43 @@ function SurveysIndexView() {
   var convertModelDataForTable = function() {
     return _(Survey.all()).map(function(survey) {
       var row = Ti.UI.createTableViewRow({
-        color : Palette.PRIMARY_COLOR,
         backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
-        title : survey.name,
         hasDetail : true,
-        surveyID : survey.id
+        surveyID : survey.id,
+        layout : 'vertical'
       });
+      var surveyNameLabel = Ti.UI.createLabel({
+        text : survey.name,
+        color : Palette.PRIMARY_COLOR,
+        left : '5dip',
+        font : {
+          fontSize : '15dip'
+        }
+      });
+      var surveyInfoView = Ti.UI.createView({
+        width : '100%'
+      });
+
+      var responseCountLabel = Ti.UI.createLabel({
+        text : '[' + survey.responseCount() + ']',
+        color : Palette.PRIMARY_COLOR,
+        right : '5dip',
+        font : {
+          fontSize : '10dip'
+        }
+      });
+      var expiryDateLabel = Ti.UI.createLabel({
+        text : 'Expires on: ' + survey.expiry_date,
+        color : Palette.PRIMARY_COLOR,
+        left : '5dip',
+        font : {
+          fontSize : '10dip'
+        }
+      });
+      row.add(surveyNameLabel);
+      surveyInfoView.add(expiryDateLabel);
+      surveyInfoView.add(responseCountLabel);
+      row.add(surveyInfoView);
       return (row);
     });
   }
@@ -81,7 +112,7 @@ function SurveysIndexView() {
   });
 
   label = Ti.UI.createLabel({
-    color : Palette.PRIMARY_COLOR,
+    color : '#333',
     font : {
       fontSize : 18
     },
