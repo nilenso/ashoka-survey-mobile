@@ -11,6 +11,14 @@ function SurveysIndexWindow() {
 	var surveysIndexView = new SurveysIndexView();
 	var loggedIn = require('helpers/LoginHelper').loggedIn;
 	
+	//ID Constants
+	
+	var FETCH_SURVEYS = 1;
+	var SYNC_RESPONSES = 2;
+	
+	var LOGIN = 42;
+	var LOGOUT = 43;
+	
 	//create component instance
 	var self = Ti.UI.createWindow({
 		backgroundColor : '#fff',
@@ -21,7 +29,7 @@ function SurveysIndexWindow() {
 				var menu = e.menu;
 				var menuItemFetch = menu.add({
 					title : "Fetch Surveys",
-					groupId : 1
+					groupId : FETCH_SURVEYS
 				});
 				menuItemFetch.addEventListener('click', function() {
 					Survey.fetchSurveys();
@@ -31,7 +39,7 @@ function SurveysIndexWindow() {
 
 				var menuItemSync = menu.add({
 					title : "Sync Responses",
-					groupId : 2
+					groupId : SYNC_RESPONSES
 				});
 				menuItemSync.addEventListener('click', function() {
 					Survey.syncAllResponses();
@@ -39,12 +47,22 @@ function SurveysIndexWindow() {
 				menuItemSync.setIcon("/images/refresh.png");
 				
 				var login = menu.add({
-					title : "Login"
+					title : "Login",
+					groupId : LOGIN
 				});
 				login.addEventListener('click', function() {
 					new loginWindow().open();
 				});
 				login.setIcon("/images/login.png");
+				
+				var logout = menu.add({
+				  title: "Logout",
+				  groupId : LOGOUT
+				});
+				logout.setIcon("/images/logout.png");
+				logout.addEventListener('click', function() {
+				  LoginHelper.logout(); 
+				});
 				
 				var menuItemSettings = menu.add({
 					title : "Settings"
@@ -56,8 +74,11 @@ function SurveysIndexWindow() {
 			},
 			onPrepareOptionsMenu : function(e) {
 			  var menu = e.menu;
-        menu.setGroupEnabled(2, (Survey.count() !== 0) && loggedIn()); // Allow syncing responses if logged in AND there are some surveys in the DB.
-        menu.setGroupEnabled(1, loggedIn()); // Allow fetching surveys if logged in.
+        menu.setGroupEnabled(SYNC_RESPONSES, (Survey.count() !== 0) && loggedIn()); // Allow syncing responses if logged in AND there are some surveys in the DB.
+        menu.setGroupEnabled(FETCH_SURVEYS, loggedIn()); // Allow fetching surveys if logged in.
+        
+        menu.setGroupVisible(LOGIN, !loggedIn()); //Remove the Login button
+        menu.setGroupVisible(LOGOUT, loggedIn()); //Remove the Logout button
 			}
 		}
 	});
