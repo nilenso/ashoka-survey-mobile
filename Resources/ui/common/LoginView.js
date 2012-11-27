@@ -30,7 +30,7 @@ function LoginView() {
 
   loginButton.addEventListener('click', function() {
     NetworkHelper.pingSurveyWebWithoutLoggedInCheck( onSuccess = function() {
-      var email = emailField.getValue();
+      var email = emailField.getValue().trim();
       var password = passwordField.getValue();
       var client = Ti.Network.createHTTPClient();
       client.autoRedirect = false;
