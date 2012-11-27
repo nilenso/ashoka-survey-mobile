@@ -177,6 +177,7 @@ var Answer = new Ti.App.joli.model({
       }
       var url = Ti.App.Properties.getString('server_url') + imageUrl
       client.open('GET', url);
+      client.setRequestHeader('Cookie', Ti.App.Properties.getString('auth_cookie'));
       client.send();
     },
     uploadImage : function(status, webId) {
@@ -215,6 +216,7 @@ var Answer = new Ti.App.joli.model({
       var imageUrl = Ti.App.Properties.getString('server_url') + '/api/responses/' + webId + '/image_upload';
       client.open('PUT', imageUrl);
       client.setRequestHeader("enctype", "multipart/form-data;");
+      client.setRequestHeader('Cookie', Ti.App.Properties.getString('auth_cookie'));
       client.send({
         media : read_image,
         answer_id : this.web_id,

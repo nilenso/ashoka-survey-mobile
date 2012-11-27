@@ -217,6 +217,7 @@ var Response = new Ti.App.joli.model({
       url += ".json";
       client.open(method, url);
       client.setRequestHeader("Content-Type", "application/json");
+      client.setRequestHeader('Cookie', Ti.App.Properties.getString('auth_cookie'));
       client.send(JSON.stringify(params));
     },
 
