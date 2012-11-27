@@ -5,6 +5,7 @@ function ResponsesIndexWindow(surveyID) {
   var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow')
   var Survey = require('models/survey');
   var NetworkHelper = require('helpers/NetworkHelper');
+  var loggedIn = require('helpers/LoginHelper').loggedIn;
 
   var self = Ti.UI.createWindow({
     navBarHidden : true,
@@ -14,7 +15,8 @@ function ResponsesIndexWindow(surveyID) {
       onCreateOptionsMenu : function(e) {
         var menu = e.menu;
         var menuItemSync = menu.add({
-          title : "Sync"
+          title : "Sync",
+          groupId : 1
         });
         menuItemSync.addEventListener('click', function() {
           survey = Survey.findOneById(surveyID)
@@ -23,6 +25,10 @@ function ResponsesIndexWindow(surveyID) {
           });
         });
         menuItemSync.setIcon("images/refresh.png");
+      },
+      onPrepareOptionsMenu : function(e) {
+        var menu = e.menu;
+        menu.setGroupEnabled(1, loggedIn());
       }
     }
   });
