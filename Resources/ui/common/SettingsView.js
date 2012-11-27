@@ -28,7 +28,7 @@ function SettingsView() {
   }
   //label using localization-ready strings from <app dir>/i18n/en/strings.xml
   var label = Ti.UI.createLabel({
-    top : '45dip',
+    top : '43dip',
     color : '#000000',
     text : 'Server location',
     height : 'auto',

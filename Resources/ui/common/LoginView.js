@@ -8,7 +8,7 @@ function LoginView() {
   var self = new TopLevelView('Login');
 
   var emailField = Ti.UI.createTextField({
-    top : '45dip',
+    top : '43dip',
     width : '80%',
     hintText : 'Email',
     top : 20
