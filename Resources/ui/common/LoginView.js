@@ -5,10 +5,15 @@ function LoginView() {
   
   var loginUrl = Ti.App.Properties.getString('server_url') + '/api/login';
 
-  var self = new TopLevelView('Login');
+  var topLevelView = new TopLevelView('Login');
+  
+  var self = Ti.UI.createView({
+    layout : 'vertical',
+    top : '120dip'
+  })
+  topLevelView.add(self);
 
   var emailField = Ti.UI.createTextField({
-    top : '43dip',
     width : '80%',
     hintText : 'Email',
     top : 20
@@ -32,7 +37,7 @@ function LoginView() {
   loginButton.addEventListener('click', function() {
     NetworkHelper.pingSurveyWebWithoutLoggedInCheck( onSuccess = function() {
       var email = emailField.getValue().trim();
-      var password = passwordField.getValue();
+      var password = passwordField.getValue();  
       var client = Ti.Network.createHTTPClient();
       client.autoRedirect = false;
 
@@ -54,7 +59,7 @@ function LoginView() {
     });
   });
 
-  return self;
+  return topLevelView;
 }
 
 module.exports = LoginView;
