@@ -8,14 +8,14 @@ function SurveysRowView(survey) {
     hasDetail : true,
     surveyID : survey.id,
     layout : 'vertical',
-    height : '50dip'
+    height : '60dip'
   });
   var surveyNameLabel = Ti.UI.createLabel({
   text : survey.name,
   color : Palette.PRIMARY_COLOR,
   left : '5dip',
   top : '5dip',
-  font : { fontSize :'15dip'
+  font : { fontSize :'20dip'
   }
 });
 var surveyInfoView = Ti.UI.createView({
@@ -27,7 +27,7 @@ var responseCountLabel = Ti.UI.createLabel({
   color : Palette.PRIMARY_COLOR_LIGHT,
   right : '5dip',
   font : {
-    fontSize : '10dip'
+    fontSize : '15dip'
   }
 });
 var expiryDateLabel = Ti.UI.createLabel({
@@ -35,7 +35,7 @@ var expiryDateLabel = Ti.UI.createLabel({
   color : Palette.PRIMARY_COLOR_LIGHT,
   left : '5dip',
   font : {
-    fontSize : '10dip'
+    fontSize : '15dip'
   }
 });
 

@@ -26,7 +26,7 @@ var HeaderView = function(title) {
   var appName = Ti.UI.createLabel({
     color : Palette.SECONDARY_COLOR_LIGHT,
     font : {
-      fontSize : '20dip',
+      fontSize : '25dip',
       fontWeight : 'bold'
     },
     left : '10dip',

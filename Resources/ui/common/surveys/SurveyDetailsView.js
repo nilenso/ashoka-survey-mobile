@@ -6,18 +6,20 @@ function SurveyDetailsView(surveyID) {
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Palette = require('ui/common/components/Palette');
 
+  var self = new TopLevelView('Survey Details');
   var survey = Survey.findOneById(surveyID);
   var detailsView = Ti.UI.createView({
-    top : '48dip',
+    top : self.headerHeight,
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     layout : 'vertical',
   });
   var surveyNameLabel = Ti.UI.createLabel({
+    top : '10dip',
     text : survey.name,
     color : Palette.PRIMARY_COLOR,
     left : '5dip',
     font : {
-      fontSize : '15dip'
+      fontSize : '20dip'
     }
   });
   var surveyDescriptionLabel = Ti.UI.createLabel({
@@ -25,7 +27,7 @@ function SurveyDetailsView(surveyID) {
     color : Palette.PRIMARY_COLOR,
     left : '5dip',
     font : {
-      fontSize : '10dip'
+      fontSize : '15dip'
     }
   });
   var surveyExpiryLabel = Ti.UI.createLabel({
@@ -33,15 +35,14 @@ function SurveyDetailsView(surveyID) {
     color : Palette.PRIMARY_COLOR,
     left : '5dip',
     font : {
-      fontSize : '10dip'
+      fontSize : '15dip'
     }
   });
   detailsView.add(surveyNameLabel);
   detailsView.add(surveyDescriptionLabel);
   detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
   detailsView.add(surveyExpiryLabel);
-
-  var self = new TopLevelView('Survey Details');
+  detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '20dip'));
 
   var createResponseButton = Ti.UI.createButton({
     title : 'Add Response',
@@ -51,7 +52,7 @@ function SurveyDetailsView(surveyID) {
     color : Palette.SECONDARY_COLOR_LIGHT,
     width : '80%',
     font : {
-      size : '20dip'
+      fontSize : '20dip'
     },
     height : '30dip'
   });
@@ -64,7 +65,7 @@ function SurveyDetailsView(surveyID) {
     color : Palette.SECONDARY_COLOR_LIGHT,
     width : '80%',
     font : {
-      size : '20dip'
+      fontSize : '20dip'
     },
     height : '30dip'
   });
