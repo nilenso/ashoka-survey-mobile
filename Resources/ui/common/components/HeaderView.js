@@ -69,9 +69,9 @@ var HeaderView = function(title) {
     } else {
       usernameView.text = "";
     }
-  }
+  };
 
   return self;
-}
+};
 
 module.exports = HeaderView;

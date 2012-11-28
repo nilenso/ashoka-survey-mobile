@@ -25,7 +25,7 @@ var LoginHelper = {
         message : "This will clear your surveys.\n Are you sure?"
       });
       return confirmDialog;
-    }
+    };
     var confirmDialog = createConfirmDialog();
     confirmDialog.addEventListener('click', function(e) {
       if (e.index === e.source.cancel) {

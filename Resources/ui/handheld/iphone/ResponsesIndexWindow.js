@@ -14,7 +14,7 @@ function ResponsesIndexWindow(surveyID) {
 
 	var tableRowClickedCallback = function(e) {
 		navGroup.open(new ResponseShowWindow(e.responseID));
-	}
+	};
 	var syncButton = Ti.UI.createButton({
 		systemButton : Ti.UI.iPhone.SystemButton.REFRESH
 	});

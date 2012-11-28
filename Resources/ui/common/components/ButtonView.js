@@ -17,6 +17,6 @@ var ButtonView = function(title, options) {
   });
 
   return self;
-}
+};
 
 module.exports = ButtonView;

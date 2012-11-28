@@ -39,7 +39,7 @@ var ProgressBarView = function() {
       self.hide();
       self.fireEvent('sync:complete');
     }
-  }
+  };
 
   self.reset = function() {
     progressBar.setValue(0);
@@ -68,6 +68,6 @@ var ProgressBarView = function() {
   self.add(titleLabel);
   self.add(progressBar);
   return self;
-}
+};
 
 module.exports = new ProgressBarView();

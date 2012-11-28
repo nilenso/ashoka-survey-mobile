@@ -51,6 +51,6 @@ function RatingQuestionView(question, content) {
   };
 
   return self;
-}
+};
 
 module.exports = RatingQuestionView;

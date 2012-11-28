@@ -19,7 +19,7 @@ function QuestionView(question, answer) {
 		text += question.min_value ? ' (>' + question.min_value + ')' : '';
 		text += errorText ? '\n' + errorText : '';
 		return text;
-	}
+	};
 	var self = Ti.UI.createView({
 	  backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
 		layout : 'vertical',
@@ -76,13 +76,13 @@ function QuestionView(question, answer) {
 	
 	self.getLabel = function() {
 	  return label;
-	}
+	};
 	
 	self.getValueField = function() {
 	  return valueField;
-	}
+	};
 
 	return self;
-}
+};
 
 module.exports = QuestionView;

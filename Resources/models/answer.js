@@ -23,7 +23,7 @@ var Answer = new Ti.App.joli.model({
       var that = this;
       answerData.response_id = responseID
       var question = Question.findOneById(answerData['question_id']);
-      if (question.type == 'MultiChoiceQuestion') {
+      if (question.type === 'MultiChoiceQuestion') {
         var optionIds = answerData['content'];
         answerData['content'] = "";
         answerData['updated_at'] = (new Date()).toString();
@@ -32,7 +32,7 @@ var Answer = new Ti.App.joli.model({
         _(optionIds).each(function(option_id) {
           Choice.createRecord(answer.id, option_id);
         });
-      } else if (question.type == 'PhotoQuestion') {
+      } else if (question.type === 'PhotoQuestion') {
         var image = answerData['content'];
         answerData['content'] = "";
         answerData['image'] = image;
@@ -56,9 +56,9 @@ var Answer = new Ti.App.joli.model({
           errors['min_value'] = "You have fallen short of the minimum limit";
         if (question.max_value && answerData.content > question.max_value)
           errors['max_value'] = "You have exceeded the maximum limit";
-        if (question.type == 'NumericQuestion' && isNaN(answerData.content))
+        if (question.type === 'NumericQuestion' && isNaN(answerData.content))
           errors['content'] = "You have to enter only a number";
-      } else if (status == "complete" && question.mandatory)
+      } else if (status === "complete" && question.mandatory)
         errors['mandatory'] = "This question is mandatory";
       return errors;
     }
@@ -71,16 +71,16 @@ var Answer = new Ti.App.joli.model({
       Ti.API.info("updating answer");
 
       var question = Question.findOneById(this.question_id);
-      var updated_at = content == this.content ? this.updated_at : (new Date()).toString();
+      var updated_at = content === this.content ? this.updated_at : (new Date()).toString();
 
-      if (question.type == 'MultiChoiceQuestion') {
+      if (question.type === 'MultiChoiceQuestion') {
         var optionIds = content;
         var that = this;
 
         existing_optionIDs = _(Choice.findBy('answer_id', this.id)).map(function(choice) {
           return choice.option_id;
         })
-        var updated_at = optionIds.sort() == existing_optionIDs.sort() ? this.updated_at : (new Date()).toString();
+        var updated_at = optionIds.sort() === existing_optionIDs.sort() ? this.updated_at : (new Date()).toString();
 
         _(Choice.findBy('answer_id', this.id)).each(function(choice) {
           choice.destroy();
@@ -98,10 +98,10 @@ var Answer = new Ti.App.joli.model({
           'web_id' : this.web_id,
           'updated_at' : updated_at
         });
-      } else if (question.type == 'PhotoQuestion') {
+      } else if (question.type === 'PhotoQuestion') {
         var image = content;
         var that = this;
-        var updated_at = image == this.image ? this.updated_at : (new Date()).toString();
+        var updated_at = image === this.image ? this.updated_at : (new Date()).toString();
 
         this.fromArray({
           'id' : this.id,
@@ -127,10 +127,10 @@ var Answer = new Ti.App.joli.model({
     },
 
     hasChoices : function() {
-      return Question.findOneById(this.question_id).type == 'MultiChoiceQuestion';
+      return Question.findOneById(this.question_id).type === 'MultiChoiceQuestion';
     },
     isImage : function() {
-      return Question.findOneById(this.question_id).type == 'PhotoQuestion';
+      return Question.findOneById(this.question_id).type === 'PhotoQuestion';
     },
 
     optionIDs : function() {

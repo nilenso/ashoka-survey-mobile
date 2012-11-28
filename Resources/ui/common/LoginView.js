@@ -59,12 +59,12 @@ function LoginView() {
         Ti.App.Properties.setString('username', response.username);
         Ti.App.Properties.setString('user_id', response.user_id);
         topLevelView.fireEvent('login:completed');
-      }
+      };
 
       client.onerror = function() {
         activityIndicator.hide();
         alert("Login failed, sorry!");
-      }
+      };
       client.open('POST', loginUrl);
       client.send({
         username : email,

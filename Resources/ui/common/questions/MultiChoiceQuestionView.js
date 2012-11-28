@@ -23,9 +23,9 @@ function MultiChoiceQuestionView(question, optionIDs) {
 				option_ids.push(option_id);
 		});
 		return option_ids;
-	}
+	};
 
 	return self;
-}
+};
 
 module.exports = MultiChoiceQuestionView;

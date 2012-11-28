@@ -109,6 +109,6 @@ function ResponseViewHelper() {
 		scrollToFirstErrorPage : scrollToFirstErrorPage
 	};
 	return self;
-}
+};
 
 module.exports = ResponseViewHelper;

@@ -12,7 +12,7 @@ function SurveysIndexView() {
     return _(Survey.all()).map(function(survey) {
       return new SurveyRowView(survey);
     });
-  }
+  };
   var showMessageIfModelIsEmpty = function() {
     if (Survey.isEmpty()) {
       self.add(label);
@@ -21,7 +21,7 @@ function SurveysIndexView() {
       self.remove(label);
       self.add(table);
     }
-  }
+  };
   var self = new TopLevelView('List of Surveys');
 
 
@@ -87,10 +87,10 @@ function SurveysIndexView() {
     table.setData(data);
     showMessageIfModelIsEmpty();
     self.updateUserName();
-  }
+  };
   Ti.App.addEventListener('settings.refreshSurveys', self.refresh);
 
   return self;
-}
+};
 
 module.exports = SurveysIndexView;

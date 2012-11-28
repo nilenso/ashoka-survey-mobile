@@ -7,6 +7,6 @@ var SeparatorView = function(color, height, options) {
   });
 
   return self;
-}
+};
 
 module.exports = SeparatorView;

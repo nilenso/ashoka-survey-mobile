@@ -14,13 +14,13 @@ function SurveyDetailsWindow(surveyID) {
 
 	var createResponseCallback = function(e) {
 		navGroup.open(new ResponsesNewWindow(e.surveyID));
-	}
+	};
 
 	view.addEventListener('SurveyDetailsView:createResponse', createResponseCallback)
 
 	var responseIndexCallback = function(e) {
 		navGroup.open(new ResponsesIndexWindow(e.surveyID));
-	}
+	};
 
 	view.addEventListener('SurveyDetailsView:responsesIndex', responseIndexCallback);
 

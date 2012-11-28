@@ -57,7 +57,7 @@ function ResponsesIndexView(surveyID) {
       row.add(new SeparatorView(Palette.WHITE, '5dip'));
       return (row);
     });
-  }
+  };
   var showMessageIfModelIsEmpty = function() {
     var survey = Survey.findOneById(surveyID);
     var responses = survey.responsesForCurrentUser();
@@ -68,7 +68,7 @@ function ResponsesIndexView(surveyID) {
       self.remove(label);
       self.add(table);
     }
-  }
+  };
 
   progressBarView.addEventListener('sync:complete', function(e) {
     data = convertModelDataForTable();
@@ -116,6 +116,6 @@ function ResponsesIndexView(surveyID) {
 
   showMessageIfModelIsEmpty();
   return self;
-}
+};
 
 module.exports = ResponsesIndexView;

@@ -34,7 +34,7 @@ function SettingsView() {
       }
     });
     return confirmDialog;
-  }
+  };
   //label using localization-ready strings from <app dir>/i18n/en/strings.xml
   var label = Ti.UI.createLabel({
     top : '43dip',
