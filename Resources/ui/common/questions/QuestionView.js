@@ -73,6 +73,14 @@ function QuestionView(question, answer) {
 
 	self.add(valueField);
 	self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
+	
+	self.getLabel = function() {
+	  return label;
+	}
+	
+	self.getValueField = function() {
+	  return valueField;
+	}
 
 	return self;
 }
