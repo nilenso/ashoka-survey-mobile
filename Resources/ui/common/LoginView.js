@@ -2,11 +2,11 @@ var TopLevelView = require('ui/common/components/TopLevelView');
 var NetworkHelper = require('helpers/NetworkHelper');
 
 function LoginView() {
-  
+
   var loginUrl = Ti.App.Properties.getString('server_url') + '/api/login';
 
   var topLevelView = new TopLevelView('Login');
-  
+
   var self = Ti.UI.createView({
     layout : 'vertical',
     top : '120dip'
@@ -30,18 +30,27 @@ function LoginView() {
     title : 'Login'
   });
 
+  var activityIndicator = Ti.UI.createActivityIndicator({
+    message : 'Logging in...',
+    height : 'auto',
+    width : 'auto'
+  });
+
+  self.add(activityIndicator);
   self.add(emailField);
   self.add(passwordField);
   self.add(loginButton);
 
   loginButton.addEventListener('click', function() {
+    activityIndicator.show();
     NetworkHelper.pingSurveyWebWithoutLoggedInCheck( onSuccess = function() {
       var email = emailField.getValue().trim();
-      var password = passwordField.getValue();  
+      var password = passwordField.getValue();
       var client = Ti.Network.createHTTPClient();
       client.autoRedirect = false;
 
       client.onload = function() {
+        activityIndicator.hide();
         var response = JSON.parse(this.responseText);
         Ti.App.Properties.setString('access_token', response.access_token);
         Ti.App.Properties.setString('access_token_created_at', new Date().toString());
@@ -52,6 +61,7 @@ function LoginView() {
       }
 
       client.onerror = function() {
+        activityIndicator.hide();
         alert("Login failed, sorry!");
       }
       client.open('POST', loginUrl);
