@@ -32,7 +32,7 @@ function ResponseShowView(responseID) {
 
 	// now assign that array to the table's data property to add those objects as rows
 	var table = Titanium.UI.createTableView({
-	  top : '43dip',
+	  top : self.headerHeight,
 		data : convertResponseDataForTable()
 	});
 

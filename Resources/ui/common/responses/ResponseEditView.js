@@ -12,7 +12,7 @@ function ResponseEditView(responseID) {
 
   var self = new TopLevelView('Edit Response'); 
 	var scrollableView = Ti.UI.createScrollableView({
-	  top : '45dip',
+	  top : self.headerHeight,
 		showPagingControl : true
 	});
   self.add(scrollableView);
