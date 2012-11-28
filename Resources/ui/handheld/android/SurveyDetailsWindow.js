@@ -13,11 +13,11 @@ function SurveyDetailsWindow(surveyID) {
 
 	view.addEventListener('SurveyDetailsView:createResponse', function(e) {
 		new ResponsesNewWindow(e.surveyID).open();
-	})
+	});
 
 	view.addEventListener('SurveyDetailsView:responsesIndex', function(e) {
 		new ResponsesIndexWindow(e.surveyID).open(); 
-	})
+	});
 
 	return self;
 }
