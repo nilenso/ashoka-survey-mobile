@@ -84,9 +84,10 @@ function ResponseViewHelper() {
 			})
 			
 			if (pageNumber + 1 === pagedQuestions.length) {
+			  questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
 				_(buttons).each(function(button){
-				  questionsView.add(button);
 				  questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+				  questionsView.add(button);
 				});
 			}
 
