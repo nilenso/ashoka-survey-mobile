@@ -22,16 +22,11 @@ function SurveysIndexView() {
       self.add(table);
     }
   }
-  var refreshSurveys = function() {
-    var data = convertModelDataForTable();
-    table.setData(data);
-    showMessageIfModelIsEmpty();
-  }
+  var self = new TopLevelView('List of Surveys');
 
-  Ti.App.addEventListener('settings.refreshSurveys', refreshSurveys);
 
   progressBarView.addEventListener('sync:complete', function(e) {
-    refreshSurveys();
+    self.refresh();
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
   });
 
@@ -45,8 +40,6 @@ function SurveysIndexView() {
     }
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
   };
-
-  var self = new TopLevelView('List of Surveys');
 
   self.addErrorListener = function() {
     Ti.App.addEventListener('surveys.fetch.error', errorListener);
@@ -87,6 +80,15 @@ function SurveysIndexView() {
   });
 
   showMessageIfModelIsEmpty();
+
+  self.refresh = function() {
+    var data = convertModelDataForTable();
+    table.setData(data);
+    showMessageIfModelIsEmpty();
+    self.updateUserName();
+  }
+  Ti.App.addEventListener('settings.refreshSurveys', self.refresh);
+
   return self;
 }
 

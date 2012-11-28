@@ -2,6 +2,12 @@ var HeaderView = function(title) {
   var Palette = require('ui/common/components/Palette');
   var SeparatorView = require('ui/common/components/SeparatorView');
 
+
+  var coloredPadding = new SeparatorView(Palette.PRIMARY_COLOR, '10dip');
+
+  var osname = Ti.Platform.osname, version = Ti.Platform.version, height = Ti.Platform.displayCaps.platformHeight, width = Ti.Platform.displayCaps.platformWidth;
+  var isTablet = osname === 'ipad' || (osname === 'android' && (width > 899 || height > 899));
+
   var self = Ti.UI.createView({
     backgroundColor : Palette.PRIMARY_COLOR,
     height : '70dip',
@@ -16,6 +22,20 @@ var HeaderView = function(title) {
     layout : 'horizontal'
   });
 
+  var loggedIn = require('helpers/LoginHelper').loggedIn;
+  var usernameView = Ti.UI.createLabel({
+    color : Palette.GRAY_LIGHT,
+    right : '10dip',
+    text : "",
+    font : {
+      fontSize : '15dip',
+    },
+    height : Ti.UI.SIZE
+  });
+  if (!isTablet) {
+    appNameContainer.add(usernameView);
+  }
+
   var logo = Ti.UI.createImageView({
     image : '/images/logo.png',
     left : '5dip',
@@ -29,7 +49,7 @@ var HeaderView = function(title) {
       fontSize : '25dip',
       fontWeight : 'bold'
     },
-    left : '10dip',
+    left : '60dip',
     text : title,
     height : Ti.UI.SIZE
   });
@@ -37,6 +57,18 @@ var HeaderView = function(title) {
   appNameContainer.add(logo);
   appNameContainer.add(appName);
   self.add(appNameContainer);
+
+  self.updateUserName = function() {
+    Ti.API.info("HGASD");
+    Ti.API.info(loggedIn());
+    
+    //var loggedIn = require('helpers/LoginHelper').loggedIn;
+    if (loggedIn()) {
+      usernameView.text = "Hi, " + Ti.App.Properties.getString('username') + "!";
+    } else {
+      usernameView.text = "";
+    }
+  }
 
   return self;
 }

@@ -92,6 +92,9 @@ function SurveysIndexWindow() {
 		SurveyDetailsWindow(e.surveyID).open();
 	});
 	
+	self.addEventListener('focus', function(){
+	  surveysIndexView.refresh();
+	});
 	//construct UI
 	self.add(surveysIndexView);
 
