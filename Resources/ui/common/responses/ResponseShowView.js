@@ -6,6 +6,9 @@ function ResponseShowView(responseID) {
 	var Question = require('models/question');
 	var Response = require('models/response');
   var TopLevelView = require('ui/common/components/TopLevelView');
+  var ButtonView = require('ui/common/components/ButtonView');
+  var SeparatorView = require('ui/common/components/SeparatorView');
+  var Palette = require('ui/common/components/Palette');
 
 	var convertResponseDataForTable = function() {
 		var response = Response.findOneById(responseID);
@@ -36,21 +39,15 @@ function ResponseShowView(responseID) {
 		data : convertResponseDataForTable()
 	});
 
-	var responseEditButton = Ti.UI.createButton({
-		title : 'Edit this Response',
-		width : '100%'
-	});
+	var responseEditButton = new ButtonView('Edit this Response', { 'width' : '80%' });
 
 	responseEditButton.addEventListener('click', function(e) {
 		self.fireEvent('ResponseShowView:responseEdit', {
 			responseID : responseID
 		});
 	});
-
-	var responseDeleteButton = Ti.UI.createButton({
-		title : 'Delete this Response',
-		width : '100%'
-	});
+	
+	var responseDeleteButton = new ButtonView('Delete this Response', { 'width' : '80%' });
 
 	responseDeleteButton.addEventListener('click', function(e) {
 		var response = Response.findOneById(responseID);
@@ -65,6 +62,7 @@ function ResponseShowView(responseID) {
 		layout : 'vertical'
 	});
 	buttonsView.add(responseEditButton);
+  buttonsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
 	buttonsView.add(responseDeleteButton);
 
 	table.setFooterView(buttonsView);

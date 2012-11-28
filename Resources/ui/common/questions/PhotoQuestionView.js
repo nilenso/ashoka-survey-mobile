@@ -1,4 +1,6 @@
 var _ = require('lib/underscore')._;
+var ButtonView = require('ui/common/components/ButtonView');
+
 //BasicQuestionView Component Constructor
 function PhotoQuestionView(question, image) {
 
@@ -7,10 +9,7 @@ function PhotoQuestionView(question, image) {
 		height : Titanium.UI.SIZE
 	});
 
-	var pictureButton = Ti.UI.createButton({
-		title : 'Take a Picture',
-		width : '48%'
-	});
+	var pictureButton = new ButtonView('Take a Picture', { 'width' : '48%' });
 
 	var addImageView = function(image) {
 		var imageView = Ti.UI.createImageView({
@@ -21,10 +20,7 @@ function PhotoQuestionView(question, image) {
 		self.add(imageView);
 		self.image = image;
 
-		var clearPictureButton = Ti.UI.createButton({
-			title : 'Clear the Picture',
-			width : '48%'
-		});
+		var clearPictureButton = new ButtonView('Clear the Picture', { 'width' : '48%' });
 
 		self.add(clearPictureButton);
 

@@ -1,17 +1,19 @@
-var ButtonView = function(title) {
+var ButtonView = function(title, options) {
+  var options = options || {};
+  
   var Palette = require('ui/common/components/Palette');
   
   var self = Ti.UI.createButton({
     title : title,
-    backgroundColor : Palette.PRIMARY_COLOR,
-    backgroundSelectedColor : Palette.PRIMARY_COLOR_LIGHT,
-    backgroundFocusedColor : Palette.PRIMARY_COLOR_LIGHT,
-    color : Palette.SECONDARY_COLOR_LIGHT,
-    width : '80%',
+    backgroundColor : options.backgroundColor || Palette.PRIMARY_COLOR,
+    backgroundSelectedColor : options.backgroundSelectedColor || Palette.PRIMARY_COLOR_LIGHT,
+    backgroundFocusedColor : options.backgroundFocusedColor || Palette.PRIMARY_COLOR_LIGHT,
+    color : options.color || Palette.SECONDARY_COLOR_LIGHT,
+    width : options.width || '80%',
     font : {
-      fontSize : '20dip'
+      fontSize : options.fontSize || '20dip'
     },
-    height : '30dip'
+    height : options.height || '40dip'
   });
 
   return self;

@@ -9,6 +9,7 @@ function ResponseEditView(responseID) {
 	var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
   var TopLevelView = require('ui/common/components/TopLevelView');
 	var responseViewHelper = new ResponseViewHelper;
+  var ButtonView = require('ui/common/components/ButtonView');
 
   var self = new TopLevelView('Edit Response'); 
 	var scrollableView = Ti.UI.createScrollableView({
@@ -17,15 +18,9 @@ function ResponseEditView(responseID) {
 	});
   self.add(scrollableView);
 
-	var saveButton = Ti.UI.createButton({
-		title : 'Save',
-		width : '48%'
-	});
+	var saveButton = new ButtonView('Save', { 'width' : '48%' });
 
-	var completeButton = Ti.UI.createButton({
-		title : 'Complete',
-		width : '48%'
-	});
+  var completeButton = new ButtonView('Complete', { 'width' : '48%' });
 
 	var response = Response.findOneById(responseID);
 	var survey = Survey.findOneById(response.survey_id);

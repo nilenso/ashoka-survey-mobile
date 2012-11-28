@@ -2,6 +2,8 @@ function ResponseViewHelper() {
 	var _ = require('lib/underscore')._;
 	var Question = require('models/question');
 	var QuestionView = require('ui/common/questions/QuestionView');
+  var SeparatorView = require('ui/common/components/SeparatorView');
+  var Palette = require('ui/common/components/Palette');
 	
 	var PAGE_SIZE = 7;
 
@@ -82,7 +84,10 @@ function ResponseViewHelper() {
 			})
 			
 			if (pageNumber + 1 === pagedQuestions.length) {
-				_(buttons).each(function(button){ questionsView.add(button); });
+				_(buttons).each(function(button){
+				  questionsView.add(button);
+				  questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+				});
 			}
 
 			scrollableView.addView(questionsView);
