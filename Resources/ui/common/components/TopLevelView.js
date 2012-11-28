@@ -1,7 +1,11 @@
 var HeaderView = require('ui/common/components/HeaderView');
+var Palette = require('ui/common/components/Palette');
+
 var TopLevelView = function(title) {
 
-  var self = Ti.UI.createView();
+  var self = Ti.UI.createView({
+    backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
+  });
 
 
   var headerView = new HeaderView(title);

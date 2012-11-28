@@ -5,24 +5,40 @@ function ResponsesIndexView(surveyID) {
   var Survey = require('models/survey');
   var TopLevelView = require('ui/common/components/TopLevelView');
   var progressBarView = require('ui/common/components/ProgressBar');
+  var Palette = require('ui/common/components/Palette');
+  var SeparatorView = require('ui/common/components/SeparatorView');
 
   var convertModelDataForTable = function() {
     var survey = Survey.findOneById(surveyID);
     var responses = survey.responsesForCurrentUser();
     return _(responses).map(function(response) {
       var row = Ti.UI.createTableViewRow({
-        header : "Response #" + response.id.toString(),
+        hasDetail : true,
         height : Titanium.UI.SIZE,
         layout : 'vertical',
         responseID : response.id
       });
+
+      var responseLabel = Ti.UI.createLabel({
+        text : "Response #" + response.id.toString(),
+        color : Palette.PRIMARY_COLOR,
+        font : {
+          fontSize : '20dip'
+        }
+      });
+      
+      row.add(responseLabel);
 
       var answersData = _(response.identifierAnswers()).each(function(answer) {
         var view = Ti.UI.createView({
           layout : 'horizontal'
         });
         var label = Ti.UI.createLabel({
-          text : answer.question().content + ": " + answer.contentForDisplay()
+          text : answer.question().content + ": " + answer.contentForDisplay(),
+          color : Palette.PRIMARY_COLOR,
+          font : {
+            fontSize : '15dip'
+          }
         });
         view.add(label);
         if (answer.isImage()) {
@@ -35,6 +51,8 @@ function ResponsesIndexView(surveyID) {
         }
         row.add(view);
       });
+
+      row.add(new SeparatorView(Palette.WHITE, '5dip'));
       return (row);
     });
   }
@@ -67,6 +85,7 @@ function ResponsesIndexView(surveyID) {
   Ti.App.addEventListener('responses.sync.start', showProgressBar);
 
   var table = Titanium.UI.createTableView({
+    separatorColor : 'transparent',
     top : self.headerHeight,
     data : convertModelDataForTable()
   });
