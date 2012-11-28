@@ -4,6 +4,8 @@ var DateQuestionView = require('ui/common/questions/DateQuestionView');
 var QuestionWithOptionsView = require('ui/common/questions/QuestionWithOptionsView');
 var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionView');
 var RatingQuestionView = require('ui/common/questions/RatingQuestionView');
+var Palette = require('ui/common/components/Palette');
+var SeparatorView = require('ui/common/components/SeparatorView');
 
 //QuestionView Component Constructor
 function QuestionView(question, answer) {
@@ -19,6 +21,7 @@ function QuestionView(question, answer) {
 		return text;
 	}
 	var self = Ti.UI.createView({
+	  backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
 		layout : 'vertical',
 		type : 'question',
 		id : question.id,
@@ -29,9 +32,16 @@ function QuestionView(question, answer) {
 	var label = Ti.UI.createLabel({
 		color : '#000000',
 		text : generateLabelTextForQuestion(question, ""),
-		left : 5
+		left : 5,
+		color: Palette.PRIMARY_COLOR,
+		font : {
+		  fontSize: '20dip'
+		}
 	});
+	self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
 	self.add(label);
+	self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+
 
 	if (question.image_url) {
 		var imageView = Ti.UI.createImageView({
@@ -62,6 +72,8 @@ function QuestionView(question, answer) {
 	}
 
 	self.add(valueField);
+	self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
+
 	return self;
 }
 
