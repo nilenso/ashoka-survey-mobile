@@ -31,7 +31,8 @@ function ResponsesIndexView(surveyID) {
 
       var answersData = _(response.identifierAnswers()).each(function(answer) {
         var view = Ti.UI.createView({
-          layout : 'horizontal'
+          layout : 'horizontal',
+          left : '10dip'
         });
         var label = Ti.UI.createLabel({
           text : answer.question().content + ": " + answer.contentForDisplay(),
@@ -52,6 +53,7 @@ function ResponsesIndexView(surveyID) {
         row.add(view);
       });
 
+      row.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
       row.add(new SeparatorView(Palette.WHITE, '5dip'));
       return (row);
     });
