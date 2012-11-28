@@ -113,7 +113,7 @@ var Survey = new Ti.App.joli.model({
     },
 
     responses : function() {
-      this.response_objects = this.response_objects || Response.findBy('survey_id', this.id);
+      this.response_objects = this.response_objects || this.responsesForCurrentUser();
       return this.response_objects
     },
 
