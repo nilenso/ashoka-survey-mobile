@@ -2,11 +2,11 @@ var _ = require('lib/underscore')._;
 var Answer = require('models/answer');
 var Choice = require('models/choice');
 var progressBarView = require('ui/common/components/ProgressBar');
-
 var Response = new Ti.App.joli.model({
   table : 'responses',
   columns : {
     id : 'INTEGER PRIMARY KEY',
+    user_id : 'INTEGER',
     survey_id : 'INTEGER',
     web_id : 'INTEGER',
     status : 'TEXT',
@@ -19,6 +19,7 @@ var Response = new Ti.App.joli.model({
     createRecord : function(surveyID, status, answersData, location) {
       var record = this.newRecord({
         survey_id : surveyID,
+        user_id : Ti.App.Properties.getString('user_id'),
         status : status,
         updated_at : (new Date()).toString(),
         latitude : location.latitude,
