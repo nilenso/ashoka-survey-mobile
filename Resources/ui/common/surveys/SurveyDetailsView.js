@@ -5,6 +5,7 @@ function SurveyDetailsView(surveyID) {
   var TopLevelView = require('ui/common/components/TopLevelView');
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Palette = require('ui/common/components/Palette');
+  var ButtonView = require('ui/common/components/ButtonView');
 
   var self = new TopLevelView('Survey Details');
   var survey = Survey.findOneById(surveyID);
@@ -44,31 +45,8 @@ function SurveyDetailsView(surveyID) {
   detailsView.add(surveyExpiryLabel);
   detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '20dip'));
 
-  var createResponseButton = Ti.UI.createButton({
-    title : 'Add Response',
-    backgroundColor : Palette.PRIMARY_COLOR,
-    backgroundSelectedColor : Palette.PRIMARY_COLOR_LIGHT,
-    backgroundFocusedColor : Palette.PRIMARY_COLOR_LIGHT,
-    color : Palette.SECONDARY_COLOR_LIGHT,
-    width : '80%',
-    font : {
-      fontSize : '20dip'
-    },
-    height : '30dip'
-  });
-
-  var responsesIndexButton = Ti.UI.createButton({
-    title : 'See all Responses',
-    backgroundColor : Palette.PRIMARY_COLOR,
-    backgroundSelectedColor : Palette.PRIMARY_COLOR_LIGHT,
-    backgroundFocusedColor : Palette.PRIMARY_COLOR_LIGHT,
-    color : Palette.SECONDARY_COLOR_LIGHT,
-    width : '80%',
-    font : {
-      fontSize : '20dip'
-    },
-    height : '30dip'
-  });
+  var createResponseButton = new ButtonView('Add Response');
+  var responsesIndexButton = new ButtonView('See all Responses');
 
   detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
   detailsView.add(createResponseButton);
