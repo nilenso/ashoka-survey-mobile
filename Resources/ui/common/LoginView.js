@@ -35,6 +35,12 @@ function LoginView() {
     height : 'auto',
     width : 'auto'
   });
+  Ti.App.addEventListener('network.server.unreachable', function(){
+    activityIndicator.hide();
+  });
+  Ti.App.addEventListener('network.offline', function(){
+    activityIndicator.hide();
+  });
 
   self.add(activityIndicator);
   self.add(emailField);

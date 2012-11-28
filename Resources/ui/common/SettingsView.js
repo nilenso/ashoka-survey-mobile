@@ -4,6 +4,7 @@ var DatabaseHelper = require('helpers/DatabaseHelper');
 var ButtonView = require('ui/common/components/ButtonView');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
+var ConfirmDialog = require('ui/common/components/ConfirmDialog');
 
 function SettingsView() {
   var topLevelView = new TopLevelView('Settings');
@@ -11,30 +12,16 @@ function SettingsView() {
     layout : 'vertical',
     top : '120dip'
   });
-  
+
   topLevelView.add(self);
 
-  var createConfirmDialog = function() {
-    var confirmDialog = Ti.UI.createAlertDialog({
-      title : "Change of Server",
-      cancel : 1,
-      buttonNames : ['Confirm', 'Cancel'],
-      message : "This will clear the database,\n Are you sure?"
-    });
-
-    confirmDialog.addEventListener('click', function(e) {
-      if (e.index === e.source.cancel) {
-        Ti.API.info('The server change was cancelled');
-      } else {
-        var server_url = textField.getValue();
-        Ti.App.Properties.setString('server_url', server_url);
-        DatabaseHelper.clearDatabase();
-        topLevelView.fireEvent('settings_saved');
-        Ti.App.fireEvent('settings.refreshSurveys');
-      }
-    });
-    return confirmDialog;
-  };
+  var confirmDialog = new ConfirmDialog("Change of Server", "This will clear the database,\n Are you sure?", onConfirm = function(e) {
+    var server_url = textField.getValue();
+    Ti.App.Properties.setString('server_url', server_url);
+    DatabaseHelper.clearDatabase();
+    topLevelView.fireEvent('settings_saved');
+    Ti.App.fireEvent('settings.refreshSurveys');
+  });
   //label using localization-ready strings from <app dir>/i18n/en/strings.xml
   var label = Ti.UI.createLabel({
     top : '43dip',
@@ -55,7 +42,9 @@ function SettingsView() {
   });
   self.add(textField);
 
-  var saveButton = new ButtonView('Save', { width : '80%'});
+  var saveButton = new ButtonView('Save', {
+    width : '80%'
+  });
   self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
   self.add(saveButton);
   saveButton.addEventListener('click', function(e) {
@@ -65,7 +54,7 @@ function SettingsView() {
     } else if (Ti.App.Properties.getString('server_url') === server_url) {
       topLevelView.fireEvent('settings_saved');
     } else {
-      createConfirmDialog().show();
+      confirmDialog.show();
     }
   });
 

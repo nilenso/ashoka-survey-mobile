@@ -21,6 +21,7 @@ var NetworkHelper = {
         error.call();
       } else {
         alert("Network isn't online.");
+        Ti.App.fireEvent('network.offline');        
       }
       return;
     };
@@ -29,6 +30,7 @@ var NetworkHelper = {
       onerror : error ||
       function() {
         alert("Couldn't reach the server");
+        Ti.App.fireEvent('network.server.unreachable');
       },
       timeout : 5000
     });
