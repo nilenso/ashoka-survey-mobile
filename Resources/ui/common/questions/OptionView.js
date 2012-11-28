@@ -1,5 +1,6 @@
 //OptionView Component Constructor
 function OptionView(option, checked) {
+  var Palette = require('ui/common/components/Palette');
 	var self = Ti.UI.createTableViewRow();
 
 	if (Ti.Platform.osname == 'android') {
@@ -12,11 +13,14 @@ function OptionView(option, checked) {
 
 	var size = Ti.Platform.displayCaps.platformHeight * 0.05
 	var label = Ti.UI.createLabel({
-		color : '#000000',
+		color : Palette.PRIMARY_COLOR,
 		text : option.content,
 		height : 'auto',
 		width : 'auto',
-		left : size * 2
+		left : size * 2,
+		font : {
+		  fontSize : '15dip'
+		}
 	});
 
 	self.add(label);
