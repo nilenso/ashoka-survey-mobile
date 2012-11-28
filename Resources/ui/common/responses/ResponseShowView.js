@@ -10,28 +10,13 @@ function ResponseShowView(responseID) {
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Palette = require('ui/common/components/Palette');
 
-	var convertResponseDataForTable = function() {
-		var response = Response.findOneById(responseID);
-		var answers = response.answers();
-		var responses = _(answers).map(function(answer) {
-			var row = Ti.UI.createTableViewRow({
-				header : Question.findOneById(answer.question_id).content,
-				title : answer.contentForDisplay() || ''
-			});
-			if (answer.isImage()) {
-				var imageView = Ti.UI.createImageView({
-					width : 100,
-					height : 100,
-					image : answer.image
-				});
-				row.add(imageView);
-			}
-			return (row);
-		});
-		return responses;
-	};
-	
-	var self = new TopLevelView('Response Details');
+  var convertResponseDataForTable = function() {
+    var response = Response.findOneById(responseID);
+    var answers = response.answers();
+    var responses = _(answers).map(function(answer) {
+      var row = Ti.UI.createTableViewRow({
+        layout : 'vertical'
+      });
 
       var questionLabel = Ti.UI.createLabel({
         text : Question.findOneById(answer.question_id).content,
@@ -119,6 +104,6 @@ function ResponseShowView(responseID) {
 
   self.add(table);
   return self;
-}
+};
 
 module.exports = ResponseShowView;
