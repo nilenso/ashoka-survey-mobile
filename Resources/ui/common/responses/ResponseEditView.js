@@ -28,7 +28,15 @@ function ResponseEditView(responseID) {
 
 	responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton], response);
 
+  var activityIndicator = Ti.UI.createActivityIndicator({
+    message : 'Saving...',
+    height : 'auto',
+    width : 'auto'
+  }); 
+  self.add(activityIndicator);
+
 	var validateAndUpdateAnswers = function(e, status) {
+	  activityIndicator.show();
 		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
 		var answersData = _(questionViews).map(function(fields, questionID) {
 			Ti.API.info("questionid:" + questionID);
@@ -49,6 +57,7 @@ function ResponseEditView(responseID) {
 			response.update(status, answersData);
 			self.fireEvent('ResponsesEditView:savedResponse');
 		}
+		activityIndicator.hide();
 	};
 
 	completeButton.addEventListener('click', function(event) {
