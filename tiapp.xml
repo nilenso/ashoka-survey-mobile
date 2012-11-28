@@ -36,7 +36,11 @@
             <orientation>Ti.UI.LANDSCAPE_RIGHT</orientation>
         </orientations>
     </iphone>
-    <android xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <android xmlns:android="http://schemas.android.com/apk/res/android">
+      <manifest>
+            <supports-screens android:anyDensity="true"/>
+        </manifest>
+    </android>
     <mobileweb>
         <precache/>
         <splash>
