@@ -64,7 +64,7 @@ function SurveysIndexView() {
   Ti.App.addEventListener('all.responses.sync.start', showProgressBar);
 
   var table = Titanium.UI.createTableView({
-    top : '48dip',
+    top : self.headerHeight,
     data : convertModelDataForTable()
   });
 

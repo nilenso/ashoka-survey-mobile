@@ -3,7 +3,11 @@ var TopLevelView = function(title) {
 
   var self = Ti.UI.createView();
 
-  self.add(new HeaderView(title));
+  var header = new HeaderView(title);
+  self.add(header);
+  
+  self.headerHeight = header.getHeight();
+   
   return self;
 }
 

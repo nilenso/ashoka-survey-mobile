@@ -3,7 +3,13 @@ var TopLevelView = require('ui/common/components/TopLevelView');
 var DatabaseHelper = require('helpers/DatabaseHelper');
 
 function SettingsView() {
-  var self = new TopLevelView('Settings');
+  var topLevelView = new TopLevelView('Settings');
+  var self = Ti.UI.createView({
+    layout : 'vertical',
+    top : '120dip'
+  });
+  
+  topLevelView.add(self);
 
   var createConfirmDialog = function() {
     var confirmDialog = Ti.UI.createAlertDialog({
@@ -20,7 +26,7 @@ function SettingsView() {
         var server_url = textField.getValue();
         Ti.App.Properties.setString('server_url', server_url);
         DatabaseHelper.clearDatabase();
-        self.fireEvent('settings_saved');
+        topLevelView.fireEvent('settings_saved');
         Ti.App.fireEvent('settings.refreshSurveys');
       }
     });
@@ -56,13 +62,13 @@ function SettingsView() {
     if (server_url.match(/^https?\:\/\/[\w-.]+(\.\w{2,4}|\:\d{2,5})$/i) == null) {
       alert("Your settings are invalid. Please check them before saving.");
     } else if (Ti.App.Properties.getString('server_url') === server_url) {
-      self.fireEvent('settings_saved');
+      topLevelView.fireEvent('settings_saved');
     } else {
       createConfirmDialog().show();
     }
   });
 
-  return self;
+  return topLevelView;
 }
 
 module.exports = SettingsView;
