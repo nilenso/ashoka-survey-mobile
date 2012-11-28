@@ -98,10 +98,10 @@ function ResponsesIndexView(surveyID) {
     });
   });
 
-  label = Ti.UI.createLabel({
+  var label = Ti.UI.createLabel({
     color : '#333',
     font : {
-      fontSize : 18
+      fontSize : '20dip'
     },
     text : 'No responses yet.',
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,

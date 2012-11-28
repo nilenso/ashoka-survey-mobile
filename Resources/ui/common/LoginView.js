@@ -1,5 +1,8 @@
 var TopLevelView = require('ui/common/components/TopLevelView');
 var NetworkHelper = require('helpers/NetworkHelper');
+var ButtonView = require('ui/common/components/ButtonView');
+var SeparatorView = require('ui/common/components/SeparatorView');
+var Palette = require('ui/common/components/Palette');
 
 function LoginView() {
 
@@ -25,10 +28,7 @@ function LoginView() {
     passwordMask : true
   });
 
-  var loginButton = Ti.UI.createButton({
-    width : '60%',
-    title : 'Login'
-  });
+  var loginButton = new ButtonView('Login', { width : '60%'});
 
   var activityIndicator = Ti.UI.createActivityIndicator({
     message : 'Logging in...',
@@ -39,6 +39,7 @@ function LoginView() {
   self.add(activityIndicator);
   self.add(emailField);
   self.add(passwordField);
+  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
   self.add(loginButton);
 
   loginButton.addEventListener('click', function() {

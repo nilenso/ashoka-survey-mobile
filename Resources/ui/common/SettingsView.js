@@ -1,6 +1,9 @@
 //SettingsView Component Constructor
 var TopLevelView = require('ui/common/components/TopLevelView');
 var DatabaseHelper = require('helpers/DatabaseHelper');
+var ButtonView = require('ui/common/components/ButtonView');
+var SeparatorView = require('ui/common/components/SeparatorView');
+var Palette = require('ui/common/components/Palette');
 
 function SettingsView() {
   var topLevelView = new TopLevelView('Settings');
@@ -52,10 +55,8 @@ function SettingsView() {
   });
   self.add(textField);
 
-  var saveButton = Ti.UI.createButton({
-    title : 'Save',
-    width : '100%'
-  });
+  var saveButton = new ButtonView('Save', { width : '80%'});
+  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
   self.add(saveButton);
   saveButton.addEventListener('click', function(e) {
     var server_url = textField.getValue();

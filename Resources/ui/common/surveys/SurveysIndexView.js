@@ -71,7 +71,7 @@ function SurveysIndexView() {
   label = Ti.UI.createLabel({
     color : '#333',
     font : {
-      fontSize : 18
+      fontSize : '20dip'
     },
     text : 'Nothing here yet. Please fetch surveys from the menu.',
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
