@@ -7,7 +7,8 @@ function ResponsesIndexView(surveyID) {
   var progressBarView = require('ui/common/components/ProgressBar');
 
   var convertModelDataForTable = function() {
-    var responses = Response.findBy('survey_id', surveyID);
+    var survey = Survey.findOneById(surveyID);
+    var responses = survey.responsesForCurrentUser();
     return _(responses).map(function(response) {
       var row = Ti.UI.createTableViewRow({
         header : "Response #" + response.id.toString(),
@@ -38,7 +39,8 @@ function ResponsesIndexView(surveyID) {
     });
   }
   var showMessageIfModelIsEmpty = function() {
-    var responses = Response.findBy('survey_id', surveyID);
+    var survey = Survey.findOneById(surveyID);
+    var responses = survey.responsesForCurrentUser();
     if (_(responses).isEmpty()) {
       self.add(label);
       self.remove(table);

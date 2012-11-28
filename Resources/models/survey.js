@@ -176,9 +176,16 @@ var Survey = new Ti.App.joli.model({
       });
       return sortedQuestionList;
     },
-    
+
     responseCount : function() {
       return _(this.responses()).size();
+    },
+
+    responsesForCurrentUser : function() {
+      var query = new Ti.App.joli.query().select('*').from('responses');
+      query.where('survey_id = ?', this.id);
+      query.where('user_id = ?', Ti.App.Properties.getString('user_id'));
+      return query.execute();
     }
   }
 });
