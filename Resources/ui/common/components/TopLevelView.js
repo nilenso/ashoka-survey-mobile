@@ -7,7 +7,6 @@ var TopLevelView = function(title) {
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
   });
 
-
   var headerView = new HeaderView(title);
   self.headerHeight = headerView.getHeight();
   self.add(headerView);
