@@ -22,12 +22,12 @@ function QuestionView(question, answer) {
   questionText += question.mandatory ? ' *' : '';
 
   self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
-  
+
   var labelsView = Ti.UI.createView({
     layout : 'vertical',
     height : Titanium.UI.SIZE
   });
- 
+
   var questionLabel = Ti.UI.createLabel({
     text : questionText,
     left : 5,
@@ -39,15 +39,15 @@ function QuestionView(question, answer) {
   labelsView.add(questionLabel);
 
   var constraintsText = '';
-  constraintsText += question.max_length ? ' [' + question.max_length + ']' : '';
-  constraintsText += question.max_value ? ' (<' + question.max_value + ')' : '';
-  constraintsText += question.min_value ? ' (>' + question.min_value + ')' : '';
+  constraintsText += question.max_length ? 'Maximum characters: ' + question.max_length : '';
+  constraintsText += question.max_value ? 'Max: ' + question.max_value + ' ' : '';
+  constraintsText += question.min_value ? 'Min: ' + question.min_value : '';
 
   if (constraintsText !== '') {
     var constraintsLabel = Ti.UI.createLabel({
       text : constraintsText,
       left : 5,
-      color : Palette.PRIMARY_COLOR_LIGHT,
+      color : Palette.SECONDARY_COLOR_DARK,
       font : {
         fontSize : '15dip'
       }
