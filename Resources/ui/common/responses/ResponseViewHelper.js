@@ -8,6 +8,20 @@ function ResponseViewHelper() {
   var self = {};
   var PAGE_SIZE = 7;
 
+  var footerView = function() {
+    return Ti.UI.createLabel({
+      text : "<< Swipe to turn pages >>",
+      textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+      color : Palette.SECONDARY_COLOR_LIGHT,
+      backgroundColor : Palette.PRIMARY_COLOR,
+      height : '40dip',
+      font : {
+        fontSize : '15dip'
+      },
+      width : '100%'
+    });
+  }
+
   self.resetErrors = function(questionViews) {
     _(questionViews).each(function(questionView) {
       questionView.resetError();
@@ -69,8 +83,10 @@ function ResponseViewHelper() {
           questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
           questionsView.add(button);
         });
+      } else {
+        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+        questionsView.add(footerView());
       }
-
       scrollableView.addView(questionsView);
     });
   };
