@@ -38,13 +38,13 @@ function ResponseEditView(responseID) {
 	var validateAndUpdateAnswers = function(e, status) {
 	  activityIndicator.show();
 		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
-		var answersData = _(questionViews).map(function(fields, questionID) {
+		var answersData = _(questionViews).map(function(questionView, questionID) {
 			Ti.API.info("questionid:" + questionID);
-			Ti.API.info("content:" + fields['valueField'].getValue());
+			Ti.API.info("content:" + questionView.getValueField().getValue());
 			return {
-				'id' : fields.answerID,
+				'id' : questionView.answerID,
 				'question_id' : questionID,
-				'content' : fields.valueField.getValue()
+				'content' : questionView.getValueField().getValue()
 			};
 		});
 		responseErrors = Response.validate(answersData, status);
