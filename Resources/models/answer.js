@@ -53,9 +53,9 @@ var Answer = new Ti.App.joli.model({
         if (question.max_length && (answerData.content.length >= question.max_length))
           errors['max_length'] = "You have exceeded the maximum length for this question";
         if (question.min_value && answerData.content < question.min_value)
-          errors['min_value'] = "You have fallen short of the minimum limit";
+          errors['min_value'] = "The answer is not in the required range";
         if (question.max_value && answerData.content > question.max_value)
-          errors['max_value'] = "You have exceeded the maximum limit";
+          errors['max_value'] = "The answer is not in the required range";
         if (question.type === 'NumericQuestion' && isNaN(answerData.content))
           errors['content'] = "You have to enter only a number";
       } else if (status === "complete" && question.mandatory)
