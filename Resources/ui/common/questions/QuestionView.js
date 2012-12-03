@@ -17,16 +17,53 @@ function QuestionView(question, answer) {
     answerID : answer ? answer.id : null
   });
 
-  var label = Ti.UI.createLabel({
-    color : '#000000',
+  var questionText = question.number() + ') ';
+  questionText += question['content'];
+  questionText += question.mandatory ? ' *' : '';
+
+  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
+  
+  var labelsView = Ti.UI.createView({
+    layout : 'vertical',
+    height : Titanium.UI.SIZE
+  });
+ 
+  var questionLabel = Ti.UI.createLabel({
+    text : questionText,
     left : 5,
     color : Palette.PRIMARY_COLOR,
     font : {
       fontSize : '20dip'
     }
   });
-  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
-  self.add(label);
+  labelsView.add(questionLabel);
+
+  var constraintsText = '';
+  constraintsText += question.max_length ? ' [' + question.max_length + ']' : '';
+  constraintsText += question.max_value ? ' (<' + question.max_value + ')' : '';
+  constraintsText += question.min_value ? ' (>' + question.min_value + ')' : '';
+
+  if (constraintsText !== '') {
+    var constraintsLabel = Ti.UI.createLabel({
+      text : constraintsText,
+      left : 5,
+      color : Palette.PRIMARY_COLOR_LIGHT,
+      font : {
+        fontSize : '15dip'
+      }
+    });
+    labelsView.add(constraintsLabel);
+  }
+
+  var errorsLabel = Ti.UI.createLabel({
+    left : 5,
+    color : Palette.DANGER,
+    font : {
+      fontSize : '15dip'
+    }
+  });
+
+  self.add(labelsView);
   self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
 
   if (question.image_url) {
@@ -60,27 +97,13 @@ function QuestionView(question, answer) {
   self.add(valueField);
   self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
 
-  self.setLabelText = function(errorText) {
-    var text = '';
-    text += question.number() + ') ';
-    text += question['content'];
-    text += question.mandatory ? ' *' : '';
-    text += question.max_length ? ' [' + question.max_length + ']' : '';
-    text += question.max_value ? ' (<' + question.max_value + ')' : '';
-    text += question.min_value ? ' (>' + question.min_value + ')' : '';
-    text += errorText ? '\n' + errorText : '';
-    label.setText(text);
+  self.setError = function(errorText) {
+    errorsLabel.setText(errorText);
+    labelsView.add(errorsLabel);
   };
-
-  self.setLabelText(question, "");
 
   self.resetError = function() {
-    self.setLabelText();
-    label.setColor('#000000');
-  };
-
-  self.getLabel = function() {
-    return label;
+    labelsView.remove(errorsLabel);
   };
 
   self.getValueField = function() {

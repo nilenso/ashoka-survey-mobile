@@ -22,9 +22,7 @@ function ResponseViewHelper() {
       for (var field in responseErrors[answerErrors]) {
         var question_id = answerErrors;
         var question = Question.findOneById(question_id);
-        var label = questionViews[question_id].getLabel();
-        questionViews[question_id].setLabelText(responseErrors[question_id][field]);
-        label.setColor("red");
+        questionViews[question_id].setError(responseErrors[question_id][field]);
         Ti.API.info(responseErrors[question_id][field]);
       }
     }
