@@ -1,5 +1,6 @@
 tmp
-build*
+build/*
+build.log
 .fastdev.lock
 target/
 .DS_Store
