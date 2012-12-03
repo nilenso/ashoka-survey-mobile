@@ -1,6 +1,7 @@
 //SettingsView Component Constructor
 var TopLevelView = require('ui/common/components/TopLevelView');
 var DatabaseHelper = require('helpers/DatabaseHelper');
+var LoginHelper = require('helpers/LoginHelper');
 var ButtonView = require('ui/common/components/ButtonView');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
@@ -15,10 +16,11 @@ function SettingsView() {
 
   topLevelView.add(self);
 
-  var confirmDialog = new ConfirmDialog("Change of Server", "This will clear the database,\n Are you sure?", onConfirm = function(e) {
+  var confirmDialog = new ConfirmDialog("Change of Server", "This will clear the database and log you out,\nAre you sure?", onConfirm = function(e) {
     var server_url = textField.getValue();
     Ti.App.Properties.setString('server_url', server_url);
     DatabaseHelper.clearDatabase();
+    LoginHelper.expireSession();
     topLevelView.fireEvent('settings_saved');
     Ti.App.fireEvent('settings.refreshSurveys');
   });
