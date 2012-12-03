@@ -24,9 +24,9 @@ function SurveysIndexView() {
   };
   var self = new TopLevelView('List of Surveys');
 
-
   progressBarView.addEventListener('sync:complete', function(e) {
     self.refresh();
+    self.fireEvent('surveys.index.progress.finish');
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
   });
 
@@ -49,6 +49,7 @@ function SurveysIndexView() {
     progressBarView.reset();
     self.add(progressBarView);
     progressBarView.show();
+    self.fireEvent('surveys.index.progress.start');
     Ti.App.removeEventListener('surveys:fetch:start', showProgressBar);
     Ti.App.removeEventListener('all.responses.sync.start', showProgressBar);
   };
