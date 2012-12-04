@@ -60,14 +60,11 @@ var HeaderView = function(title) {
   self.add(appNameContainer);
 
   self.updateUserName = function() {
-    Ti.API.info("HGASD");
-    Ti.API.info(loggedIn());
-
     //var loggedIn = require('helpers/LoginHelper').loggedIn;
     if (loggedIn()) {
-      usernameView.text = "Hi, " + Ti.App.Properties.getString('username') + "!";
+      usernameView.text = "Logged in as " + Ti.App.Properties.getString('username');
     } else {
-      usernameView.text = "";
+      usernameView.text = "Not logged in";
     }
   };
 
