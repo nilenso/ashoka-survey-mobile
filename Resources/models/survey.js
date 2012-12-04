@@ -186,6 +186,10 @@ var Survey = new Ti.App.joli.model({
       query.where('survey_id = ?', this.id);
       query.where('user_id = ?', Ti.App.Properties.getString('user_id'));
       return query.execute();
+    },
+
+    isExpired : function() {
+      return new Date(this.expiry_date) < new Date();
     }
   }
 });

@@ -8,11 +8,13 @@ var ButtonView = function(title, options) {
     backgroundColor : options.backgroundColor || Palette.PRIMARY_COLOR,
     backgroundSelectedColor : options.backgroundSelectedColor || Palette.PRIMARY_COLOR_LIGHT,
     backgroundFocusedColor : options.backgroundFocusedColor || Palette.PRIMARY_COLOR_LIGHT,
+    backgroundDisabledColor : options.backgroundDisabledColor || Palette.GRAY_LIGHT,
     color : options.color || Palette.SECONDARY_COLOR_LIGHT,
     width : options.width || '80%',
     font : {
       fontSize : options.fontSize || '20dip'
     },
+    enabled : options.enabled === undefined ? true : options.enabled,
     height : options.height || '40dip'
   });
 

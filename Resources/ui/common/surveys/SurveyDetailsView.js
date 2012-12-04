@@ -45,7 +45,7 @@ function SurveyDetailsView(surveyID) {
   detailsView.add(surveyExpiryLabel);
   detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '20dip'));
 
-  var createResponseButton = new ButtonView('Add Response');
+  var createResponseButton = new ButtonView('Add Response', { enabled: !survey.isExpired() });
   var responsesIndexButton = new ButtonView('See all Responses');
 
   detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
