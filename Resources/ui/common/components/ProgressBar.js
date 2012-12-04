@@ -28,8 +28,7 @@ var ProgressBarView = function() {
     height : 'auto',
     min : 0,
     value : 0,
-    keepScreenOn : true,
-    color : Palette.SECONDARY_COLOR,
+    keepScreenOn : true
   });
 
   var hideProgressBarIfComplete = function() {
