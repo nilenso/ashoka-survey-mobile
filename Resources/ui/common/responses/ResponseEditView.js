@@ -10,6 +10,7 @@ function ResponseEditView(responseID) {
   var TopLevelView = require('ui/common/components/TopLevelView');
 	var responseViewHelper = new ResponseViewHelper;
   var ButtonView = require('ui/common/components/ButtonView');
+  var Toast = require('ui/common/components/Toast');
 
   var self = new TopLevelView('Edit Response'); 
 	var scrollableView = Ti.UI.createScrollableView({
@@ -55,6 +56,7 @@ function ResponseEditView(responseID) {
 		} else {
 			var response = Response.findOneById(responseID);
 			response.update(status, answersData);
+			(new Toast('Response saved')).show();
 			self.fireEvent('ResponsesEditView:savedResponse');
 		}
 		activityIndicator.hide();

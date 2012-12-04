@@ -7,6 +7,7 @@ function SurveysIndexView() {
   var progressBarView = require('ui/common/components/ProgressBar');
   var Palette = require('ui/common/components/Palette');
   var SurveyRowView = require('ui/common/surveys/SurveyRowView');
+  var Toast = require('ui/common/components/Toast');
 
   var convertModelDataForTable = function() {
     return _(Survey.all()).map(function(survey) {
@@ -26,6 +27,7 @@ function SurveysIndexView() {
 
   progressBarView.addEventListener('sync:complete', function(e) {
     self.refresh();
+    (new Toast('Successfully fetched surveys')).show();
     self.fireEvent('surveys.index.progress.finish');
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
   });

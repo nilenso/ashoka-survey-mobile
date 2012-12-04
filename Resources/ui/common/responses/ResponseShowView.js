@@ -9,6 +9,7 @@ function ResponseShowView(responseID) {
   var ButtonView = require('ui/common/components/ButtonView');
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Palette = require('ui/common/components/Palette');
+  var Toast = require('ui/common/components/Toast');
 
   var convertResponseDataForTable = function() {
     var response = Response.findOneById(responseID);
@@ -33,10 +34,10 @@ function ResponseShowView(responseID) {
         color : Palette.PRIMARY_COLOR,
         left : '5dip',
         font : {
-          fontSize : '15dip'          
+          fontSize : '15dip'
         }
       });
-      
+
       row.add(questionLabel);
       row.add(answerLabel);
 
@@ -48,7 +49,7 @@ function ResponseShowView(responseID) {
         });
         row.add(imageView);
       }
-      
+
       row.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
       row.add(new SeparatorView(Palette.WHITE, '5dip'));
       return (row);
@@ -82,6 +83,7 @@ function ResponseShowView(responseID) {
     var response = Response.findOneById(responseID);
     response.destroyAnswers();
     response.destroy();
+    (new Toast('Response deleted')).show();
     self.fireEvent('ResponseShowView:responseDeleted', {
       responseID : responseID
     });
@@ -106,4 +108,4 @@ function ResponseShowView(responseID) {
   return self;
 };
 
-module.exports = ResponseShowView;
+module.exports = ResponseShowView; 

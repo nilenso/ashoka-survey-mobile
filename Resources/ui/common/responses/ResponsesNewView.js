@@ -9,6 +9,7 @@ function ResponsesNewView(surveyID) {
   var TopLevelView = require('ui/common/components/TopLevelView');
   var responseViewHelper = new ResponseViewHelper;
   var ButtonView = require('ui/common/components/ButtonView');
+  var Toast = require('ui/common/components/Toast');
 
   var self = new TopLevelView('New Response');
 
@@ -73,6 +74,7 @@ function ResponsesNewView(surveyID) {
       alert("There were some errors in the response.");
     } else {
       Response.createRecord(surveyID, status, answersData, responseLocation);
+      (new Toast('Response saved')).show();
       self.fireEvent('ResponsesNewView:savedResponse');
     }
     activityIndicator.hide();

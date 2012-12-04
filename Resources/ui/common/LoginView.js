@@ -3,6 +3,7 @@ var NetworkHelper = require('helpers/NetworkHelper');
 var ButtonView = require('ui/common/components/ButtonView');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
+var Toast = require('ui/common/components/Toast');
 
 function LoginView() {
 
@@ -59,6 +60,7 @@ function LoginView() {
       client.onload = function() {
         activityIndicator.hide();
         var response = JSON.parse(this.responseText);
+        (new Toast('Logged in successfully as '+ response.username)).show();
         Ti.App.Properties.setString('access_token', response.access_token);
         Ti.App.Properties.setString('access_token_created_at', new Date().toString());
         Ti.API.info(response.username);
