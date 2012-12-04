@@ -103,7 +103,7 @@ function ResponsesIndexView(surveyID) {
     font : {
       fontSize : '20dip'
     },
-    text : 'No responses yet.',
+    text : 'No responses.',
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
     top : '40%',
     width : 'auto',
@@ -112,6 +112,7 @@ function ResponsesIndexView(surveyID) {
 
   Ti.App.addEventListener('ResponseShowWindow:closed', function() {
     table.setData(convertModelDataForTable());
+    showMessageIfModelIsEmpty();
   });
 
   showMessageIfModelIsEmpty();
