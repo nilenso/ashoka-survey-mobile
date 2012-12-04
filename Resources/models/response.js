@@ -7,6 +7,7 @@ var Response = new Ti.App.joli.model({
   columns : {
     id : 'INTEGER PRIMARY KEY',
     user_id : 'INTEGER',
+    organization_id : 'INTEGER',
     survey_id : 'INTEGER',
     web_id : 'INTEGER',
     status : 'TEXT',
@@ -20,6 +21,7 @@ var Response = new Ti.App.joli.model({
       var record = this.newRecord({
         survey_id : surveyID,
         user_id : Ti.App.Properties.getString('user_id'),
+        organization_id : Ti.App.Properties.getString('organization_id'),
         status : status,
         updated_at : (new Date()).toString(),
         latitude : location.latitude,
@@ -115,7 +117,9 @@ var Response = new Ti.App.joli.model({
         'status' : received_response['status'],
         'updated_at' : (new Date()).toString(),
         'latitude' : self.latitude,
-        'longitude' : self.longitude
+        'longitude' : self.longitude,
+        'user_id' : self.user_id,
+        'organization_id': self.organization_id
       });
       self.save();
 
@@ -195,6 +199,8 @@ var Response = new Ti.App.joli.model({
       params['updated_at'] = this.updated_at;
       params['longitude'] = this.longitude;
       params['latitude'] = this.latitude;
+      params['user_id'] = this.user_id;
+      params['organization_id'] = this.organization_id;
       params['access_token'] = Ti.App.Properties.getString('access_token');
 
       var client = Ti.Network.createHTTPClient({
