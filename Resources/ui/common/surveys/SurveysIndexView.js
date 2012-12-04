@@ -25,12 +25,16 @@ function SurveysIndexView() {
   };
   var self = new TopLevelView('List of Surveys');
 
-  progressBarView.addEventListener('sync:complete', function(e) {
+  var progressComplete = function(e) {
+    Ti.API.info("Sync complete for surveys!!!!");
     self.refresh();
     (new Toast('Successfully fetched surveys')).show();
     self.fireEvent('surveys.index.progress.finish');
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
-  });
+    progressBarView.removeEventListener('sync:complete', progressComplete); 
+  };
+  
+  progressBarView.addEventListener('sync:complete', progressComplete); 
 
   var errorListener = function(data) {
     progressBarView.hide();

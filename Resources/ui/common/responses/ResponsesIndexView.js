@@ -70,15 +70,20 @@ function ResponsesIndexView(surveyID) {
     }
   };
 
-  progressBarView.addEventListener('sync:complete', function(e) {
+  var progressComplete = function(e) {
+    Ti.API.info("Sync complete for resopnses!!!");
     data = convertModelDataForTable();
     table.setData(data);
     showMessageIfModelIsEmpty();
-  });
+    progressBarView.removeEventListener('sync:complete', progressComplete); 
+  };
+  
+  progressBarView.addEventListener('sync:complete', progressComplete); 
 
   var self = new TopLevelView('List of Responses');
 
   var showProgressBar = function(e) {
+    progressBarView.reset();
     self.add(progressBarView);
     progressBarView.show();
     // Ti.App.removeEventListener('responses.sync.start', showProgressBar);
