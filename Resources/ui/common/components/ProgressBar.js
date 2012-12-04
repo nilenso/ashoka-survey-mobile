@@ -1,19 +1,21 @@
+var Palette = require('ui/common/components/Palette');
+var Measurements = require('ui/common/components/Measurements');
 var ProgressBarView = function() {
 
   var self = Ti.UI.createView({
     layout : 'vertical',
-    backgroundColor : 'black',
-    // opacity : 0.4,
+    backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     width : '100%',
     height : '100%',
     keepVisible : false,
-    zIndex : 99999999
+    zIndex : 99999999,
+    top : Measurements.HEADER_HEIGHT
   });
-
+  
   var titleLabel = Ti.UI.createLabel({
-    color : '#fff',
+    color : Palette.PRIMARY_COLOR,
     font : {
-      fontSize : 18
+      fontSize : '15dip'
     },
     text : 'Fetching your surveys',
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -22,17 +24,14 @@ var ProgressBarView = function() {
   });
 
   var progressBar = Titanium.UI.createProgressBar({
-    width : '100%',
+    width : '90%',
     height : 'auto',
     min : 0,
     value : 0,
     keepScreenOn : true,
-    color : '#fff',
-    font : {
-      fontSize : 14,
-      fontWeight : 'bold'
-    }
+    color : Palette.SECONDARY_COLOR,
   });
+
   var hideProgressBarIfComplete = function() {
     if (!self.keepVisible && progressBar.getMax() == progressBar.getValue()) {
       self.reset();

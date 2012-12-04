@@ -1,5 +1,6 @@
 var HeaderView = require('ui/common/components/HeaderView');
 var Palette = require('ui/common/components/Palette');
+var Measurements = require('ui/common/components/Measurements');
 
 var TopLevelView = function(title) {
 
@@ -10,6 +11,7 @@ var TopLevelView = function(title) {
 
   var headerView = new HeaderView(title);
   self.headerHeight = headerView.getHeight();
+  Measurements.HEADER_HEIGHT = self.headerHeight; 
   self.add(headerView);
 
   self.updateUserName = function() {
