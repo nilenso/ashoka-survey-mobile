@@ -23,7 +23,7 @@ var Response = new Ti.App.joli.model({
         user_id : Ti.App.Properties.getString('user_id'),
         organization_id : Ti.App.Properties.getString('organization_id'),
         status : status,
-        updated_at : (new Date()).toString(),
+        updated_at : parseInt(new Date().getTime()/1000),
         latitude : location.latitude,
         longitude : location.longitude
       });
@@ -69,7 +69,7 @@ var Response = new Ti.App.joli.model({
         'survey_id' : this.survey_id,
         'web_id' : this.web_id,
         'status' : status,
-        'updated_at' : (new Date()).toString()
+        'updated_at' : parseInt(new Date().getTime()/1000)
       });
       var self = this;
       this.deleteObsoleteAnswers(answersData);
@@ -115,7 +115,7 @@ var Response = new Ti.App.joli.model({
         'survey_id' : self.survey_id,
         'web_id' : received_response['id'],
         'status' : received_response['status'],
-        'updated_at' : (new Date()).toString(),
+        'updated_at' : parseInt(new Date().getTime()/1000),
         'latitude' : self.latitude,
         'longitude' : self.longitude,
         'user_id' : self.user_id,
@@ -133,7 +133,7 @@ var Response = new Ti.App.joli.model({
           'question_id' : received_response.answers[index].question_id,
           'web_id' : received_response.answers[index].id,
           'content' : received_response.answers[index].content,
-          'updated_at' : (new Date()).toString(),
+          'updated_at' : parseInt(new Date().getTime()/1000),
           'image' : image,
           'photo_updated_at' : photoUpdatedAt
         });
@@ -196,7 +196,7 @@ var Response = new Ti.App.joli.model({
       params['answers_attributes'] = this.prepRailsParams();
       params['status'] = this.status;
       params['survey_id'] = this.survey_id;
-      params['updated_at'] = this.updated_at;
+      params['updated_at'] = parseInt(new Date(this.updated_at).getTime()/1000);
       params['longitude'] = this.longitude;
       params['latitude'] = this.latitude;
       params['user_id'] = this.user_id;

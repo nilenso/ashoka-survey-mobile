@@ -26,7 +26,7 @@ var Answer = new Ti.App.joli.model({
       if (question.type === 'MultiChoiceQuestion') {
         var optionIds = answerData['content'];
         answerData['content'] = "";
-        answerData['updated_at'] = (new Date()).toString();
+        answerData['updated_at'] = parseInt(new Date().getTime()/1000);
         var answer = that.newRecord(answerData);
         answer.save();
         _(optionIds).each(function(option_id) {
@@ -36,12 +36,12 @@ var Answer = new Ti.App.joli.model({
         var image = answerData['content'];
         answerData['content'] = "";
         answerData['image'] = image;
-        answerData['photo_updated_at'] = (new Date()).toString();
-        answerData['updated_at'] = (new Date()).toString();
+        answerData['photo_updated_at'] = parseInt(new Date().getTime()/1000);
+        answerData['updated_at'] = parseInt(new Date().getTime()/1000);
         var answer = that.newRecord(answerData);
         answer.save();
       } else {
-        answerData['updated_at'] = (new Date()).toString();
+        answerData['updated_at'] = parseInt(new Date().getTime()/1000);
         that.newRecord(answerData).save();
       }
     },
@@ -71,7 +71,7 @@ var Answer = new Ti.App.joli.model({
       Ti.API.info("updating answer");
 
       var question = Question.findOneById(this.question_id);
-      var updated_at = content === this.content ? this.updated_at : (new Date()).toString();
+      var updated_at = content === this.content ? this.updated_at : parseInt(new Date().getTime()/1000);
 
       if (question.type === 'MultiChoiceQuestion') {
         var optionIds = content;
@@ -80,7 +80,7 @@ var Answer = new Ti.App.joli.model({
         existing_optionIDs = _(Choice.findBy('answer_id', this.id)).map(function(choice) {
           return choice.option_id;
         })
-        var updated_at = optionIds.sort() === existing_optionIDs.sort() ? this.updated_at : (new Date()).toString();
+        var updated_at = optionIds.sort() === existing_optionIDs.sort() ? this.updated_at : parseInt(new Date().getTime()/1000);
 
         _(Choice.findBy('answer_id', this.id)).each(function(choice) {
           choice.destroy();
@@ -101,7 +101,7 @@ var Answer = new Ti.App.joli.model({
       } else if (question.type === 'PhotoQuestion') {
         var image = content;
         var that = this;
-        var updated_at = image === this.image ? this.updated_at : (new Date()).toString();
+        var updated_at = image === this.image ? this.updated_at : parseInt(new Date().getTime()/1000);
 
         this.fromArray({
           'id' : this.id,
