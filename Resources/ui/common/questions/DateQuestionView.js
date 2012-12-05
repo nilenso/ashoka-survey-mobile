@@ -8,9 +8,7 @@ function DateQuestionView(question, content) {
 		right : 5,
 		left : 5,
 	});
-	self.addEventListener('change', function(e) {
-		this.value = e.value;
-	});
+	
 	self.getValue = function() {
 		var val = self.value;
 		return val.getFullYear() + '/' + (val.getMonth() + 1) + '/' + val.getDate()
