@@ -19,9 +19,10 @@ function ResponsesIndexWindow(surveyID) {
           groupId : 1
         });
         menuItemSync.addEventListener('click', function() {
-          survey = Survey.findOneById(surveyID)
+          var survey = Survey.findOneById(surveyID)
           NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
             survey.syncResponses();
+            view.addProgressCompleteListener();
           });
         });
         menuItemSync.setIcon("images/refresh.png");

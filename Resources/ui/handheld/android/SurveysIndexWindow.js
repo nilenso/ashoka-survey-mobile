@@ -35,6 +35,7 @@ function SurveysIndexWindow() {
         menuItemFetch.addEventListener('click', function() {
           Survey.fetchSurveys();
           surveysIndexView.addErrorListener();
+          surveysIndexView.addProgressCompleteListener();
         });
         menuItemFetch.setIcon("/images/fetch.png");
 

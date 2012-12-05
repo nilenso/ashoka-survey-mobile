@@ -28,17 +28,21 @@ function SurveysIndexView() {
   var progressComplete = function(e) {
     Ti.API.info("Sync complete for surveys!!!!");
     self.refresh();
+    self.remove(progressBarView);
     (new Toast('Successfully fetched surveys')).show();
     self.fireEvent('surveys.index.progress.finish');
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
     progressBarView.removeEventListener('sync:complete', progressComplete); 
   };
   
-  progressBarView.addEventListener('sync:complete', progressComplete); 
+  self.addProgressCompleteListener = function() {
+    progressBarView.addEventListener('sync:complete', progressComplete);
+  } 
 
   var errorListener = function(data) {
     progressBarView.hide();
     progressBarView.reset();
+    self.remove(progressBarView);
     if (data.status >= 400) {
       alert("Your server isn't responding. Sorry about that.");
     } else if (data.status == 0) {

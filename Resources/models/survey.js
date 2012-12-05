@@ -100,7 +100,7 @@ var Survey = new Ti.App.joli.model({
         }
         Ti.App.removeEventListener("response.sync", syncHandler);
       };
-
+      
       progressBarView.updateMax(this.responseCount());
       _(this.responses()).each(function(response) {
         if (response.hasImageAnswer()) {
