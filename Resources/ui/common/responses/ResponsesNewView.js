@@ -71,7 +71,7 @@ function ResponsesNewView(surveyID) {
     if (!_.isEmpty(responseErrors)) {
       responseViewHelper.displayErrors(responseErrors, questionViews);
       responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
-      alert("There were some errors in the response.");
+      (new Toast('There were some errors in the response.')).show();
     } else {
       Response.createRecord(surveyID, status, answersData, responseLocation);
       (new Toast('Response saved')).show();

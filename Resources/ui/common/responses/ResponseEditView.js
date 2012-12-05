@@ -52,7 +52,7 @@ function ResponseEditView(responseID) {
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
 			responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
-			alert("There were some errors in the response.");
+			(new Toast('There were some errors in the response.')).show();
 		} else {
 			var response = Response.findOneById(responseID);
 			response.update(status, answersData);
