@@ -39,9 +39,9 @@ var Survey = new Ti.App.joli.model({
             Ti.App.fireEvent('surveys.fetch.error', {
               status : this.status
             });
-          },
-          timeout : 5000 // in milliseconds
+          }
         });
+        client.setTimeout(5000);
         client.open("GET", url);
         client.send({
           access_token : Ti.App.Properties.getString('access_token')

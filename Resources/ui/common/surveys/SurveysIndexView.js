@@ -60,8 +60,6 @@ function SurveysIndexView() {
     self.add(progressBarView);
     progressBarView.show();
     self.fireEvent('surveys.index.progress.start');
-    Ti.App.removeEventListener('surveys:fetch:start', showProgressBar);
-    Ti.App.removeEventListener('all.responses.sync.start', showProgressBar);
   };
 
   Ti.App.addEventListener('surveys.fetch.start', showProgressBar);
