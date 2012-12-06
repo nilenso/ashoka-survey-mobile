@@ -18,7 +18,8 @@ function ResponseViewHelper() {
       font : {
         fontSize : '15dip'
       },
-      width : '100%'
+      width : '100%',
+      bottom : 0
     });
   }
 
@@ -61,7 +62,7 @@ function ResponseViewHelper() {
     return foo;
   };
 
-  self.paginate = function(questions, scrollableView, buttons, response) {
+  self.paginate = function(questions, scrollableView, buttons, response, topLevelView) {
 
     var pagedQuestions = _.chain(questions).groupBy(function(a, b) {
       return Math.floor(b / PAGE_SIZE);
@@ -84,8 +85,8 @@ function ResponseViewHelper() {
           questionsView.add(button);
         });
       } else {
-        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
-        questionsView.add(footerView());
+        topLevelView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+        topLevelView.add(footerView());
       }
       scrollableView.addView(questionsView);
     });
