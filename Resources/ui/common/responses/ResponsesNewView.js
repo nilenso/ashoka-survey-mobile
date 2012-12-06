@@ -30,7 +30,7 @@ function ResponsesNewView(surveyID) {
     'width' : '48%'
   });
 
-  responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton], null, self);
+  responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton], null);
 
   var activityIndicator = Ti.UI.createActivityIndicator({
     message : 'Saving...',
