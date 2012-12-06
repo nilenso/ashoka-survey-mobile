@@ -1,13 +1,10 @@
 var TopLevelView = require('ui/common/components/TopLevelView');
-var NetworkHelper = require('helpers/NetworkHelper');
 var ButtonView = require('ui/common/components/ButtonView');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
-var Toast = require('ui/common/components/Toast');
+var loginHelper = require('helpers/LoginHelper');
 
 function LoginView() {
-
-  var loginUrl = Ti.App.Properties.getString('server_url') + '/api/login';
 
   var topLevelView = new TopLevelView('Login');
 
@@ -42,6 +39,9 @@ function LoginView() {
   Ti.App.addEventListener('network.offline', function(){
     activityIndicator.hide();
   });
+  Ti.App.addEventListener('login.done', function(){
+    activityIndicator.hide();
+  });
 
   self.add(activityIndicator);
   self.add(emailField);
@@ -51,35 +51,9 @@ function LoginView() {
 
   loginButton.addEventListener('click', function() {
     activityIndicator.show();
-    NetworkHelper.pingSurveyWebWithoutLoggedInCheck( onSuccess = function() {
-      var email = emailField.getValue().trim();
-      var password = passwordField.getValue();
-      var client = Ti.Network.createHTTPClient();
-      client.autoRedirect = false;
-
-      client.onload = function() {
-        activityIndicator.hide();
-        var response = JSON.parse(this.responseText);
-        (new Toast('Logged in successfully as '+ response.username)).show();
-        Ti.App.Properties.setString('access_token', response.access_token);
-        Ti.App.Properties.setString('access_token_created_at', new Date().toString());
-        Ti.API.info(response.username);
-        Ti.App.Properties.setString('username', response.username);
-        Ti.App.Properties.setString('user_id', response.user_id);
-        Ti.App.Properties.setString('organization_id', response.organization_id);
-        topLevelView.fireEvent('login:completed');
-      };
-
-      client.onerror = function() {
-        activityIndicator.hide();
-        alert("Login failed, sorry!");
-      };
-      client.open('POST', loginUrl);
-      client.send({
-        username : email,
-        password : password
-      });
-    });
+    var email = emailField.getValue().trim();
+    var password = passwordField.getValue();
+    loginHelper.login(email, password, topLevelView);
   });
 
   return topLevelView;
