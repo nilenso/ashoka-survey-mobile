@@ -48,6 +48,7 @@ var LoginHelper = {
         Ti.App.Properties.setString('access_token_created_at', new Date().toString());
         Ti.API.info(response.username);
         Ti.App.Properties.setString('username', response.username);
+        Ti.App.Properties.setString('email', email);
         Ti.App.Properties.setString('user_id', response.user_id);
         Ti.App.Properties.setString('organization_id', response.organization_id);
         topLevelView.fireEvent('login:completed');

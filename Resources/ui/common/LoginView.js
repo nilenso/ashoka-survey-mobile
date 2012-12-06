@@ -3,6 +3,7 @@ var ButtonView = require('ui/common/components/ButtonView');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
 var loginHelper = require('helpers/LoginHelper');
+var ConfirmDialog = require('ui/common/components/ConfirmDialog');
 
 function LoginView() {
 
@@ -26,20 +27,22 @@ function LoginView() {
     passwordMask : true
   });
 
-  var loginButton = new ButtonView('Login', { width : '60%'});
+  var loginButton = new ButtonView('Login', {
+    width : '60%'
+  });
 
   var activityIndicator = Ti.UI.createActivityIndicator({
     message : 'Logging in...',
     height : 'auto',
     width : 'auto'
   });
-  Ti.App.addEventListener('network.server.unreachable', function(){
+  Ti.App.addEventListener('network.server.unreachable', function() {
     activityIndicator.hide();
   });
-  Ti.App.addEventListener('network.offline', function(){
+  Ti.App.addEventListener('network.offline', function() {
     activityIndicator.hide();
   });
-  Ti.App.addEventListener('login.done', function(){
+  Ti.App.addEventListener('login.done', function() {
     activityIndicator.hide();
   });
 
@@ -50,10 +53,20 @@ function LoginView() {
   self.add(loginButton);
 
   loginButton.addEventListener('click', function() {
-    activityIndicator.show();
     var email = emailField.getValue().trim();
     var password = passwordField.getValue();
-    loginHelper.login(email, password, topLevelView);
+    if (email !== Ti.App.Properties.getString('email')) {
+      var confirmDialog = new ConfirmDialog("Login", "This will clear the surveys.\n Are you sure?", onConfirm = function(e) {
+        var DatabaseHelper = require("helpers/DatabaseHelper");
+        DatabaseHelper.clearDownloadedData();
+        activityIndicator.show();
+        loginHelper.login(email, password, topLevelView);
+      });
+      confirmDialog.show();
+    } else {
+      activityIndicator.show();
+      loginHelper.login(email, password, topLevelView);
+    }
   });
 
   return topLevelView;
