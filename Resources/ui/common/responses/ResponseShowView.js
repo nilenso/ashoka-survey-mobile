@@ -1,4 +1,5 @@
 //A single survey
+
 function ResponseShowView(responseID) {
   var _ = require('lib/underscore')._;
   var Survey = require('models/survey');
@@ -10,6 +11,7 @@ function ResponseShowView(responseID) {
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Palette = require('ui/common/components/Palette');
   var Toast = require('ui/common/components/Toast');
+  var ConfirmDialog = require('ui/common/components/ConfirmDialog');
 
   var convertResponseDataForTable = function() {
     var response = Response.findOneById(responseID);
@@ -80,13 +82,16 @@ function ResponseShowView(responseID) {
   });
 
   responseDeleteButton.addEventListener('click', function(e) {
-    var response = Response.findOneById(responseID);
-    response.destroyAnswers();
-    response.destroy();
-    (new Toast('Response deleted')).show();
-    self.fireEvent('ResponseShowView:responseDeleted', {
-      responseID : responseID
+    var confirmDialog = new ConfirmDialog("Delete", "Are you sure you want to delete the response?", onConfirm = function(e) {
+      var response = Response.findOneById(responseID);
+      response.destroyAnswers();
+      response.destroy();
+      (new Toast('Response deleted')).show();
+      self.fireEvent('ResponseShowView:responseDeleted', {
+        responseID : responseID
+      });
     });
+    confirmDialog.show();
   });
 
   var buttonsView = Ti.UI.createView({
@@ -108,4 +113,4 @@ function ResponseShowView(responseID) {
   return self;
 };
 
-module.exports = ResponseShowView; 
+module.exports = ResponseShowView;
