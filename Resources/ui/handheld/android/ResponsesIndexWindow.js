@@ -36,9 +36,18 @@ function ResponsesIndexWindow(surveyID) {
 
   var view = new ResponsesIndexView(surveyID);
   self.add(view);
-
+  
+  var activityIndicator = Ti.UI.createActivityIndicator({
+    message : 'Loading...',
+    height : 'auto',
+    width : 'auto'
+  }); 
+  self.add(activityIndicator);
+  
   view.addEventListener('ResponsesIndexView:table_row_clicked', function(e) {
+    activityIndicator.show();
     new ResponseShowWindow(e.responseID).open();
+    activityIndicator.hide();
   });
 
   var syncHandler = function(data) {

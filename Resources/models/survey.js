@@ -74,13 +74,16 @@ var Survey = new Ti.App.joli.model({
         var count = 0, errors = 0, successes = 0;
         var generateAllResponsesSyncSummary = function(data) {
           count++;
-          if(data.message) {
+          if (data.message) {
             errors++;
           } else {
             successes++;
           }
           if (count === surveyCount) {
-            Ti.App.fireEvent('all.responses.sync.complete', { successes : successes, errors : errors });
+            Ti.App.fireEvent('all.responses.sync.complete', {
+              successes : successes,
+              errors : errors
+            });
             Ti.App.removeEventListener('survey.responses.sync', generateAllResponsesSyncSummary);
             Ti.API.info("Finished syncing all responses for all surveys.");
           }
@@ -206,6 +209,22 @@ var Survey = new Ti.App.joli.model({
 
     responseCount : function() {
       return _(this.responses()).size();
+    },
+
+    completeResponseCount : function() {
+      var query = new Ti.App.joli.query().select('*').from('responses');
+      query.where('survey_id = ?', this.id);
+      query.where('user_id = ?', Ti.App.Properties.getString('user_id'));
+      query.where('status = ?', 'complete');
+      return _(query.execute()).size();
+    },
+
+    incompleteResponseCount : function() {
+      var query = new Ti.App.joli.query().select('*').from('responses');
+      query.where('survey_id = ?', this.id);
+      query.where('user_id = ?', Ti.App.Properties.getString('user_id'));
+      query.where('status != ?', 'complete');
+      return _(query.execute()).size();
     },
 
     responsesForCurrentUser : function() {

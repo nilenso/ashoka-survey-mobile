@@ -80,13 +80,6 @@ function ResponsesIndexView(surveyID) {
   };
 
   var self = new TopLevelView('List of Responses');
-  
-  var activityIndicator = Ti.UI.createActivityIndicator({
-    message : 'Loading...',
-    height : 'auto',
-    width : 'auto'
-  }); 
-  self.add(activityIndicator);
 
   self.addProgressCompleteListener = function() {
     progressBarView.addEventListener('sync:complete', progressComplete);
@@ -107,7 +100,6 @@ function ResponsesIndexView(surveyID) {
   });
 
   table.addEventListener('click', function(e) {
-    activityIndicator.show();
     self.fireEvent('ResponsesIndexView:table_row_clicked', {
       responseID : e.rowData.responseID
     });
