@@ -70,6 +70,24 @@ var Survey = new Ti.App.joli.model({
         Ti.App.fireEvent('all.responses.sync.start');
         var surveyCount = _(self.all()).size();
         progressBarView.updateMax(surveyCount);
+
+        var count = 0, errors = 0, successes = 0;
+        var generateAllResponsesSyncSummary = function(data) {
+          count++;
+          if(data.message) {
+            errors++;
+          } else {
+            successes++;
+          }
+          if (count === surveyCount) {
+            Ti.App.fireEvent('all.responses.sync.complete', { successes : successes, errors : errors });
+            Ti.App.removeEventListener('survey.responses.sync', generateAllResponsesSyncSummary);
+            Ti.API.info("Finished syncing all responses for all surveys.");
+          }
+        };
+        if (surveyCount > 0)
+          Ti.App.addEventListener('survey.responses.sync', generateAllResponsesSyncSummary);
+
         _(self.all()).each(function(survey) {
           survey.syncResponses(true);
         });
@@ -100,7 +118,7 @@ var Survey = new Ti.App.joli.model({
         }
         Ti.App.removeEventListener("response.sync", syncHandler);
       };
-      
+
       progressBarView.updateMax(this.responseCount());
       _(this.responses()).each(function(response) {
         if (response.hasImageAnswer()) {
@@ -109,6 +127,13 @@ var Survey = new Ti.App.joli.model({
         Ti.App.addEventListener("response.sync", syncHandler);
         response.sync();
       });
+
+      if (_(this.responses()).isEmpty()) {
+        Ti.API.info("No responses");
+        Ti.App.fireEvent("survey.responses.sync", {
+          empty : true
+        });
+      }
       if (forMultipleSurveys) {
         progressBarView.updateValue(1);
       }

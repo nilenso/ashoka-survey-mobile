@@ -32,13 +32,12 @@ function SurveysIndexView() {
     (new Toast('Successfully fetched surveys')).show();
     self.fireEvent('surveys.index.progress.finish');
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
-    progressBarView.removeEventListener('sync:complete', progressComplete); 
+    progressBarView.removeEventListener('sync:complete', progressComplete);
   };
-  
+
   self.addProgressCompleteListener = function() {
     progressBarView.addEventListener('sync:complete', progressComplete);
-  } 
-
+  }
   var errorListener = function(data) {
     progressBarView.hide();
     progressBarView.reset();
@@ -98,6 +97,11 @@ function SurveysIndexView() {
     self.updateUserName();
   };
   Ti.App.addEventListener('settings.refreshSurveys', self.refresh);
+
+  var showSyncSummary = function(data) {
+    alert((data.successes || 0) + " surveys successfully synced.\n" + (data.errors || 0) + " surveys' sync failed.");
+  };
+  Ti.App.addEventListener('all.responses.sync.complete', showSyncSummary);
 
   return self;
 };
