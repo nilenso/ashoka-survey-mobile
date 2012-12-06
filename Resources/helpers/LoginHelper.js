@@ -19,10 +19,9 @@ var LoginHelper = {
   },
 
   logout : function(clearDB) {
-    var confirmDialog = new ConfirmDialog("Logout", "This will clear your surveys.\n Are you sure?", onConfirm = function(e) {
+    var confirmDialog = new ConfirmDialog("Logout", "Are you sure?", onConfirm = function(e) {
       LoginHelper.expireSession();
-      var DatabaseHelper = require("helpers/DatabaseHelper");
-      DatabaseHelper.clearDownloadedData();
+      (new Toast("Successfully logged out.")).show();
       Ti.App.fireEvent('settings.refreshSurveys');
     });
     confirmDialog.show();
