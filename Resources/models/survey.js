@@ -44,7 +44,8 @@ var Survey = new Ti.App.joli.model({
         client.setTimeout(5000);
         client.open("GET", url);
         client.send({
-          access_token : Ti.App.Properties.getString('access_token')
+          access_token : Ti.App.Properties.getString('access_token'),
+          extra_surveys : that.idsForExpiredSurveysWithResponses()
         });
       });
     },
@@ -95,6 +96,17 @@ var Survey = new Ti.App.joli.model({
           survey.syncResponses(true);
         });
       });
+    },
+    
+    idsForExpiredSurveysWithResponses : function() {
+      return _.chain(this.all())
+      .filter(function(survey){
+        return survey.isExpired() && survey.responseCount() > 0;
+      })
+      .map(function(survey){
+        return survey.id;
+      })
+      .value().join();
     }
   },
   objectMethods : {
