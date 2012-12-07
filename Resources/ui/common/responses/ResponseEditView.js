@@ -27,7 +27,8 @@ function ResponseEditView(responseID) {
 	var survey = Survey.findOneById(response.survey_id);
 	var questions = survey.firstLevelQuestions();
 
-	responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton], response);
+  var buttons = response.isComplete() ? [completeButton] : [saveButton, completeButton];
+	responseViewHelper.paginate(questions, scrollableView, buttons, response);
 
   var activityIndicator = Ti.UI.createActivityIndicator({
     message : 'Saving...',

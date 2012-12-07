@@ -281,6 +281,10 @@ var Response = new Ti.App.joli.model({
       }
       return identifiers;
 
+    },
+    
+    isComplete : function() {
+      return this.status === "complete";
     }
   }
 });
