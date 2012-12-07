@@ -4,7 +4,7 @@ var Measurements = {
   FONT_BIG : '20dip',
   FONT_MEDIUM : '15dip',
   FONT_SMALL : '10dip',
-  
+
   PADDING_SMALL : '5dip',
   PADDING_MEDIUM : '10dip'
 }

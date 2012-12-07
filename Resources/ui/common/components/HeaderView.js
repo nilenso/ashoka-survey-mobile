@@ -1,6 +1,7 @@
 var HeaderView = function(title) {
   var Palette = require('ui/common/components/Palette');
   var SeparatorView = require('ui/common/components/SeparatorView');
+  var Measurements = require('ui/common/components/Measurements');
 
   var coloredPadding = new SeparatorView(Palette.PRIMARY_COLOR, '10dip');
 
@@ -24,10 +25,10 @@ var HeaderView = function(title) {
 
   var logo = Ti.UI.createImageView({
     image : '/images/logo.png',
-    left : '5dip',
+    left : Measurements.PADDING_SMALL,
     width : '50dip',
     height : '50dip',
-    bottom : '5dip',
+    bottom : Measurements.PADDING_SMALL,
     height : Ti.UI.FILL
   });
 

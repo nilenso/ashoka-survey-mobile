@@ -8,6 +8,7 @@ function SurveysIndexView() {
   var Palette = require('ui/common/components/Palette');
   var SurveyRowView = require('ui/common/surveys/SurveyRowView');
   var Toast = require('ui/common/components/Toast');
+  var Measurements = require('ui/common/components/Measurements');
 
   var convertModelDataForTable = function() {
     return _(Survey.all()).map(function(survey) {
@@ -79,8 +80,7 @@ function SurveysIndexView() {
   label = Ti.UI.createLabel({
     color : '#333',
     font : {
-      fontSize : '20dip'
-    },
+      fontSize : Measurements.FONT_BIG    },
     text : 'Nothing here yet. Please fetch surveys from the menu.',
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
     top : '40%',

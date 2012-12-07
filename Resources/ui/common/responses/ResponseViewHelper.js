@@ -3,6 +3,7 @@ var Question = require('models/question');
 var QuestionView = require('ui/common/questions/QuestionView');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
+var Measurements = require('ui/common/components/Measurements');
 
 function ResponseViewHelper() {
   var self = {};
@@ -16,8 +17,7 @@ function ResponseViewHelper() {
       backgroundColor : Palette.PRIMARY_COLOR,
       height : '40dip',
       font : {
-        fontSize : '15dip'
-      },
+        fontSize : Measurements.FONT_MEDIUM      },
       width : '100%'
     });
   }
@@ -78,13 +78,13 @@ function ResponseViewHelper() {
         questionsView.add(questionView);
       })
       if (pageNumber + 1 === pagedQuestions.length) {
-        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
         _(buttons).each(function(button) {
-          questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+          questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
           questionsView.add(button);
         });
       } else {
-        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
         questionsView.add(footerView());
       }
       scrollableView.addView(questionsView);

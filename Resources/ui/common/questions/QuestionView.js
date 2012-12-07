@@ -6,6 +6,7 @@ var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionVi
 var RatingQuestionView = require('ui/common/questions/RatingQuestionView');
 var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
+var Measurements = require('ui/common/components/Measurements');
 
 function QuestionView(question, answer) {
   var self = Ti.UI.createView({
@@ -33,8 +34,7 @@ function QuestionView(question, answer) {
     left : 5,
     color : Palette.PRIMARY_COLOR,
     font : {
-      fontSize : '20dip'
-    }
+      fontSize : Measurements.FONT_BIG    }
   });
   labelsView.add(questionLabel);
 
@@ -49,8 +49,7 @@ function QuestionView(question, answer) {
       left : 5,
       color : Palette.SECONDARY_COLOR_DARK,
       font : {
-        fontSize : '15dip'
-      }
+        fontSize : Measurements.FONT_MEDIUM      }
     });
     labelsView.add(constraintsLabel);
   }
@@ -59,12 +58,11 @@ function QuestionView(question, answer) {
     left : 5,
     color : Palette.DANGER,
     font : {
-      fontSize : '15dip'
-    }
+      fontSize : Measurements.FONT_MEDIUM    }
   });
 
   self.add(labelsView);
-  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
 
   if (question.image_url) {
     var imageView = Ti.UI.createImageView({

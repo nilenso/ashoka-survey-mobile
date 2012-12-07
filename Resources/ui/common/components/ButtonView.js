@@ -1,8 +1,10 @@
+var Measurements = require('ui/common/components/Measurements');
+
 var ButtonView = function(title, options) {
   var options = options || {};
-  
+
   var Palette = require('ui/common/components/Palette');
-  
+
   var self = Ti.UI.createButton({
     title : title,
     backgroundColor : options.backgroundColor || Palette.PRIMARY_COLOR,
@@ -12,8 +14,7 @@ var ButtonView = function(title, options) {
     color : options.color || Palette.SECONDARY_COLOR_LIGHT,
     width : options.width || '80%',
     font : {
-      fontSize : options.fontSize || '20dip'
-    },
+      fontSize : options.fontSize || Measurements.FONT_BIG    },
     enabled : options.enabled === undefined ? true : options.enabled,
     height : options.height || '40dip'
   });

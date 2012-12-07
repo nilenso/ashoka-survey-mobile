@@ -2,6 +2,7 @@
 function OptionView(option, checked) {
   var Palette = require('ui/common/components/Palette');
 	var self = Ti.UI.createTableViewRow();
+	var Measurements = require('ui/common/components/Measurements');
 
 	if (Ti.Platform.osname == 'android') {
 		var checkbox = androidCheckbox(checked);
@@ -19,8 +20,7 @@ function OptionView(option, checked) {
 		width : 'auto',
 		left : size * 2,
 		font : {
-		  fontSize : '15dip'
-		}
+		  fontSize : Measurements.FONT_MEDIUM		}
 	});
 
 	self.add(label);
@@ -58,7 +58,7 @@ function OptionView(option, checked) {
 				e.source.off();
 			}
 		});
-		
+
 		if(checked) checkbox.on();
 
 		return checkbox;
@@ -74,7 +74,7 @@ function OptionView(option, checked) {
 			titleOn : "",
 			titleOff : ""
 		});
-		
+
 		if(checked) basicSwitch.setValue(true);
 
 		return basicSwitch;

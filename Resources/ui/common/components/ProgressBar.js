@@ -11,12 +11,11 @@ var ProgressBarView = function() {
     zIndex : 99999999,
     top : Measurements.HEADER_HEIGHT
   });
-  
+
   var titleLabel = Ti.UI.createLabel({
     color : Palette.PRIMARY_COLOR,
     font : {
-      fontSize : '15dip'
-    },
+      fontSize : Measurements.FONT_MEDIUM    },
     text : 'Fetching your surveys',
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
     top : '30%',

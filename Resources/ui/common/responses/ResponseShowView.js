@@ -12,6 +12,7 @@ function ResponseShowView(responseID) {
   var Palette = require('ui/common/components/Palette');
   var Toast = require('ui/common/components/Toast');
   var ConfirmDialog = require('ui/common/components/ConfirmDialog');
+  var Measurements = require('ui/common/components/Measurements');
 
   var convertResponseDataForTable = function() {
     var response = Response.findOneById(responseID);
@@ -28,16 +29,15 @@ function ResponseShowView(responseID) {
           fontSize : '20dip',
           fontStyle : 'bold',
         },
-        left : '5dip'
+        left : Measurements.PADDING_SMALL
       });
 
       var answerLabel = Ti.UI.createLabel({
         text : answer.contentForDisplay() || '',
         color : Palette.PRIMARY_COLOR,
-        left : '5dip',
+        left : Measurements.PADDING_SMALL,
         font : {
-          fontSize : '15dip'
-        }
+          fontSize : Measurements.FONT_MEDIUM        }
       });
 
       row.add(questionLabel);
@@ -52,8 +52,8 @@ function ResponseShowView(responseID) {
         row.add(imageView);
       }
 
-      row.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
-      row.add(new SeparatorView(Palette.WHITE, '5dip'));
+      row.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+      row.add(new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL));
       return (row);
     });
     return responses;
@@ -98,7 +98,7 @@ function ResponseShowView(responseID) {
     layout : 'vertical'
   });
   buttonsView.add(responseEditButton);
-  buttonsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+  buttonsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
   buttonsView.add(responseDeleteButton);
 
   table.setFooterView(buttonsView);

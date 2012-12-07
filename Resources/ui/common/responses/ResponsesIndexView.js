@@ -7,6 +7,7 @@ function ResponsesIndexView(surveyID) {
   var progressBarView = require('ui/common/components/ProgressBar');
   var Palette = require('ui/common/components/Palette');
   var SeparatorView = require('ui/common/components/SeparatorView');
+  var Measurements = require('ui/common/components/Measurements');
 
   var convertModelDataForTable = function() {
     var survey = Survey.findOneById(surveyID);
@@ -23,23 +24,21 @@ function ResponsesIndexView(surveyID) {
         text : "Response #" + response.id.toString(),
         color : Palette.PRIMARY_COLOR,
         font : {
-          fontSize : '20dip'
-        }
+          fontSize : Measurements.FONT_BIG        }
       });
-      
+
       row.add(responseLabel);
 
       var answersData = _(response.identifierAnswers()).each(function(answer) {
         var view = Ti.UI.createView({
           layout : 'horizontal',
-          left : '10dip'
+          left : Measurements.PADDING_MEDIUM
         });
         var label = Ti.UI.createLabel({
           text : answer.question().content + ": " + answer.contentForDisplay(),
           color : Palette.PRIMARY_COLOR,
           font : {
-            fontSize : '15dip'
-          }
+            fontSize : Measurements.FONT_MEDIUM          }
         });
         view.add(label);
         if (answer.isImage()) {
@@ -53,8 +52,8 @@ function ResponsesIndexView(surveyID) {
         row.add(view);
       });
 
-      row.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
-      row.add(new SeparatorView(Palette.WHITE, '5dip'));
+      row.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+      row.add(new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL));
       return (row);
     });
   };
@@ -108,8 +107,7 @@ function ResponsesIndexView(surveyID) {
   var label = Ti.UI.createLabel({
     color : '#333',
     font : {
-      fontSize : '20dip'
-    },
+      fontSize : Measurements.FONT_BIG    },
     text : 'No responses.',
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
     top : '40%',

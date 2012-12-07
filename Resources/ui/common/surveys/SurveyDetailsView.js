@@ -6,6 +6,7 @@ function SurveyDetailsView(surveyID) {
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Palette = require('ui/common/components/Palette');
   var ButtonView = require('ui/common/components/ButtonView');
+  var Measurements = require('ui/common/components/Measurements');
 
   var self = new TopLevelView('Survey Details');
   var survey = Survey.findOneById(surveyID);
@@ -18,39 +19,36 @@ function SurveyDetailsView(surveyID) {
     top : '10dip',
     text : survey.name,
     color : Palette.PRIMARY_COLOR,
-    left : '5dip',
+    left : Measurements.PADDING_SMALL,
     font : {
-      fontSize : '20dip'
-    }
+      fontSize : Measurements.FONT_BIG    }
   });
   var surveyDescriptionLabel = Ti.UI.createLabel({
     text : survey.description,
     color : Palette.PRIMARY_COLOR,
-    left : '5dip',
+    left : Measurements.PADDING_SMALL,
     font : {
-      fontSize : '15dip'
-    }
+      fontSize : Measurements.FONT_MEDIUM    }
   });
   var surveyExpiryLabel = Ti.UI.createLabel({
     text : 'Expires on: ' + survey.expiry_date,
     color : Palette.PRIMARY_COLOR,
-    left : '5dip',
+    left : Measurements.PADDING_SMALL,
     font : {
-      fontSize : '15dip'
-    }
+      fontSize : Measurements.FONT_MEDIUM    }
   });
   detailsView.add(surveyNameLabel);
   detailsView.add(surveyDescriptionLabel);
-  detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+  detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
   detailsView.add(surveyExpiryLabel);
   detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '20dip'));
 
   var createResponseButton = new ButtonView('Add Response', { enabled: !survey.isExpired() });
   var responsesIndexButton = new ButtonView('See all Responses');
 
-  detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+  detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
   detailsView.add(createResponseButton);
-  detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+  detailsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
   detailsView.add(responsesIndexButton);
 
   createResponseButton.addEventListener('click', function(e) {

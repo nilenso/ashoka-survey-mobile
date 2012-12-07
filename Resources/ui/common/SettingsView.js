@@ -6,6 +6,7 @@ var ButtonView = require('ui/common/components/ButtonView');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
 var ConfirmDialog = require('ui/common/components/ConfirmDialog');
+var Measurements = require('ui/common/components/Measurements');
 
 function SettingsView() {
   var topLevelView = new TopLevelView('Settings');
@@ -47,7 +48,7 @@ function SettingsView() {
   var saveButton = new ButtonView('Save', {
     width : '80%'
   });
-  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
   self.add(saveButton);
   saveButton.addEventListener('click', function(e) {
     var server_url = textField.getValue();

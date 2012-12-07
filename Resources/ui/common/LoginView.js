@@ -4,6 +4,7 @@ var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
 var loginHelper = require('helpers/LoginHelper');
 var ConfirmDialog = require('ui/common/components/ConfirmDialog');
+var Measurements = require('ui/common/components/Measurements');
 
 function LoginView() {
 
@@ -49,7 +50,7 @@ function LoginView() {
   self.add(activityIndicator);
   self.add(emailField);
   self.add(passwordField);
-  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '5dip'));
+  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
   self.add(loginButton);
 
   loginButton.addEventListener('click', function() {
