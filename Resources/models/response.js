@@ -23,7 +23,7 @@ var Response = new Ti.App.joli.model({
         user_id : Ti.App.Properties.getString('user_id'),
         organization_id : Ti.App.Properties.getString('organization_id'),
         status : status,
-        updated_at : parseInt(new Date().getTime()/1000),
+        updated_at : parseInt(new Date().getTime()/1000, 10),
         latitude : location.latitude,
         longitude : location.longitude
       });
@@ -47,7 +47,7 @@ var Response = new Ti.App.joli.model({
   },
   objectMethods : {
     prepRailsParams : function() {
-      var answer_attributes = {}
+      var answer_attributes = {};
       _(this.answers()).each(function(answer, index) {
         answer_attributes[index] = {};
         answer_attributes[index]['question_id'] = answer.question_id;
@@ -69,7 +69,7 @@ var Response = new Ti.App.joli.model({
         'survey_id' : this.survey_id,
         'web_id' : this.web_id,
         'status' : status,
-        'updated_at' : parseInt(new Date().getTime() / 1000),
+        'updated_at' : parseInt(new Date().getTime() / 1000, 10),
         'user_id' : Ti.App.Properties.getString('user_id'),
         'organization_id' : Ti.App.Properties.getString('organization_id'),        
         'latitude' : this.latitude,
@@ -118,7 +118,7 @@ var Response = new Ti.App.joli.model({
         'survey_id' : self.survey_id,
         'web_id' : received_response['id'],
         'status' : received_response['status'],
-        'updated_at' : parseInt(new Date().getTime()/1000),
+        'updated_at' : parseInt(new Date().getTime()/1000, 10),
         'latitude' : self.latitude,
         'longitude' : self.longitude,
         'user_id' : self.user_id,
@@ -136,7 +136,7 @@ var Response = new Ti.App.joli.model({
           'question_id' : received_response.answers[index].question_id,
           'web_id' : received_response.answers[index].id,
           'content' : received_response.answers[index].content,
-          'updated_at' : parseInt(new Date().getTime()/1000),
+          'updated_at' : parseInt(new Date().getTime()/1000, 10),
           'image' : image,
           'photo_updated_at' : photoUpdatedAt
         });
@@ -145,7 +145,7 @@ var Response = new Ti.App.joli.model({
         _(received_response.answers[index].choices).each(function(choice) {
           choice.answer_id = new_answer.id;
           Choice.newRecord(choice).save();
-        })
+        });
       });
 
       _(self.answers()).each(function(answer) {
@@ -177,7 +177,7 @@ var Response = new Ti.App.joli.model({
         self.destroy();
       } else if (this.status >= 400) {
         message = "Your server isn't responding. Sorry about that.";
-      } else if (this.status == 0) {
+      } else if (this.status === 0) {
         message = "Couldn't reach the server.";
       } else {
         Ti.API.info("Erroneous Response: " + responseText);
@@ -193,16 +193,17 @@ var Response = new Ti.App.joli.model({
     sync : function() {
       var url = Ti.App.Properties.getString('server_url') + '/api/responses';
       var self = this;
-      var params = {};
-      params['answers_attributes'] = this.prepRailsParams();
-      params['status'] = this.status;
-      params['survey_id'] = this.survey_id;
-      params['updated_at'] = parseInt(new Date(this.updated_at).getTime()/1000);
-      params['longitude'] = this.longitude;
-      params['latitude'] = this.latitude;
-      params['user_id'] = this.user_id;
-      params['organization_id'] = this.organization_id;
-      params['access_token'] = Ti.App.Properties.getString('access_token');
+      var params = {
+        answers_attributes : this.prepRailsParams(),
+        status : this.status,
+        survey_id : this.survey_id,
+        updated_at : parseInt(new Date(this.updated_at).getTime()/1000, 10),
+        longitude : this.longitude,
+        latitude : this.latitude,
+        user_id : this.user_id,
+        organization_id : this.organization_id,
+        access_token : Ti.App.Properties.getString('access_token') 
+      };
 
       var client = Ti.Network.createHTTPClient({
         // function called when the response data is available
@@ -258,7 +259,7 @@ var Response = new Ti.App.joli.model({
         if (answer.isImage() && answer.image)
           Ti.Filesystem.getFile(answer.image).deleteFile();
         answer.destroy();
-      })
+      });
     },
 
     answerForQuestion : function(questionID) {

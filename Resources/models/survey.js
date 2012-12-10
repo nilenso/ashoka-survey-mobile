@@ -62,7 +62,7 @@ var Survey = new Ti.App.joli.model({
     },
 
     isEmpty : function() {
-      return this.count() == 0;
+      return this.count() === 0;
     },
 
     syncAllResponses : function() {
@@ -125,7 +125,7 @@ var Survey = new Ti.App.joli.model({
         } else {
           if (self.allResponsesSynced(responseSyncCount)) {
             Ti.App.fireEvent("survey.responses.sync", self.syncSummary());
-          };
+          }
         }
         progressBarView.updateValue(1);
         Ti.App.removeEventListener("response.sync." + self.id, syncHandler);
@@ -153,7 +153,7 @@ var Survey = new Ti.App.joli.model({
 
     responses : function() {
       this.response_objects = this.response_objects || this.responsesForCurrentUser();
-      return this.response_objects
+      return this.response_objects;
     },
 
     allResponsesSynced : function(successCount) {
@@ -162,7 +162,7 @@ var Survey = new Ti.App.joli.model({
 
     syncSummary : function() {
       return _(this.responses()).countBy(function(response) {
-        return response.has_error ? 'errors' : 'successes'
+        return response.has_error ? 'errors' : 'successes';
       });
     },
 
@@ -174,8 +174,8 @@ var Survey = new Ti.App.joli.model({
         onload : function(e) {
           Ti.API.info("Received text for questions: " + this.responseText);
           var data = JSON.parse(this.responseText);
-          var number_of_option_questions = 0
-          var number_of_images = 0
+          var number_of_option_questions = 0;
+          var number_of_images = 0;
           var records = Question.createRecords(data, self.id);
           _(records).each(function(record) {
             if (record.type == 'RadioQuestion' || record.type == 'DropDownQuestion' || record.type == 'MultiChoiceQuestion') {
@@ -206,10 +206,10 @@ var Survey = new Ti.App.joli.model({
     firstLevelQuestions : function() {
       var questions = Question.findBy('survey_id', this.id);
       var questionList = _.select(questions, function(question) {
-        return question.parent_id == null;
+        return question.parent_id === null;
       });
       var sortedQuestionList = _(questionList).sortBy(function(question) {
-        return question.order_number
+        return question.order_number;
       });
       return sortedQuestionList;
     },
