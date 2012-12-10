@@ -69,7 +69,11 @@ var Response = new Ti.App.joli.model({
         'survey_id' : this.survey_id,
         'web_id' : this.web_id,
         'status' : status,
-        'updated_at' : parseInt(new Date().getTime()/1000)
+        'updated_at' : parseInt(new Date().getTime() / 1000),
+        'user_id' : Ti.App.Properties.getString('user_id'),
+        'organization_id' : Ti.App.Properties.getString('organization_id'),        
+        'latitude' : this.latitude,
+        'longitude' : this.longitude
       });
       var self = this;
       this.deleteObsoleteAnswers(answersData);
