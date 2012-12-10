@@ -56,7 +56,7 @@ function OptionView(option, checked, response) {
     text : option.content,
     height : 'auto',
     width : 'auto',
-    left : size * 2,
+    left : '5dip',
     font : {
       fontSize : Measurements.FONT_MEDIUM
     }
