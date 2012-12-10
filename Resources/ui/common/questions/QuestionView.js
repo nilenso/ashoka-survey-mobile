@@ -86,8 +86,8 @@ function QuestionView(question, answer) {
   } else if (question.type == 'RatingQuestion') {
     valueField = new RatingQuestionView(question, content);
   } else if (question.type == 'MultiChoiceQuestion') {
-    var optionIDs = answer ? answer.optionIDs() : null;
-    valueField = new MultiChoiceQuestionView(question, optionIDs);
+    
+    valueField = new MultiChoiceQuestionView(question, answer);
   } else {
     valueField = new BasicQuestionView(question, content);
   }

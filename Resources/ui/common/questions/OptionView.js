@@ -1,84 +1,131 @@
 //OptionView Component Constructor
-function OptionView(option, checked) {
+var _ = require('lib/underscore')._;
+
+function OptionView(option, checked, response) {
   var Palette = require('ui/common/components/Palette');
-	var self = Ti.UI.createTableViewRow();
-	var Measurements = require('ui/common/components/Measurements');
+  var row = Ti.UI.createView({
+    height : Ti.UI.SIZE,
+    layout : 'vertical'
+  });
 
-	if (Ti.Platform.osname == 'android') {
-		var checkbox = androidCheckbox(checked);
-	} else {
-		var checkbox = iPhoneCheckbox(checked);
-	}
+  var self = Ti.UI.createView({
+    layout : 'horizontal',
+    height : Titanium.UI.SIZE
+  });
+  row.add(self);
 
-	self.add(checkbox);
+  var Measurements = require('ui/common/components/Measurements');
 
-	var size = Ti.Platform.displayCaps.platformHeight * 0.05
-	var label = Ti.UI.createLabel({
-		color : Palette.PRIMARY_COLOR,
-		text : option.content,
-		height : 'auto',
-		width : 'auto',
-		left : size * 2,
-		font : {
-		  fontSize : Measurements.FONT_MEDIUM		}
-	});
+  if (Ti.Platform.osname == 'android') {
+    var checkbox = androidCheckbox(checked);
+  } else {
+    var checkbox = iPhoneCheckbox(checked);
+  }
 
-	self.add(label);
+  self.add(checkbox);
 
-	return self;
+  checkbox.addEventListener('change', function(e) {
+    var checked = e.value;
+    if (checked) {
+      Ti.API.info("Showing sub questions for" + option.content);
+      showSubQuestions();
+    } else {
+      hideSubQuestions();
+    }
+  });
 
-	function iPhoneCheckbox(checked) {
-		var checkbox = Ti.UI.createButton({
-			title : '',
-			height: 30,
-			width: 30,
-			left : 2,
-			color : '#000',
-			font : { fontWeight: 'bold' },
-			value : false //value is a custom property in this casehere.
-		});
+  var showSubQuestions = function() {
+    var subQuestions = option.firstLevelSubQuestions();
+    var QuestionView = require('ui/common/questions/QuestionView');
+    _(subQuestions).each(function(subQuestion) {
+      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
+      Ti.API.info("Showing the sub question: " + subQuestion.content);
+      row.add(new QuestionView(subQuestion, subQuestionAnswer));
+    });
+  };
 
-		//Attach some simple on/off actions
-		checkbox.on = function() {
-			Ti.API.info(this.value);
-			this.setTitle('✓');
-			this.value = true;
-		};
+  var hideSubQuestions = function() {
+    _(row.getChildren()).each(function(childView) {
+      if (childView != self)
+        row.remove(childView);
+    });
+  }
+  var size = Ti.Platform.displayCaps.platformHeight * 0.05
+  var label = Ti.UI.createLabel({
+    color : Palette.PRIMARY_COLOR,
+    text : option.content,
+    height : 'auto',
+    width : 'auto',
+    left : size * 2,
+    font : {
+      fontSize : Measurements.FONT_MEDIUM
+    }
+  });
 
-		checkbox.off = function() {
-			Ti.API.info(this.value);
-			this.setTitle('');
-			this.value = false;
-		};
+  self.add(label);
 
-		checkbox.addEventListener('click', function(e) {
-			if (false == e.source.value) {
-				e.source.on();
-			} else {
-				e.source.off();
-			}
-		});
+  if (checked) {
+    showSubQuestions();
+  }
 
-		if(checked) checkbox.on();
+  return row;
 
-		return checkbox;
-	}
+  function iPhoneCheckbox(checked) {
+    var checkbox = Ti.UI.createButton({
+      title : '',
+      height : 30,
+      width : 30,
+      left : 2,
+      color : '#000',
+      font : {
+        fontWeight : 'bold'
+      },
+      value : false //value is a custom property in this casehere.
+    });
 
-	function androidCheckbox(checked) {
-		var basicSwitch = Ti.UI.createSwitch({
-			value : false,
-			style: Ti.UI.Android.SWITCH_STYLE_CHECKBOX,
-			height: size,
-			width: size,
-			left : 2,
-			titleOn : "",
-			titleOff : ""
-		});
+    //Attach some simple on/off actions
+    checkbox.on = function() {
+      Ti.API.info(this.value);
+      this.setTitle('✓');
+      this.value = true;
+    };
 
-		if(checked) basicSwitch.setValue(true);
+    checkbox.off = function() {
+      Ti.API.info(this.value);
+      this.setTitle('');
+      this.value = false;
+    };
 
-		return basicSwitch;
-	}
+    checkbox.addEventListener('click', function(e) {
+      if (false == e.source.value) {
+        e.source.on();
+      } else {
+        e.source.off();
+      }
+    });
+
+    if (checked)
+      checkbox.on();
+
+    return checkbox;
+  }
+
+  function androidCheckbox(checked) {
+    var basicSwitch = Ti.UI.createSwitch({
+      value : false,
+      style : Ti.UI.Android.SWITCH_STYLE_CHECKBOX,
+      height : size,
+      width : size,
+      left : 2,
+      titleOn : "",
+      titleOff : ""
+    });
+
+    if (checked)
+      basicSwitch.setValue(true);
+
+    return basicSwitch;
+  }
 
 }
 
