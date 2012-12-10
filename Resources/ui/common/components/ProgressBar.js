@@ -34,7 +34,7 @@ var ProgressBarView = function() {
     if (!self.keepVisible && progressBar.getMax() == progressBar.getValue()) {
       self.reset();
       self.hide();
-      self.fireEvent('sync:complete');
+      self.fireEvent(self.actionName);
     }
   };
 
@@ -54,6 +54,11 @@ var ProgressBarView = function() {
     progressBar.max = currentMax + max;
     Ti.API.info("Progress bar MAX is now: " + progressBar.getMax());
     hideProgressBarIfComplete();
+  };
+
+  self.init = function(actionName) {
+    self.actionName = actionName;
+    self.show();
   };
 
   self.updateValue = function(value) {

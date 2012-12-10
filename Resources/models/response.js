@@ -109,7 +109,6 @@ var Response = new Ti.App.joli.model({
       var responseText = data.responseText;
       Ti.API.info("Synced response successfully: " + responseText);
       self.has_error = false;
-      self.synced = true;
 
       var received_response = JSON.parse(responseText);
       Ti.API.info("Response parsed successfully");
@@ -162,7 +161,7 @@ var Response = new Ti.App.joli.model({
         self.destroyAnswers();
         self.destroy();
       }
-      Ti.App.fireEvent('response.sync', {
+      Ti.App.fireEvent('response.sync.' + self.survey_id, {
         survey_id : self.survey_id
       });
 
@@ -185,8 +184,7 @@ var Response = new Ti.App.joli.model({
         self.has_error = true;
         message = "Some error occured";
       }
-      self.synced = true;
-      Ti.App.fireEvent('response.sync', {
+      Ti.App.fireEvent('response.sync.' + self.survey_id , {
         survey_id : self.survey_id,
         message : message
       });
@@ -195,7 +193,6 @@ var Response = new Ti.App.joli.model({
     sync : function() {
       var url = Ti.App.Properties.getString('server_url') + '/api/responses';
       var self = this;
-      this.synced = false;
       var params = {};
       params['answers_attributes'] = this.prepRailsParams();
       params['status'] = this.status;

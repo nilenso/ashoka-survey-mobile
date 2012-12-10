@@ -33,9 +33,9 @@ function SurveysIndexWindow() {
           groupId : FETCH_SURVEYS
         });
         menuItemFetch.addEventListener('click', function() {
-          Survey.fetchSurveys();
           surveysIndexView.addErrorListener();
-          surveysIndexView.addProgressCompleteListener();
+          surveysIndexView.addSurveysProgressCompleteListener();
+          Survey.fetchSurveys();
         });
         menuItemFetch.setIcon("/images/fetch.png");
 
@@ -44,6 +44,7 @@ function SurveysIndexWindow() {
           groupId : SYNC_RESPONSES
         });
         menuItemSync.addEventListener('click', function() {
+          surveysIndexView.addResponsesProgressCompleteListener();
           Survey.syncAllResponses();
         });
         menuItemSync.setIcon("/images/refresh.png");
@@ -100,10 +101,10 @@ function SurveysIndexWindow() {
   var disableBackButton = function() {
     // intentionally do nothing to block it
   };
-  surveysIndexView.addEventListener('surveys.index.progress.start', function(e) {
+  surveysIndexView.addEventListener('progress.start', function(e) {
     self.addEventListener('android:back', disableBackButton);
   });
-  surveysIndexView.addEventListener('surveys.index.progress.finish', function(e) {
+  surveysIndexView.addEventListener('progress.finish', function(e) {
     self.removeEventListener('android:back', disableBackButton);
   });
   

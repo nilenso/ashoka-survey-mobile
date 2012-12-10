@@ -26,22 +26,35 @@ function SurveysIndexView() {
   };
   var self = new TopLevelView('List of Surveys');
 
-  var progressComplete = function(e) {
-    Ti.API.info("Sync complete for surveys!!!!");
+  var progressComplete = function(entityBeingSynced) {
     self.refresh();
     self.remove(progressBarView);
-    (new Toast('Successfully fetched surveys')).show();
-    self.fireEvent('surveys.index.progress.finish');
+    Ti.API.info("Entity being fetched : " + entityBeingSynced);
+    if (entityBeingSynced)
+      (new Toast('Successfully fetched surveys')).show();
+    self.fireEvent('progress.finish');
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
-    progressBarView.removeEventListener('sync:complete', progressComplete);
+    progressBarView.removeEventListener('sync.complete', progressComplete);
   };
 
-  self.addProgressCompleteListener = function() {
-    progressBarView.addEventListener('sync:complete', progressComplete);
-  }
+  var progressSurveysComplete = function(e) {
+    progressComplete('surveys');
+  };
+
+  var progressResponsesComplete = function(e) {
+    progressComplete();
+  };
+
+  self.addResponsesProgressCompleteListener = function() {
+    progressBarView.addEventListener('sync.complete.responses', progressResponsesComplete);
+  };
+  
+  self.addSurveysProgressCompleteListener = function() {
+    progressBarView.addEventListener('sync.complete.surveys', progressSurveysComplete);
+  };
+  
   var errorListener = function(data) {
     progressBarView.hide();
-    progressBarView.reset();
     self.remove(progressBarView);
     if (data.status >= 400) {
       alert("Your server isn't responding. Sorry about that.");
@@ -55,15 +68,20 @@ function SurveysIndexView() {
     Ti.App.addEventListener('surveys.fetch.error', errorListener);
   };
 
-  var showProgressBar = function(e) {
-    progressBarView.reset();
+  var showResponsesProgressBar = function(e) {
+    self.fireEvent('progress.start');
     self.add(progressBarView);
-    progressBarView.show();
-    self.fireEvent('surveys.index.progress.start');
+    progressBarView.init('sync.complete.responses');
   };
 
-  Ti.App.addEventListener('surveys.fetch.start', showProgressBar);
-  Ti.App.addEventListener('all.responses.sync.start', showProgressBar);
+  var showSurveyProgressBar = function(e) {
+    self.fireEvent('progress.start');
+    self.add(progressBarView);
+    progressBarView.init('sync.complete.surveys');
+  };
+
+  Ti.App.addEventListener('surveys.fetch.start', showSurveyProgressBar);
+  Ti.App.addEventListener('all.responses.sync.start', showResponsesProgressBar);
 
   var table = Titanium.UI.createTableView({
     separatorColor : 'transparent',

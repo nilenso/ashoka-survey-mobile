@@ -75,18 +75,18 @@ function ResponsesIndexView(surveyID) {
     data = convertModelDataForTable();
     table.setData(data);
     showMessageIfModelIsEmpty();
-    progressBarView.removeEventListener('sync:complete', progressComplete);
+    progressBarView.removeEventListener('sync.complete.survey.response', progressComplete);
   };
 
   var self = new TopLevelView('List of Responses');
 
   self.addProgressCompleteListener = function() {
-    progressBarView.addEventListener('sync:complete', progressComplete);
+    progressBarView.addEventListener('sync.complete.survey.response', progressComplete);
   };
 
   var showProgressBar = function(e) {
     self.add(progressBarView);
-    progressBarView.show();
+    progressBarView.init('sync.complete.survey.response');
     Ti.App.removeEventListener('responses.sync.start', showProgressBar);
   };
 

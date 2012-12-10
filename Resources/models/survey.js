@@ -86,7 +86,6 @@ var Survey = new Ti.App.joli.model({
               errors : errors
             });
             Ti.App.removeEventListener('survey.responses.sync', generateAllResponsesSyncSummary);
-            Ti.API.info("Finished syncing all responses for all surveys.");
           }
         };
         if (surveyCount > 0)
@@ -114,24 +113,22 @@ var Survey = new Ti.App.joli.model({
       Ti.App.fireEvent('responses.sync.start');
       progressBarView.setMessage("Syncing responses...");
 
-      var success_count = 0;
       var self = this;
+      var responseSyncCount = 0;
 
       var syncHandler = function(data) {
-        progressBarView.updateValue(1);
-        Ti.API.info("Progress value updated by one here");
-        Ti.API.info("All RESPONSES SYNCED: " + self.allResponsesSynced().toString())
+        responseSyncCount++;
         if (data.message) {
           Ti.App.fireEvent("survey.responses.sync", {
             message : data.message
           });
-        } else if (data.survey_id == self.id) {
-          if (self.allResponsesSynced()) {
+        } else {
+          if (self.allResponsesSynced(responseSyncCount)) {
             Ti.App.fireEvent("survey.responses.sync", self.syncSummary());
-            Ti.API.info("SUMMARY: " + self.syncSummary());
           };
         }
-        Ti.App.removeEventListener("response.sync", syncHandler);
+        progressBarView.updateValue(1);
+        Ti.App.removeEventListener("response.sync." + self.id, syncHandler);
       };
 
       progressBarView.updateMax(this.responseCount());
@@ -139,7 +136,7 @@ var Survey = new Ti.App.joli.model({
         if (response.hasImageAnswer()) {
           progressBarView.keepVisible = true;
         }
-        Ti.App.addEventListener("response.sync", syncHandler);
+        Ti.App.addEventListener("response.sync." + self.id, syncHandler);
         response.sync();
       });
 
@@ -159,10 +156,8 @@ var Survey = new Ti.App.joli.model({
       return this.response_objects
     },
 
-    allResponsesSynced : function() {
-      return _(this.responses()).all(function(response) {
-        return response.synced === true;
-      });
+    allResponsesSynced : function(successCount) {
+      return _(this.responses()).size() === successCount;
     },
 
     syncSummary : function() {
