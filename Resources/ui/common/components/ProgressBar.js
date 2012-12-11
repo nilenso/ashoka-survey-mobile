@@ -56,8 +56,10 @@ var ProgressBarView = function() {
     hideProgressBarIfComplete();
   };
 
-  self.init = function(actionName) {
+  self.init = function(actionName, max) {
     self.actionName = actionName;
+    if(max)
+      self.updateMax(max);
     self.show();
   };
 
@@ -65,6 +67,10 @@ var ProgressBarView = function() {
     progressBar.setValue(progressBar.getValue() + value);
     Ti.API.info("Progress bar value is now: " + progressBar.getValue());
     hideProgressBarIfComplete();
+  };
+
+  self.incrementValue = function() {
+    self.updateValue(1);
   };
 
   self.add(titleLabel);
