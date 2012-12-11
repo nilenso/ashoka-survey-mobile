@@ -1,9 +1,10 @@
 function ResponsesIndexWindow(surveyID) {
-  var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView')
-  var ResponseShowView = require('ui/common/responses/ResponseShowView')
-  var ResponseShowWindow = require('ui/handheld/android/ResponseShowWindow')
-  var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow')
+  var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
+  var ResponseShowView = require('ui/common/responses/ResponseShowView');
+  var ResponseShowWindow = require('ui/handheld/android/ResponseShowWindow');
+  var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow');
   var Survey = require('models/survey');
+  var progressBar = require('ui/common/components/ProgressBar');
   var NetworkHelper = require('helpers/NetworkHelper');
   var loggedIn = require('helpers/LoginHelper').loggedIn;
 
@@ -18,15 +19,22 @@ function ResponsesIndexWindow(surveyID) {
           title : "Sync",
           groupId : 1
         });
+
         menuItemSync.addEventListener('click', function() {
-          var survey = Survey.findOneById(surveyID)
+          var survey = Survey.findOneById(surveyID);
           NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
+            Ti.API.info("in here");
+            progressBar.init('response.sync.' + survey.id + '.completed', survey.responseCount());
+            Ti.App.addEventListener('response.sync.' + survey.id + '.completed', handleSyncCompleted);
+            progressBar.setMessage('Syncing responses...');
+            Ti.App.addEventListener('survey.' + survey.id + '.response.synced', progressBar.incrementValue);
             survey.syncResponses();
             view.addProgressCompleteListener();
           });
         });
         menuItemSync.setIcon("images/refresh.png");
       },
+
       onPrepareOptionsMenu : function(e) {
         var menu = e.menu;
         menu.setGroupEnabled(1, loggedIn());
@@ -50,13 +58,18 @@ function ResponsesIndexWindow(surveyID) {
     activityIndicator.hide();
   });
 
+  var handleSyncCompleted = function() {
+    Ti.App.removeEventListener('response.sync.' + surveyID + '.completed', handleSyncCompleted);
+    Ti.App.removeEventListener('survey.' + surveyID + '.response.synced', progressBar.incrementValue);
+  }
+
   var syncHandler = function(data) {
     Ti.App.removeEventListener("survey.responses.sync", syncHandler);
     self.close();
     if (data.message)
-      alert(data.message);
+    alert(data.message);
     else
-      alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
+    alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
   };
   Ti.App.addEventListener("survey.responses.sync", syncHandler);
 

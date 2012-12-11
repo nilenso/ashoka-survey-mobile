@@ -111,7 +111,6 @@ var Survey = new Ti.App.joli.model({
   objectMethods : {
     syncResponses : function(forMultipleSurveys) {
       Ti.App.fireEvent('responses.sync.start');
-      progressBarView.setMessage("Syncing responses...");
 
       var self = this;
       var responseSyncCount = 0;
@@ -127,11 +126,10 @@ var Survey = new Ti.App.joli.model({
             Ti.App.fireEvent("survey.responses.sync", self.syncSummary());
           }
         }
-        progressBarView.updateValue(1);
+        Ti.App.fireEvent('survey.' + self.id + '.response.synced');
         Ti.App.removeEventListener("response.sync." + self.id, syncHandler);
       };
 
-      progressBarView.updateMax(this.responseCount());
       _(this.responses()).each(function(response) {
         if (response.hasImageAnswer()) {
           progressBarView.keepVisible = true;

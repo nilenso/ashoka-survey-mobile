@@ -34,7 +34,7 @@ var ProgressBarView = function() {
     if (!self.keepVisible && progressBar.getMax() == progressBar.getValue()) {
       self.reset();
       self.hide();
-      self.fireEvent(self.actionName);
+      Ti.App.fireEvent(self.actionName);
     }
   };
 
