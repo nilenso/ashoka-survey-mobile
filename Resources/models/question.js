@@ -126,6 +126,10 @@ var Question = new Ti.App.joli.model({
       var parentQuestion = Question.findOneById(parentOption.question_id);
       return parentQuestion;
     },
+    
+    parentOption : function() {
+      return Option.findOneById(this.parent_id);
+    },
 
     subQuestions : function() {
       var subQuestionsForAllOptions = _.chain(this.options()).map(function(option) {
@@ -155,8 +159,15 @@ var Question = new Ti.App.joli.model({
       var siblingIDs = _(this.withSiblings()).map(function(question) {
         return question.id;
       });
+      
+      var parentOptionIDs = _(this.options()).map(function(option) {
+        return option.id;
+      });
       if (this.parent_id === null) {
         return (siblingIDs.indexOf(this.id)) + 1;
+      } else if (this.parentQuestion().type === 'MultiChoiceQuestion'){
+        var optionIdentifier = String.fromCharCode(97 + parentOptionIDs.indexOf(this.parentOption().id) + 1);
+        return this.parentQuestion().number() + optionIdentifier + '.' + ((siblingIDs.indexOf(this.id)) + 1);
       } else {
         return this.parentQuestion().number() + '.' + ((siblingIDs.indexOf(this.id)) + 1);
       }
