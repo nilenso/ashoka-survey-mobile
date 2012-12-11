@@ -75,6 +75,7 @@ function ResponsesIndexView(surveyID) {
     data = convertModelDataForTable();
     table.setData(data);
     showMessageIfModelIsEmpty();
+    self.fireEvent('progress.finish');
     progressBarView.removeEventListener('sync.complete.survey.response', progressComplete);
   };
 
@@ -87,6 +88,7 @@ function ResponsesIndexView(surveyID) {
   var showProgressBar = function(e) {
     self.add(progressBarView);
     progressBarView.init('sync.complete.survey.response');
+    self.fireEvent('progress.start');
     Ti.App.removeEventListener('responses.sync.start', showProgressBar);
   };
 

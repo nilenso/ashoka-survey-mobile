@@ -64,6 +64,19 @@ function ResponsesIndexWindow(surveyID) {
     Ti.App.removeEventListener("survey.responses.sync", syncHandler);
   });
 
+  var disableBackButton = function() {
+    // intentionally do nothing to block it
+  };
+
+  view.addEventListener('progress.start', function(e) {
+    self.addEventListener('android:back', disableBackButton);
+  });
+
+  view.addEventListener('progress.finish', function(e) {
+    self.removeEventListener('android:back', disableBackButton);
+  });
+  
+
   return self;
 }
 
