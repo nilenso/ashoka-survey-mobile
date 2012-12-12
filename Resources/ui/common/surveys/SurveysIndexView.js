@@ -48,17 +48,17 @@ function SurveysIndexView() {
   self.addResponsesProgressCompleteListener = function() {
     progressBarView.addEventListener('sync.complete.responses', progressResponsesComplete);
   };
-  
+
   self.addSurveysProgressCompleteListener = function() {
     progressBarView.addEventListener('sync.complete.surveys', progressSurveysComplete);
   };
-  
+
   var errorListener = function(data) {
     progressBarView.hide();
     self.remove(progressBarView);
     if (data.status >= 400) {
       alert("Your server isn't responding. Sorry about that.");
-    } else if (data.status == 0) {
+    } else if (data.status === 0) {
       alert("Couldn't reach the server.");
     }
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);

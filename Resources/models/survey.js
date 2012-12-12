@@ -65,12 +65,11 @@ var Survey = new Ti.App.joli.model({
       return this.count() === 0;
     },
 
-    syncAllResponses : function() {
+    syncAllResponses : function(externalResponseSyncHandler) {
       var self = this;
       NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
         Ti.App.fireEvent('all.responses.sync.start');
         var surveyCount = _(self.all()).size();
-        progressBarView.updateMax(surveyCount);
 
         var count = 0, errors = 0, successes = 0;
         var generateAllResponsesSyncSummary = function(data) {
@@ -92,11 +91,17 @@ var Survey = new Ti.App.joli.model({
           Ti.App.addEventListener('survey.responses.sync', generateAllResponsesSyncSummary);
 
         _(self.all()).each(function(survey) {
-          survey.syncResponses(true);
+          survey.syncResponses(externalResponseSyncHandler, true);
         });
       });
     },
-    
+
+    allResponsesCount : function() {
+      return _(this.all()).reduce(function(total, survey){
+        return total + survey.responseCount();
+      }, 0);
+    },
+
     idsForExpiredSurveysWithResponses : function() {
       return _.chain(this.all())
       .filter(function(survey){
@@ -109,7 +114,7 @@ var Survey = new Ti.App.joli.model({
     }
   },
   objectMethods : {
-    syncResponses : function(forMultipleSurveys) {
+    syncResponses : function(externalResponseSyncHandler, forMultipleSurveys) {
       Ti.App.fireEvent('responses.sync.start');
 
       var self = this;
@@ -126,7 +131,7 @@ var Survey = new Ti.App.joli.model({
             Ti.App.fireEvent("survey.responses.sync", self.syncSummary());
           }
         }
-        Ti.App.fireEvent('survey.' + self.id + '.response.synced');
+        externalResponseSyncHandler();
         Ti.App.removeEventListener("response.sync." + self.id, syncHandler);
       };
 
@@ -143,9 +148,6 @@ var Survey = new Ti.App.joli.model({
         Ti.App.fireEvent("survey.responses.sync", {
           empty : true
         });
-      }
-      if (forMultipleSurveys) {
-        progressBarView.updateValue(1);
       }
     },
 

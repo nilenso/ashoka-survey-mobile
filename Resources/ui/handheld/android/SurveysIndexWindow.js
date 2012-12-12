@@ -11,6 +11,7 @@ function SurveysIndexWindow() {
   var surveysIndexView = new SurveysIndexView();
   var loggedIn = require('helpers/LoginHelper').loggedIn;
   var loginHelper = require('helpers/LoginHelper');
+  var progressBarView = require('ui/common/components/ProgressBar');
 
   //ID Constants
 
@@ -43,9 +44,12 @@ function SurveysIndexWindow() {
           title : "Sync Responses",
           groupId : SYNC_RESPONSES
         });
+
         menuItemSync.addEventListener('click', function() {
           surveysIndexView.addResponsesProgressCompleteListener();
-          Survey.syncAllResponses();
+          var progressBar = progressBarView;
+          progressBar.init('sync.complete.surveys', Survey.allResponsesCount());
+          Survey.syncAllResponses(progressBar.incrementValue);
         });
         menuItemSync.setIcon("/images/refresh.png");
 
@@ -107,7 +111,7 @@ function SurveysIndexWindow() {
   surveysIndexView.addEventListener('progress.finish', function(e) {
     self.removeEventListener('android:back', disableBackButton);
   });
-  
+
   self.addEventListener('focus', function() {
     surveysIndexView.refresh();
   });

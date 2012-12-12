@@ -77,17 +77,10 @@ function ResponsesIndexView(surveyID) {
     NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
       var progressBar = progressBarView;
       progressBar.init('response.sync.' + survey.id + '.completed', survey.responseCount());
-      Ti.App.addEventListener('response.sync.' + survey.id + '.completed', handleSyncCompleted);
       progressBar.setMessage('Syncing responses...');
-      Ti.App.addEventListener('survey.' + survey.id + '.response.synced', progressBar.incrementValue);
-      survey.syncResponses();
+      survey.syncResponses(progressBar.incrementValue);
       self.addProgressCompleteListener();
     });
-  };
-
- var handleSyncCompleted = function() {
-    Ti.App.removeEventListener('response.sync.' + surveyID + '.completed', handleSyncCompleted);
-    Ti.App.removeEventListener('survey.' + surveyID + '.response.synced', progressBar.incrementValue);
   };
 
   var progressComplete = function(e) {
