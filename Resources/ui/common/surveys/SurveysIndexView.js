@@ -72,12 +72,14 @@ function SurveysIndexView() {
     self.fireEvent('progress.start');
     self.add(progressBarView);
     progressBarView.init('sync.complete.responses');
+    Ti.App.removeEventListener('all.responses.sync.start', showResponsesProgressBar);
   };
 
   var showSurveyProgressBar = function(e) {
     self.fireEvent('progress.start');
     self.add(progressBarView);
     progressBarView.init('sync.complete.surveys');
+    Ti.App.removeEventListener('surveys.fetch.start', showSurveyProgressBar);
   };
 
   Ti.App.addEventListener('surveys.fetch.start', showSurveyProgressBar);
@@ -118,6 +120,7 @@ function SurveysIndexView() {
 
   var showSyncSummary = function(data) {
     alert((data.successes || 0) + " surveys successfully synced.\n" + (data.errors || 0) + " surveys' sync failed.");
+    Ti.App.removeEventListener('all.responses.sync.complete', showSyncSummary);
   };
   Ti.App.addEventListener('all.responses.sync.complete', showSyncSummary);
 
