@@ -146,6 +146,11 @@ var Response = new Ti.App.joli.model({
         });
         new_answer.save();
 
+        if(received_response.answers[index].thumb_url) {
+          progressBarView.updateMax(1);
+          new_answer.getRemoteImage(received_response.answers[index].thumb_url);
+        }
+
         _(received_response.answers[index].choices).each(function(choice) {
           choice.answer_id = new_answer.id;
           Choice.newRecord(choice).save();
