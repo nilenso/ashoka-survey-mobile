@@ -101,11 +101,11 @@ function SurveysIndexView() {
     color : '#333',
     font : {
       fontSize : Measurements.FONT_BIG    },
-    text : 'Nothing here yet. Please fetch surveys from the menu.',
-    textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-    top : '40%',
-    width : 'auto',
-    height : 'auto'
+      text : 'Nothing here yet. Please fetch surveys from the menu.',
+      textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+      top : '40%',
+      width : 'auto',
+      height : 'auto'
   });
 
   showMessageIfModelIsEmpty();
@@ -123,6 +123,13 @@ function SurveysIndexView() {
     Ti.App.removeEventListener('all.responses.sync.complete', showSyncSummary);
   };
   Ti.App.addEventListener('all.responses.sync.complete', showSyncSummary);
+
+  self.syncAllResponses = function() {
+    this.addResponsesProgressCompleteListener();
+    var progressBar = progressBarView;
+    progressBar.init('sync.complete.surveys', Survey.allResponsesCount());
+    Survey.syncAllResponses(progressBar.incrementValue);
+  };
 
   return self;
 };
