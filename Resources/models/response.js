@@ -203,7 +203,7 @@ var Response = new Ti.App.joli.model({
         latitude : this.latitude,
         user_id : this.user_id,
         organization_id : this.organization_id,
-        access_token : Ti.App.Properties.getString('access_token') 
+        access_token : Ti.App.Properties.getString('access_token')
       };
 
       var client = Ti.Network.createHTTPClient({

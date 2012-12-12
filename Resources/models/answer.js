@@ -164,7 +164,7 @@ var Answer = new Ti.App.joli.model({
 
     getRemoteImage : function(imageUrl) {
       var self = this;
-      var filename = this.image
+      var filename = this.image;
       if (!filename)
         filename = "image_" + (new Date()).valueOf() + ".jpg";
       var file = Titanium.Filesystem.getFile(filename);
@@ -174,53 +174,10 @@ var Answer = new Ti.App.joli.model({
         self.image = file.nativePath;
         self.save();
         progressBarView.updateValue(1);
-      }
-      var url = Ti.App.Properties.getString('server_url') + imageUrl
+      };
+      var url = Ti.App.Properties.getString('server_url') + imageUrl;
       client.open('GET', url);
       client.send({
-        access_token : Ti.App.Properties.getString('access_token')
-      });
-    },
-    uploadImage : function(status, webId) {
-      var client = Ti.Network.createHTTPClient();
-      var self = this;
-
-      client.onload = function(e) {
-        Ti.API.info("Response recieved for image : " + this.responseText);
-        Ti.API.info("Succceesssss fully saved IMAGE!" + e);
-
-        var received_response = JSON.parse(this.responseText);
-
-        self.photo_updated_at = received_response['photo_updated_at'];
-
-        if (status == "complete") {
-          var imageFile = Titanium.Filesystem.getFile(self.image);
-          imageFile.deleteFile();
-        } else {
-          progressBarView.updateMax(1);
-          self.getRemoteImage(received_response.image_url);
-        }
-        Ti.API.info(this.image);
-        progressBarView.updateValue(1);
-        progressBarView.keepVisible = false;
-      };
-
-      client.onerror = function(e) {
-        progressBarView.updateValue(1);
-        Ti.API.info("Error saving IMAGE! :( ");
-        Ti.API.info(e.error);
-        progressBarView.keepVisible = false;
-      };
-
-      var image = Titanium.Filesystem.getFile(this.image);
-      read_image = image.read();
-      var imageUrl = Ti.App.Properties.getString('server_url') + '/api/responses/' + webId + '/image_upload';
-      client.open('PUT', imageUrl);
-      client.setRequestHeader("enctype", "multipart/form-data;");
-      client.send({
-        media : read_image,
-        answer_id : this.web_id,
-        photo_updated_at : this.photo_updated_at,
         access_token : Ti.App.Properties.getString('access_token')
       });
     }
