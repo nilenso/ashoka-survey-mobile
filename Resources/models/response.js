@@ -58,6 +58,10 @@ var Response = new Ti.App.joli.model({
           answer_attributes[index]['option_ids'] = answer.optionIDs();
         else
           answer_attributes[index]['content'] = answer.content;
+        if (answer.isImage() && answer.image){
+          var image = Titanium.Filesystem.getFile(answer.image);
+          answer_attributes[index]['photo'] = Ti.Utils.base64encode(image.read()).getText();
+        }
       });
       return answer_attributes;
     },
@@ -148,14 +152,6 @@ var Response = new Ti.App.joli.model({
         });
       });
 
-      _(self.answers()).each(function(answer) {
-        if (answer.isImage() && answer.image) {
-          Ti.API.info("Progress uploading image");
-          progressBarView.setMessage("Uploading images...");
-          progressBarView.updateMax(1);
-          answer.uploadImage(received_response['status'], received_response['id']);
-        }
-      });
 
       if (received_response['status'] == "complete") {
         self.destroyAnswers();
