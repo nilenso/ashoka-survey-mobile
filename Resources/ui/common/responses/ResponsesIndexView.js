@@ -8,6 +8,7 @@ function ResponsesIndexView(surveyID) {
   var Palette = require('ui/common/components/Palette');
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Measurements = require('ui/common/components/Measurements');
+  var NetworkHelper = require('helpers/NetworkHelper');
 
   var convertModelDataForTable = function() {
     var survey = Survey.findOneById(surveyID);
@@ -69,6 +70,26 @@ function ResponsesIndexView(surveyID) {
     }
   };
 
+  var self = new TopLevelView('List of Responses');
+
+  self.syncResponses = function() {
+    var survey = Survey.findOneById(surveyID);
+    NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
+      var progressBar = progressBarView;
+      progressBar.init('response.sync.' + survey.id + '.completed', survey.responseCount());
+      Ti.App.addEventListener('response.sync.' + survey.id + '.completed', handleSyncCompleted);
+      progressBar.setMessage('Syncing responses...');
+      Ti.App.addEventListener('survey.' + survey.id + '.response.synced', progressBar.incrementValue);
+      survey.syncResponses();
+      self.addProgressCompleteListener();
+    });
+  };
+
+ var handleSyncCompleted = function() {
+    Ti.App.removeEventListener('response.sync.' + surveyID + '.completed', handleSyncCompleted);
+    Ti.App.removeEventListener('survey.' + surveyID + '.response.synced', progressBar.incrementValue);
+  };
+
   var progressComplete = function(e) {
     Ti.API.info("Sync complete for resopnses!!!");
     self.remove(progressBarView);
@@ -79,7 +100,6 @@ function ResponsesIndexView(surveyID) {
     progressBarView.removeEventListener('sync.complete.survey.response', progressComplete);
   };
 
-  var self = new TopLevelView('List of Responses');
 
   self.addProgressCompleteListener = function() {
     progressBarView.addEventListener('sync.complete.survey.response', progressComplete);
@@ -124,6 +144,6 @@ function ResponsesIndexView(surveyID) {
 
   showMessageIfModelIsEmpty();
   return self;
-};
+}
 
 module.exports = ResponsesIndexView;
