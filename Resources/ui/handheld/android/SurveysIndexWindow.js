@@ -78,7 +78,7 @@ function SurveysIndexWindow() {
       },
       onPrepareOptionsMenu : function(e) {
         var menu = e.menu;
-        menu.setGroupEnabled(SYNC_RESPONSES, (Survey.count() !== 0) && loggedIn());
+        menu.setGroupEnabled(SYNC_RESPONSES, (Survey.allResponsesCount() !== 0) && loggedIn());
         // Allow syncing responses if logged in AND there are some surveys in the DB.
         menu.setGroupEnabled(FETCH_SURVEYS, loggedIn());
         // Allow fetching surveys if logged in.

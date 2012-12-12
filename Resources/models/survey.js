@@ -91,7 +91,7 @@ var Survey = new Ti.App.joli.model({
           Ti.App.addEventListener('survey.responses.sync', generateAllResponsesSyncSummary);
 
         _(self.all()).each(function(survey) {
-          survey.syncResponses(externalResponseSyncHandler, true);
+          survey.syncResponses(externalResponseSyncHandler);
         });
       });
     },
@@ -114,7 +114,7 @@ var Survey = new Ti.App.joli.model({
     }
   },
   objectMethods : {
-    syncResponses : function(externalResponseSyncHandler, forMultipleSurveys) {
+    syncResponses : function(externalResponseSyncHandler) {
       Ti.App.fireEvent('responses.sync.start');
 
       var self = this;

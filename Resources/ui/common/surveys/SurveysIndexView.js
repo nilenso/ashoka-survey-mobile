@@ -120,7 +120,6 @@ function SurveysIndexView() {
 
   var showSyncSummary = function(data) {
     alert((data.successes || 0) + " surveys successfully synced.\n" + (data.errors || 0) + " surveys' sync failed.");
-    Ti.App.removeEventListener('all.responses.sync.complete', showSyncSummary);
   };
   Ti.App.addEventListener('all.responses.sync.complete', showSyncSummary);
 
@@ -128,6 +127,7 @@ function SurveysIndexView() {
     this.addResponsesProgressCompleteListener();
     var progressBar = progressBarView;
     progressBar.init('sync.complete.surveys', Survey.allResponsesCount());
+    progressBar.setMessage("Syncing Responses...");
     Survey.syncAllResponses(progressBar.incrementValue);
   };
 
