@@ -164,13 +164,12 @@ var Answer = new Ti.App.joli.model({
       progressBarView.keepVisible = false;
       var self = this;
       var filename = this.image;
-      if (!filename)
-        filename = "image_" + (new Date()).valueOf() + ".jpg";
-      var file = Titanium.Filesystem.getFile(filename);
+      filename = "image_" + (new Date()).valueOf() + ".jpg";
+      var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
       var client = Titanium.Network.createHTTPClient();
       client.onload = function() {
         file.write(this.responseData);
-        self.image = file.nativePath;
+        self.set('image', file.nativePath);
         self.save();
         progressBarView.incrementValue();
       };
