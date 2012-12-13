@@ -1,8 +1,7 @@
 function SurveyDetailsWindow(surveyID) {
-	var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView')
-	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView')
-	var ResponsesNewWindow = require('ui/handheld/iphone/ResponsesNewWindow')
-	var ResponsesIndexWindow = require('ui/handheld/iphone/ResponsesIndexWindow')
+	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
+	var ResponsesNewWindow = require('ui/handheld/iphone/ResponsesNewWindow');
+	var ResponsesIndexWindow = require('ui/handheld/iphone/ResponsesIndexWindow');
 
 	var self = Ti.UI.createWindow({
 		title : 'Survey Details',

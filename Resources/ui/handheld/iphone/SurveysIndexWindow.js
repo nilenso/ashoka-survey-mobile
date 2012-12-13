@@ -1,11 +1,10 @@
 function SurveysIndexWindow() {
 	//load component dependencies
 	var SurveysIndexView = require('ui/common/surveys/SurveysIndexView');
-	var SettingsWindow = require('ui/handheld/iphone/SettingsWindow')
-	var SurveyDetailsWindow = require('ui/handheld/iphone/SurveyDetailsWindow')
-	var ResponsesNewView = require('ui/common/responses/ResponsesNewView')
-	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView')
-	var ResponseShowView = require('ui/common/responses/ResponseShowView')
+	var SettingsWindow = require('ui/handheld/iphone/SettingsWindow');
+	var ResponsesNewView = require('ui/common/responses/ResponsesNewView');
+	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
+	var ResponseShowView = require('ui/common/responses/ResponseShowView');
 	var Survey = require('models/survey');
 
 	var self = Ti.UI.createWindow({

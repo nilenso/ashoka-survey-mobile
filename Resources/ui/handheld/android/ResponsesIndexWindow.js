@@ -2,7 +2,6 @@ function ResponsesIndexWindow(surveyID) {
   var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
   var ResponseShowView = require('ui/common/responses/ResponseShowView');
   var ResponseShowWindow = require('ui/handheld/android/ResponseShowWindow');
-  var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow');
   var Survey = require('models/survey');
   var progressBar = require('ui/common/components/ProgressBar');
   var loggedIn = require('helpers/LoginHelper').loggedIn;

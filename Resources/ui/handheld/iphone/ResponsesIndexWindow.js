@@ -1,15 +1,14 @@
 function ResponsesIndexWindow(surveyID) {
-	var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView')
-	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView')
-	var ResponseShowView = require('ui/common/responses/ResponseShowView')
-	var ResponseShowWindow = require('ui/handheld/iphone/ResponseShowWindow')
+	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
+	var ResponseShowView = require('ui/common/responses/ResponseShowView');
+	var ResponseShowWindow = require('ui/handheld/iphone/ResponseShowWindow');
 	var Survey = require('models/survey');
 
 	var self = Ti.UI.createWindow({
 		title : 'All Responses',
 		backgroundColor : "#fff"
 	});
-	var view = new ResponsesIndexView(surveyID) 
+	var view = new ResponsesIndexView(surveyID);
 	self.add(view);
 
 	var tableRowClickedCallback = function(e) {

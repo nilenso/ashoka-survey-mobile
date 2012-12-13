@@ -1,7 +1,6 @@
 function ResponsesNewWindow(surveyID) {
-  var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView')
-  var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView')
-  var ResponsesNewView = require('ui/common/responses/ResponsesNewView')
+  var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
+  var ResponsesNewView = require('ui/common/responses/ResponsesNewView');
   var ConfirmDialog = require('ui/common/components/ConfirmDialog');
 
   var self = Ti.UI.createWindow({
