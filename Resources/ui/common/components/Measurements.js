@@ -7,6 +7,6 @@ var Measurements = {
 
   PADDING_SMALL : '5dip',
   PADDING_MEDIUM : '10dip'
-}
+};
 
-module.exports = Measurements
+module.exports = Measurements;
