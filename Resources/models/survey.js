@@ -15,23 +15,20 @@ var Survey = new Ti.App.joli.model({
   },
 
   methods : {
-    fetchSurveys : function() {
+    fetchSurveys : function(externalSyncHandler) {      
       var that = this;
       NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
         Ti.App.fireEvent('surveys.fetch.start');
-        progressBarView.setMessage("Fetching surveys...");
         var url = Ti.App.Properties.getString('server_url') + '/api/surveys';
         var client = Ti.Network.createHTTPClient({
           onload : function(e) {
-            Ti.API.info("Received text: " + this.responseText);
             var data = JSON.parse(this.responseText);
             that.truncate();
             Question.truncate();
             Option.truncate();
-            progressBarView.updateMax(data.length);
             _(data).each(function(surveyData) {
               var survey = that.createRecord(surveyData);
-              survey.fetchQuestions();
+              survey.fetchQuestions(externalSyncHandler);
             });
           },
           onerror : function(e) {
@@ -63,6 +60,28 @@ var Survey = new Ti.App.joli.model({
 
     isEmpty : function() {
       return this.count() === 0;
+    },
+
+    fetchAllQuestionsCount : function(callback) {
+      NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
+        var url = Ti.App.Properties.getString('server_url') + '/api/surveys/questions_count';
+        var client = Ti.Network.createHTTPClient({
+          onload : function() {
+            var data = JSON.parse(this.responseText);
+            Ti.API.info("There are " + data.count + " questions!");
+            callback(data.count);
+          },
+          onerror : function(e) {
+            Ti.API.debug("Questions count fetch failed");
+            Ti.API.debug(e.error);
+          }
+        });
+        client.setTimeout(5000);
+        client.open("GET", url);
+        client.send({
+          access_token : Ti.App.Properties.getString('access_token')
+        });
+      });
     },
 
     syncAllResponses : function(externalResponseSyncHandler) {
@@ -130,6 +149,7 @@ var Survey = new Ti.App.joli.model({
             Ti.App.fireEvent("survey.responses.sync", self.syncSummary());
           }
         }
+        Ti.API.info("EXTERNAL Sync Handler" + externalResponseSyncHandler());
         externalResponseSyncHandler();
         Ti.App.removeEventListener("response.sync." + self.id, syncHandler);
       };
@@ -165,28 +185,20 @@ var Survey = new Ti.App.joli.model({
       });
     },
 
-    fetchQuestions : function() {
-      progressBarView.setMessage("Fetching questions...");
+    fetchQuestions : function(externalSyncHandler) {
+      Ti.API.info("In survey model fetchQuestions Increment Sync handler is " + externalSyncHandler);
       var self = this;
       var url = Ti.App.Properties.getString('server_url') + '/api/questions?survey_id=' + self.id;
       var client = Ti.Network.createHTTPClient({
         onload : function(e) {
           Ti.API.info("Received text for questions: " + this.responseText);
           var data = JSON.parse(this.responseText);
-          var number_of_option_questions = 0;
-          var number_of_images = 0;
-          var records = Question.createRecords(data, self.id);
+          var records = Question.createRecords(data, self.id, null, externalSyncHandler);
           _(records).each(function(record) {
-            if (record.type == 'RadioQuestion' || record.type == 'DropDownQuestion' || record.type == 'MultiChoiceQuestion') {
-              number_of_option_questions++;
-            }
             if (record.image_url) {
-              number_of_images++;
               record.fetchImage();
             }
           });
-          progressBarView.updateMax(number_of_option_questions + number_of_images);
-          progressBarView.updateValue(1);
         },
         onerror : function(e) {
           Ti.App.fireEvent('surveys.fetch.error', {

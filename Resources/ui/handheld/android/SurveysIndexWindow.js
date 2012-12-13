@@ -12,6 +12,7 @@ function SurveysIndexWindow() {
   var surveysIndexView = new SurveysIndexView();
   var loggedIn = require('helpers/LoginHelper').loggedIn;
   var loginHelper = require('helpers/LoginHelper');
+  var progressBarView = require("ui/common/components/ProgressBar");
 
   //ID Constants
 
@@ -33,10 +34,20 @@ function SurveysIndexWindow() {
           title : "Fetch Surveys",
           groupId : FETCH_SURVEYS
         });
+
         menuItemFetch.addEventListener('click', function() {
           surveysIndexView.addErrorListener();
           surveysIndexView.addSurveysProgressCompleteListener();
-          Survey.fetchSurveys();
+          var progressBar = progressBarView;
+          Survey.fetchAllQuestionsCount(function(number){
+            surveysIndexView.add(progressBar);
+            progressBar.init('surveys.sync.completed', number);
+            progressBar.setMessage("Fetching surveys...");
+            progressBar.addEventListener('surveys.sync.completed', function(){
+              surveysIndexView.remove(progressBar);
+            });
+            Survey.fetchSurveys(progressBar.incrementValue);
+          });
         });
         menuItemFetch.setIcon("/images/fetch.png");
 
@@ -77,6 +88,7 @@ function SurveysIndexWindow() {
         });
         menuItemSettings.setIcon("/images/settings.png");
       },
+
       onPrepareOptionsMenu : function(e) {
         var menu = e.menu;
         menu.setGroupEnabled(SYNC_RESPONSES, (Survey.allResponsesCount() !== 0) && loggedIn());

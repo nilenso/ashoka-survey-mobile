@@ -20,7 +20,7 @@ var Question = new Ti.App.joli.model({
   },
 
   methods : {
-    createRecords : function(data, surveyID, parentID) {
+    createRecords : function(data, surveyID, parentID, externalSyncHandler) {
       var _ = require('lib/underscore')._;
       var that = this;
       var records = [];
@@ -41,7 +41,7 @@ var Question = new Ti.App.joli.model({
         });
         record.save();
         records.push(record);
-        record.fetchOptions();
+        record.fetchOptions(externalSyncHandler);
       });
       return records;
     }
@@ -50,7 +50,6 @@ var Question = new Ti.App.joli.model({
   objectMethods : {
     fetchImage : function() {
       if (this.image_url) {
-        progressBarView.setMessage("Fetching an image...");
         var self = this;
         var url = Ti.App.Properties.getString('server_url') + self.image_url;
         var client = Ti.Network.createHTTPClient({
@@ -75,14 +74,14 @@ var Question = new Ti.App.joli.model({
         });
       }
     },
-    fetchOptions : function() {
-      progressBarView.setMessage("Fetching options and sub questions...");
-
+    fetchOptions : function(externalSyncHandler) {
+      Ti.API.info("In survey model fetchOptions Increment Sync handler is " + externalSyncHandler);
       var self = this;
-      if (self.type != 'RadioQuestion' && self.type != 'DropDownQuestion' && self.type != 'MultiChoiceQuestion')
+      if (self.type != 'RadioQuestion' && self.type != 'DropDownQuestion' && self.type != 'MultiChoiceQuestion') {
+        externalSyncHandler();
         return;
+      }
       var url = Ti.App.Properties.getString('server_url') + '/api/options?question_id=' + self.id;
-      var numberOfOptionSubQuestions = 0;
       var client = Ti.Network.createHTTPClient({
         // function called when the response data is available
         onload : function(e) {
@@ -92,15 +91,9 @@ var Question = new Ti.App.joli.model({
           _(records).each(function(record) {
             _(record.subQuestions()).each(function(subQuestion) {
               if (subQuestion.type == 'RadioQuestion' || subQuestion.type == 'DropDownQuestion' || subQuestion.type == 'MultiChoiceQuestion') {
-                numberOfOptionSubQuestions++;
               }
             });
-          });
-
-          progressBarView.updateMax(numberOfOptionSubQuestions);
-          progressBarView.updateValue(1);
-          Ti.App.fireEvent('surveys.questions.options.fetch.done', {
-            number_of_option_sub_questions : numberOfOptionSubQuestions
+            externalSyncHandler();
           });
         },
         onerror : function(e) {
@@ -126,7 +119,7 @@ var Question = new Ti.App.joli.model({
       var parentQuestion = Question.findOneById(parentOption.question_id);
       return parentQuestion;
     },
-    
+
     parentOption : function() {
       return Option.findOneById(this.parent_id);
     },
@@ -159,7 +152,7 @@ var Question = new Ti.App.joli.model({
       var siblingIDs = _(this.withSiblings()).map(function(question) {
         return question.id;
       });
-      
+
       var parentOptionIDs = _(this.options()).map(function(option) {
         return option.id;
       });

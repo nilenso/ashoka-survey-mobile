@@ -63,7 +63,7 @@ function SurveysIndexView() {
   };
 
   self.addSurveysProgressCompleteListener = function() {
-    progressBarView.addEventListener('sync.complete.surveys', progressSurveysComplete);
+    progressBarView.addEventListener('surveys.sync.completed', progressSurveysComplete);
   };
 
   var errorListener = function(data) {
@@ -80,15 +80,6 @@ function SurveysIndexView() {
   self.addErrorListener = function() {
     Ti.App.addEventListener('surveys.fetch.error', errorListener);
   };
-
-  var showSurveyProgressBar = function(e) {
-    self.fireEvent('progress.start');
-    self.add(progressBarView);
-    progressBarView.init('sync.complete.surveys');
-    Ti.App.removeEventListener('surveys.fetch.start', showSurveyProgressBar);
-  };
-
-  Ti.App.addEventListener('surveys.fetch.start', showSurveyProgressBar);
 
   var table = Titanium.UI.createTableView({
     separatorColor : 'transparent',
