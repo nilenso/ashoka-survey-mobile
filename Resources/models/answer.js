@@ -161,6 +161,7 @@ var Answer = new Ti.App.joli.model({
     },
 
     getRemoteImage : function(imageUrl) {
+      progressBarView.keepVisible = false;
       var self = this;
       var filename = this.image;
       if (!filename)

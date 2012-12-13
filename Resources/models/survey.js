@@ -68,7 +68,6 @@ var Survey = new Ti.App.joli.model({
     syncAllResponses : function(externalResponseSyncHandler) {
       var self = this;
       NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
-        Ti.App.fireEvent('all.responses.sync.start');
         var surveyCount = _(self.all()).size();
 
         var count = 0, errors = 0, successes = 0;
