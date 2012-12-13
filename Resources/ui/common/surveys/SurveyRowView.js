@@ -12,57 +12,57 @@ function SurveysRowView(survey) {
     height : '100dip'
   });
   var surveyNameLabel = Ti.UI.createLabel({
-  text : survey.name,
-  color : Palette.PRIMARY_COLOR,
-  left : Measurements.PADDING_SMALL,
-  top : Measurements.PADDING_SMALL,
-  font : { fontSize :Measurements.FONT_BIG  }
-});
-var surveyInfoView = Ti.UI.createView({
-  width : '100%'
-});
+    text : survey.name,
+    color : Palette.PRIMARY_COLOR,
+    left : Measurements.PADDING_SMALL,
+    top : Measurements.PADDING_SMALL,
+    font : { fontSize :Measurements.FONT_BIG  }
+  });
+  var surveyInfoView = Ti.UI.createView({
+    width : '100%'
+  });
 
-var responseCountLabel = Ti.UI.createLabel({
-  text : '[' + survey.responseCount() + ']',
-  color : Palette.PRIMARY_COLOR_LIGHT,
-  right : Measurements.PADDING_SMALL,
-  font : {
-    fontSize : Measurements.FONT_MEDIUM  }
-});
-var expiryDateLabel = Ti.UI.createLabel({
-  text : 'Expires on: ' + survey.expiry_date,
-  color : Palette.PRIMARY_COLOR_LIGHT,
-  left : Measurements.PADDING_SMALL,
-  font : {
-    fontSize : Measurements.FONT_MEDIUM  }
-});
+  var responseCountLabel = Ti.UI.createLabel({
+    text : '[' + survey.responseCount() + ']',
+    color : Palette.PRIMARY_COLOR_LIGHT,
+    right : Measurements.PADDING_SMALL,
+    font : {
+      fontSize : Measurements.FONT_MEDIUM  }
+  });
+  var expiryDateLabel = Ti.UI.createLabel({
+    text : 'Expires on: ' + survey.expiry_date,
+    color : Palette.PRIMARY_COLOR_LIGHT,
+    left : Measurements.PADDING_SMALL,
+    font : {
+      fontSize : Measurements.FONT_MEDIUM  }
+  });
 
-var incompleteResponseCountLabel = Ti.UI.createLabel({
-  text : 'Incomplete responses: ' + survey.incompleteResponseCount(),
-  color : Palette.PRIMARY_COLOR_LIGHT,
-  left : Measurements.PADDING_SMALL,
-  font : {
-    fontSize : Measurements.FONT_MEDIUM  }
-});
+  var incompleteResponseCountLabel = Ti.UI.createLabel({
+    text : 'Incomplete responses: ' + survey.incompleteResponseCount(),
+    color : Palette.PRIMARY_COLOR_LIGHT,
+    left : Measurements.PADDING_SMALL,
+    font : {
+      fontSize : Measurements.FONT_MEDIUM  }
+  });
 
-var completeResponseCountLabel = Ti.UI.createLabel({
-  text : 'Complete responses: ' + survey.completeResponseCount(),
-  color : Palette.PRIMARY_COLOR_LIGHT,
-  left : Measurements.PADDING_SMALL,
-  font : {
-    fontSize : Measurements.FONT_MEDIUM  }
-});
+  var completeResponseCountLabel = Ti.UI.createLabel({
+    text : 'Complete responses: ' + survey.completeResponseCount(),
+    color : Palette.PRIMARY_COLOR_LIGHT,
+    left : Measurements.PADDING_SMALL,
+    font : {
+      fontSize : Measurements.FONT_MEDIUM  }
+  });
 
-var rowSeparator = new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL);
+  var rowSeparator = new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL);
 
-self.add(rowSeparator);
-self.add(surveyNameLabel);
-surveyInfoView.add(expiryDateLabel);
-surveyInfoView.add(responseCountLabel);
-self.add(completeResponseCountLabel);
-self.add(incompleteResponseCountLabel);
-self.add(surveyInfoView);
-return (self);
+  self.add(rowSeparator);
+  self.add(surveyNameLabel);
+  surveyInfoView.add(expiryDateLabel);
+  surveyInfoView.add(responseCountLabel);
+  self.add(completeResponseCountLabel);
+  self.add(incompleteResponseCountLabel);
+  self.add(surveyInfoView);
+  return (self);
 }
 
 module.exports = SurveysRowView;
