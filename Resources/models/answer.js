@@ -13,8 +13,7 @@ var Answer = new Ti.App.joli.model({
     question_id : 'INTEGER',
     web_id : 'INTEGER',
     updated_at : 'TEXT',
-    image : 'TEXT',
-    photo_updated_at : 'TEXT'
+    image : 'TEXT'
   },
 
   methods : {
@@ -36,7 +35,6 @@ var Answer = new Ti.App.joli.model({
         var image = answerData['content'];
         answerData['content'] = "";
         answerData['image'] = image;
-        answerData['photo_updated_at'] = parseInt(new Date().getTime()/1000);
         answerData['updated_at'] = parseInt(new Date().getTime()/1000);
         var answer = that.newRecord(answerData);
         answer.save();
@@ -173,7 +171,11 @@ var Answer = new Ti.App.joli.model({
         file.write(this.responseData);
         self.image = file.nativePath;
         self.save();
-        progressBarView.updateValue(1);
+        progressBarView.incrementValue();
+      };
+      client.onerror = function() {
+        Ti.API.info("Error downloading image");
+        progressBarView.incrementValue();
       };
       var url = Ti.App.Properties.getString('server_url') + imageUrl;
       client.open('GET', url);

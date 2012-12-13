@@ -132,7 +132,6 @@ var Response = new Ti.App.joli.model({
 
       _(self.answers()).each(function(answer, index) {
         var image = answer.image;
-        var photoUpdatedAt = answer.photo_updated_at;
         answer.destroyChoices();
         answer.destroy();
         var new_answer = Answer.newRecord({
@@ -141,8 +140,7 @@ var Response = new Ti.App.joli.model({
           'web_id' : received_response.answers[index].id,
           'content' : received_response.answers[index].content,
           'updated_at' : parseInt(new Date().getTime()/1000, 10),
-          'image' : image,
-          'photo_updated_at' : photoUpdatedAt
+          'image' : image
         });
         new_answer.save();
 
