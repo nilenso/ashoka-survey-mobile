@@ -10,11 +10,25 @@ function SurveysIndexView() {
   var Toast = require('ui/common/components/Toast');
   var Measurements = require('ui/common/components/Measurements');
 
+  var self = new TopLevelView('List of Surveys');
+  
   var convertModelDataForTable = function() {
     return _(Survey.all()).map(function(survey) {
-      return new SurveyRowView(survey);
+      var row = new SurveyRowView(survey);
+      row.addEventListener('surveys_row_view.row_clicked', function() {
+        self.fireEvent('surveys_index_view.table_row_clicked', {
+          surveyID : survey.id
+        });
+      });
+      row.addEventListener('surveys_row_view.add_response_clicked', function() {
+        self.fireEvent('surveys_index_view.add_response_clicked', {
+          surveyID : survey.id
+        });
+      });
+      return row;
     });
   };
+
   var showMessageIfModelIsEmpty = function() {
     if (Survey.isEmpty()) {
       self.add(label);
@@ -24,7 +38,6 @@ function SurveysIndexView() {
       self.add(table);
     }
   };
-  var self = new TopLevelView('List of Surveys');
 
   var progressComplete = function(entityBeingSynced) {
     self.refresh();
@@ -81,12 +94,6 @@ function SurveysIndexView() {
     separatorColor : 'transparent',
     top : self.headerHeight,
     data : convertModelDataForTable()
-  });
-
-  table.addEventListener('click', function(e) {
-    self.fireEvent('surveys_index_view.table_row_clicked', {
-      surveyID : e.rowData.surveyID
-    });
   });
 
   label = Ti.UI.createLabel({

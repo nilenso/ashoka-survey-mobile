@@ -1,6 +1,7 @@
 var Survey = require('models/survey');
 var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
+var ButtonView = require('ui/common/components/ButtonView');
 var Measurements = require('ui/common/components/Measurements');
 
 function SurveysRowView(survey) {
@@ -11,6 +12,11 @@ function SurveysRowView(survey) {
     layout : 'vertical',
     height : Ti.UI.SIZE
   });
+
+  var labelsView = Ti.UI.createView ({
+    layout : 'vertical'
+  });
+
   var surveyNameLabel = Ti.UI.createLabel({
     text : survey.name,
     color : Palette.PRIMARY_COLOR,
@@ -62,18 +68,31 @@ function SurveysRowView(survey) {
       fontSize : Measurements.FONT_MEDIUM  }
   });
 
+  var addResponseButton = new ButtonView('Add Response');
+  
+  addResponseButton.addEventListener('click', function () {
+    self.fireEvent('surveys_row_view.add_response_clicked');
+  });
+
+
+  labelsView.addEventListener('click', function(e) {
+    self.fireEvent('surveys_row_view.row_clicked');
+  });
+
   var rowSeparator = new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL);
 
   self.add(rowSeparator);
-  self.add(surveyNameLabel);
-  self.add(surveyDescriptionLabel);
+  labelsView.add(surveyNameLabel);
+  labelsView.add(surveyDescriptionLabel);
   
   surveyInfoView.add(expiryDateLabel);
   surveyInfoView.add(responseCountLabel);
   
-  self.add(completeResponseCountLabel);
-  self.add(incompleteResponseCountLabel);
-  self.add(surveyInfoView);
+  labelsView.add(completeResponseCountLabel);
+  labelsView.add(incompleteResponseCountLabel);
+  labelsView.add(surveyInfoView);
+  self.add(labelsView);
+  self.add(addResponseButton);
   return (self);
 }
 

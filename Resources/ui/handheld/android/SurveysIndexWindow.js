@@ -6,6 +6,7 @@ function SurveysIndexWindow() {
   var Survey = require('models/survey');
   var Question = require('models/question');
   var ResponsesIndexWindow = require('ui/handheld/android/ResponsesIndexWindow');
+  var ResponsesNewWindow = require('ui/handheld/android/ResponsesNewWindow');
   var settingsWindow = SettingsWindow();
   var loginWindow = require('ui/handheld/android/LoginWindow');
   var surveysIndexView = new SurveysIndexView();
@@ -95,16 +96,31 @@ function SurveysIndexWindow() {
     settingsWindow.close();
   });
 
+  var activityIndicator = Ti.UI.createActivityIndicator({
+    message : 'Loading...'
+  });
+  self.add(activityIndicator);
+
   surveysIndexView.addEventListener('surveys_index_view.table_row_clicked', function(e) {
+    activityIndicator.show();
     ResponsesIndexWindow(e.surveyID).open();
+    activityIndicator.hide();
+  });
+
+  surveysIndexView.addEventListener('surveys_index_view.add_response_clicked', function(e) {
+    activityIndicator.show();
+    ResponsesNewWindow(e.surveyID).open();
+    activityIndicator.hide();
   });
 
   var disableBackButton = function() {
     // intentionally do nothing to block it
   };
+
   surveysIndexView.addEventListener('progress.start', function(e) {
     self.addEventListener('android:back', disableBackButton);
   });
+
   surveysIndexView.addEventListener('progress.finish', function(e) {
     self.removeEventListener('android:back', disableBackButton);
   });
