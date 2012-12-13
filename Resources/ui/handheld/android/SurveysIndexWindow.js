@@ -5,7 +5,7 @@ function SurveysIndexWindow() {
   var SettingsWindow = require('ui/handheld/android/SettingsWindow');
   var Survey = require('models/survey');
   var Question = require('models/question');
-  var SurveyDetailsWindow = require('ui/handheld/android/SurveyDetailsWindow');
+  var ResponsesIndexWindow = require('ui/handheld/android/ResponsesIndexWindow');
   var settingsWindow = SettingsWindow();
   var loginWindow = require('ui/handheld/android/LoginWindow');
   var surveysIndexView = new SurveysIndexView();
@@ -96,7 +96,7 @@ function SurveysIndexWindow() {
   });
 
   surveysIndexView.addEventListener('surveys_index_view.table_row_clicked', function(e) {
-    SurveyDetailsWindow(e.surveyID).open();
+    ResponsesIndexWindow(e.surveyID).open();
   });
 
   var disableBackButton = function() {
