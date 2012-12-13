@@ -133,6 +133,7 @@ var Response = new Ti.App.joli.model({
       _(self.answers()).each(function(answer, index) {
         var image = answer.image;
         answer.destroyChoices();
+        answer.destroyImage();
         answer.destroy();
         var new_answer = Answer.newRecord({
           'response_id' : self.id,
@@ -256,7 +257,7 @@ var Response = new Ti.App.joli.model({
       _(this.answers()).each(function(answer) {
         answer.destroyChoices();
         if (answer.isImage() && answer.image)
-          Ti.Filesystem.getFile(answer.image).deleteFile();
+          answer.destroyImage();
         answer.destroy();
       });
     },
