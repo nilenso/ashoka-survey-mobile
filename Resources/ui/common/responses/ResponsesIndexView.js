@@ -10,15 +10,25 @@ function ResponsesIndexView(surveyID) {
   var Measurements = require('ui/common/components/Measurements');
   var NetworkHelper = require('helpers/NetworkHelper');
 
+
+  var colorForResponse = function(response) {
+    return (response.status === 'complete')? Palette.SECONDARY_COLOR : Palette.SECONDARY_COLOR_LIGHT
+  };
+
   var convertModelDataForTable = function() {
     var survey = Survey.findOneById(surveyID);
     var responses = survey.responsesForCurrentUser();
+    responses = _(responses).sortBy(function(response){
+      return response.status;
+    });
+
     return _(responses).map(function(response) {
       var row = Ti.UI.createTableViewRow({
         hasDetail : true,
         height : Titanium.UI.SIZE,
         layout : 'vertical',
-        responseID : response.id
+        responseID : response.id,
+        backgroundColor : colorForResponse(response)
       });
 
       var responseLabel = Ti.UI.createLabel({
@@ -53,7 +63,7 @@ function ResponsesIndexView(surveyID) {
         row.add(view);
       });
 
-      row.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+      row.add(new SeparatorView(colorForResponse(response), Measurements.PADDING_SMALL));
       row.add(new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL));
       return (row);
     });
