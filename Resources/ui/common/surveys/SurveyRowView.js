@@ -9,7 +9,7 @@ function SurveysRowView(survey) {
     hasDetail : true,
     surveyID : survey.id,
     layout : 'vertical',
-    height : '100dip'
+    height : Ti.UI.SIZE
   });
   var surveyNameLabel = Ti.UI.createLabel({
     text : survey.name,
@@ -18,6 +18,15 @@ function SurveysRowView(survey) {
     top : Measurements.PADDING_SMALL,
     font : { fontSize :Measurements.FONT_BIG  }
   });
+
+  var surveyDescriptionLabel = Ti.UI.createLabel({
+    text : survey.description,
+    color : Palette.PRIMARY_COLOR_LIGHT,
+    left : Measurements.PADDING_SMALL,
+    top : Measurements.PADDING_SMALL,
+    font : { fontSize :Measurements.FONT_MEDIUM  }
+  });
+
   var surveyInfoView = Ti.UI.createView({
     width : '100%'
   });
@@ -57,8 +66,11 @@ function SurveysRowView(survey) {
 
   self.add(rowSeparator);
   self.add(surveyNameLabel);
+  self.add(surveyDescriptionLabel);
+  
   surveyInfoView.add(expiryDateLabel);
   surveyInfoView.add(responseCountLabel);
+  
   self.add(completeResponseCountLabel);
   self.add(incompleteResponseCountLabel);
   self.add(surveyInfoView);
