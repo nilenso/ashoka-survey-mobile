@@ -86,6 +86,7 @@ function ResponsesIndexView(surveyID) {
     var survey = Survey.findOneById(surveyID);
     NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
       var progressBar = progressBarView;
+      self.add(progressBar);
       progressBar.init('response.sync.' + survey.id + '.completed', survey.responseCount());
       progressBar.setMessage('Syncing responses...');
       survey.syncResponses(progressBar.incrementValue);
@@ -103,19 +104,9 @@ function ResponsesIndexView(surveyID) {
     progressBarView.removeEventListener('sync.complete.survey.response', progressComplete);
   };
 
-
   self.addProgressCompleteListener = function() {
     progressBarView.addEventListener('sync.complete.survey.response', progressComplete);
   };
-
-  var showProgressBar = function(e) {
-    self.add(progressBarView);
-    progressBarView.init('sync.complete.survey.response');
-    self.fireEvent('progress.start');
-    Ti.App.removeEventListener('responses.sync.start', showProgressBar);
-  };
-
-  Ti.App.addEventListener('responses.sync.start', showProgressBar);
 
   var table = Titanium.UI.createTableView({
     separatorColor : 'transparent',
