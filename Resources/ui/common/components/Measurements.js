@@ -6,6 +6,7 @@ var Measurements = {
   FONT_SMALL : '10dip',
 
   PADDING_SMALL : '5dip',
+  PADDING_X_SMALL : '1dip',
   PADDING_MEDIUM : '10dip'
 };
 

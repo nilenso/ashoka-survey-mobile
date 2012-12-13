@@ -5,6 +5,7 @@ function ResponsesIndexView(surveyID) {
   var Survey = require('models/survey');
   var TopLevelView = require('ui/common/components/TopLevelView');
   var progressBarView = require('ui/common/components/ProgressBar');
+  var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView');
   var Palette = require('ui/common/components/Palette');
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Measurements = require('ui/common/components/Measurements');
@@ -12,11 +13,12 @@ function ResponsesIndexView(surveyID) {
 
 
   var colorForResponse = function(response) {
-    return (response.status === 'complete')? Palette.SECONDARY_COLOR : Palette.SECONDARY_COLOR_LIGHT
+    return (response.status === 'complete')? Palette.SECONDARY_COLOR : Palette.SECONDARY_COLOR_LIGHT;
   };
 
+  var survey = Survey.findOneById(surveyID);
+
   var convertModelDataForTable = function() {
-    var survey = Survey.findOneById(surveyID);
     var responses = survey.responsesForCurrentUser();
     responses = _(responses).sortBy(function(response){
       return response.status;
@@ -69,21 +71,19 @@ function ResponsesIndexView(surveyID) {
     });
   };
   var showMessageIfModelIsEmpty = function() {
-    var survey = Survey.findOneById(surveyID);
     var responses = survey.responsesForCurrentUser();
     if (_(responses).isEmpty()) {
-      self.add(label);
-      self.remove(table);
+      contentView.add(label);
+      contentView.remove(table);
     } else {
-      self.remove(label);
-      self.add(table);
+      contentView.remove(label);
+      contentView.add(table);
     }
   };
 
   var self = new TopLevelView('List of Responses');
 
   self.syncResponses = function() {
-    var survey = Survey.findOneById(surveyID);
     NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
       var progressBar = progressBarView;
       self.add(progressBar);
@@ -108,9 +108,17 @@ function ResponsesIndexView(surveyID) {
     progressBarView.addEventListener('sync.complete.survey.response', progressComplete);
   };
 
+  var contentView = Ti.UI.createView({
+    top : Measurements.HEADER_HEIGHT,
+    layout :'vertical',
+    height : Ti.UI.SIZE
+  });
+  
+  contentView.add(new SurveyDetailsView(survey));
+  self.add(contentView);
+
   var table = Titanium.UI.createTableView({
     separatorColor : 'transparent',
-    top : self.headerHeight,
     data : convertModelDataForTable()
   });
 

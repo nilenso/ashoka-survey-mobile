@@ -13,7 +13,7 @@ function LoginView() {
   var self = Ti.UI.createView({
     layout : 'vertical',
     top : '120dip'
-  })
+  });
   topLevelView.add(self);
 
   var emailField = Ti.UI.createTextField({
