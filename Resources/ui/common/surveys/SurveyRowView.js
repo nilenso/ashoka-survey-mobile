@@ -74,7 +74,7 @@ function SurveysRowView(survey) {
   });
 
   labelsView.addEventListener('click', function(e) {
-
+    self.setBackgroundColor(Palette.SECONDARY_COLOR);
     self.fireEvent('surveys_row_view.row_clicked');
   });
 
