@@ -64,15 +64,15 @@ function SurveysDetailsView(survey) {
     responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
   };
 
-  var headerSeparator = new SeparatorView(Palette.PRIMARY_COLOR, Measurements.PADDING_X_SMALL);
+  var headerSeparator = new SeparatorView(Palette.PRIMARY_COLOR, Measurements.PADDING_XX_SMALL);
   var rowSeparator = new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL);
 
   self.add(surveyNameLabel);
   self.add(surveyDescriptionLabel);
-  
+
   surveyInfoView.add(expiryDateLabel);
   surveyInfoView.add(responseCountLabel);
-  
+
   self.add(surveyInfoView);
   self.add(addResponseButton);
   self.add(rowSeparator);

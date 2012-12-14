@@ -5,13 +5,15 @@ var ButtonView = require('ui/common/components/ButtonView');
 var Measurements = require('ui/common/components/Measurements');
 
 function SurveysRowView(survey) {
+  var ROW_HEIGHT = 80;
+
   var self = Ti.UI.createTableViewRow({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     backgroundFocusedColor : Palette.SECONDARY_COLOR,
     backgroundSelectedColor : Palette.SECONDARY_COLOR,
     hasDetail : true,
     surveyID : survey.id,
-    height : '80dip'
+    height : ROW_HEIGHT + 'dip'
   });
 
   var labelsView = Ti.UI.createView ({
@@ -45,7 +47,7 @@ function SurveysRowView(survey) {
   var expiryDateLabel = Ti.UI.createLabel({
     text : 'Expires on: ' + survey.expiry_date,
     color : Palette.PRIMARY_COLOR_LIGHT,
-    left : Measurements.PADDING_SMALL,
+    left : Measurements.PADDING_X_SMALL,
     font : {
       fontSize : Measurements.FONT_MEDIUM  }
   });
@@ -57,12 +59,12 @@ function SurveysRowView(survey) {
     },
     color : Palette.PRIMARY_COLOR,
     backgroundColor : Palette.SECONDARY_COLOR,
-    width : '40dip',
-    height : '40dip',
-    right : '0dip',
+    width : ROW_HEIGHT / 2  + 'dip',
+    height : ROW_HEIGHT / 2  + 'dip',
+    right : Measurements.PADDING_SMALL,
     backgroundFocusedColor : Palette.SECONDARY_COLOR,
     backgroundSelectedColor : Palette.SECONDARY_COLOR,
-    borderRadius : 10
+    borderRadius : Measurements.BORDER_RADIUS
   });
 
   addResponseButton.addEventListener('click', function () {
@@ -70,6 +72,7 @@ function SurveysRowView(survey) {
   });
 
   labelsView.addEventListener('click', function(e) {
+
     self.fireEvent('surveys_row_view.row_clicked');
   });
 
