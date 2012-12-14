@@ -64,6 +64,8 @@ function SurveysRowView(survey) {
     right : Measurements.PADDING_SMALL,
     backgroundFocusedColor : Palette.SECONDARY_COLOR,
     backgroundSelectedColor : Palette.SECONDARY_COLOR,
+    borderWidth : 1,
+    borderColor : Palette.SECONDARY_COLOR_DARK,
     borderRadius : Measurements.BORDER_RADIUS
   });
 
