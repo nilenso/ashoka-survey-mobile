@@ -191,11 +191,6 @@ var Survey = new Ti.App.joli.model({
           Ti.API.info("Received text for questions: " + this.responseText);
           var data = JSON.parse(this.responseText);
           var records = Question.createRecords(data, self.id, null, externalSyncHandler);
-          _(records).each(function(record) {
-            if (record.image_url) {
-              record.fetchImage();
-            }
-          });
         },
         onerror : function(e) {
           Ti.App.fireEvent('surveys.fetch.error', {

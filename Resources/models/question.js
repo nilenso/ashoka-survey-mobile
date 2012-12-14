@@ -25,6 +25,12 @@ var Question = new Ti.App.joli.model({
       var that = this;
       var records = [];
       _(data).each(function(question) {
+        if(question.image_in_base64) {
+          var image = Ti.Utils.base64decode(question.image_in_base64);
+          var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, question.id.toString());
+          file.write(image);
+        }
+
         var record = that.newRecord({
           id : question.id,
           content : question.content,
@@ -48,31 +54,6 @@ var Question = new Ti.App.joli.model({
   },
 
   objectMethods : {
-    fetchImage : function() {
-      if (this.image_url) {
-        var self = this;
-        var url = Ti.App.Properties.getString('server_url') + self.image_url;
-        var client = Ti.Network.createHTTPClient({
-          onload : function(e) {
-            Ti.API.info("Downloaded image from " + self.image_url);
-            var data = this.responseData;
-            var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, self.id.toString());
-            f.write(data);
-          },
-          onerror : function(e) {
-            Ti.App.fireEvent('surveys.fetch.error', {
-              status : this.status
-            });
-            Ti.API.info("Error downloading image from " + self.image_url);
-          },
-          timeout : 5000 // in milliseconds
-        });
-        client.open("GET", url);
-        client.send({
-          access_token : Ti.App.Properties.getString('access_token')
-        });
-      }
-    },
     fetchOptions : function(externalSyncHandler) {
       Ti.API.info("In survey model fetchOptions Increment Sync handler is " + externalSyncHandler);
       var self = this;
