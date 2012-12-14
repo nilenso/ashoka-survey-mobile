@@ -13,6 +13,7 @@ function SurveysIndexWindow() {
   var loggedIn = require('helpers/LoginHelper').loggedIn;
   var loginHelper = require('helpers/LoginHelper');
   var progressBarView = require("ui/common/components/ProgressBar");
+  var Toast = require('ui/common/components/Toast');
 
   //ID Constants
 
@@ -40,6 +41,10 @@ function SurveysIndexWindow() {
           surveysIndexView.addSurveysProgressCompleteListener();
           var progressBar = progressBarView;
           Survey.fetchAllQuestionsCount(function(number){
+            if(number === 0) {
+              (new Toast("No surveys to fetch")).show();
+              return;
+            }
             surveysIndexView.add(progressBar);
             progressBar.init('surveys.sync.completed', number);
             progressBar.setMessage("Fetching surveys...");
