@@ -6,9 +6,6 @@ var Measurements = require('ui/common/components/Measurements');
 
 function SurveysRowView(survey) {
   var self = Ti.UI.createTableViewRow({
-    borderColor : 'black',
-    borderRadius : Measurements.PADDING_X_SMALL,
-    borderWidth : 2,
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     backgroundFocusedColor : Palette.SECONDARY_COLOR,
     backgroundSelectedColor : Palette.SECONDARY_COLOR,
