@@ -11,7 +11,7 @@ function SurveysIndexView() {
   var Measurements = require('ui/common/components/Measurements');
 
   var self = new TopLevelView('List of Surveys');
-  
+
   var convertModelDataForTable = function() {
     return _(Survey.all()).map(function(survey) {
       var row = new SurveyRowView(survey);
@@ -82,7 +82,6 @@ function SurveysIndexView() {
   };
 
   var table = Titanium.UI.createTableView({
-    separatorColor : 'transparent',
     top : self.headerHeight,
     data : convertModelDataForTable()
   });
