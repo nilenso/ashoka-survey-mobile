@@ -7,7 +7,6 @@ var ProgressBarView = function() {
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     width : '100%',
     height : '100%',
-    keepVisible : false,
     zIndex : 99999999,
     top : Measurements.HEADER_HEIGHT
   });
@@ -27,11 +26,13 @@ var ProgressBarView = function() {
     height : 'auto',
     min : 0,
     value : 0,
-    keepScreenOn : true
+    keepScreenOn : true,
+    hidden : true
   });
 
   var hideProgressBarIfComplete = function() {
-    if (!self.keepVisible && progressBar.getMax() == progressBar.getValue()) {
+    if (!progressBar.hidden && progressBar.getMax() == progressBar.getValue()) {
+      Ti.API.info("Hide Progress Bar called with max = " + progressBar.getMax() + " and value = " + progressBar.getValue());
       self.reset();
       self.hide();
       self.fireEvent(self.actionName);
@@ -39,38 +40,39 @@ var ProgressBarView = function() {
   };
 
   self.reset = function() {
+    progressBar.hidden = true;
     progressBar.setValue(0);
-    progressBar.max = undefined;
+    Ti.API.info("Progress bar value after reset is " + progressBar.getValue());
+    progressBar.setMax(undefined);
   };
 
   self.setMessage = function(message) {
-    self.show();
-    titleLabel.setText(message);
-    hideProgressBarIfComplete();
-  };
-
-  self.updateMax = function(max) {
-    var currentMax = typeof progressBar.getMax() !== 'undefined' ? progressBar.getMax() : 0;
-    progressBar.max = currentMax + max;
-    Ti.API.info("Progress bar MAX is now: " + progressBar.getMax());
-    hideProgressBarIfComplete();
+    if(!progressBar.hidden) {
+      self.show();
+      titleLabel.setText(message);
+      hideProgressBarIfComplete();
+    }
   };
 
   self.init = function(actionName, max) {
+    progressBar.hidden = false;
     self.actionName = actionName;
     if(max)
-      self.updateMax(max);
+      progressBar.setMax(max);
     self.show();
   };
 
   self.updateValue = function(value) {
-    progressBar.setValue(progressBar.getValue() + value);
-    Ti.API.info("Progress bar value is now: " + progressBar.getValue());
-    hideProgressBarIfComplete();
+    if(!progressBar.hidden) {
+      progressBar.setValue(progressBar.getValue() + value);
+      Ti.API.info("Progress bar value is now: " + progressBar.getValue());
+      hideProgressBarIfComplete();
+    }
   };
 
   self.incrementValue = function() {
-    self.updateValue(1);
+    if(!progressBar.hidden)
+      self.updateValue(1);
   };
 
   self.add(titleLabel);

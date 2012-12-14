@@ -15,7 +15,7 @@ var Survey = new Ti.App.joli.model({
   },
 
   methods : {
-    fetchSurveys : function(externalSyncHandler) {      
+    fetchSurveys : function(externalSyncHandler) {
       var that = this;
       NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
         Ti.App.fireEvent('surveys.fetch.start');
@@ -155,9 +155,6 @@ var Survey = new Ti.App.joli.model({
       };
 
       _(this.responses()).each(function(response) {
-        if (response.hasImageAnswer()) {
-          progressBarView.keepVisible = true;
-        }
         Ti.App.addEventListener("response.sync." + self.id, syncHandler);
         response.sync();
       });

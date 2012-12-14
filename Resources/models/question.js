@@ -58,7 +58,6 @@ var Question = new Ti.App.joli.model({
             var data = this.responseData;
             var f = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, self.id.toString());
             f.write(data);
-            progressBarView.updateValue(1);
           },
           onerror : function(e) {
             Ti.App.fireEvent('surveys.fetch.error', {
