@@ -47,7 +47,7 @@ function SurveysRowView(survey) {
   var expiryDateLabel = Ti.UI.createLabel({
     text : 'Expires on: ' + survey.expiry_date,
     color : Palette.PRIMARY_COLOR_LIGHT,
-    left : Measurements.PADDING_X_SMALL,
+    left : Measurements.PADDING_SMALL,
     font : {
       fontSize : Measurements.FONT_MEDIUM  }
   });
@@ -62,8 +62,8 @@ function SurveysRowView(survey) {
     width : ROW_HEIGHT / 2  + 'dip',
     height : ROW_HEIGHT / 2  + 'dip',
     right : Measurements.PADDING_SMALL,
-    backgroundFocusedColor : Palette.SECONDARY_COLOR,
-    backgroundSelectedColor : Palette.SECONDARY_COLOR,
+    backgroundFocusedColor : Palette.SECONDARY_COLOR_LIGHT,
+    backgroundSelectedColor : Palette.SECONDARY_COLOR_LIGHT,
     borderWidth : 1,
     borderColor : Palette.SECONDARY_COLOR_DARK,
     borderRadius : Measurements.BORDER_RADIUS
