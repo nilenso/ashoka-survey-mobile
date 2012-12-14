@@ -131,24 +131,27 @@ var Response = new Ti.App.joli.model({
       self.save();
 
       _(self.answers()).each(function(answer, index) {
-        var image = answer.image;
         answer.destroyChoices();
         answer.destroyImage();
         answer.destroy();
+
+        var file;
+        if(received_response.answers[index].photo_in_base64) {
+          var image = Ti.Utils.base64decode(received_response.answers[index].photo_in_base64);
+          filename = "image_" + (new Date()).valueOf() + ".jpg";
+          file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
+          file.write(image);
+        }        
+        
         var new_answer = Answer.newRecord({
           'response_id' : self.id,
           'question_id' : received_response.answers[index].question_id,
           'web_id' : received_response.answers[index].id,
           'content' : received_response.answers[index].content,
           'updated_at' : parseInt(new Date().getTime()/1000, 10),
-          'image' : image
+          'image' : file && file.nativePath
         });
         new_answer.save();
-
-        if(received_response.answers[index].thumb_url) {
-          progressBarView.updateMax(1);
-          new_answer.getRemoteImage(received_response.answers[index].thumb_url);
-        }
 
         _(received_response.answers[index].choices).each(function(choice) {
           choice.answer_id = new_answer.id;
