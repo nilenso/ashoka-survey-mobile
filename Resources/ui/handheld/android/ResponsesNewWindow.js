@@ -11,6 +11,7 @@ function ResponsesNewWindow(surveyID) {
   self.add(view);
 
   view.addEventListener('ResponsesNewView:savedResponse', function() {
+    Ti.App.fireEvent('ResponseNewWindow:closed');
     self.close();
   });
 

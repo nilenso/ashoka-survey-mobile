@@ -70,7 +70,7 @@ function ResponsesIndexView(surveyID) {
       return (row);
     });
   };
-  var showMessageIfModelIsEmpty = function() {
+  var showMessageIfTableIsEmpty = function() {
     var responses = survey.responsesForCurrentUser();
     if (_(responses).isEmpty()) {
       contentView.add(label);
@@ -97,9 +97,7 @@ function ResponsesIndexView(surveyID) {
   var progressComplete = function(e) {
     Ti.API.info("Sync complete for resopnses!!!");
     self.remove(progressBarView);
-    data = convertModelDataForTable();
-    table.setData(data);
-    showMessageIfModelIsEmpty();
+    self.refresh();
     self.fireEvent('progress.finish');
     progressBarView.removeEventListener('sync.complete.survey.response', progressComplete);
   };
@@ -114,7 +112,8 @@ function ResponsesIndexView(surveyID) {
     height : Ti.UI.SIZE
   });
   
-  contentView.add(new SurveyDetailsView(survey));
+  surveyDetailsView = new SurveyDetailsView(survey);
+  contentView.add(surveyDetailsView);
   self.add(contentView);
 
   var table = Titanium.UI.createTableView({
@@ -139,12 +138,25 @@ function ResponsesIndexView(surveyID) {
     height : 'auto'
   });
 
-  Ti.App.addEventListener('ResponseShowWindow:closed', function() {
+  self.refresh = function() {
+    surveyDetailsView.refresh();
     table.setData(convertModelDataForTable());
-    showMessageIfModelIsEmpty();
+    showMessageIfTableIsEmpty();
+  };
+
+  Ti.App.addEventListener('ResponseShowWindow:closed', function() {
+    self.refresh();
   });
 
-  showMessageIfModelIsEmpty();
+  Ti.App.addEventListener('ResponseShowWindow:back', function() {
+    self.refresh();
+  });
+
+  Ti.App.addEventListener('ResponseNewWindow:closed', function() {
+    self.refresh();
+  });
+
+  showMessageIfTableIsEmpty();
   return self;
 }
 

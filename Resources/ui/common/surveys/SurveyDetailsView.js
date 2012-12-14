@@ -54,11 +54,15 @@ function SurveysDetailsView(survey) {
   });
   self.add(activityIndicator);
 
-  addResponseButton.addEventListener('click', function () {
+  addResponseButton.addEventListener('click', function() {
     activityIndicator.show();
     ResponsesNewWindow(survey.id).open();
     activityIndicator.hide();
   });
+
+  self.refresh = function() {
+    responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
+  };
 
   var headerSeparator = new SeparatorView(Palette.PRIMARY_COLOR, Measurements.PADDING_X_SMALL);
   var rowSeparator = new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL);

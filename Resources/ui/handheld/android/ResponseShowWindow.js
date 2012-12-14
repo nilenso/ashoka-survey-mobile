@@ -1,6 +1,6 @@
 function ResponseShowWindow(responseID) {
-  var ResponseShowView = require('ui/common/responses/ResponseShowView')
-  var ResponseEditWindow = require('ui/handheld/android/ResponseEditWindow')
+  var ResponseShowView = require('ui/common/responses/ResponseShowView');
+  var ResponseEditWindow = require('ui/handheld/android/ResponseEditWindow');
 
   var self = Ti.UI.createWindow({
     navBarHidden : true,
@@ -10,7 +10,7 @@ function ResponseShowWindow(responseID) {
   self.add(view);
 
   var activityIndicator = Ti.UI.createActivityIndicator({
-    message : 'Loading...',
+    message : 'Loading...'
   });
   self.add(activityIndicator);
 
@@ -23,6 +23,11 @@ function ResponseShowWindow(responseID) {
   view.addEventListener('ResponseShowView:responseDeleted', function(e) {
     self.close();
     Ti.App.fireEvent('ResponseShowWindow:closed');
+  });
+
+  self.addEventListener('android:back', function() {
+    Ti.App.fireEvent('ResponseShowWindow:back');
+    self.close();
   });
 
   return self;

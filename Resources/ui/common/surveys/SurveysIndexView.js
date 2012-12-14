@@ -29,7 +29,7 @@ function SurveysIndexView() {
     });
   };
 
-  var showMessageIfModelIsEmpty = function() {
+  var showMessageIfTableIsEmpty = function() {
     if (Survey.isEmpty()) {
       self.add(label);
       self.remove(table);
@@ -107,12 +107,11 @@ function SurveysIndexView() {
       height : 'auto'
   });
 
-  showMessageIfModelIsEmpty();
+  showMessageIfTableIsEmpty();
 
   self.refresh = function() {
-    var data = convertModelDataForTable();
-    table.setData(data);
-    showMessageIfModelIsEmpty();
+    table.setData(convertModelDataForTable());
+    showMessageIfTableIsEmpty();
     self.updateUserName();
   };
   Ti.App.addEventListener('settings.refreshSurveys', self.refresh);
