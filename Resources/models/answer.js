@@ -163,30 +163,6 @@ var Answer = new Ti.App.joli.model({
     destroyImage : function () {
       if (this.isImage() && this.image)
         Ti.Filesystem.getFile(this.image).deleteFile();
-    },
-
-    getRemoteImage : function(imageUrl) {
-      progressBarView.keepVisible = false;
-      var self = this;
-      var filename = this.image;
-      filename = "image_" + (new Date()).valueOf() + ".jpg";
-      var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
-      var client = Titanium.Network.createHTTPClient();
-      client.onload = function() {
-        file.write(this.responseData);
-        self.set('image', file.nativePath);
-        self.save();
-        progressBarView.incrementValue();
-      };
-      client.onerror = function() {
-        Ti.API.info("Error downloading image");
-        progressBarView.incrementValue();
-      };
-      var url = Ti.App.Properties.getString('server_url') + imageUrl;
-      client.open('GET', url);
-      client.send({
-        access_token : Ti.App.Properties.getString('access_token')
-      });
     }
   }
 });
