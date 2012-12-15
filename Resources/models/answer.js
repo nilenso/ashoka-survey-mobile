@@ -163,6 +163,12 @@ var Answer = new Ti.App.joli.model({
     destroyImage : function () {
       if (this.isImage() && this.image)
         Ti.Filesystem.getFile(this.image).deleteFile();
+    },
+
+    destroyAll : function() {
+      this.destroyChoices();
+      this.destroyImage();
+      this.destroy();
     }
   }
 });

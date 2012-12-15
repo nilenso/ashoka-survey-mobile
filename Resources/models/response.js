@@ -75,7 +75,7 @@ var Response = new Ti.App.joli.model({
         'status' : status,
         'updated_at' : parseInt(new Date().getTime() / 1000, 10),
         'user_id' : Ti.App.Properties.getString('user_id'),
-        'organization_id' : Ti.App.Properties.getString('organization_id'),        
+        'organization_id' : Ti.App.Properties.getString('organization_id'),
         'latitude' : this.latitude,
         'longitude' : this.longitude
       });
@@ -131,9 +131,7 @@ var Response = new Ti.App.joli.model({
       self.save();
 
       _(self.answers()).each(function(answer, index) {
-        answer.destroyChoices();
-        answer.destroyImage();
-        answer.destroy();
+        answer.destroyAll();
 
         var file;
         if(received_response.answers[index].photo_in_base64) {
@@ -141,8 +139,8 @@ var Response = new Ti.App.joli.model({
           filename = "image_" + (new Date()).valueOf() + ".jpg";
           file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
           file.write(image);
-        }        
-        
+        }
+
         var new_answer = Answer.newRecord({
           'response_id' : self.id,
           'question_id' : received_response.answers[index].question_id,
@@ -258,10 +256,7 @@ var Response = new Ti.App.joli.model({
 
     destroyAnswers : function() {
       _(this.answers()).each(function(answer) {
-        answer.destroyChoices();
-        if (answer.isImage() && answer.image)
-          answer.destroyImage();
-        answer.destroy();
+        answer.destroyAll();
       });
     },
 
@@ -287,7 +282,7 @@ var Response = new Ti.App.joli.model({
       return identifiers;
 
     },
-    
+
     isComplete : function() {
       return this.status === "complete";
     }
