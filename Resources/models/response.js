@@ -45,6 +45,7 @@ var Response = new Ti.App.joli.model({
       return errors;
     }
   },
+
   objectMethods : {
     prepRailsParams : function() {
       var answer_attributes = {};
@@ -106,15 +107,16 @@ var Response = new Ti.App.joli.model({
       Ti.API.info("Received response successfully: " + data.responseText);
       var self = data.response;
       self.has_error = false;
+      self.destroyAnswers();
 
       var received_response = JSON.parse(data.responseText);
 
+      // for complete response
       if (received_response['status'] === "complete") {
-        self.destroyAnswers();
-        self.destroy();
         Ti.App.fireEvent('response.sync.' + self.survey_id, {
           survey_id : self.survey_id
         });
+        self.destroy();
         return;
       }
 
@@ -124,12 +126,10 @@ var Response = new Ti.App.joli.model({
       self.set('updated_at', parseInt(new Date().getTime()/1000, 10));
       self.save();
 
-      _(self.answers()).each(function(answer, index) {
-        answer.destroyAll();
-
+      _(received_response.answers).each(function(received_answer, index) {
         var file;
-        if(received_response.answers[index].photo_in_base64) {
-          var image = Ti.Utils.base64decode(received_response.answers[index].photo_in_base64);
+        if(received_answer.photo_in_base64) {
+          var image = Ti.Utils.base64decode(received_answer.photo_in_base64);
           filename = "image_" + (new Date()).valueOf() + ".jpg";
           file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
           file.write(image);
@@ -137,15 +137,15 @@ var Response = new Ti.App.joli.model({
 
         var new_answer = Answer.newRecord({
           'response_id' : self.id,
-          'question_id' : received_response.answers[index].question_id,
-          'web_id' : received_response.answers[index].id,
-          'content' : received_response.answers[index].content,
+          'question_id' : received_answer.question_id,
+          'web_id' : received_answer.id,
+          'content' : received_answer.content,
           'updated_at' : parseInt(new Date().getTime()/1000, 10),
           'image' : file && file.nativePath
         });
         new_answer.save();
 
-        _(received_response.answers[index].choices).each(function(choice) {
+        _(received_answer.choices).each(function(choice) {
           choice.answer_id = new_answer.id;
           Choice.newRecord(choice).save();
         });
