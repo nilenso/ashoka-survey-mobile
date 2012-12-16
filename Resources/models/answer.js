@@ -18,30 +18,25 @@ var Answer = new Ti.App.joli.model({
 
   methods : {
     createRecord : function(answerData, responseID) {
-      var _ = require('lib/underscore')._;
-      var that = this;
       answerData.response_id = responseID
       var question = Question.findOneById(answerData['question_id']);
+      var optionIds = [];
+
       if (question.isMultiChoiceQuestion()) {
-        var optionIds = answerData['content'];
+        optionIds = answerData['content'];
         answerData['content'] = "";
-        answerData['updated_at'] = parseInt(new Date().getTime()/1000);
-        var answer = that.newRecord(answerData);
-        answer.save();
-        _(optionIds).each(function(option_id) {
-          Choice.createRecord(answer.id, option_id);
-        });
       } else if (question.isPhotoQuestion()) {
         var image = answerData['content'];
         answerData['content'] = "";
         answerData['image'] = image;
-        answerData['updated_at'] = parseInt(new Date().getTime()/1000);
-        var answer = that.newRecord(answerData);
-        answer.save();
-      } else {
-        answerData['updated_at'] = parseInt(new Date().getTime()/1000);
-        that.newRecord(answerData).save();
       }
+      answerData['updated_at'] = parseInt(new Date().getTime()/1000);
+      var answer = this.newRecord(answerData);
+      answer.save();
+
+      _(optionIds).each(function(option_id) {
+        Choice.createRecord(answer.id, option_id);
+      });
     },
 
     validate : function(answerData, status) {
