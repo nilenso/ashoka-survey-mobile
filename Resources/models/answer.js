@@ -22,7 +22,7 @@ var Answer = new Ti.App.joli.model({
       var that = this;
       answerData.response_id = responseID
       var question = Question.findOneById(answerData['question_id']);
-      if (question.type === 'MultiChoiceQuestion') {
+      if (question.isMultiChoiceQuestion()) {
         var optionIds = answerData['content'];
         answerData['content'] = "";
         answerData['updated_at'] = parseInt(new Date().getTime()/1000);
@@ -31,7 +31,7 @@ var Answer = new Ti.App.joli.model({
         _(optionIds).each(function(option_id) {
           Choice.createRecord(answer.id, option_id);
         });
-      } else if (question.type === 'PhotoQuestion') {
+      } else if (question.isPhotoQuestion()) {
         var image = answerData['content'];
         answerData['content'] = "";
         answerData['image'] = image;
@@ -71,7 +71,7 @@ var Answer = new Ti.App.joli.model({
       var question = Question.findOneById(this.question_id);
       var updated_at = content === this.content ? this.updated_at : parseInt(new Date().getTime()/1000);
 
-      if (question.type === 'MultiChoiceQuestion') {
+      if (question.isMultiChoiceQuestion()) {
         var optionIds = content;
         var that = this;
 
@@ -96,7 +96,7 @@ var Answer = new Ti.App.joli.model({
           'web_id' : this.web_id,
           'updated_at' : updated_at
         });
-      } else if (question.type === 'PhotoQuestion') {
+      } else if (question.isPhotoQuestion()) {
         var image = content;
         var that = this;
         var updated_at = image === this.image ? this.updated_at : parseInt(new Date().getTime()/1000);
@@ -125,10 +125,10 @@ var Answer = new Ti.App.joli.model({
     },
 
     hasChoices : function() {
-      return Question.findOneById(this.question_id).type === 'MultiChoiceQuestion';
+      return Question.findOneById(this.question_id).isMultiChoiceQuestion();
     },
     isImage : function() {
-      return Question.findOneById(this.question_id).type === 'PhotoQuestion';
+      return Question.findOneById(this.question_id).isPhotoQuestion();
     },
 
     optionIDs : function() {

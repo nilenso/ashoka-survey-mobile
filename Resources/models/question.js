@@ -138,12 +138,20 @@ var Question = new Ti.App.joli.model({
       });
       if (this.parent_id === null) {
         return (siblingIDs.indexOf(this.id)) + 1;
-      } else if (this.parentQuestion().type === 'MultiChoiceQuestion'){
+      } else if (this.parentQuestion().isMultiChoiceQuestion()){
         var optionIdentifier = String.fromCharCode(97 + parentOptionIDs.indexOf(this.parentOption().id) + 1);
         return this.parentQuestion().number() + optionIdentifier + '.' + ((siblingIDs.indexOf(this.id)) + 1);
       } else {
         return this.parentQuestion().number() + '.' + ((siblingIDs.indexOf(this.id)) + 1);
       }
+    },
+
+    isPhotoQuestion : function() {
+      return this.type === 'PhotoQuestion';
+    },
+
+    isMultiChoiceQuestion : function() {
+      return this.type === 'MultiChoiceQuestion';
     }
   }
 });
