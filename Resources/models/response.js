@@ -68,19 +68,13 @@ var Response = new Ti.App.joli.model({
 
     update : function(status, answersData) {
       Ti.API.info("updating response");
-      this.fromArray({
-        'id' : this.id,
-        'survey_id' : this.survey_id,
-        'web_id' : this.web_id,
-        'status' : status,
-        'updated_at' : parseInt(new Date().getTime() / 1000, 10),
-        'user_id' : Ti.App.Properties.getString('user_id'),
-        'organization_id' : Ti.App.Properties.getString('organization_id'),
-        'latitude' : this.latitude,
-        'longitude' : this.longitude
-      });
       var self = this;
-      this.deleteObsoleteAnswers(answersData);
+      self.set('status', status);
+      self.set('updated_at', parseInt(new Date().getTime() / 1000, 10));
+      self.set('user_id', Ti.App.Properties.getString('user_id'));
+      self.set('organization_id', Ti.App.Properties.getString('organization_id'));
+      self.deleteObsoleteAnswers(answersData);
+
       _(answersData).each(function(answerData) {
         var answer = Answer.findOneById(answerData.id);
         if (answer)
@@ -88,9 +82,9 @@ var Response = new Ti.App.joli.model({
         else
           Answer.createRecord(answerData, self.id);
       });
-      this.save();
+      self.save();
       Ti.App.fireEvent('updatedResponse');
-      Ti.API.info("response updated at" + this.updated_at);
+      Ti.API.info("response updated at" + self.updated_at);
     },
 
     deleteObsoleteAnswers : function(answersData) {
@@ -109,25 +103,25 @@ var Response = new Ti.App.joli.model({
     },
 
     syncOnLoad : function(data) {
+      Ti.API.info("Received response successfully: " + data.responseText);
       var self = data.response;
-      var responseText = data.responseText;
-      Ti.API.info("Synced response successfully: " + responseText);
       self.has_error = false;
 
-      var received_response = JSON.parse(responseText);
-      Ti.API.info("Response parsed successfully");
+      var received_response = JSON.parse(data.responseText);
 
-      self.fromArray({
-        'id' : self.id,
-        'survey_id' : self.survey_id,
-        'web_id' : received_response['id'],
-        'status' : received_response['status'],
-        'updated_at' : parseInt(new Date().getTime()/1000, 10),
-        'latitude' : self.latitude,
-        'longitude' : self.longitude,
-        'user_id' : self.user_id,
-        'organization_id': self.organization_id
-      });
+      if (received_response['status'] === "complete") {
+        self.destroyAnswers();
+        self.destroy();
+        Ti.App.fireEvent('response.sync.' + self.survey_id, {
+          survey_id : self.survey_id
+        });
+        return;
+      }
+
+      // for incomplete response
+      self.set('web_id', received_response['id']);
+      self.set('status', received_response['status']);
+      self.set('updated_at', parseInt(new Date().getTime()/1000, 10));
       self.save();
 
       _(self.answers()).each(function(answer, index) {
@@ -157,11 +151,6 @@ var Response = new Ti.App.joli.model({
         });
       });
 
-
-      if (received_response['status'] == "complete") {
-        self.destroyAnswers();
-        self.destroy();
-      }
       Ti.App.fireEvent('response.sync.' + self.survey_id, {
         survey_id : self.survey_id
       });
