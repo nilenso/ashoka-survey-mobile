@@ -63,58 +63,35 @@ var Answer = new Ti.App.joli.model({
       Ti.API.info(content);
       Ti.API.info("updating answer");
 
-      var question = Question.findOneById(this.question_id);
-      var updated_at = content === this.content ? this.updated_at : parseInt(new Date().getTime()/1000);
-
+      var question = this.question();
       if (question.isMultiChoiceQuestion()) {
         var optionIds = content;
-        var that = this;
 
         existing_optionIDs = _(Choice.findBy('answer_id', this.id)).map(function(choice) {
           return choice.option_id;
         })
         var updated_at = optionIds.sort() === existing_optionIDs.sort() ? this.updated_at : parseInt(new Date().getTime()/1000);
 
-        _(Choice.findBy('answer_id', this.id)).each(function(choice) {
-          choice.destroy();
-        });
-
+        this.destroyChoices();
+        var that = this;
         _(optionIds).each(function(option_id) {
           Choice.createRecord(that.id, option_id);
         });
 
-        this.fromArray({
-          'id' : this.id,
-          'content' : '',
-          'response_id' : this.response_id,
-          'question_id' : this.question_id,
-          'web_id' : this.web_id,
-          'updated_at' : updated_at
-        });
+        this.set('content', '');
+        this.set('updated_at', updated_at);
       } else if (question.isPhotoQuestion()) {
         var image = content;
-        var that = this;
         var updated_at = image === this.image ? this.updated_at : parseInt(new Date().getTime()/1000);
-
-        this.fromArray({
-          'id' : this.id,
-          'content' : '',
-          'response_id' : this.response_id,
-          'question_id' : this.question_id,
-          'web_id' : this.web_id,
-          'updated_at' : updated_at,
-          'image' : image
-        });
+        this.set('content', '');
+        this.set('image', image);
+        this.set('updated_at', updated_at);
       } else {
-        this.fromArray({
-          'id' : this.id,
-          'content' : content,
-          'response_id' : this.response_id,
-          'question_id' : this.question_id,
-          'web_id' : this.web_id,
-          'updated_at' : updated_at
-        });
+        var updated_at = content === this.content ? this.updated_at : parseInt(new Date().getTime()/1000);
+        this.set('content', content);
+        this.set('updated_at', updated_at);
       }
+
       this.save();
       Ti.API.info("answer saved with content" + this.content);
     },
@@ -122,6 +99,7 @@ var Answer = new Ti.App.joli.model({
     hasChoices : function() {
       return Question.findOneById(this.question_id).isMultiChoiceQuestion();
     },
+
     isImage : function() {
       return Question.findOneById(this.question_id).isPhotoQuestion();
     },
@@ -134,7 +112,6 @@ var Answer = new Ti.App.joli.model({
 
     question : function() {
       return Question.findOneById(this.question_id);
-
     },
 
     contentForDisplay : function() {
