@@ -74,8 +74,12 @@ var Survey = new Ti.App.joli.model({
           onerror : function(e) {
             Ti.API.debug("Questions count fetch failed");
             Ti.API.debug(e.error);
+            Ti.App.fireEvent('surveys.fetch.error', {
+              status : this.status
+            });
           }
         });
+
         client.setTimeout(5000);
         client.open("GET", url);
         client.send({
