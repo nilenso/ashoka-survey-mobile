@@ -47,15 +47,16 @@ function SurveysIndexView() {
       (new Toast('Successfully fetched surveys')).show();
     self.fireEvent('progress.finish');
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
-    progressBarView.removeEventListener('sync.complete', progressComplete);
   };
 
   var progressSurveysComplete = function(e) {
     progressComplete('surveys');
+    progressBarView.removeEventListener('surveys.sync.completed', progressSurveysComplete);
   };
 
   var progressResponsesComplete = function(e) {
     progressComplete();
+    progressBarView.removeEventListener('sync.complete.responses', progressResponsesComplete);
   };
 
   self.addResponsesProgressCompleteListener = function() {
@@ -75,6 +76,7 @@ function SurveysIndexView() {
       alert("Couldn't reach the server.");
     }
     Ti.App.removeEventListener('surveys.fetch.error', errorListener);
+    progressBarView.removeEventListener('surveys.sync.completed', progressSurveysComplete);
   };
 
   self.addErrorListener = function() {
