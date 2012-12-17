@@ -138,23 +138,17 @@ function ResponsesIndexView(surveyID) {
     height : 'auto'
   });
 
-  self.refresh = function() {
+  self.refresh = function(e) {
     surveyDetailsView.refresh();
     table.setData(convertModelDataForTable());
     showMessageIfTableIsEmpty();
   };
 
-  Ti.App.addEventListener('ResponseShowWindow:closed', function() {
-    self.refresh();
-  });
+  Ti.App.addEventListener('ResponseShowWindow:closed', self.refresh);
 
-  Ti.App.addEventListener('ResponseShowWindow:back', function() {
-    self.refresh();
-  });
+  Ti.App.addEventListener('ResponseShowWindow:back', self.refresh);
 
-  Ti.App.addEventListener('ResponseNewWindow:closed', function() {
-    self.refresh();
-  });
+  Ti.App.addEventListener('ResponseNewWindow:closed', self.refresh);
 
   showMessageIfTableIsEmpty();
   return self;
