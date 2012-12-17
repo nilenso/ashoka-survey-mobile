@@ -67,14 +67,8 @@ var Question = new Ti.App.joli.model({
         onload : function(e) {
           Ti.API.info("Received text for options: " + this.responseText);
           var data = JSON.parse(this.responseText);
-          var records = Option.createRecords(data, self.id);
-          _(records).each(function(record) {
-            _(record.subQuestions()).each(function(subQuestion) {
-              if (subQuestion.type == 'RadioQuestion' || subQuestion.type == 'DropDownQuestion' || subQuestion.type == 'MultiChoiceQuestion') {
-              }
-            });
-            externalSyncHandler();
-          });
+          var records = Option.createRecords(data, self.id, externalSyncHandler);
+          externalSyncHandler();
         },
         onerror : function(e) {
           Ti.API.info("Error");

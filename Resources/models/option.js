@@ -9,7 +9,7 @@ var Option = new Ti.App.joli.model({
 	},
 
 	methods : {
-		createRecords : function(data, questionID) {
+		createRecords : function(data, questionID, externalSyncHandler) {
 			var _ = require('lib/underscore')._;
 			var that = this;
 			var records = [];
@@ -17,20 +17,20 @@ var Option = new Ti.App.joli.model({
 				var record = that.newRecord({
 					id : option.id,
 					content : option.content,
-					question_id : questionID,
+					question_id : questionID
 				});
 				record.save();
 				var Question = require('models/question');
 				surveyID = Question.findById(questionID).survey_id;
 				if (!_.isEmpty(option.questions)) {
-					Question.createRecords(option.questions, surveyID, record.id);
+					Question.createRecords(option.questions, surveyID, record.id, externalSyncHandler);
 				}
 				records.push(record);
 			});
 			return records;
-		},
+		}
 	},
-	
+
 	objectMethods : {
 		firstLevelSubQuestions : function() {
 			var Question = require('models/question');
@@ -38,13 +38,13 @@ var Option = new Ti.App.joli.model({
 			var sortedQuestions = _(questions).sortBy(function(question){ return question.order_number; });
 			return sortedQuestions;
 		},
-		
+
 		subQuestions : function() {
 			var Question = require('models/question');
 			var questions = Question.findBy('parent_id', this.id);
 
-			var sortedQuestions = _(questions).sortBy(function(question){ return question.order_number; });	
-			
+			var sortedQuestions = _(questions).sortBy(function(question){ return question.order_number; });
+
 			var subQuestions = _.chain(sortedQuestions).map(function(question) {
 				return question.withSubQuestions();
 			}).flatten().value();
