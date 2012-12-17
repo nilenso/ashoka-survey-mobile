@@ -37,15 +37,27 @@ function LoginView() {
     height : 'auto',
     width : 'auto'
   });
-  Ti.App.addEventListener('network.server.unreachable', function() {
+
+  var networkServerUnreachable =  function() {
     activityIndicator.hide();
-  });
-  Ti.App.addEventListener('network.offline', function() {
+    Ti.App.removeEventListener('network.server.unreachable', networkServerUnreachable)
+  };
+
+  Ti.App.addEventListener('network.server.unreachable', networkServerUnreachable);
+
+  var networkOffline = function() {
     activityIndicator.hide();
-  });
-  Ti.App.addEventListener('login.done', function() {
+    Ti.App.removeEventListener('network.offline', networkOffline)
+  };
+
+  Ti.App.addEventListener('network.offline', networkOffline);
+
+  var loginDone = function() {
     activityIndicator.hide();
-  });
+    Ti.App.removeEventListener('login.done', loginDone);
+  };
+
+  Ti.App.addEventListener('login.done', loginDone);
 
   self.add(activityIndicator);
   self.add(emailField);
