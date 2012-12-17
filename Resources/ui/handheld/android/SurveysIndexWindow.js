@@ -109,10 +109,6 @@ function SurveysIndexWindow() {
     }
   });
 
-  Ti.App.addEventListener('settings_saved', function() {
-    settingsWindow.close();
-  });
-
   var activityIndicator = Ti.UI.createActivityIndicator({
     message : 'Loading...'
   });
