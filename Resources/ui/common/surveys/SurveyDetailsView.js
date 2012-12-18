@@ -49,8 +49,10 @@ function SurveysDetailsView(survey) {
 
   var addResponseButton = new ButtonView('Add Response');
 
-  var activityIndicator = Ti.UI.createActivityIndicator({
-    message : 'Loading...'
+  var activityIndicator = Ti.UI.Android.createProgressIndicator({
+    message : 'Loading...',
+    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
   self.add(activityIndicator);
 

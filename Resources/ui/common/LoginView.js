@@ -32,10 +32,10 @@ function LoginView() {
     width : '60%'
   });
 
-  var activityIndicator = Ti.UI.createActivityIndicator({
+  var activityIndicator = Ti.UI.Android.createProgressIndicator({
     message : 'Logging in...',
-    height : 'auto',
-    width : 'auto'
+    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
 
   var networkServerUnreachable =  function() {

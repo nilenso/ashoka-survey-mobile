@@ -34,10 +34,10 @@ function ResponsesIndexWindow(surveyID) {
   var view = new ResponsesIndexView(surveyID);
   self.add(view);
 
-  var activityIndicator = Ti.UI.createActivityIndicator({
-    message: 'Loading...',
-    height: 'auto',
-    width: 'auto'
+  var activityIndicator = Ti.UI.Android.createProgressIndicator({
+    message : 'Loading...',
+    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
   self.add(activityIndicator);
 
@@ -72,7 +72,7 @@ function ResponsesIndexWindow(surveyID) {
   view.addEventListener('progress.finish', function(e) {
     self.removeEventListener('android:back', disableBackButton);
   });
- 
+
   view.addEventListener('close', function() {
       Ti.App.removeEventListener('ResponsesNewWindow:closed', view.refresh);
       Ti.App.removeEventListener('ResponseShowWindow:closed', view.refresh);

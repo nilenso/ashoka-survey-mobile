@@ -32,11 +32,11 @@ function ResponsesNewView(surveyID) {
 
   responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton], null);
 
-  var activityIndicator = Ti.UI.createActivityIndicator({
+  var activityIndicator = Ti.UI.Android.createProgressIndicator({
     message : 'Saving...',
-    height : 'auto',
-    width : 'auto'
-  }); 
+    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
+  });
   self.add(activityIndicator);
 
   var getCurrentLocation = function() {

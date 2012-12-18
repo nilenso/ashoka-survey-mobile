@@ -12,7 +12,7 @@ function ResponseEditView(responseID) {
   var ButtonView = require('ui/common/components/ButtonView');
   var Toast = require('ui/common/components/Toast');
 
-  var self = new TopLevelView('Edit Response'); 
+  var self = new TopLevelView('Edit Response');
 	var scrollableView = Ti.UI.createScrollableView({
 	  top : self.headerHeight,
 		showPagingControl : true
@@ -30,11 +30,11 @@ function ResponseEditView(responseID) {
   var buttons = response.isComplete() ? [completeButton] : [saveButton, completeButton];
 	responseViewHelper.paginate(questions, scrollableView, buttons, response);
 
-  var activityIndicator = Ti.UI.createActivityIndicator({
+  var activityIndicator = Ti.UI.Android.createProgressIndicator({
     message : 'Saving...',
-    height : 'auto',
-    width : 'auto'
-  }); 
+    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
+  });
   self.add(activityIndicator);
 
 	var validateAndUpdateAnswers = function(e, status) {
