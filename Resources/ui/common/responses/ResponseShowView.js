@@ -57,7 +57,7 @@ function ResponseShowView(responseID) {
       return (row);
     });
     return responses;
-  }
+  };
   var self = new TopLevelView('Response Details');
 
   // now assign that array to the table's data property to add those objects as rows
@@ -81,8 +81,16 @@ function ResponseShowView(responseID) {
     'width' : '80%'
   });
 
+  var activityIndicator = Ti.UI.Android.createProgressIndicator({
+    message : 'Deleting...',
+    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
+  });
+  self.add(activityIndicator);
+
   responseDeleteButton.addEventListener('click', function(e) {
     var confirmDialog = new ConfirmDialog("Delete", "Are you sure you want to delete the response?", onConfirm = function(e) {
+      activityIndicator.show();
       var response = Response.findOneById(responseID);
       response.destroyAnswers();
       response.destroy();
@@ -90,6 +98,7 @@ function ResponseShowView(responseID) {
       self.fireEvent('ResponseShowView:responseDeleted', {
         responseID : responseID
       });
+      activityIndicator.hide();
     });
     confirmDialog.show();
   });
