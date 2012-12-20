@@ -47,25 +47,6 @@ function SurveysIndexView() {
     if (entityBeingSynced)
       (new Toast('Successfully fetched surveys')).show();
     self.fireEvent('progress.finish');
-    Ti.App.removeEventListener('surveys.fetch.error', errorListener);
-  };
-
-  var progressSurveysComplete = function(e) {
-    progressComplete('surveys');
-    progressBarView.removeEventListener('surveys.sync.completed', progressSurveysComplete);
-  };
-
-  var progressResponsesComplete = function(e) {
-    progressComplete();
-    progressBarView.removeEventListener('sync.complete.responses', progressResponsesComplete);
-  };
-
-  self.addResponsesProgressCompleteListener = function() {
-    progressBarView.addEventListener('sync.complete.responses', progressResponsesComplete);
-  };
-
-  self.addSurveysProgressCompleteListener = function() {
-    progressBarView.addEventListener('surveys.sync.completed', progressSurveysComplete);
   };
 
   var errorListener = function(data) {
@@ -76,12 +57,26 @@ function SurveysIndexView() {
     } else if (data.status === 0) {
       alert("Couldn't reach the server.");
     }
-    Ti.App.removeEventListener('surveys.fetch.error', errorListener);
-    progressBarView.removeEventListener('surveys.sync.completed', progressSurveysComplete);
   };
 
-  self.addErrorListener = function() {
-    Ti.App.addEventListener('surveys.fetch.error', errorListener);
+  var progressSurveyComplete = function(){
+    progressComplete('surveys');
+    progressBar.removeEventListener('surveys.sync.completed', progressSurveyComplete);
+  }
+
+  self.fetchAllSurveys = function() {
+    var progressBar = progressBarView;
+    Survey.fetchAllQuestionsCount(function(number){
+      if(number === 0) {
+        (new Toast("No surveys to fetch")).show();
+        return;
+      }
+      self.add(progressBar);
+      progressBar.addEventListener('surveys.sync.completed', progressSurveyComplete);
+      progressBar.init('surveys.sync.completed', number);
+      progressBar.setMessage("Fetching surveys...");
+      Survey.fetchSurveys(new SyncHandler(progressBar.incrementValue, function(){}, errorListener));
+    });
   };
 
   var table = Titanium.UI.createTableView({
@@ -114,12 +109,11 @@ function SurveysIndexView() {
   };
 
   self.syncAllResponses = function() {
-    this.addResponsesProgressCompleteListener();
     var progressBar = progressBarView;
     self.add(progressBar);
-    progressBar.init('sync.complete.surveys', Survey.allResponsesCount());
+    progressBar.init('sync.complete.response', Survey.allResponsesCount());
     progressBar.setMessage("Syncing Responses...");
-    Survey.syncAllResponses(new SyncHandler(progressBar.incrementValue, showSyncSummary));
+    Survey.syncAllResponses(new SyncHandler(progressBar.incrementValue, function(data) { showSyncSummary(data); progressComplete(); }));
   };
 
   return self;

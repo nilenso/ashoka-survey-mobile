@@ -58,7 +58,7 @@ var Question = new Ti.App.joli.model({
       Ti.API.info("In survey model fetchOptions Increment Sync handler is " + externalSyncHandler);
       var self = this;
       if (self.type != 'RadioQuestion' && self.type != 'DropDownQuestion' && self.type != 'MultiChoiceQuestion') {
-        externalSyncHandler();
+        externalSyncHandler.notifySyncProgress();
         return;
       }
       var url = Ti.App.Properties.getString('server_url') + '/api/options?question_id=' + self.id;
@@ -68,11 +68,11 @@ var Question = new Ti.App.joli.model({
           Ti.API.info("Received text for options: " + this.responseText);
           var data = JSON.parse(this.responseText);
           var records = Option.createRecords(data, self.id, externalSyncHandler);
-          externalSyncHandler();
+          externalSyncHandler.notifySyncProgress();
         },
         onerror : function(e) {
           Ti.API.info("Error");
-          Ti.App.fireEvent('surveys.fetch.error', {
+          externalSyncHandler.notifySyncError({
             status : this.status
           });
         },

@@ -14,6 +14,7 @@ function SurveysIndexWindow() {
   var loginHelper = require('helpers/LoginHelper');
   var progressBarView = require("ui/common/components/ProgressBar");
   var Toast = require('ui/common/components/Toast');
+  var SyncHandler = require('models/syncHandler');
 
   //ID Constants
 
@@ -36,24 +37,7 @@ function SurveysIndexWindow() {
           groupId : FETCH_SURVEYS
         });
 
-        menuItemFetch.addEventListener('click', function() {
-          surveysIndexView.addErrorListener();
-          surveysIndexView.addSurveysProgressCompleteListener();
-          var progressBar = progressBarView;
-          Survey.fetchAllQuestionsCount(function(number){
-            if(number === 0) {
-              (new Toast("No surveys to fetch")).show();
-              return;
-            }
-            surveysIndexView.add(progressBar);
-            progressBar.init('surveys.sync.completed', number);
-            progressBar.setMessage("Fetching surveys...");
-            progressBar.addEventListener('surveys.sync.completed', function(){
-              surveysIndexView.remove(progressBar);
-            });
-            Survey.fetchSurveys(progressBar.incrementValue);
-          });
-        });
+        menuItemFetch.addEventListener('click', surveysIndexView.fetchAllSurveys);
         menuItemFetch.setIcon("/images/fetch.png");
 
         var menuItemSync = menu.add({
@@ -61,9 +45,7 @@ function SurveysIndexWindow() {
           groupId : SYNC_RESPONSES
         });
 
-        menuItemSync.addEventListener('click', function() {
-          surveysIndexView.syncAllResponses();
-        });
+        menuItemSync.addEventListener('click', surveysIndexView.syncAllResponses);
 
         menuItemSync.setIcon("/images/refresh.png");
 
