@@ -106,14 +106,11 @@ var Survey = new Ti.App.joli.model({
               successes : successes,
               errors : errors
             });
-            Ti.App.removeEventListener('survey.responses.sync', generateAllResponsesSyncSummary);
           }
         };
-        if (surveyCount > 0)
-          Ti.App.addEventListener('survey.responses.sync', generateAllResponsesSyncSummary);
 
         _(self.all()).each(function(survey) {
-          survey.syncResponses(externalResponseSyncHandler);
+          survey.syncResponses(new SyncHandler(externalResponseSyncHandler.notifySyncProgress, generateAllResponsesSyncSummary));
         });
       });
     },
@@ -150,11 +147,10 @@ var Survey = new Ti.App.joli.model({
           });
         } else {
           if (self.allResponsesSynced(responseSyncCount)) {
-            Ti.App.fireEvent("survey.responses.sync", self.syncSummary());
+            externalResponseSyncHandler.notifySyncComplete(self.syncSummary());
           }
         }
-        Ti.API.info("EXTERNAL Sync Handler" + externalResponseSyncHandler());
-        externalResponseSyncHandler();
+        externalResponseSyncHandler.notifySyncProgress();
         Ti.App.removeEventListener("response.sync." + self.id, syncHandler);
       };
 

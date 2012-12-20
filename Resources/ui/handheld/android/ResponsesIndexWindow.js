@@ -31,7 +31,7 @@ function ResponsesIndexWindow(surveyID) {
     }
   });
 
-  var view = new ResponsesIndexView(surveyID);
+  var view = new ResponsesIndexView(surveyID, function() { self.close() });
   self.add(view);
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
@@ -45,20 +45,6 @@ function ResponsesIndexWindow(surveyID) {
     activityIndicator.show();
     new ResponseShowWindow(e.responseID).open();
     activityIndicator.hide();
-  });
-
-  var syncHandler = function(data) {
-    Ti.App.removeEventListener("survey.responses.sync", syncHandler);
-    self.close();
-    if (data.message)
-    alert(data.message);
-    else
-    alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
-  };
-  Ti.App.addEventListener("survey.responses.sync", syncHandler);
-
-  self.addEventListener('close', function() {
-    Ti.App.removeEventListener("survey.responses.sync", syncHandler);
   });
 
   var disableBackButton = function() {

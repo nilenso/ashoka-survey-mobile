@@ -1,5 +1,5 @@
 //ResponsesIndexView Component Constructor
-function ResponsesIndexView(surveyID) {
+function ResponsesIndexView(surveyID, windowClose) {
   var _ = require('lib/underscore')._;
   var Response = require('models/response');
   var Survey = require('models/survey');
@@ -10,7 +10,7 @@ function ResponsesIndexView(surveyID) {
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Measurements = require('ui/common/components/Measurements');
   var NetworkHelper = require('helpers/NetworkHelper');
-
+  var SyncHandler = require('models/syncHandler');
 
   var colorForResponse = function(response) {
     return (response.status === 'complete')? Palette.SECONDARY_COLOR : Palette.SECONDARY_COLOR_LIGHT;
@@ -89,21 +89,17 @@ function ResponsesIndexView(surveyID) {
       self.add(progressBar);
       progressBar.init('response.sync.' + survey.id + '.completed', survey.responseCount());
       progressBar.setMessage('Syncing responses...');
-      survey.syncResponses(progressBar.incrementValue);
-      self.addProgressCompleteListener();
+      survey.syncResponses(new SyncHandler(progressBar.incrementValue, showSyncSummary));
     });
   };
 
-  var progressComplete = function(e) {
-    Ti.API.info("Sync complete for resopnses!!!");
-    self.remove(progressBarView);
-    self.refresh();
-    self.fireEvent('progress.finish');
-    progressBarView.removeEventListener('sync.complete.survey.response', progressComplete);
-  };
-
-  self.addProgressCompleteListener = function() {
-    progressBarView.addEventListener('sync.complete.survey.response', progressComplete);
+  var showSyncSummary = function(data) {
+    Ti.API.info("showing sync summary: " + data)
+    windowClose();
+    if (data.message)
+      alert(data.message);
+    else
+      alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
   };
 
   var contentView = Ti.UI.createView({
