@@ -9,6 +9,7 @@ function SurveysIndexView() {
   var SurveyRowView = require('ui/common/surveys/SurveyRowView');
   var Toast = require('ui/common/components/Toast');
   var Measurements = require('ui/common/components/Measurements');
+  var SyncHandler = require('models/syncHandler');
 
   var self = new TopLevelView('List of Surveys');
 
@@ -111,7 +112,6 @@ function SurveysIndexView() {
   var showSyncSummary = function(data) {
     alert((data.successes || 0) + " surveys successfully synced.\n" + (data.errors || 0) + " surveys' sync failed.");
   };
-  Ti.App.addEventListener('all.responses.sync.complete', showSyncSummary);
 
   self.syncAllResponses = function() {
     this.addResponsesProgressCompleteListener();
@@ -119,7 +119,7 @@ function SurveysIndexView() {
     self.add(progressBar);
     progressBar.init('sync.complete.surveys', Survey.allResponsesCount());
     progressBar.setMessage("Syncing Responses...");
-    Survey.syncAllResponses(progressBar.incrementValue);
+    Survey.syncAllResponses(new SyncHandler(progressBar.incrementValue, showSyncSummary));
   };
 
   return self;

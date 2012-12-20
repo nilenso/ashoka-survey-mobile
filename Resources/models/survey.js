@@ -3,6 +3,7 @@ var Question = require('models/question');
 var Response = require('models/response');
 var Option = require('models/option');
 var progressBarView = require('ui/common/components/ProgressBar');
+var SyncHandler = require('models/syncHandler');
 var NetworkHelper = require('helpers/NetworkHelper');
 
 var Survey = new Ti.App.joli.model({
@@ -102,7 +103,7 @@ var Survey = new Ti.App.joli.model({
             successes++;
           }
           if (count === surveyCount) {
-            Ti.App.fireEvent('all.responses.sync.complete', {
+            externalResponseSyncHandler.notifySyncComplete({
               successes : successes,
               errors : errors
             });
