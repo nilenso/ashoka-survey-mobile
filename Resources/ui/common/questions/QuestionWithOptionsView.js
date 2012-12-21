@@ -38,6 +38,7 @@ function QuestionWithOptionsView(question, answer) {
 
     optionsDialog.addEventListener('click', function(e) {
       selectedIndex = e.index;
+      if(selectedIndex < 0 || selectedIndex > _(options).size()) selectedIndex = 0;
       button.setTitle(optionTitles[selectedIndex]);
       showSubQuestions(selectedIndex);
     })
