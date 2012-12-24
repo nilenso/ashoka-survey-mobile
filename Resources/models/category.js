@@ -58,6 +58,9 @@ var Category = new Ti.App.joli.model({
       client.send({
         access_token : Ti.App.Properties.getString('access_token')
       });
+    },
+    number : function() {
+      return 42;
     }
   }
 });

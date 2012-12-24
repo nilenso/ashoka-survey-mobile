@@ -20,7 +20,7 @@ function ResponsesNewView(surveyID) {
   self.add(scrollableView);
 
   var survey = Survey.findOneById(surveyID);
-  var questions = survey.firstLevelQuestions();
+  var questions = survey.firstLevelQuestionsAndCategories();
 
   var saveButton = new ButtonView('Save', {
     'width' : '48%'

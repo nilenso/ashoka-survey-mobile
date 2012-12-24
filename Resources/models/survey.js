@@ -236,12 +236,27 @@ var Survey = new Ti.App.joli.model({
     firstLevelQuestions : function() {
       var questions = Question.findBy('survey_id', this.id);
       var questionList = _.select(questions, function(question) {
-        return question.parent_id === null;
+        return question.parent_id === null && question.category_id === null;
       });
       var sortedQuestionList = _(questionList).sortBy(function(question) {
         return question.order_number;
       });
       return sortedQuestionList;
+    },
+
+    firstLevelCategories : function() {
+      var categories = Category.findBy('survey_id', this.id);
+      var categoryList = _.select(categories, function(category) {
+        return category.parent_id === null && category.category_id === null;
+      });
+      var sortedCategoryList = _(categoryList).sortBy(function(category) {
+        return category.order_number;
+      });
+      return sortedCategoryList;
+    },
+
+    firstLevelQuestionsAndCategories : function() {
+      return this.firstLevelQuestions().concat(this.firstLevelCategories());
     },
 
     responseCount : function() {
