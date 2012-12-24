@@ -1,4 +1,5 @@
 var _ = require('lib/underscore')._;
+var Question = require('models/question');
 var progressBarView = require('ui/common/components/ProgressBar');
 
 var Category = new Ti.App.joli.model({
@@ -13,7 +14,7 @@ var Category = new Ti.App.joli.model({
   },
 
   methods : {
-    createRecords : function(data, surveyID, parentID, externalSyncHandler) {
+    createRecords : function(data, surveyID, parentID, externalSyncHandler, categoryID) {
       var _ = require('lib/underscore')._;
       var that = this;
       var records = [];
@@ -23,21 +24,40 @@ var Category = new Ti.App.joli.model({
           content : category.content,
           survey_id : surveyID,
           parent_id : parentID,
-          category_id : null,
-          order_number : category.order_number
-        });
-        Ti.API.info({
-          id : category.id,
-          content : category.content,
-          survey_id : surveyID,
-          parent_id : parentID,
-          category_id : null,
+          category_id : categoryID,
           order_number : category.order_number
         });
         record.save();
         records.push(record);
+        record.fetchQuestionsAndCategories(externalSyncHandler);
       });
       return records;
+    }
+  },
+  objectMethods : {
+    fetchQuestionsAndCategories : function (externalSyncHandler) {
+      Ti.API.info("In category model fetchQuestionsAndCategories Increment Sync handler is " + externalSyncHandler);
+      var self = this;
+      var url = Ti.App.Properties.getString('server_url') + '/api/categories/' + self.id;
+      var client = Ti.Network.createHTTPClient({
+        onload : function(e) {
+          Ti.API.info("Received text for questions and categories: " + this.responseText);
+          var data = JSON.parse(this.responseText);
+          Question.createRecords(data.questions, self.survey_id, null, externalSyncHandler, self.id);
+          Category.createRecords(data.categories, self.survey_id, null, externalSyncHandler, self.id);
+        },
+        onerror : function(e) {
+          externalSyncHandler.notifySyncError({
+            status : this.status
+          });
+          Ti.API.info("Error");
+        },
+        timeout : 5000 // in milliseconds
+      });
+      client.open("GET", url);
+      client.send({
+        access_token : Ti.App.Properties.getString('access_token')
+      });
     }
   }
 });

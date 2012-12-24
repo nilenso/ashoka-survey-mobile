@@ -26,6 +26,7 @@ var Survey = new Ti.App.joli.model({
             var data = JSON.parse(this.responseText);
             that.truncate();
             Question.truncate();
+            Category.truncate();
             Option.truncate();
             _(data).each(function(surveyData) {
               var survey = that.createRecord(surveyData);
