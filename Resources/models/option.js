@@ -41,6 +41,19 @@ var Option = new Ti.App.joli.model({
 			return sortedQuestions;
 		},
 
+		firstLevelSubCategories : function() {
+			var Category = require('models/category');
+			var categories = Category.findBy('parent_id', this.id);
+			var sortedCategories = _(categories).sortBy(function(category){ return category.order_number; });
+			return sortedCategories;
+		},
+
+		firstLevelSubElements : function() {
+			var elements = this.firstLevelSubQuestions().concat(this.firstLevelSubCategories());
+      var sortedElements = _(elements).sortBy(function(element){ return element.order_number; });
+      return sortedElements;
+		},
+
 		subQuestions : function() {
 			var Question = require('models/question');
 			var questions = Question.findBy('parent_id', this.id);

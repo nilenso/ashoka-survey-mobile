@@ -55,7 +55,7 @@ function QuestionWithOptionsView(question, answer, number) {
     });
     if(option.content == "None" && selectedRowID === 0) return; //No sub-questions for the "None" option
     var QuestionView = require('ui/common/questions/QuestionView');
-    var subQuestions = option.firstLevelSubQuestions();
+    var subQuestions = option.firstLevelSubElements();
     _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
       var subQuestionNumber = number + '.' + (index + 1);
