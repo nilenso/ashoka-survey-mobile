@@ -111,37 +111,6 @@ var Question = new Ti.App.joli.model({
       return _([this, this.subQuestions()]).flatten();
     },
 
-    withSiblings : function() {
-      if (this.parent_id === null) {
-        var Survey = require('models/survey');
-        var survey = Survey.findOneById(this.survey_id);
-        return survey.firstLevelQuestions();
-      } else {
-        var questions = Question.findBy('parent_id', this.parent_id);
-        return _(questions).sortBy(function(question) {
-          return question.order_number;
-        });
-      }
-    },
-
-    number : function() {
-      var siblingIDs = _(this.withSiblings()).map(function(question) {
-        return question.id;
-      });
-
-      var parentOptionIDs = _(this.options()).map(function(option) {
-        return option.id;
-      });
-      if (this.parent_id === null) {
-        return (siblingIDs.indexOf(this.id)) + 1;
-      } else if (this.parentQuestion().isMultiChoiceQuestion()){
-        var optionIdentifier = String.fromCharCode(97 + parentOptionIDs.indexOf(this.parentOption().id) + 1);
-        return this.parentQuestion().number() + optionIdentifier + '.' + ((siblingIDs.indexOf(this.id)) + 1);
-      } else {
-        return this.parentQuestion().number() + '.' + ((siblingIDs.indexOf(this.id)) + 1);
-      }
-    },
-
     isPhotoQuestion : function() {
       return this.type === 'PhotoQuestion';
     },
