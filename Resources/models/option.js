@@ -23,8 +23,10 @@ var Option = new Ti.App.joli.model({
 				var Question = require('models/question');
 				surveyID = Question.findById(questionID).survey_id;
 				if (!_.isEmpty(option.questions)) {
-					Question.createRecords(option.questions, surveyID, record.id, externalSyncHandler);
+					Question.createRecords(option.questions, surveyID, record.id, externalSyncHandler, null);
 				}
+				var Category = require('models/category');
+				Category.createRecords(option.categories, surveyID, record.id, externalSyncHandler, null);
 				records.push(record);
 			});
 			return records;
