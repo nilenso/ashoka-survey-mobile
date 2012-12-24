@@ -59,8 +59,18 @@ var Category = new Ti.App.joli.model({
         access_token : Ti.App.Properties.getString('access_token')
       });
     },
+
     number : function() {
       return 42;
+    },
+
+    firstLevelSubQuestions : function() {
+      var Question = require('models/question');
+      var questions = Question.findBy('category_id', this.id);
+      var categories = Category.findBy('category_id', this.id);
+      var elements = questions.concat(categories);
+      var sortedElements = _(elements).sortBy(function(element){ return element.order_number; });
+      return sortedElements;
     }
   }
 });

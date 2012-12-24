@@ -256,7 +256,9 @@ var Survey = new Ti.App.joli.model({
     },
 
     firstLevelQuestionsAndCategories : function() {
-      return this.firstLevelQuestions().concat(this.firstLevelCategories());
+      var elements = this.firstLevelQuestions().concat(this.firstLevelCategories());
+      var sortedElements = _(elements).sortBy(function(element){ return element.order_number; });
+      return sortedElements;
     },
 
     responseCount : function() {

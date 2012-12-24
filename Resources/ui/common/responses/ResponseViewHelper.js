@@ -74,7 +74,7 @@ function ResponseViewHelper() {
 
       _(questions).each(function(question) {
         var answer = response ? response.answerForQuestion(question.id) : undefined;
-        var questionView = new QuestionView(question, answer);
+        var questionView = new QuestionView(question, answer, response);
         questionsView.add(questionView);
       })
       if (pageNumber + 1 === pagedQuestions.length) {

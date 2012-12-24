@@ -3,16 +3,17 @@ var PhotoQuestionView = require('ui/common/questions/PhotoQuestionView');
 var DateQuestionView = require('ui/common/questions/DateQuestionView');
 var QuestionWithOptionsView = require('ui/common/questions/QuestionWithOptionsView');
 var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionView');
+var CategoryView = require('ui/common/questions/CategoryView');
 var RatingQuestionView = require('ui/common/questions/RatingQuestionView');
 var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Measurements = require('ui/common/components/Measurements');
 
-function QuestionView(question, answer) {
+function QuestionView(question, answer, response) {
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     layout : 'vertical',
-    type : 'question',
+    type : question.type ? 'question' : 'category',
     id : question.id,
     height : Titanium.UI.SIZE,
     answerID : answer ? answer.id : null
@@ -88,7 +89,7 @@ function QuestionView(question, answer) {
   } else if (question.type == 'MultiChoiceQuestion') {
     valueField = new MultiChoiceQuestionView(question, answer);
   } else if (question.type === undefined) { //Category
-    valueField = new BasicQuestionView(question);
+    valueField = new CategoryView(question, response);
   } else {
     valueField = new BasicQuestionView(question, content);
   }
