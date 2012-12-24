@@ -1,7 +1,7 @@
 //OptionView Component Constructor
 var _ = require('lib/underscore')._;
 
-function OptionView(option, checked, response) {
+function OptionView(option, checked, response, number) {
   var Palette = require('ui/common/components/Palette');
   var row = Ti.UI.createView({
     height : Ti.UI.SIZE,
@@ -16,10 +16,11 @@ function OptionView(option, checked, response) {
 
   var Measurements = require('ui/common/components/Measurements');
 
+  var checkbox;
   if (Ti.Platform.osname == 'android') {
-    var checkbox = androidCheckbox(checked);
+    checkbox = androidCheckbox(checked);
   } else {
-    var checkbox = iPhoneCheckbox(checked);
+    checkbox = iPhoneCheckbox(checked);
   }
 
   self.add(checkbox);
@@ -37,10 +38,11 @@ function OptionView(option, checked, response) {
   var showSubQuestions = function() {
     var subQuestions = option.firstLevelSubQuestions();
     var QuestionView = require('ui/common/questions/QuestionView');
-    _(subQuestions).each(function(subQuestion) {
+    _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
       Ti.API.info("Showing the sub question: " + subQuestion.content);
-      row.add(new QuestionView(subQuestion, subQuestionAnswer));
+      var subQuestionNumber = number + '.' + (index + 1);
+      row.add(new QuestionView(subQuestion, subQuestionAnswer, null, subQuestionNumber));
     });
   };
 
@@ -49,8 +51,8 @@ function OptionView(option, checked, response) {
       if (childView != self)
         row.remove(childView);
     });
-  }
-  var size = Ti.Platform.displayCaps.platformHeight * 0.05
+  };
+  var size = Ti.Platform.displayCaps.platformHeight * 0.05;
   var label = Ti.UI.createLabel({
     color : Palette.PRIMARY_COLOR,
     text : option.content,

@@ -72,11 +72,11 @@ function ResponseViewHelper() {
         layout : 'vertical'
       });
 
-      _(questions).each(function(question) {
+      _(questions).each(function(question, number) {
         var answer = response ? response.answerForQuestion(question.id) : undefined;
-        var questionView = new QuestionView(question, answer, response);
+        var questionView = new QuestionView(question, answer, response, number + 1);
         questionsView.add(questionView);
-      })
+      });
       if (pageNumber + 1 === pagedQuestions.length) {
         questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
         _(buttons).each(function(button) {

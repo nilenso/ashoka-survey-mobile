@@ -4,7 +4,7 @@ var Option = require('models/option');
 var Response = require('models/response');
 var ButtonView = require('ui/common/components/ButtonView');
 
-function QuestionWithOptionsView(question, answer) {
+function QuestionWithOptionsView(question, answer, number) {
   var content = answer ? answer.content : null;
   var response = answer ? Response.findOneById(answer.response_id) : null;
   var view_height = 400;
@@ -41,7 +41,7 @@ function QuestionWithOptionsView(question, answer) {
       if(selectedIndex < 0 || selectedIndex > _(options).size()) selectedIndex = 0;
       button.setTitle(optionTitles[selectedIndex]);
       showSubQuestions(selectedIndex);
-    })
+    });
 
     optionsDialog.show();
   });
@@ -53,12 +53,13 @@ function QuestionWithOptionsView(question, answer) {
       if (childView != button)
         self.remove(childView);
     });
-    if(option.content == "None" && selectedRowID == 0) return; //No sub-questions for the "None" option
+    if(option.content == "None" && selectedRowID === 0) return; //No sub-questions for the "None" option
     var QuestionView = require('ui/common/questions/QuestionView');
     var subQuestions = option.firstLevelSubQuestions();
-    _(subQuestions).each(function(subQuestion) {
+    _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
-      self.add(new QuestionView(subQuestion, subQuestionAnswer));
+      var subQuestionNumber = number + '.' + (index + 1);
+      self.add(new QuestionView(subQuestion, subQuestionAnswer, null, subQuestionNumber));
     });
   };
 
@@ -67,7 +68,7 @@ function QuestionWithOptionsView(question, answer) {
   }
 
   self.getValue = function() {
-    if (selectedIndex == 0) {
+    if (selectedIndex === 0) {
       return '';
     } else {
       return optionTitles[selectedIndex];

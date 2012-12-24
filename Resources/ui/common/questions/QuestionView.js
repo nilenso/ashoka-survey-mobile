@@ -9,7 +9,7 @@ var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Measurements = require('ui/common/components/Measurements');
 
-function QuestionView(question, answer, response) {
+function QuestionView(question, answer, response, number) {
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     layout : 'vertical',
@@ -19,7 +19,7 @@ function QuestionView(question, answer, response) {
     answerID : answer ? answer.id : null
   });
 
-  var questionText = question.number() + ') ';
+  var questionText = number + ') ';
   questionText += question['content'];
   questionText += question.mandatory ? ' *' : '';
 
@@ -78,7 +78,7 @@ function QuestionView(question, answer, response) {
   var content = answer ? answer.content : null;
 
   if (question.type == 'RadioQuestion' || question.type == 'DropDownQuestion') {
-    valueField = new QuestionWithOptionsView(question, answer);
+    valueField = new QuestionWithOptionsView(question, answer, number);
   } else if (question.type == 'DateQuestion') {
     valueField = new DateQuestionView(question, content);
   } else if (question.type == 'PhotoQuestion') {
@@ -87,9 +87,9 @@ function QuestionView(question, answer, response) {
   } else if (question.type == 'RatingQuestion') {
     valueField = new RatingQuestionView(question, content);
   } else if (question.type == 'MultiChoiceQuestion') {
-    valueField = new MultiChoiceQuestionView(question, answer);
+    valueField = new MultiChoiceQuestionView(question, answer, number);
   } else if (question.type === undefined) { //Category
-    valueField = new CategoryView(question, response);
+    valueField = new CategoryView(question, response, number);
   } else {
     valueField = new BasicQuestionView(question, content);
   }

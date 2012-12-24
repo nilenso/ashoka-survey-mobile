@@ -5,7 +5,7 @@ var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
 var Response = require('models/response');
 
-function MultiChoiceQuestionView(question, answer) {
+function MultiChoiceQuestionView(question, answer, number) {
   
   var optionIDs = answer ? answer.optionIDs() : null;
   var response = answer ? Response.findOneById(answer.response_id) : null;
@@ -17,15 +17,16 @@ function MultiChoiceQuestionView(question, answer) {
 	
 	var optionViews = {};
 
-	_(question.options()).each(function(option) {
+	_(question.options()).each(function(option, index) {
 		var checked = optionIDs && _(optionIDs).contains(option.id);
-		optionViews[option.id] = new OptionView(option, checked, response);		
+		var optionNumber = number + String.fromCharCode(97 + index);
+		optionViews[option.id] = new OptionView(option, checked, response, optionNumber);
 	});
 	
 	_.chain(optionViews).values().each(function(view, index){
-	  self.add(view);
-	  if(index != _(optionViews).size() - 1) // Don't add a separator to the last option
-	    self.add(new SeparatorView(Palette.PRIMARY_COLOR, '1dip'));
+		self.add(view);
+		if(index != _(optionViews).size() - 1) // Don't add a separator to the last option
+			self.add(new SeparatorView(Palette.PRIMARY_COLOR, '1dip'));
 	});
 
 	self.getValue = function() {
@@ -38,6 +39,6 @@ function MultiChoiceQuestionView(question, answer) {
 	};
 
 	return self;
-};
+}
 
 module.exports = MultiChoiceQuestionView;
