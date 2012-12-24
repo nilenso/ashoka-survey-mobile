@@ -1,6 +1,7 @@
 var _ = require('lib/underscore')._;
 var Question = require('models/question');
 var Response = require('models/response');
+var Category = require('models/category');
 var Option = require('models/option');
 var progressBarView = require('ui/common/components/ProgressBar');
 var SyncHandler = require('models/syncHandler');
@@ -29,6 +30,7 @@ var Survey = new Ti.App.joli.model({
             _(data).each(function(surveyData) {
               var survey = that.createRecord(surveyData);
               survey.fetchQuestions(externalSyncHandler);
+              survey.fetchCategories(externalSyncHandler);
             });
           },
           onerror : function(e) {
@@ -179,6 +181,30 @@ var Survey = new Ti.App.joli.model({
     syncSummary : function() {
       return _(this.responses()).countBy(function(response) {
         return response.has_error ? 'errors' : 'successes';
+      });
+    },
+
+    fetchCategories : function(externalSyncHandler) {
+      Ti.API.info("In survey model fetchCategories Increment Sync handler is " + externalSyncHandler);
+      var self = this;
+      var url = Ti.App.Properties.getString('server_url') + '/api/categories?survey_id=' + self.id;
+      var client = Ti.Network.createHTTPClient({
+        onload : function(e) {
+          Ti.API.info("Received text for categories: " + this.responseText);
+          var data = JSON.parse(this.responseText);
+          var records = Category.createRecords(data, self.id, null, externalSyncHandler);
+        },
+        onerror : function(e) {
+          externalSyncHandler.notifySyncError({
+            status : this.status
+          });
+          Ti.API.info("Error fetching categories.");
+        },
+        timeout : 5000 // in milliseconds
+      });
+      client.open("GET", url);
+      client.send({
+        access_token : Ti.App.Properties.getString('access_token')
       });
     },
 
