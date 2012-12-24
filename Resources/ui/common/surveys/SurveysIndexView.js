@@ -61,8 +61,8 @@ function SurveysIndexView() {
 
   var progressSurveyComplete = function(){
     progressComplete('surveys');
-    progressBar.removeEventListener('surveys.sync.completed', progressSurveyComplete);
-  }
+    progressBarView.removeEventListener('surveys.sync.completed', progressSurveyComplete);
+  };
 
   self.fetchAllSurveys = function() {
     var progressBar = progressBarView;
