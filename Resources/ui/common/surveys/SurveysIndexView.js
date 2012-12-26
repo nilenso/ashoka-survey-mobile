@@ -14,7 +14,12 @@ function SurveysIndexView() {
   var self = new TopLevelView('List of Surveys');
 
   var convertModelDataForTable = function() {
-    return _(Survey.all()).map(function(survey) {
+    if (table) {
+      _(table.getChildren()).each(function(childView) {
+        table.remove(childView);
+      });
+    }
+    _(Survey.all()).map(function(survey) {
       var row = new SurveyRowView(survey);
       row.addEventListener('surveys_row_view.row_clicked', function() {
         self.fireEvent('surveys_index_view.table_row_clicked', {
@@ -26,8 +31,9 @@ function SurveysIndexView() {
           surveyID : survey.id
         });
       });
-      return row;
+      table.add(row);
     });
+    self.add(table);
   };
 
   var showMessageIfTableIsEmpty = function() {
@@ -36,7 +42,7 @@ function SurveysIndexView() {
       self.remove(table);
     } else {
       self.remove(label);
-      self.add(table);
+      convertModelDataForTable();
     }
   };
 
@@ -79,9 +85,10 @@ function SurveysIndexView() {
     });
   };
 
-  var table = Titanium.UI.createTableView({
+  var table = Titanium.UI.createView({
     top : self.headerHeight,
-    data : convertModelDataForTable()
+    height : Ti.UI.SIZE,
+    layout : 'vertical'
   });
 
   label = Ti.UI.createLabel({
@@ -98,7 +105,6 @@ function SurveysIndexView() {
   showMessageIfTableIsEmpty();
 
   self.refresh = function() {
-    table.setData(convertModelDataForTable());
     showMessageIfTableIsEmpty();
     self.updateUserName();
   };
@@ -117,6 +123,6 @@ function SurveysIndexView() {
   };
 
   return self;
-};
+}
 
 module.exports = SurveysIndexView;

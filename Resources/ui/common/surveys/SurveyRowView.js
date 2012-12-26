@@ -7,14 +7,38 @@ var Measurements = require('ui/common/components/Measurements');
 function SurveysRowView(survey) {
   var ROW_HEIGHT = 80;
 
-  var self = Ti.UI.createTableViewRow({
-    backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
-    backgroundFocusedColor : Palette.SECONDARY_COLOR,
-    backgroundSelectedColor : Palette.SECONDARY_COLOR,
-    hasDetail : true,
-    surveyID : survey.id,
-    height : ROW_HEIGHT + 'dip'
+  var self = Ti.UI.createView({
+    height : '100dip',
+    top : '10dip',
+    left : '10dip'
   });
+
+  //Create a drop shadow view
+  var shadow = Ti.UI.createView({
+    width : '98%',
+    height : '98%',
+    left : '0dip',
+    right : '2dip',
+    bottom : '0dip',
+    borderRadius : 5,
+    opacity : 0.5,
+    backgroundColor : Palette.SECONDARY_COLOR_DARK
+  });
+  self.add(shadow);
+
+  //Create a view for our content
+  var content = Ti.UI.createView({
+    width : '98%',
+    height : '98%',
+    top : '0dip',
+    left : '2dip',
+    borderRadius : 5,
+    surveyID : survey.id,
+    backgroundColor : Palette.WHITE,
+    backgroundFocusedColor : Palette.SECONDARY_COLOR,
+    backgroundSelectedColor : Palette.SECONDARY_COLOR
+  });
+  self.add(content);
 
   var labelsView = Ti.UI.createView ({
     layout : 'vertical',
@@ -74,21 +98,18 @@ function SurveysRowView(survey) {
   });
 
   labelsView.addEventListener('click', function(e) {
-    self.setBackgroundColor(Palette.SECONDARY_COLOR);
+    content.setBackgroundColor(Palette.SECONDARY_COLOR);
     self.fireEvent('surveys_row_view.row_clicked');
   });
 
-  var rowSeparator = new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL);
-
-  // self.add(rowSeparator);
   labelsView.add(surveyNameLabel);
 
   surveyInfoView.add(expiryDateLabel);
   surveyInfoView.add(responseCountLabel);
 
   labelsView.add(surveyInfoView);
-  self.add(labelsView);
-  self.add(addResponseButton);
+  content.add(labelsView);
+  content.add(addResponseButton);
   return (self);
 }
 

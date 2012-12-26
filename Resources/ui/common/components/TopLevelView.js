@@ -5,13 +5,12 @@ var Measurements = require('ui/common/components/Measurements');
 var TopLevelView = function(title) {
 
   var self = Ti.UI.createView({
-    backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
+    backgroundColor : Palette.SECONDARY_COLOR_LIGHT
   });
-
 
   var headerView = new HeaderView(title);
   self.headerHeight = headerView.getHeight();
-  Measurements.HEADER_HEIGHT = self.headerHeight; 
+  Measurements.HEADER_HEIGHT = self.headerHeight;
   self.add(headerView);
 
   self.updateUserName = function() {
