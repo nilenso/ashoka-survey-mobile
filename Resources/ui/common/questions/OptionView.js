@@ -42,7 +42,7 @@ function OptionView(option, checked, response, number) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
       Ti.API.info("Showing the sub question: " + subQuestion.content);
       var subQuestionNumber = number + '.' + (index + 1);
-      row.add(new QuestionView(subQuestion, subQuestionAnswer, null, subQuestionNumber));
+      row.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber));
     });
   };
 

@@ -8,13 +8,13 @@ function ResponseEditView(responseID) {
 	var QuestionView = require('ui/common/questions/QuestionView');
 	var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
   var TopLevelView = require('ui/common/components/TopLevelView');
-	var responseViewHelper = new ResponseViewHelper;
+	var responseViewHelper = new ResponseViewHelper();
   var ButtonView = require('ui/common/components/ButtonView');
   var Toast = require('ui/common/components/Toast');
 
   var self = new TopLevelView('Edit Response');
 	var scrollableView = Ti.UI.createScrollableView({
-	  top : self.headerHeight,
+    top : self.headerHeight,
 		showPagingControl : true
 	});
   self.add(scrollableView);
@@ -25,7 +25,7 @@ function ResponseEditView(responseID) {
 
 	var response = Response.findOneById(responseID);
 	var survey = Survey.findOneById(response.survey_id);
-	var questions = survey.firstLevelQuestions();
+	var questions = survey.firstLevelQuestionsAndCategories();
 
   var buttons = response.isComplete() ? [completeButton] : [saveButton, completeButton];
 	responseViewHelper.paginate(questions, scrollableView, buttons, response);
@@ -38,7 +38,7 @@ function ResponseEditView(responseID) {
   self.add(activityIndicator);
 
 	var validateAndUpdateAnswers = function(e, status) {
-	  activityIndicator.show();
+    activityIndicator.show();
 		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
 		var answersData = _(questionViews).map(function(questionView, questionID) {
 			Ti.API.info("questionid:" + questionID);

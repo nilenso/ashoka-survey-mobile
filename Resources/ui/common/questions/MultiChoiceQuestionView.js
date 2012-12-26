@@ -5,16 +5,15 @@ var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
 var Response = require('models/response');
 
-function MultiChoiceQuestionView(question, answer, number) {
-  
+function MultiChoiceQuestionView(question, answer, response, number) {
+
   var optionIDs = answer ? answer.optionIDs() : null;
-  var response = answer ? Response.findOneById(answer.response_id) : null;
 
 	var self = Ti.UI.createView({
     layout : 'vertical',
     height : Titanium.UI.SIZE
   });
-	
+
 	var optionViews = {};
 
 	_(question.options()).each(function(option, index) {

@@ -78,7 +78,7 @@ function QuestionView(question, answer, response, number) {
   var content = answer ? answer.content : null;
 
   if (question.type == 'RadioQuestion' || question.type == 'DropDownQuestion') {
-    valueField = new QuestionWithOptionsView(question, answer, number);
+    valueField = new QuestionWithOptionsView(question, answer, response, number);
   } else if (question.type == 'DateQuestion') {
     valueField = new DateQuestionView(question, content);
   } else if (question.type == 'PhotoQuestion') {
@@ -87,7 +87,7 @@ function QuestionView(question, answer, response, number) {
   } else if (question.type == 'RatingQuestion') {
     valueField = new RatingQuestionView(question, content);
   } else if (question.type == 'MultiChoiceQuestion') {
-    valueField = new MultiChoiceQuestionView(question, answer, number);
+    valueField = new MultiChoiceQuestionView(question, answer, response, number);
   } else if (question.type === undefined) { //Category
     valueField = new CategoryView(question, response, number);
   } else {

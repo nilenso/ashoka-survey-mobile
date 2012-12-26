@@ -20,7 +20,7 @@ function ResponseViewHelper() {
         fontSize : Measurements.FONT_MEDIUM      },
       width : '100%'
     });
-  }
+  };
 
   self.resetErrors = function(questionViews) {
     _(questionViews).each(function(questionView) {

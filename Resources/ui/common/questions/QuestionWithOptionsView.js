@@ -4,9 +4,8 @@ var Option = require('models/option');
 var Response = require('models/response');
 var ButtonView = require('ui/common/components/ButtonView');
 
-function QuestionWithOptionsView(question, answer, number) {
+function QuestionWithOptionsView(question, answer, response, number) {
   var content = answer ? answer.content : null;
-  var response = answer ? Response.findOneById(answer.response_id) : null;
   var view_height = 400;
   var self = Ti.UI.createView({
     layout : 'vertical',
@@ -59,7 +58,7 @@ function QuestionWithOptionsView(question, answer, number) {
     _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
       var subQuestionNumber = number + '.' + (index + 1);
-      self.add(new QuestionView(subQuestion, subQuestionAnswer, null, subQuestionNumber));
+      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber));
     });
   };
 
