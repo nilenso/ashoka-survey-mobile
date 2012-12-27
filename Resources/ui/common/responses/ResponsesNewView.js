@@ -7,7 +7,7 @@ function ResponsesNewView(surveyID) {
   var QuestionView = require('ui/common/questions/QuestionView');
   var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
   var TopLevelView = require('ui/common/components/TopLevelView');
-  var responseViewHelper = new ResponseViewHelper;
+  var responseViewHelper = new ResponseViewHelper();
   var ButtonView = require('ui/common/components/ButtonView');
   var Toast = require('ui/common/components/Toast');
 
@@ -65,7 +65,7 @@ function ResponsesNewView(surveyID) {
       return {
         'question_id' : questionID,
         'content' : questionView.getValueField().getValue()
-      }
+      };
     });
     var responseErrors = Response.validate(answersData, status);
     if (!_.isEmpty(responseErrors)) {

@@ -40,8 +40,8 @@ if (Ti.version < 1.8) {
 		});
 		Window.add(navGroup);
 		Window.open();
-	}	
-	if (Ti.App.Properties.getString('server_url') == null) {
+	}
+	if (Ti.App.Properties.getString('server_url') === null) {
 		Ti.App.Properties.setString('server_url', 'http://survey-web-staging.herokuapp.com');
 	}
 	Ti.include('/test/tests.js');
