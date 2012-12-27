@@ -27,7 +27,7 @@ function ResponseShowView(responseID) {
         color : Palette.PRIMARY_COLOR,
         font : {
           fontSize : '20dip',
-          fontStyle : 'bold',
+          fontStyle : 'bold'
         },
         left : Measurements.PADDING_SMALL
       });
@@ -67,18 +67,20 @@ function ResponseShowView(responseID) {
     data : convertResponseDataForTable()
   });
 
-  var responseEditButton = new ButtonView('Edit this Response', {
-    'width' : '80%'
+  var responseEditButton = new ButtonView('Edit', {
+    width : '48%',
+    left : '1%'
+  });
+
+  var responseDeleteButton = new ButtonView('Delete', {
+    width : '48%',
+    right : '1%'
   });
 
   responseEditButton.addEventListener('click', function(e) {
     self.fireEvent('ResponseShowView:responseEdit', {
       responseID : responseID
     });
-  });
-
-  var responseDeleteButton = new ButtonView('Delete this Response', {
-    'width' : '80%'
   });
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
@@ -104,22 +106,23 @@ function ResponseShowView(responseID) {
   });
 
   var buttonsView = Ti.UI.createView({
-    layout : 'vertical'
+    layout : 'horizontal'
   });
-  buttonsView.add(responseEditButton);
   buttonsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+  buttonsView.add(responseEditButton);
+  buttonsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL, { width : '2%'}));
   buttonsView.add(responseDeleteButton);
 
-  table.setFooterView(buttonsView);
+  table.setHeaderView(buttonsView);
 
   var refreshView = function() {
     table.setData(convertResponseDataForTable());
   };
 
   Ti.App.addEventListener('updatedResponse', refreshView);
-
+  // self.add(buttonsView);
   self.add(table);
   return self;
-};
+}
 
 module.exports = ResponseShowView;

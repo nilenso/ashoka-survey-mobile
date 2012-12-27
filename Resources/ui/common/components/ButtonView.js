@@ -16,7 +16,9 @@ var ButtonView = function(title, options) {
     font : {
       fontSize : options.fontSize || Measurements.FONT_BIG    },
     enabled : options.enabled === undefined ? true : options.enabled,
-    height : options.height || '40dip'
+    height : options.height || '40dip',
+    left : options.left,
+    right : options.right
   });
 
   return self;
