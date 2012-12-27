@@ -93,7 +93,7 @@ var Response = new Ti.App.joli.model({
         if (answerData.id)
           return answerData.id;
       });
-      var obsoleteAnswers = _(this.answers()).select(function(answer) {
+      var obsoleteAnswers = _(this.unsortedAnswers()).select(function(answer) {
         Ti.API.info("answer id " + answer.id);
         return !_(answerIDs).include(answer.id);
       });
