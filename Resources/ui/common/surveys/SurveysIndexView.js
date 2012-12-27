@@ -85,7 +85,7 @@ function SurveysIndexView() {
     });
   };
 
-  var table = Titanium.UI.createView({
+  var table = Titanium.UI.createScrollView({
     top : self.headerHeight,
     height : Ti.UI.SIZE,
     layout : 'vertical'
