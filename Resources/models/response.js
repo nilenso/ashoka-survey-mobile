@@ -238,7 +238,7 @@ var Response = new Ti.App.joli.model({
         return question.id;
       });
       var sortedAnswers = _(answers).sortBy(function(answer) {
-        return questionIDs.indexOf(answer.question().id);
+        return questionIDs.indexOf(answer.question_id);
       });
       return sortedAnswers;
     },
@@ -248,7 +248,7 @@ var Response = new Ti.App.joli.model({
     },
 
     destroyAnswers : function() {
-      _(this.answers()).each(function(answer) {
+      _(this.unsortedAnswers()).each(function(answer) {
         answer.destroyAll();
       });
     },
