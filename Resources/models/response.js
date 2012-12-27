@@ -233,14 +233,18 @@ var Response = new Ti.App.joli.model({
     },
 
     answers : function() {
+      var answers = this.unsortedAnswers();
       var questionIDs = _(this.questions()).map(function(question) {
         return question.id;
       });
-      var answers = Answer.findBy('response_id', this.id);
       var sortedAnswers = _(answers).sortBy(function(answer) {
         return questionIDs.indexOf(answer.question().id);
       });
       return sortedAnswers;
+    },
+
+    unsortedAnswers : function() {
+      return Answer.findBy('response_id', this.id);
     },
 
     destroyAnswers : function() {
@@ -261,13 +265,13 @@ var Response = new Ti.App.joli.model({
     },
 
     hasImageAnswer : function() {
-      return _(this.answers()).any(function(answer) {
+      return _(this.unsortedAnswers()).any(function(answer) {
         return (answer.isImage() && answer.image);
       });
     },
 
     identifierAnswers : function() {
-      var identifiers = _(this.answers()).select(function(answer) {
+      var identifiers = _(this.unsortedAnswers()).select(function(answer) {
         return answer.question().identifier;
       });
       if (_(identifiers).isEmpty()) {
