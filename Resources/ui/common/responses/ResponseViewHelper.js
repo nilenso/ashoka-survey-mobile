@@ -89,6 +89,7 @@ function ResponseViewHelper() {
   self.paginate = function(questions, scrollableView, buttons, response) {
 
      var pagedQuestions = groupQuestionsByPage(questions);
+     var currentQuestionNumber = 1;
 
     _(pagedQuestions).each(function(questions, pageNumber) {
       var questionsView = Ti.UI.createScrollView({
@@ -97,7 +98,7 @@ function ResponseViewHelper() {
 
       _(questions).each(function(question, number) {
         var answer = response ? response.answerForQuestion(question.id) : undefined;
-        var questionView = new QuestionView(question, answer, response, number + 1);
+        var questionView = new QuestionView(question, answer, response, currentQuestionNumber++);
         questionsView.add(questionView);
       });
       if (pageNumber + 1 === pagedQuestions.length) {
