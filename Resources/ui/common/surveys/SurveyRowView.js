@@ -5,10 +5,10 @@ var ButtonView = require('ui/common/components/ButtonView');
 var Measurements = require('ui/common/components/Measurements');
 
 function SurveysRowView(survey) {
-  var ROW_HEIGHT = 80;
+  var ROW_HEIGHT = 140;
 
   var self = Ti.UI.createView({
-    height : '100dip',
+    height : ROW_HEIGHT + 'dip',
     top : '10dip',
     left : '10dip'
   });
@@ -43,6 +43,7 @@ function SurveysRowView(survey) {
   var labelsView = Ti.UI.createView ({
     layout : 'vertical',
     width : '85%',
+    height : '100%',
     left : Measurements.PADDING_X_SMALL,
     backgroundFocusedColor : Palette.SECONDARY_COLOR,
     backgroundSelectedColor : Palette.SECONDARY_COLOR
@@ -65,7 +66,8 @@ function SurveysRowView(survey) {
   });
 
   var surveyInfoView = Ti.UI.createView({
-    width : '100%'
+    width : '100%',
+    bottom : '0dip'
   });
 
   var responseCountLabel = Ti.UI.createLabel({
@@ -87,18 +89,18 @@ function SurveysRowView(survey) {
   var addResponseButton = Ti.UI.createButton({
     title : '+',
     font : {
-      fontSize : Measurements.FONT_X_BIG
+      fontSize : Measurements.FONT_BIG
     },
-    color : Palette.PRIMARY_COLOR,
-    backgroundColor : Palette.SECONDARY_COLOR,
-    width : ROW_HEIGHT / 2  + 'dip',
-    height : ROW_HEIGHT / 2  + 'dip',
-    right : Measurements.PADDING_SMALL,
-    backgroundFocusedColor : Palette.SECONDARY_COLOR_LIGHT,
-    backgroundSelectedColor : Palette.SECONDARY_COLOR_LIGHT,
+    color : Palette.SECONDARY_COLOR_LIGHT,
+    backgroundColor : Palette.PRIMARY_COLOR_LIGHT,
+    width : ROW_HEIGHT / 4  + 'dip',
+    height : '100%',
+    right : '0dip',
+    backgroundFocusedColor : Palette.SECONDARY_COLOR_DARK,
+    backgroundSelectedColor : Palette.SECONDARY_COLOR_DARK,
     borderWidth : 1,
-    borderColor : Palette.SECONDARY_COLOR_DARK,
-    borderRadius : Measurements.BORDER_RADIUS
+    borderColor : Palette.PRIMARY_COLOR_LIGHT,
+    borderRadius : '5dip'
   });
 
   addResponseButton.addEventListener('click', function () {
