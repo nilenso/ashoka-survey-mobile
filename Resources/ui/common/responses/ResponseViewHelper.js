@@ -89,7 +89,7 @@ function ResponseViewHelper() {
   };
 
   var saveButton = function(clickHandler) {
-    var saveButtonView = new ButtonView('Save', {
+    var saveButtonView = new ButtonView('Save as Draft', {
       'width' : '48%'
     });
     saveButtonView.addEventListener('click', function(event) {
