@@ -250,9 +250,14 @@ var Response = new Ti.App.joli.model({
     },
 
     answerForQuestion : function(questionID) {
-      return _(this.answers()).find(function(answer) {
-        return answer.question_id == questionID;
+      var response = this;
+      var answers = Ti.App.joli.models.get('answers').all({
+        where: {
+          'response_id = ?': response.id,
+          'question_id = ?': questionID
+        }
       });
+      return answers[0];
     },
 
     hasImageAnswer : function() {
