@@ -61,11 +61,34 @@ function ResponseViewHelper() {
     return foo;
   };
 
+  var groupQuestionsByPage = function(questions) {
+    var pages = [];
+    var currentPage = 0;
+
+    _(questions).each(function(question, index) {
+      //Put categories on their own page. Don't do it if the very first question is a category.
+      if(question.type === undefined && index > 0) {
+        currentPage++;
+      }
+
+      pages[currentPage] = pages[currentPage] || [];
+      pages[currentPage].push(question);
+
+      //Page break after a category as well
+      if(question.type === undefined) {
+        currentPage++;
+      }
+      else if(pages[currentPage].length == PAGE_SIZE) {
+        currentPage++;
+      }
+    });
+
+    return pages;
+  };
+
   self.paginate = function(questions, scrollableView, buttons, response) {
 
-    var pagedQuestions = _.chain(questions).groupBy(function(a, b) {
-      return Math.floor(b / PAGE_SIZE);
-    }).toArray().value();
+     var pagedQuestions = groupQuestionsByPage(questions);
 
     _(pagedQuestions).each(function(questions, pageNumber) {
       var questionsView = Ti.UI.createScrollView({
