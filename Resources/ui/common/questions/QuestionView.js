@@ -46,17 +46,6 @@ function QuestionView(question, answer, response, number) {
   constraintsText += question.max_value ? 'Max: ' + question.max_value + ' ' : '';
   constraintsText += question.min_value ? 'Min: ' + question.min_value : '';
 
-  if (constraintsText !== '') {
-    var constraintsLabel = Ti.UI.createLabel({
-      text : constraintsText,
-      left : 5,
-      color : Palette.SECONDARY_COLOR_DARK,
-      font : {
-        fontSize : Measurements.FONT_MEDIUM      }
-    });
-    labelsView.add(constraintsLabel);
-  }
-
   var errorsLabel;
 
   self.add(labelsView);
@@ -88,7 +77,7 @@ function QuestionView(question, answer, response, number) {
   } else if (question.type === undefined) { //Category
     valueField = new CategoryView(question, response, number);
   } else {
-    valueField = new BasicQuestionView(question, content);
+    valueField = new BasicQuestionView(question, content, constraintsText);
   }
 
   self.add(valueField);

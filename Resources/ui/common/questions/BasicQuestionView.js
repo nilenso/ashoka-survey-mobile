@@ -1,12 +1,13 @@
 //BasicQuestionView Component Constructor
-function BasicQuestionView(question, content) {
+function BasicQuestionView(question, content, hintText) {
 
 	var props = {
 		borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 		color : '#336699',
 		right : 5,
 		left : 5,
-		editable : true
+		editable : true,
+		hintText : hintText
 	};
 
 	if (question.type == 'NumericQuestion')
