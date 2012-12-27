@@ -40,14 +40,14 @@ function LoginView() {
 
   var networkServerUnreachable =  function() {
     activityIndicator.hide();
-    Ti.App.removeEventListener('network.server.unreachable', networkServerUnreachable)
+    Ti.App.removeEventListener('network.server.unreachable', networkServerUnreachable);
   };
 
   Ti.App.addEventListener('network.server.unreachable', networkServerUnreachable);
 
   var networkOffline = function() {
     activityIndicator.hide();
-    Ti.App.removeEventListener('network.offline', networkOffline)
+    Ti.App.removeEventListener('network.offline', networkOffline);
   };
 
   Ti.App.addEventListener('network.offline', networkOffline);
@@ -68,7 +68,7 @@ function LoginView() {
   loginButton.addEventListener('click', function() {
     var email = emailField.getValue().trim();
     var password = passwordField.getValue();
-    if (email !== Ti.App.Properties.getString('email')) {
+    if (email.toLowerCase() !== Ti.App.Properties.getString('email').toLowerCase()) {
       var confirmDialog = new ConfirmDialog("Login", "This will clear the surveys.\n Are you sure?", onConfirm = function(e) {
         var DatabaseHelper = require("helpers/DatabaseHelper");
         DatabaseHelper.clearDownloadedData();
