@@ -125,15 +125,16 @@ function ResponseViewHelper() {
         var questionView = new QuestionView(question, answer, response, currentQuestionNumber++);
         questionsView.add(questionView);
       });
-      if (pageNumber + 1 === pagedQuestions.length) {
+
+      if (!response || response.isNotComplete()) {
         questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
         questionsView.add(saveButton(buttonClickHandler));
-        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+      }
+      questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+
+      if (pageNumber + 1 === pagedQuestions.length) {
         questionsView.add(completeButton(buttonClickHandler));
       } else {
-        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
-        questionsView.add(saveButton(buttonClickHandler));
-        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
         questionsView.add(footerView());
       }
       scrollableView.addView(questionsView);

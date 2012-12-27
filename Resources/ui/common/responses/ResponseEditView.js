@@ -19,25 +19,11 @@ function ResponseEditView(responseID) {
 	});
   self.add(scrollableView);
 
-	var saveButton = new ButtonView('Save', { 'width' : '48%' });
-
-  var completeButton = new ButtonView('Complete', { 'width' : '48%' });
-
 	var response = Response.findOneById(responseID);
 	var survey = Survey.findOneById(response.survey_id);
 	var questions = survey.firstLevelQuestionsAndCategories();
 
-  var buttons = response.isComplete() ? [completeButton] : [saveButton, completeButton];
-	responseViewHelper.paginate(questions, scrollableView, buttons, response);
-
-  var activityIndicator = Ti.UI.Android.createProgressIndicator({
-    message : 'Saving...',
-    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
-    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
-  });
-  self.add(activityIndicator);
-
-	var validateAndUpdateAnswers = function(e, status) {
+  var validateAndUpdateAnswers = function(e, status) {
     activityIndicator.show();
 		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
 		var answersData = _(questionViews).map(function(questionView, questionID) {
@@ -63,12 +49,14 @@ function ResponseEditView(responseID) {
 		activityIndicator.hide();
 	};
 
-	completeButton.addEventListener('click', function(event) {
-		validateAndUpdateAnswers(event, "complete");
-	});
-	saveButton.addEventListener('click', function(event) {
-		validateAndUpdateAnswers(event, "incomplete");
-	});
+  responseViewHelper.paginate(questions, scrollableView,response, validateAndUpdateAnswers);
+
+  var activityIndicator = Ti.UI.Android.createProgressIndicator({
+    message : 'Saving...',
+    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
+  });
+  self.add(activityIndicator);
 
 	return self;
 }
