@@ -3,6 +3,7 @@ var Question = require('models/question');
 var QuestionView = require('ui/common/questions/QuestionView');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
+var ButtonView = require('ui/common/components/ButtonView');
 var Measurements = require('ui/common/components/Measurements');
 
 function ResponseViewHelper() {
@@ -44,12 +45,13 @@ function ResponseViewHelper() {
 
   self.getQuestionViews = function(parent) {
     var foo = {};
+    var views;
     if (_(parent).isArray()) {
-      var views = _.chain(parent).map(function(scrollView) {
+      views = _.chain(parent).map(function(scrollView) {
         return scrollView.children;
       }).flatten().value();
     } else {
-      var views = parent.getChildren() || [];
+      views = parent.getChildren() || [];
     }
     _(views).each(function(view) {
       if (view.type == 'question') {
@@ -86,7 +88,29 @@ function ResponseViewHelper() {
     return pages;
   };
 
-  self.paginate = function(questions, scrollableView, buttons, response) {
+  var saveButton = function(clickHandler) {
+    var saveButtonView = new ButtonView('Save', {
+      'width' : '48%'
+    });
+    saveButtonView.addEventListener('click', function(event) {
+      clickHandler(event, "incomplete");
+    });
+
+    return saveButtonView;
+  };
+
+  var completeButton = function(clickHandler) {
+    var completeButtonView = new ButtonView('Complete', {
+      'width' : '48%'
+    });
+    completeButtonView.addEventListener('click', function(event) {
+      clickHandler(event, "complete");
+    });
+
+    return completeButtonView;
+  };
+
+  self.paginate = function(questions, scrollableView, response, buttonClickHandler) {
 
      var pagedQuestions = groupQuestionsByPage(questions);
      var currentQuestionNumber = 1;
@@ -103,11 +127,12 @@ function ResponseViewHelper() {
       });
       if (pageNumber + 1 === pagedQuestions.length) {
         questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
-        _(buttons).each(function(button) {
-          questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
-          questionsView.add(button);
-        });
+        questionsView.add(saveButton(buttonClickHandler));
+        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+        questionsView.add(completeButton(buttonClickHandler));
       } else {
+        questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+        questionsView.add(saveButton(buttonClickHandler));
         questionsView.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
         questionsView.add(footerView());
       }
@@ -121,6 +146,6 @@ function ResponseViewHelper() {
   };
 
   return self;
-};
+}
 
 module.exports = ResponseViewHelper;

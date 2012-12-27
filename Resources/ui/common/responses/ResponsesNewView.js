@@ -8,7 +8,6 @@ function ResponsesNewView(surveyID) {
   var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
   var TopLevelView = require('ui/common/components/TopLevelView');
   var responseViewHelper = new ResponseViewHelper();
-  var ButtonView = require('ui/common/components/ButtonView');
   var Toast = require('ui/common/components/Toast');
 
   var self = new TopLevelView('New Response');
@@ -21,40 +20,6 @@ function ResponsesNewView(surveyID) {
 
   var survey = Survey.findOneById(surveyID);
   var questions = survey.firstLevelQuestionsAndCategories();
-
-  var saveButton = new ButtonView('Save', {
-    'width' : '48%'
-  });
-
-  var completeButton = new ButtonView('Complete', {
-    'width' : '48%'
-  });
-
-  responseViewHelper.paginate(questions, scrollableView, [saveButton, completeButton], null);
-
-  var activityIndicator = Ti.UI.Android.createProgressIndicator({
-    message : 'Saving...',
-    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
-    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
-  });
-  self.add(activityIndicator);
-
-  var getCurrentLocation = function() {
-    var location = {};
-    Titanium.Geolocation.getCurrentPosition(function(e) {
-      if (e.error) {
-        Ti.API.info("Error getting location");
-        return;
-      }
-      location.longitude = e.coords.longitude;
-      location.latitude = e.coords.latitude;
-      Ti.API.info("longitude = " + e.coords.longitude);
-      Ti.API.info("latitude = " + e.coords.latitude);
-    });
-    return location;
-  };
-
-  var responseLocation = getCurrentLocation();
 
   var validateAndSaveAnswers = function(e, status) {
     activityIndicator.show();
@@ -80,13 +45,31 @@ function ResponsesNewView(surveyID) {
     activityIndicator.hide();
   };
 
-  completeButton.addEventListener('click', function(event) {
-    validateAndSaveAnswers(event, "complete");
-  });
+  responseViewHelper.paginate(questions, scrollableView, null, validateAndSaveAnswers);
 
-  saveButton.addEventListener('click', function(event) {
-    validateAndSaveAnswers(event, "incomplete");
+  var activityIndicator = Ti.UI.Android.createProgressIndicator({
+    message : 'Saving...',
+    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
+  self.add(activityIndicator);
+
+  var getCurrentLocation = function() {
+    var location = {};
+    Titanium.Geolocation.getCurrentPosition(function(e) {
+      if (e.error) {
+        Ti.API.info("Error getting location");
+        return;
+      }
+      location.longitude = e.coords.longitude;
+      location.latitude = e.coords.latitude;
+      Ti.API.info("longitude = " + e.coords.longitude);
+      Ti.API.info("latitude = " + e.coords.latitude);
+    });
+    return location;
+  };
+
+  var responseLocation = getCurrentLocation();
 
   return self;
 }
