@@ -32,10 +32,9 @@ function ResponseViewHelper() {
   self.displayErrors = function(responseErrors, questionViews) {
     self.resetErrors(questionViews);
     Ti.API.info("All the errors:" + responseErrors);
-    for (var answerErrors in responseErrors) {
-      Ti.API.info("Answer errors for:" + answerErrors);
-      for (var field in responseErrors[answerErrors]) {
-        var question_id = answerErrors;
+    for (var question_id in responseErrors) {
+      Ti.API.info("Answer errors for:" + question_id);
+      for (var field in responseErrors[question_id]) {
         var question = Question.findOneById(question_id);
         questionViews[question_id].setError(responseErrors[question_id][field]);
         Ti.API.info(responseErrors[question_id][field]);

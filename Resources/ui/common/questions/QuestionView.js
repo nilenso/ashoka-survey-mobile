@@ -57,12 +57,7 @@ function QuestionView(question, answer, response, number) {
     labelsView.add(constraintsLabel);
   }
 
-  var errorsLabel = Ti.UI.createLabel({
-    left : 5,
-    color : Palette.DANGER,
-    font : {
-      fontSize : Measurements.FONT_MEDIUM    }
-  });
+  var errorsLabel;
 
   self.add(labelsView);
   self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
@@ -100,12 +95,22 @@ function QuestionView(question, answer, response, number) {
   self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
 
   self.setError = function(errorText) {
-    errorsLabel.setText(errorText);
+    self.has_error = true;
+    errorsLabel = Ti.UI.createLabel({
+      left : 5,
+      color : Palette.DANGER,
+      text : errorText,
+      font : {
+        fontSize : Measurements.FONT_MEDIUM    }
+    });
     labelsView.add(errorsLabel);
   };
 
   self.resetError = function() {
-    labelsView.remove(errorsLabel);
+    if(self.has_error) {
+      labelsView.remove(errorsLabel);
+      self.has_error = false;
+    }
   };
 
   self.getValueField = function() {
