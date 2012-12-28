@@ -42,7 +42,7 @@ function SurveysRowView(survey) {
 
   var labelsView = Ti.UI.createView ({
     layout : 'vertical',
-    width : '85%',
+    width : '80%',
     height : '100%',
     left : Measurements.PADDING_X_SMALL,
     backgroundFocusedColor : Palette.SECONDARY_COLOR,
@@ -71,19 +71,21 @@ function SurveysRowView(survey) {
   });
 
   var responseCountLabel = Ti.UI.createLabel({
-    text : survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount(),
-    color : Palette.PRIMARY_COLOR_LIGHT,
+    text :  survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount(),
     right : Measurements.PADDING_SMALL,
+    color : Palette.PRIMARY_COLOR_LIGHT,
     font : {
       fontSize : Measurements.FONT_MEDIUM  }
   });
 
+  var date = ((new Date(survey.expiry_date)).toDateString()).substring(4);
+
   var expiryDateLabel = Ti.UI.createLabel({
-    text : 'Expires on: ' + survey.expiry_date,
+    text : 'Expires on: ' + date,
     color : Palette.PRIMARY_COLOR_LIGHT,
     left : Measurements.PADDING_SMALL,
     font : {
-      fontSize : Measurements.FONT_MEDIUM  }
+      fontSize : Measurements.FONT_MEDIUM }
   });
 
   var addResponseButton = Ti.UI.createButton({
@@ -93,7 +95,7 @@ function SurveysRowView(survey) {
     },
     color : Palette.SECONDARY_COLOR_LIGHT,
     backgroundColor : Palette.PRIMARY_COLOR_LIGHT,
-    width : ROW_HEIGHT / 4  + 'dip',
+    width : '15%',
     height : '100%',
     right : '0dip',
     backgroundFocusedColor : Palette.SECONDARY_COLOR_DARK,
