@@ -107,9 +107,12 @@ function ResponsesIndexView(surveyID, windowClose) {
     layout :'vertical',
     height : Ti.UI.SIZE
   });
-  
+
   surveyDetailsView = new SurveyDetailsView(survey);
   contentView.add(surveyDetailsView);
+
+  contentView.add(new SeparatorView(Palette.PRIMARY_COLOR, Measurements.PADDING_XX_SMALL));
+
   self.add(contentView);
 
   var table = Titanium.UI.createTableView({

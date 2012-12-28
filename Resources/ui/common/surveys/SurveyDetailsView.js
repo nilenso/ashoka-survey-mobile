@@ -7,8 +7,17 @@ var Measurements = require('ui/common/components/Measurements');
 
 function SurveysDetailsView(survey) {
   var self = Ti.UI.createView({
+    height : '140dip',
+    width : '100%'
+  });
+
+  var labelsView = Ti.UI.createView ({
     layout : 'vertical',
-    height : Ti.UI.SIZE
+    width : '80%',
+    height : '100%',
+    left : Measurements.PADDING_X_SMALL,
+    backgroundFocusedColor : Palette.SECONDARY_COLOR,
+    backgroundSelectedColor : Palette.SECONDARY_COLOR
   });
 
   var surveyNameLabel = Ti.UI.createLabel({
@@ -24,7 +33,7 @@ function SurveysDetailsView(survey) {
     color : Palette.PRIMARY_COLOR_LIGHT,
     left : Measurements.PADDING_SMALL,
     top : Measurements.PADDING_SMALL,
-    font : { fontSize :Measurements.FONT_MEDIUM  }
+    font : { fontSize :Measurements.FONT_SMALL  }
   });
 
   var surveyInfoView = Ti.UI.createView({
@@ -37,17 +46,24 @@ function SurveysDetailsView(survey) {
     color : Palette.PRIMARY_COLOR_LIGHT,
     right : Measurements.PADDING_SMALL,
     font : {
-      fontSize : Measurements.FONT_MEDIUM  }
+      fontSize : Measurements.FONT_MEDIUM }
   });
   var expiryDateLabel = Ti.UI.createLabel({
     text : 'Expires on: ' + survey.expiry_date,
     color : Palette.PRIMARY_COLOR_LIGHT,
     left : Measurements.PADDING_SMALL,
     font : {
-      fontSize : Measurements.FONT_MEDIUM  }
+      fontSize : Measurements.FONT_MEDIUM }
   });
 
-  var addResponseButton = new ButtonView('Add Response');
+  var addResponseButton = new ButtonView('+', {
+    font : {
+      fontSize : Measurements.FONT_BIG
+    },
+    width : '15%',
+    height : '95%',
+    right : Measurements.PADDING_X_SMALL
+  });
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
     message : 'Loading...',
@@ -66,19 +82,15 @@ function SurveysDetailsView(survey) {
     responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
   };
 
-  var headerSeparator = new SeparatorView(Palette.PRIMARY_COLOR, Measurements.PADDING_XX_SMALL);
-  var rowSeparator = new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL);
-
-  self.add(surveyNameLabel);
-  self.add(surveyDescriptionLabel);
+  labelsView.add(surveyNameLabel);
+  labelsView.add(surveyDescriptionLabel);
 
   surveyInfoView.add(expiryDateLabel);
   surveyInfoView.add(responseCountLabel);
 
-  self.add(surveyInfoView);
+  labelsView.add(surveyInfoView);
+  self.add(labelsView);
   self.add(addResponseButton);
-  self.add(rowSeparator);
-  self.add(headerSeparator);
   return (self);
 }
 
