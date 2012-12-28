@@ -37,7 +37,6 @@ function SurveysDetailsView(survey) {
   });
 
   var surveyInfoView = Ti.UI.createView({
-    height : Ti.UI.SIZE,
     width : '100%'
   });
 
@@ -48,8 +47,10 @@ function SurveysDetailsView(survey) {
     font : {
       fontSize : Measurements.FONT_MEDIUM }
   });
+  var date = ((new Date(survey.expiry_date)).toDateString()).substring(4);
+
   var expiryDateLabel = Ti.UI.createLabel({
-    text : 'Expires on: ' + survey.expiry_date,
+    text : 'Expires on: ' + date,
     color : Palette.PRIMARY_COLOR_LIGHT,
     left : Measurements.PADDING_SMALL,
     font : {

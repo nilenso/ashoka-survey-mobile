@@ -66,8 +66,7 @@ function SurveysRowView(survey) {
   });
 
   var surveyInfoView = Ti.UI.createView({
-    width : '100%',
-    bottom : '0dip'
+    width : '100%'
   });
 
   var responseCountLabel = Ti.UI.createLabel({
