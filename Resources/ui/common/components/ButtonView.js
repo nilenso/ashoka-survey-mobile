@@ -18,7 +18,8 @@ var ButtonView = function(title, options) {
     enabled : options.enabled === undefined ? true : options.enabled,
     height : options.height || '40dip',
     left : options.left,
-    right : options.right
+    right : options.right,
+    borderRadius : options.borderRadius || 0
   });
 
   return self;

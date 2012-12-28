@@ -31,7 +31,7 @@ function ResponsesIndexWindow(surveyID) {
     }
   });
 
-  var view = new ResponsesIndexView(surveyID, function() { self.close() });
+  var view = new ResponsesIndexView(surveyID, function() { self.close(); });
   self.add(view);
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({

@@ -9,6 +9,7 @@ function SurveysRowView(survey) {
 
   var self = Ti.UI.createView({
     height : ROW_HEIGHT + 'dip',
+    surveyID : survey.id,
     top : '10dip',
     left : '10dip'
   });
@@ -33,7 +34,6 @@ function SurveysRowView(survey) {
     top : '0dip',
     left : '2dip',
     borderRadius : 5,
-    surveyID : survey.id,
     backgroundColor : Palette.WHITE,
     backgroundFocusedColor : Palette.SECONDARY_COLOR,
     backgroundSelectedColor : Palette.SECONDARY_COLOR
@@ -88,21 +88,13 @@ function SurveysRowView(survey) {
       fontSize : Measurements.FONT_MEDIUM }
   });
 
-  var addResponseButton = Ti.UI.createButton({
-    title : '+',
+  var addResponseButton = new ButtonView('+', {
     font : {
       fontSize : Measurements.FONT_BIG
     },
-    color : Palette.SECONDARY_COLOR_LIGHT,
-    backgroundColor : Palette.PRIMARY_COLOR_LIGHT,
     width : '15%',
     height : '100%',
-    right : '0dip',
-    backgroundFocusedColor : Palette.SECONDARY_COLOR_DARK,
-    backgroundSelectedColor : Palette.SECONDARY_COLOR_DARK,
-    borderWidth : 1,
-    borderColor : Palette.PRIMARY_COLOR_LIGHT,
-    borderRadius : '5dip'
+    right : '0dip'
   });
 
   addResponseButton.addEventListener('click', function () {
