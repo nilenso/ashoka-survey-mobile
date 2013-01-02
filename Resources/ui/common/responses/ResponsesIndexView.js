@@ -34,7 +34,8 @@ function ResponsesIndexView(surveyID) {
         text : "Response #" + response.id.toString(),
         color : Palette.PRIMARY_COLOR,
         font : {
-          fontSize : Measurements.FONT_BIG }
+          fontSize : Measurements.FONT_BIG
+        }
       });
 
       row.add(responseLabel);
@@ -48,7 +49,8 @@ function ResponsesIndexView(surveyID) {
           text : answer.question().content + ": " + answer.contentForDisplay(),
           color : Palette.PRIMARY_COLOR,
           font : {
-            fontSize : Measurements.FONT_MEDIUM          }
+            fontSize : Measurements.FONT_MEDIUM
+          }
         });
         view.add(label);
         if (answer.isImage()) {
@@ -91,7 +93,7 @@ function ResponsesIndexView(surveyID) {
       self.add(progressBar);
       progressBar.init('response.sync.' + survey.id + '.completed', survey.responseCount());
       progressBar.setMessage('Syncing responses...');
-      survey.syncResponses(new SyncHandler(progressBar.incrementValue, showSyncSummary));
+      survey.syncResponses(new SyncHandler(progressBar.incrementValue, function(data) { showSyncSummary(data); self.refresh(); }));
     });
   };
 
