@@ -9,7 +9,8 @@ var TableHeaderView = function(title) {
     },
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
     text : title,
-    height : Measurements.TABLE_HEADER_HEIGHT
+    height : Measurements.TABLE_HEADER_HEIGHT,
+    width : '100%'
   });
 
   return self;
