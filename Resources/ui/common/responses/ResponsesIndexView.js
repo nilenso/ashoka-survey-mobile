@@ -5,6 +5,7 @@ function ResponsesIndexView(surveyID) {
   var Survey = require('models/survey');
   var TopLevelView = require('ui/common/components/TopLevelView');
   var progressBarView = require('ui/common/components/ProgressBar');
+  var TableHeaderView = require('ui/common/components/TableHeaderView');
   var SurveyDetailsView = require('ui/common/surveys/SurveyDetailsView');
   var Palette = require('ui/common/components/Palette');
   var SeparatorView = require('ui/common/components/SeparatorView');
@@ -16,8 +17,9 @@ function ResponsesIndexView(surveyID) {
 
   var convertModelDataForTable = function() {
     var responses = survey.responsesForCurrentUser();
-    var incompleteSection = Ti.UI.createTableViewSection({ headerTitle: 'Incomplete Responses' });
-    var completeSection = Ti.UI.createTableViewSection({ headerTitle: 'Complete Responses' });
+
+    var incompleteSection = Ti.UI.createTableViewSection({ headerView : new TableHeaderView('Incomplete Responses') });
+    var completeSection = Ti.UI.createTableViewSection({ headerView : new TableHeaderView('Complete Responses') });
 
     _(responses).map(function(response) {
       var row = Ti.UI.createTableViewRow({

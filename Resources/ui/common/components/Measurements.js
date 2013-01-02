@@ -1,5 +1,6 @@
 var Measurements = {
   HEADER_HEIGHT : "60dip",
+  TABLE_HEADER_HEIGHT : "30dip",
 
   FONT_BIG : '20dip',
   FONT_X_BIG : '30dip',
