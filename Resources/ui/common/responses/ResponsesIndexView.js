@@ -125,7 +125,7 @@ function ResponsesIndexView(surveyID) {
 
   table.addEventListener('click', function(e) {
     self.fireEvent('ResponsesIndexView:table_row_clicked', {
-      responseID : e.rowData.responseID
+      responseID : e.row.responseID
     });
   });
 
