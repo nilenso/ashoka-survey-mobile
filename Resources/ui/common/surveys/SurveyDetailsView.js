@@ -97,6 +97,10 @@ function SurveysDetailsView(survey) {
     activityIndicator.hide();
   });
 
+  syncResponseButton.addEventListener('click', function() {
+    self.fireEvent('SurveyDetailsView.sync_responses');
+  });
+
   self.refresh = function() {
     responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
   };

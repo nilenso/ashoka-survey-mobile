@@ -3,35 +3,13 @@ function ResponsesIndexWindow(surveyID) {
   var ResponseShowView = require('ui/common/responses/ResponseShowView');
   var ResponseShowWindow = require('ui/handheld/android/ResponseShowWindow');
   var Survey = require('models/survey');
-  var progressBar = require('ui/common/components/ProgressBar');
-  var loggedIn = require('helpers/LoginHelper').loggedIn;
 
   var self = Ti.UI.createWindow({
     navBarHidden : true,
-    backgroundColor : "#fff",
-
-    activity : {
-      onCreateOptionsMenu : function(e) {
-        var menu = e.menu;
-        var menuItemSync = menu.add({
-          title : "Sync",
-          groupId : 1
-        });
-
-        menuItemSync.addEventListener('click', function() {
-          view.syncResponses();
-        });
-        menuItemSync.setIcon("images/refresh.png");
-      },
-
-      onPrepareOptionsMenu : function(e) {
-        var menu = e.menu;
-        menu.setGroupEnabled(1, loggedIn());
-      }
-    }
+    backgroundColor : "#fff"
   });
 
-  var view = new ResponsesIndexView(surveyID, function() { self.close(); });
+  var view = new ResponsesIndexView(surveyID);
   self.add(view);
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
@@ -63,7 +41,7 @@ function ResponsesIndexWindow(surveyID) {
       Ti.App.removeEventListener('ResponsesNewWindow:closed', view.refresh);
       Ti.App.removeEventListener('ResponseShowWindow:closed', view.refresh);
       Ti.App.removeEventListener('ResponseShowWindow:back', view.refresh);
-  })
+  });
 
   return self;
 }

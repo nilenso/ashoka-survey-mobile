@@ -2,6 +2,6 @@ var SyncHandler = function(notifySyncProgress, notifySyncComplete, notifySyncErr
   this.notifySyncProgress = notifySyncProgress || function(){};
   this.notifySyncComplete = notifySyncComplete || function(){};
   this.notifySyncError = notifySyncError || function(){};
-}
+};
 
 module.exports = SyncHandler;

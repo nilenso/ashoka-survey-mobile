@@ -1,5 +1,5 @@
 //ResponsesIndexView Component Constructor
-function ResponsesIndexView(surveyID, windowClose) {
+function ResponsesIndexView(surveyID) {
   var _ = require('lib/underscore')._;
   var Response = require('models/response');
   var Survey = require('models/survey');
@@ -94,8 +94,7 @@ function ResponsesIndexView(surveyID, windowClose) {
   };
 
   var showSyncSummary = function(data) {
-    Ti.API.info("showing sync summary: " + data)
-    windowClose();
+    Ti.API.info("showing sync summary: " + data);
     if (data.message)
       alert(data.message);
     else
@@ -110,6 +109,8 @@ function ResponsesIndexView(surveyID, windowClose) {
 
   surveyDetailsView = new SurveyDetailsView(survey);
   contentView.add(surveyDetailsView);
+
+  surveyDetailsView.addEventListener('SurveyDetailsView.sync_responses',  self.syncResponses);
 
   contentView.add(new SeparatorView(Palette.PRIMARY_COLOR, Measurements.PADDING_XX_SMALL));
 
