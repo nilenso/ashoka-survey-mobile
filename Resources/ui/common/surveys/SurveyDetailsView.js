@@ -57,14 +57,32 @@ function SurveysDetailsView(survey) {
       fontSize : Measurements.FONT_MEDIUM }
   });
 
+  var buttons = Ti.UI.createView({
+    layout : 'vertical',
+    height : '95%',
+    width : '15%',
+    right : Measurements.PADDING_X_SMALL
+  });
+
   var addResponseButton = new ButtonView('+', {
     font : {
       fontSize : Measurements.FONT_BIG
     },
-    width : '15%',
-    height : '95%',
-    right : Measurements.PADDING_X_SMALL
+    width : '100%',
+    height : '45%'
   });
+
+  var syncResponseButton = new ButtonView('↻', {
+    font : {
+      fontSize : Measurements.FONT_BIG
+    },
+    width : '100%',
+    height : '45%'
+  });
+
+  buttons.add(addResponseButton);
+  buttons.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+  buttons.add(syncResponseButton);
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
     message : 'Loading...',
@@ -91,7 +109,7 @@ function SurveysDetailsView(survey) {
 
   labelsView.add(surveyInfoView);
   self.add(labelsView);
-  self.add(addResponseButton);
+  self.add(buttons);
   return (self);
 }
 
