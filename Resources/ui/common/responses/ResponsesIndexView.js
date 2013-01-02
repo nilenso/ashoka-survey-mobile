@@ -12,32 +12,27 @@ function ResponsesIndexView(surveyID) {
   var NetworkHelper = require('helpers/NetworkHelper');
   var SyncHandler = require('models/syncHandler');
 
-  var colorForResponse = function(response) {
-    return (response.status === 'complete')? Palette.SECONDARY_COLOR : Palette.SECONDARY_COLOR_LIGHT;
-  };
-
   var survey = Survey.findOneById(surveyID);
 
   var convertModelDataForTable = function() {
     var responses = survey.responsesForCurrentUser();
-    responses = _(responses).sortBy(function(response){
-      return response.status;
-    });
+    var incompleteSection = Ti.UI.createTableViewSection({ headerTitle: 'Incomplete Responses' });
+    var completeSection = Ti.UI.createTableViewSection({ headerTitle: 'Complete Responses' });
 
-    return _(responses).map(function(response) {
+    _(responses).map(function(response) {
       var row = Ti.UI.createTableViewRow({
         hasDetail : true,
         height : Titanium.UI.SIZE,
         layout : 'vertical',
         responseID : response.id,
-        backgroundColor : colorForResponse(response)
+        backgroundColor : Palette.SECONDARY_COLOR_LIGHT
       });
 
       var responseLabel = Ti.UI.createLabel({
         text : "Response #" + response.id.toString(),
         color : Palette.PRIMARY_COLOR,
         font : {
-          fontSize : Measurements.FONT_BIG        }
+          fontSize : Measurements.FONT_BIG }
       });
 
       row.add(responseLabel);
@@ -65,10 +60,15 @@ function ResponsesIndexView(surveyID) {
         row.add(view);
       });
 
-      row.add(new SeparatorView(colorForResponse(response), Measurements.PADDING_SMALL));
+      row.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
       row.add(new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL));
-      return (row);
+      if(response.status === 'complete') {
+        completeSection.add(row);
+      } else {
+        incompleteSection.add(row);
+      }
     });
+    return [incompleteSection, completeSection];
   };
   var showMessageIfTableIsEmpty = function() {
     var responses = survey.responsesForCurrentUser();
