@@ -67,8 +67,9 @@ function LoginView() {
 
   loginButton.addEventListener('click', function() {
     var email = emailField.getValue().trim();
+    var old_email = Ti.App.Properties.getString('email');
     var password = passwordField.getValue();
-    if (email.toLowerCase() !== Ti.App.Properties.getString('email').toLowerCase()) {
+    if (old_email && (email.toLowerCase() !== old_email.toLowerCase())) {
       var confirmDialog = new ConfirmDialog("Login", "This will clear the surveys.\n Are you sure?", onConfirm = function(e) {
         var DatabaseHelper = require("helpers/DatabaseHelper");
         DatabaseHelper.clearDownloadedData();
