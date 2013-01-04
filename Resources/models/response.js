@@ -115,7 +115,7 @@ var Response = new Ti.App.joli.model({
       if (received_response['status'] === "complete") {
         var  surveyID = self.survey_id;
         self.destroy();
-        Ti.App.fireEvent('response.sync.' + surveyID, {
+        Ti.App.fireEvent('response.sync.' + self.id, {
           survey_id : surveyID
         });
         return;
@@ -152,7 +152,7 @@ var Response = new Ti.App.joli.model({
         });
       });
 
-      Ti.App.fireEvent('response.sync.' + self.survey_id, {
+      Ti.App.fireEvent('response.sync.' + self.id, {
         survey_id : self.survey_id
       });
 
@@ -175,7 +175,7 @@ var Response = new Ti.App.joli.model({
         self.has_error = true;
         message = "Some error occured";
       }
-      Ti.App.fireEvent('response.sync.' + self.survey_id , {
+      Ti.App.fireEvent('response.sync.' + self.id , {
         survey_id : self.survey_id,
         message : message
       });

@@ -154,11 +154,11 @@ var Survey = new Ti.App.joli.model({
           }
         }
         externalResponseSyncHandler.notifySyncProgress();
-        Ti.App.removeEventListener("response.sync." + self.id, syncHandler);
+        Ti.App.removeEventListener("response.sync." + response.id, syncHandler);
       };
 
       _(this.responses()).each(function(response) {
-        Ti.App.addEventListener("response.sync." + self.id, syncHandler);
+        Ti.App.addEventListener("response.sync." + response.id, syncHandler);
         response.sync();
       });
 
