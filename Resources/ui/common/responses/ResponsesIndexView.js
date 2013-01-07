@@ -80,7 +80,13 @@ function ResponsesIndexView(surveyID) {
         incompleteSection.add(row);
       }
     });
-    return [incompleteSection, completeSection];
+    var sections = [];
+    if (incompleteSection.rowCount !== 0)
+      sections.push(incompleteSection);
+    if (completeSection.rowCount !== 0)
+      sections.push(completeSection);
+
+    return sections;
   };
   var showMessageIfTableIsEmpty = function() {
     var responses = survey.responsesForCurrentUser();
