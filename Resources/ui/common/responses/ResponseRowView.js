@@ -14,14 +14,14 @@ function ResponseRowView(response) {
   var rowContent = Ti.UI.createView({
     backgroundColor : Palette.WHITE,
     borderRadius : Measurements.BORDER_RADIUS,
-    width : '95%',
-    layout : 'horizontal'
+    width : '95%'
   });
 
   self.add(rowContent);
 
   var identifierAnswersView = Ti.UI.createView({
     width : '90%',
+    height : Ti.UI.SIZE,
     layout : 'vertical',
     left : Measurements.PADDING_MEDIUM
   });
@@ -29,9 +29,11 @@ function ResponseRowView(response) {
   rowContent.add(identifierAnswersView);
 
   var responseLabel = Ti.UI.createLabel({
+    width : '6%',
+    top : '0dip',
     text : "#" + response.id.toString(),
     color : Palette.SECONDARY_COLOR,
-    right : Measurements.PADDING_SMALL,
+    right : Measurements.PADDING_XX_SMALL,
     font : {
       fontSize : Measurements.FONT_SMALL
     }
@@ -39,6 +41,7 @@ function ResponseRowView(response) {
 
   rowContent.add(responseLabel);
 
+  identifierAnswersView.add(new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL));
   var answersData = _(response.identifierAnswers()).each(function(answer) {
     var view = Ti.UI.createView({
       layout : 'horizontal'
@@ -61,6 +64,7 @@ function ResponseRowView(response) {
     }
     identifierAnswersView.add(view);
   });
+  identifierAnswersView.add(new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL));
 
   self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
   return (self);
