@@ -26,9 +26,17 @@ function ResponsesIndexView(surveyID) {
         hasDetail : true,
         height : Titanium.UI.SIZE,
         layout : 'vertical',
-        responseID : response.id,
-        backgroundColor : Palette.SECONDARY_COLOR_LIGHT
+        responseID : response.id
       });
+
+      var rowContent = Ti.UI.createView({
+        backgroundColor : Palette.WHITE,
+        borderRadius : Measurements.BORDER_RADIUS,
+        width : '95%',
+        layout : 'vertical'
+      });
+
+      row.add(rowContent);
 
       var responseLabel = Ti.UI.createLabel({
         text : "Response #" + response.id.toString(),
@@ -38,7 +46,7 @@ function ResponsesIndexView(surveyID) {
         }
       });
 
-      row.add(responseLabel);
+      rowContent.add(responseLabel);
 
       var answersData = _(response.identifierAnswers()).each(function(answer) {
         var view = Ti.UI.createView({
@@ -61,11 +69,11 @@ function ResponsesIndexView(surveyID) {
           });
           view.add(imageView);
         }
-        row.add(view);
+        rowContent.add(view);
       });
 
       row.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
-      row.add(new SeparatorView(Palette.WHITE, Measurements.PADDING_SMALL));
+
       if(response.status === 'complete') {
         completeSection.add(row);
       } else {

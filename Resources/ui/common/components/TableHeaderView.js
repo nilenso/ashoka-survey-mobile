@@ -2,10 +2,10 @@ var Palette = require('ui/common/components/Palette');
 var Measurements = require('ui/common/components/Measurements');
 var TableHeaderView = function(title) {
   var self = Ti.UI.createLabel({
-    backgroundColor : Palette.PRIMARY_COLOR,
-    color : Palette.SECONDARY_COLOR_LIGHT,
+    color : Palette.PRIMARY_COLOR,
     font : {
-      fontSize : Measurements.FONT_MEDIUM
+      fontSize : Measurements.FONT_MEDIUM,
+      fontWeight : 'bold'
     },
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
     text : title,

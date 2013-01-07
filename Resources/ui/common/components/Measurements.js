@@ -12,7 +12,7 @@ var Measurements = {
   PADDING_XX_SMALL : '1dip',
   PADDING_MEDIUM : '10dip',
 
-  BORDER_RADIUS : 10
+  BORDER_RADIUS : 5
 };
 
 module.exports = Measurements;
