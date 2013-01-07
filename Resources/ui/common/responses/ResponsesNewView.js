@@ -33,15 +33,17 @@ function ResponsesNewView(surveyID) {
       };
     });
     var responseErrors = Response.validate(answersData, status);
+    var toast;
     if (!_.isEmpty(responseErrors)) {
       responseViewHelper.displayErrors(responseErrors, questionViews);
       responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
-      (new Toast('There were some errors in the response.')).show();
+      toast = new Toast('There were some errors in the response.');
     } else {
       Response.createRecord(surveyID, status, answersData, responseLocation);
-      (new Toast('Response saved')).show();
+      toast = new Toast('Response saved');
       self.fireEvent('ResponsesNewView:savedResponse');
     }
+    toast.show();
     activityIndicator.hide();
   };
 

@@ -36,16 +36,18 @@ function ResponseEditView(responseID) {
 			};
 		});
 		responseErrors = Response.validate(answersData, status);
+    var toast;
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
 			responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
-			(new Toast('There were some errors in the response.')).show();
+			toast = new Toast('There were some errors in the response.');
 		} else {
 			var response = Response.findOneById(responseID);
 			response.update(status, answersData);
-			(new Toast('Response saved')).show();
+			toast = Toast('Response saved');
 			self.fireEvent('ResponsesEditView:savedResponse');
 		}
+    toast.show();
 		activityIndicator.hide();
 	};
 
