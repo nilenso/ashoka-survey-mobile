@@ -12,6 +12,7 @@ function ResponsesIndexView(surveyID) {
   var Measurements = require('ui/common/components/Measurements');
   var NetworkHelper = require('helpers/NetworkHelper');
   var SyncHandler = require('models/syncHandler');
+  var ResponseRowView = require('ui/common/responses/ResponseRowView');
 
   var survey = Survey.findOneById(surveyID);
 
@@ -22,57 +23,7 @@ function ResponsesIndexView(surveyID) {
     var completeSection = Ti.UI.createTableViewSection({ headerView : new TableHeaderView('Complete Responses') });
 
     _(responses).map(function(response) {
-      var row = Ti.UI.createTableViewRow({
-        hasDetail : true,
-        height : Titanium.UI.SIZE,
-        layout : 'vertical',
-        responseID : response.id
-      });
-
-      var rowContent = Ti.UI.createView({
-        backgroundColor : Palette.WHITE,
-        borderRadius : Measurements.BORDER_RADIUS,
-        width : '95%',
-        layout : 'vertical'
-      });
-
-      row.add(rowContent);
-
-      var responseLabel = Ti.UI.createLabel({
-        text : "Response #" + response.id.toString(),
-        color : Palette.PRIMARY_COLOR,
-        font : {
-          fontSize : Measurements.FONT_BIG
-        }
-      });
-
-      rowContent.add(responseLabel);
-
-      var answersData = _(response.identifierAnswers()).each(function(answer) {
-        var view = Ti.UI.createView({
-          layout : 'horizontal',
-          left : Measurements.PADDING_MEDIUM
-        });
-        var label = Ti.UI.createLabel({
-          text : answer.question().content + ": " + answer.contentForDisplay(),
-          color : Palette.PRIMARY_COLOR,
-          font : {
-            fontSize : Measurements.FONT_MEDIUM
-          }
-        });
-        view.add(label);
-        if (answer.isImage()) {
-          var imageView = Ti.UI.createImageView({
-            width : 100,
-            height : 100,
-            image : answer.image
-          });
-          view.add(imageView);
-        }
-        rowContent.add(view);
-      });
-
-      row.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+      var row = new ResponseRowView(response);
 
       if(response.status === 'complete') {
         completeSection.add(row);
