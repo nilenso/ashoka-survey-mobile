@@ -10,9 +10,10 @@ function ResponseViewHelper() {
   var self = {};
   var PAGE_SIZE = 7;
 
-  var footerView = function() {
+  var footerView = function(pageNumber, totalPages) {
+    var footerText = "<< Swipe to turn pages (" + pageNumber + "/" + totalPages + ")  >>";
     return Ti.UI.createLabel({
-      text : "<< Swipe to turn pages >>",
+      text : footerText,
       textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
       color : Palette.SECONDARY_COLOR_LIGHT,
       backgroundColor : Palette.PRIMARY_COLOR,
@@ -134,7 +135,7 @@ function ResponseViewHelper() {
       if (pageNumber + 1 === pagedQuestions.length) {
         questionsView.add(completeButton(buttonClickHandler));
       } else {
-        questionsView.add(footerView());
+        questionsView.add(footerView(pageNumber + 1, pagedQuestions.length));
       }
       scrollableView.addView(questionsView);
     });
