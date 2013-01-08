@@ -18,7 +18,6 @@ function PhotoQuestionView(question, image) {
 			image : image
 		});
 		self.add(imageView);
-		self.image = image;
 
 		var clearPictureButton = new ButtonView('Clear the Picture', { 'width' : '48%' });
 
@@ -28,10 +27,20 @@ function PhotoQuestionView(question, image) {
 			self.image = null;
 			self.remove(imageView);
 			self.remove(clearPictureButton);
-		})
+		});
 	};
 
 	self.add(pictureButton);
+
+	var resizeImage = function(image) {
+		var imageView = Ti.UI.createImageView({
+			width : 1280,
+			height : (image.height / image.width) * 1280,
+			image : image
+		});
+		var res_image = imageView.toImage().media;
+		return res_image;
+	};
 
 	pictureButton.addEventListener('click', function() {
 		Ti.Media.showCamera({
@@ -42,6 +51,8 @@ function PhotoQuestionView(question, image) {
 							self.remove(childView);
 					});
 					addImageView(event.media);
+					self.image = resizeImage(event.media);
+
 				} else {
 					alert("got the wrong type back :" + event.mediaType);
 				}
@@ -63,7 +74,7 @@ function PhotoQuestionView(question, image) {
 
 	self.getValue = function() {
 		if (self.image) {
-			filename = "image_" + (new Date()).valueOf() + ".jpg"
+			filename = "image_" + (new Date()).valueOf() + ".jpg";
 			var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
 			file.write(self.image);
 			return file.nativePath;
