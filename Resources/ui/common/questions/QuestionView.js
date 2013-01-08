@@ -19,7 +19,7 @@ function QuestionView(question, answer, response, number) {
     answerID : answer ? answer.id : null
   });
 
-  var questionText = number + ') ';
+  var questionText = number + '. ';
   questionText += question['content'];
   questionText += question.mandatory ? ' *' : '';
 
@@ -35,7 +35,7 @@ function QuestionView(question, answer, response, number) {
     left : 5,
     color : Palette.PRIMARY_COLOR,
     font : {
-      fontSize : Measurements.FONT_BIG,
+      fontSize : Measurements.FONT_MEDIUM,
       fontWeight : question.type ? 'normal' : 'bold'
     }
   });
