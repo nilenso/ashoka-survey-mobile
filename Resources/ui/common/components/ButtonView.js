@@ -14,7 +14,7 @@ var ButtonView = function(title, options) {
     color : options.color || Palette.SECONDARY_COLOR_LIGHT,
     width : options.width || '80%',
     font : {
-      fontSize : options.fontSize || Measurements.FONT_BIG    },
+      fontSize : options.fontSize || Measurements.FONT_MEDIUM },
     enabled : options.enabled === undefined ? true : options.enabled,
     height : options.height || '40dip',
     left : options.left,
