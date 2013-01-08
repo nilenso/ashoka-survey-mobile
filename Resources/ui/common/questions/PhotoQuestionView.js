@@ -51,7 +51,7 @@ function PhotoQuestionView(question, image) {
 							self.remove(childView);
 					});
 					addImageView(event.media);
-					self.image = resizeImage(event.media);
+					self.image = event.media;
 
 				} else {
 					alert("got the wrong type back :" + event.mediaType);
@@ -76,7 +76,7 @@ function PhotoQuestionView(question, image) {
 		if (self.image) {
 			filename = "image_" + (new Date()).valueOf() + ".jpg";
 			var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
-			file.write(self.image);
+			file.write(resizeImage(self.image));
 			return file.nativePath;
 		}
 		return null;
