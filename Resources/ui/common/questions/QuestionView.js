@@ -12,37 +12,18 @@ var Measurements = require('ui/common/components/Measurements');
 function QuestionView(question, answer, response, number) {
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
-    layout : 'horizontal',
+    layout : 'vertical',
     type : question.type ? 'question' : 'category',
     id : question.id,
     height : Titanium.UI.SIZE,
     answerID : answer ? answer.id : null
   });
 
-  var questionWrapper = Ti.UI.createView({
-    height : Titanium.UI.SIZE,
-    layout : 'vertical',
-    right : Measurements.PADDING_X_SMALL,
-    width : '90%'
-  });
-  var questionNumber = Ti.UI.createLabel({
-    text : number + ".",
-    left : Measurements.PADDING_X_SMALL,
-    width : '5%',
-    color : Palette.PRIMARY_COLOR,
-    font : {
-      fontSize : Measurements.FONT_MEDIUM
-    },
-    top : Measurements.PADDING_MEDIUM
-  });
-
-  self.add(questionNumber);
-  self.add(questionWrapper);
-
-  var questionText = question['content'];
+  var questionText = number + '. ';
+  questionText += question['content'];
   questionText += question.mandatory ? ' *' : '';
 
-  questionWrapper.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
+  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
 
   var labelsView = Ti.UI.createView({
     layout : 'vertical',
@@ -67,8 +48,8 @@ function QuestionView(question, answer, response, number) {
 
   var errorsLabel;
 
-  questionWrapper.add(labelsView);
-  questionWrapper.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+  self.add(labelsView);
+  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
 
   if (question.image_url) {
     var imageView = Ti.UI.createImageView({
@@ -76,7 +57,7 @@ function QuestionView(question, answer, response, number) {
       height : 100,
       image : Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, question.id.toString())
     });
-    questionWrapper.add(imageView);
+    self.add(imageView);
   }
 
   var valueField;
@@ -99,8 +80,8 @@ function QuestionView(question, answer, response, number) {
     valueField = new BasicQuestionView(question, content, constraintsText);
   }
 
-  questionWrapper.add(valueField);
-  questionWrapper.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
+  self.add(valueField);
+  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
 
   self.setError = function(errorText) {
     self.has_error = true;
