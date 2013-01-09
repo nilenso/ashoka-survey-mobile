@@ -49,5 +49,7 @@
         </splash>
         <theme>default</theme>
     </mobileweb>
-    <modules/>
+    <modules>
+      <module version="2.2" platform="android">ti.imagefactory</module>
+    </modules>
 </ti:app>
