@@ -10,6 +10,7 @@ function PhotoQuestionView(question, image) {
 	});
 
 	var pictureButton = new ButtonView('Take a Picture', { 'width' : '48%' });
+	var path;
 
 	var addImageView = function(image) {
 		var imageView = Ti.UI.createImageView({
@@ -32,16 +33,6 @@ function PhotoQuestionView(question, image) {
 
 	self.add(pictureButton);
 
-	var resizeImage = function(image) {
-		var imageView = Ti.UI.createImageView({
-			width : 1280,
-			height : (image.height / image.width) * 1280,
-			image : image
-		});
-		var res_image = imageView.toImage().media;
-		return res_image;
-	};
-
 	pictureButton.addEventListener('click', function() {
 		Ti.Media.showCamera({
 			success : function(event) {
@@ -52,6 +43,13 @@ function PhotoQuestionView(question, image) {
 					});
 					addImageView(event.media);
 					self.image = event.media;
+					var filename = "image_" + (new Date()).valueOf() + ".jpg";
+					var ImageFactory = require('ti.imagefactory');
+					var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
+					var new_width = 1000;
+					var new_height = (self.image.height / self.image.width) * new_width;
+					file.write(ImageFactory.imageAsResized(self.image, { width: new_width, height : new_height, quality: 0.7 }));
+					path = file.nativePath;
 
 				} else {
 					alert("got the wrong type back :" + event.mediaType);
@@ -73,11 +71,9 @@ function PhotoQuestionView(question, image) {
 	}
 
 	self.getValue = function() {
-		if (self.image) {
-			filename = "image_" + (new Date()).valueOf() + ".jpg";
-			var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
-			file.write(resizeImage(self.image));
-			return file.nativePath;
+		if (path) {
+			Ti.API.info("Photo for photo question is " + path);
+			return path;
 		}
 		return null;
 	};
