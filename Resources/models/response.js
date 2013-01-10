@@ -116,7 +116,8 @@ var Response = new Ti.App.joli.model({
         var  surveyID = self.survey_id;
         self.destroy();
         Ti.App.fireEvent('response.sync.' + self.id, {
-          survey_id : surveyID
+          survey_id : surveyID,
+          response_id : self.id
         });
         return;
       }
@@ -153,7 +154,8 @@ var Response = new Ti.App.joli.model({
       });
 
       Ti.App.fireEvent('response.sync.' + self.id, {
-        survey_id : self.survey_id
+        survey_id : self.survey_id,
+        response_id : self.id
       });
 
     },
@@ -177,7 +179,8 @@ var Response = new Ti.App.joli.model({
       }
       Ti.App.fireEvent('response.sync.' + self.id , {
         survey_id : self.survey_id,
-        message : message
+        message : message,
+        response_id : self.id
       });
     },
 
