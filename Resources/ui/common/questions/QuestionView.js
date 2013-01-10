@@ -9,7 +9,7 @@ var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Measurements = require('ui/common/components/Measurements');
 
-function QuestionView(question, answer, response, number) {
+function QuestionView(question, answer, response, number, lastQuestionNumber) {
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     layout : 'vertical',
@@ -81,7 +81,7 @@ function QuestionView(question, answer, response, number) {
   }
 
   self.add(valueField);
-  if(question.parent_id === null) {
+  if(question.parent_id === null && number != lastQuestionNumber) {
     self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_MEDIUM));
     self.add(new SeparatorView(Palette.SECONDARY_COLOR, Measurements.PADDING_XX_SMALL, { width : '90%' }));
   }

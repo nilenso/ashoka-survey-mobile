@@ -15,8 +15,8 @@ function ResponseViewHelper() {
     return Ti.UI.createLabel({
       text : footerText,
       textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-      color : Palette.SECONDARY_COLOR_LIGHT,
-      backgroundColor : Palette.PRIMARY_COLOR,
+      color : Palette.PRIMARY_COLOR_LIGHT,
+      backgroundColor : Palette.GRAY_LIGHT,
       height : '40dip',
       font : {
         fontSize : Measurements.FONT_MEDIUM      },
@@ -120,9 +120,11 @@ function ResponseViewHelper() {
         layout : 'vertical'
       });
 
+        var firstQuestionNumber = currentQuestionNumber;
       _(questions).each(function(question, number) {
+        var lastQuestionNumber = questions.length + firstQuestionNumber - 1;
         var answer = response ? response.answerForQuestion(question.id) : undefined;
-        var questionView = new QuestionView(question, answer, response, currentQuestionNumber++);
+        var questionView = new QuestionView(question, answer, response, currentQuestionNumber++, lastQuestionNumber);
         questionsView.add(questionView);
       });
 
