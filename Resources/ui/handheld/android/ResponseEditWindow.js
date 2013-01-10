@@ -10,6 +10,7 @@ function ResponseEditWindow(responseID) {
 	self.add(view);
 	
 	view.addEventListener('ResponsesEditView:savedResponse', function() {
+		Ti.App.fireEvent('ResponseEditWindow:closed');
 		self.close();
 	});
 	

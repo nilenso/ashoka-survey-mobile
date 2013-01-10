@@ -83,6 +83,7 @@ function SurveysDetailsView(survey) {
   buttons.add(addResponseButton);
   buttons.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
   buttons.add(syncResponseButton);
+  syncResponseButton.enabled = survey.responseCount() > 0;
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
     message : 'Loading...',
@@ -103,6 +104,7 @@ function SurveysDetailsView(survey) {
 
   self.refresh = function() {
     responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
+    syncResponseButton.enabled = survey.responseCount() > 0;
   };
 
   labelsView.add(surveyNameLabel);

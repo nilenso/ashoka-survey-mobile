@@ -54,7 +54,6 @@ function LoginView() {
 
   var loginDone = function() {
     activityIndicator.hide();
-    Ti.App.removeEventListener('login.done', loginDone);
   };
 
   Ti.App.addEventListener('login.done', loginDone);
