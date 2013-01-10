@@ -10,24 +10,34 @@ function PhotoQuestionView(question, image) {
 	});
 
 	var pictureButton = new ButtonView('Take a Picture', { 'width' : '48%' });
-	var path;
+	var path, imageView, clearPictureButton;
+	
+	var clearImage = function() {
+	  path = null;
+    if(imageView) {
+      self.remove(imageView);
+      imageView = null;
+    }
+    if(clearPictureButton){
+      self.remove(clearPictureButton);
+      clearPictureButton = null;
+    }
+	}
 
 	var addImageView = function(image) {
-		var imageView = Ti.UI.createImageView({
+		imageView = Ti.UI.createImageView({
 			width : 100,
 			height : 100,
 			image : image
 		});
 		self.add(imageView);
 
-		var clearPictureButton = new ButtonView('Clear the Picture', { 'width' : '48%' });
+		clearPictureButton = new ButtonView('Clear the Picture', { 'width' : '48%' });
 
 		self.add(clearPictureButton);
 
 		clearPictureButton.addEventListener('click', function() {
-			path = null;
-			self.remove(imageView);
-			self.remove(clearPictureButton);
+			clearImage();
 		});
 	};
 
@@ -42,14 +52,11 @@ function PhotoQuestionView(question, image) {
 							self.remove(childView);
 					});
 					addImageView(event.media);
-					self.image = event.media;
 					var filename = "image_" + (new Date()).valueOf() + ".jpg";
-					var ImageFactory = require('ti.imagefactory');
 					var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
-					var new_width = 1000;
-					var new_height = (self.image.height / self.image.width) * new_width;
-					file.write(ImageFactory.imageAsResized(self.image, { width: new_width, height : new_height, quality: 0.7 }));
-					path = file.nativePath;
+					file.write(event.media);
+					event.media = null;
+					resize(file);
 
 				} else {
 					alert("got the wrong type back :" + event.mediaType);
@@ -61,9 +68,24 @@ function PhotoQuestionView(question, image) {
 				Ti.API.info("camera error");
 			},
 			autohide : true,
-			mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
+			mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO],
+			allowEditing: true
 		});
 	});
+	
+	var resize = function(file) {
+	  var ImageFactory = require('ti.imagefactory');
+	  var new_width = 1000;
+	  var new_height = 500;
+	  try {
+	    file.write(ImageFactory.imageAsResized(file.read(), { width: new_width, height : new_height, quality: 0.7 }));
+	  } catch(err) {
+	    Ti.API.info("ERROR SAVING IMAGE " + err);
+	    clearImage();
+	    alert("Your phone has run out of memory.\nPlease close other running applications and try again.");
+	  }
+	  path = file.nativePath;
+	};
 
 	if (image) {
 		var imageFile = Ti.Filesystem.getFile(image);
