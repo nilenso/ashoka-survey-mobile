@@ -44,7 +44,7 @@ var LoginHelper = {
       client.onload = function() {
         Ti.App.fireEvent('login.done');
         var response = JSON.parse(this.responseText);
-        (new Toast('Logged in successfully as '+ response.username)).show();
+        (new Toast('You will automatically be logged out in an hour')).show();
         Ti.App.Properties.setString('access_token', response.access_token);
         Ti.App.Properties.setString('access_token_created_at', new Date().toString());
         Ti.API.info(response.username);
