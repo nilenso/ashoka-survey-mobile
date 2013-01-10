@@ -25,7 +25,7 @@ function PhotoQuestionView(question, image) {
 		self.add(clearPictureButton);
 
 		clearPictureButton.addEventListener('click', function() {
-			self.image = null;
+			path = null;
 			self.remove(imageView);
 			self.remove(clearPictureButton);
 		});
@@ -68,6 +68,7 @@ function PhotoQuestionView(question, image) {
 	if (image) {
 		var imageFile = Ti.Filesystem.getFile(image);
 		addImageView(imageFile.read());
+		path = imageFile.nativePath;
 	}
 
 	self.getValue = function() {
