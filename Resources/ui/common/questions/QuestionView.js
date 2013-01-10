@@ -81,7 +81,10 @@ function QuestionView(question, answer, response, number) {
   }
 
   self.add(valueField);
-  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, '10dip'));
+  if(question.parent_id === null) {
+    self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_MEDIUM));
+    self.add(new SeparatorView(Palette.SECONDARY_COLOR, Measurements.PADDING_XX_SMALL, { width : '90%' }));
+  }
 
   self.setError = function(errorText) {
     self.has_error = true;
