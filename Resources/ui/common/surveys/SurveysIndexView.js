@@ -91,7 +91,7 @@ function SurveysIndexView() {
     layout : 'vertical'
   });
 
-  label = Ti.UI.createLabel({
+  var label = Ti.UI.createLabel({
     color : '#333',
     font : {
       fontSize : Measurements.FONT_BIG    },
