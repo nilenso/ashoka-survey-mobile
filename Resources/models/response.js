@@ -188,7 +188,7 @@ var Response = new Ti.App.joli.model({
         answers_attributes : this.prepRailsParams(),
         status : this.status,
         survey_id : this.survey_id,
-        updated_at : parseInt(new Date(this.updated_at).getTime()/1000, 10),
+        updated_at : parseInt(new Date(this.updated_at).getTime(), 10),
         longitude : this.longitude,
         latitude : this.latitude,
         user_id : this.user_id,
