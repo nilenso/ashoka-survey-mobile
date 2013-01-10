@@ -164,7 +164,7 @@ var Survey = new Ti.App.joli.model({
 
       if (_(this.responses()).isEmpty()) {
         Ti.API.info("No responses");
-        Ti.App.fireEvent("survey.responses.sync", {
+        externalResponseSyncHandler.notifySyncComplete({
           empty : true
         });
       }
