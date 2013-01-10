@@ -75,10 +75,11 @@ function PhotoQuestionView(question, image) {
 	
 	var resize = function(file) {
 	  var ImageFactory = require('ti.imagefactory');
+	  var image = file.read();
 	  var new_width = 1000;
-	  var new_height = 500;
+	  var new_height = (image.height / image.width) * new_width;
 	  try {
-	    file.write(ImageFactory.imageAsResized(file.read(), { width: new_width, height : new_height, quality: 0.7 }));
+	    file.write(ImageFactory.imageAsResized(image, { width: new_width, height : new_height, quality: 0.7 }));
 	  } catch(err) {
 	    Ti.API.info("ERROR SAVING IMAGE " + err);
 	    clearImage();
