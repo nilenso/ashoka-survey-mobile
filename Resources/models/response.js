@@ -185,19 +185,24 @@ var Response = new Ti.App.joli.model({
     },
 
     sync : function() {
-      var url = Ti.App.Properties.getString('server_url') + '/api/responses';
-      var self = this;
-      var params = {
-        answers_attributes : this.prepRailsParams(),
-        status : this.status,
-        survey_id : this.survey_id,
-        updated_at : parseInt(new Date(this.updated_at).getTime(), 10),
-        longitude : this.longitude,
-        latitude : this.latitude,
-        user_id : this.user_id,
-        organization_id : this.organization_id,
-        access_token : Ti.App.Properties.getString('access_token')
-      };
+      try {
+        var url = Ti.App.Properties.getString('server_url') + '/api/responses';
+        var self = this;
+        var params = {
+          answers_attributes : this.prepRailsParams(),
+          status : this.status,
+          survey_id : this.survey_id,
+          updated_at : parseInt(new Date(this.updated_at).getTime(), 10),
+          longitude : this.longitude,
+          latitude : this.latitude,
+          user_id : this.user_id,
+          organization_id : this.organization_id,
+          access_token : Ti.App.Properties.getString('access_token')
+        };
+    } catch(err) {
+      alert(err);
+      return null;
+    }
 
       var client = Ti.Network.createHTTPClient({
         // function called when the response data is available
