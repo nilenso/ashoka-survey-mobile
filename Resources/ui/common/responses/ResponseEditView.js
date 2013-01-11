@@ -60,6 +60,11 @@ function ResponseEditView(responseID) {
   });
   self.add(activityIndicator);
 
+  self.cleanup = function() {
+    self.remove(scrollableView);
+    scrollableView = null;
+  };
+
 	return self;
 }
 

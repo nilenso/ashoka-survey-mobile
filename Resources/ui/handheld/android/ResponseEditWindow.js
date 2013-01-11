@@ -11,7 +11,15 @@ function ResponseEditWindow(responseID) {
 	
 	view.addEventListener('ResponsesEditView:savedResponse', function() {
 		Ti.App.fireEvent('ResponseEditWindow:closed');
+    	view.cleanup();
+    	view = null;		
 		self.close();
+	});
+
+	self.addEventListener('android:back', function() {
+    	view.cleanup();
+    	view = null;
+    	self.close();
 	});
 	
 	return self;
