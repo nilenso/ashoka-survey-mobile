@@ -67,7 +67,7 @@ var Answer = new Ti.App.joli.model({
       if (question.isMultiChoiceQuestion()) {
         var optionIds = content;
 
-        existing_optionIDs = _(Choice.findBy('answer_id', this.id)).map(function(choice) {
+        var existing_optionIDs = _(Choice.findBy('answer_id', this.id)).map(function(choice) {
           return choice.option_id;
         })
         var updated_at = optionIds.sort() === existing_optionIDs.sort() ? this.updated_at : parseInt(new Date().getTime()/1000);

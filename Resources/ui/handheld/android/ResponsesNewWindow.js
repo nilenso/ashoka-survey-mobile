@@ -7,7 +7,7 @@ function ResponsesNewWindow(surveyID) {
     navBarHidden : true,
     backgroundColor : "#fff"
   });
-  view = new ResponsesNewView(surveyID);
+  var view = new ResponsesNewView(surveyID);
   self.add(view);
 
   view.addEventListener('ResponsesNewView:savedResponse', function() {

@@ -76,7 +76,7 @@ function ResponsesIndexView(surveyID) {
     height : Ti.UI.SIZE
   });
 
-  surveyDetailsView = new SurveyDetailsView(survey);
+  var surveyDetailsView = new SurveyDetailsView(survey);
   contentView.add(surveyDetailsView);
 
   surveyDetailsView.addEventListener('SurveyDetailsView.sync_responses',  self.syncResponses);

@@ -21,7 +21,7 @@ var Option = new Ti.App.joli.model({
 				});
 				record.save();
 				var Question = require('models/question');
-				surveyID = Question.findById(questionID).survey_id;
+				var surveyID = Question.findById(questionID).survey_id;
 				if (!_.isEmpty(option.questions)) {
 					Question.createRecords(option.questions, surveyID, record.id, externalSyncHandler, null);
 				}

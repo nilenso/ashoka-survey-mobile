@@ -132,7 +132,7 @@ var Response = new Ti.App.joli.model({
         var file;
         if(received_answer.photo_in_base64) {
           var image = Ti.Utils.base64decode(received_answer.photo_in_base64);
-          filename = "image_" + (new Date()).valueOf() + ".jpg";
+          var filename = "image_" + (new Date()).valueOf() + ".jpg";
           file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
           file.write(image);
         }

@@ -6,7 +6,7 @@ function ResponseEditWindow(responseID) {
 		navBarHidden : true,
 		backgroundColor : "#fff"
 	});
-	view = new ResponseEditView(responseID);
+	var view = new ResponseEditView(responseID);
 	self.add(view);
 	
 	view.addEventListener('ResponsesEditView:savedResponse', function() {

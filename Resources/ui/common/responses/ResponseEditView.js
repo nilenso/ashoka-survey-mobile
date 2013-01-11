@@ -35,7 +35,7 @@ function ResponseEditView(responseID) {
 				'content' : questionView.getValueField().getValue()
 			};
 		});
-		responseErrors = Response.validate(answersData, status);
+		var responseErrors = Response.validate(answersData, status);
     var toast;
 		if (!_.isEmpty(responseErrors)) {
 			responseViewHelper.displayErrors(responseErrors, questionViews);
