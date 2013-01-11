@@ -12,10 +12,14 @@ function ResponsesNewWindow(surveyID) {
 
   view.addEventListener('ResponsesNewView:savedResponse', function() {
     Ti.App.fireEvent('ResponseNewWindow:closed');
+    view.cleanup();
+    view = null;
     self.close();
   });
 
   var confirmDialog = new ConfirmDialog("Confirmation", "This will clear the answers,\n Are you sure?", onConfirm = function(e) {
+    view.cleanup();
+    view = null;
     self.close();
   });
 

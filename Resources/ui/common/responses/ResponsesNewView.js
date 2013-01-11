@@ -73,6 +73,10 @@ function ResponsesNewView(surveyID) {
 
   var responseLocation = getCurrentLocation();
 
+  self.cleanup = function() {
+    self.remove(scrollableView);
+    scrollableView = null;
+  };
   return self;
 }
 
