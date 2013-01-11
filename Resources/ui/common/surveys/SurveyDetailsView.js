@@ -4,6 +4,7 @@ var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var ButtonView = require('ui/common/components/ButtonView');
 var Measurements = require('ui/common/components/Measurements');
+var loggedIn = require('helpers/LoginHelper').loggedIn;
 
 function SurveysDetailsView(survey) {
   var self = Ti.UI.createView({
@@ -80,10 +81,15 @@ function SurveysDetailsView(survey) {
     height : '45%'
   });
 
+  var canSync = function() {
+    Ti.API.info("Login Info" + loggedIn());
+    return (survey.responseCount() > 0) && loggedIn();
+  };
+
   buttons.add(addResponseButton);
   buttons.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
   buttons.add(syncResponseButton);
-  syncResponseButton.enabled = survey.responseCount() > 0;
+  syncResponseButton.enabled = canSync();
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
     message : 'Loading...',
@@ -104,7 +110,7 @@ function SurveysDetailsView(survey) {
 
   self.refresh = function() {
     responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
-    syncResponseButton.enabled = survey.responseCount() > 0;
+    syncResponseButton.enabled = canSync();
   };
 
   labelsView.add(surveyNameLabel);
