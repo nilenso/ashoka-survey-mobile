@@ -123,6 +123,12 @@ function ResponseShowView(responseID) {
   Ti.App.addEventListener('updatedResponse', refreshView);
   // self.add(buttonsView);
   self.add(table);
+
+  self.cleanup = function() {
+    self.remove(table);
+    table = null;
+  };
+
   return self;
 }
 

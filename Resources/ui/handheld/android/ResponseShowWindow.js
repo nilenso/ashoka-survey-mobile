@@ -28,8 +28,10 @@ function ResponseShowWindow(responseID) {
   });
 
   self.addEventListener('android:back', function() {
-    Ti.App.fireEvent('ResponseShowWindow:back');
+    view.cleanup();
+    view = null;
     self.close();
+    Ti.App.fireEvent('ResponseShowWindow:back');
   });
 
   return self;
