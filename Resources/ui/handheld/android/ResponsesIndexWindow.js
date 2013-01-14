@@ -38,7 +38,7 @@ function ResponsesIndexWindow(surveyID) {
   });
 
   self.addEventListener("android:back", function(){
-    Ti.App.removeEventListener('ResponsesNewWindow:closed', view.refresh);
+    Ti.App.removeEventListener('ResponseNewWindow:closed', view.refresh);
     Ti.App.removeEventListener('ResponseShowWindow:closed', view.refresh);
     Ti.App.removeEventListener('ResponseShowWindow:back', view.refresh);
     view.cleanup();
