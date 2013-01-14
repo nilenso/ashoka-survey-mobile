@@ -25,16 +25,16 @@ function SettingsView() {
     topLevelView.fireEvent('settings_saved');
     Ti.App.fireEvent('settings.refreshSurveys');
   });
-  //label using localization-ready strings from <app dir>/i18n/en/strings.xml
+
   var label = Ti.UI.createLabel({
-    top : '43dip',
-    color : '#000000',
+    top : '20%',
+    color : Palette.PRIMARY_COLOR,
     text : 'Server location',
-    height : 'auto',
-    width : 'auto',
-    left : 5
+    left : 5,
+    font : { fontSize : Measurements.FONT_MEDIUM }
   });
   self.add(label);
+  self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
 
   var textField = Ti.UI.createTextField({
     borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
