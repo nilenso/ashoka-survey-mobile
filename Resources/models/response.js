@@ -113,11 +113,12 @@ var Response = new Ti.App.joli.model({
 
       // for complete response
       if (received_response['status'] === "complete") {
-        var  surveyID = self.survey_id;
+        var surveyID = self.survey_id;
+        var id = self.id;
         self.destroy();
-        Ti.App.fireEvent('response.sync.' + self.id, {
+        Ti.App.fireEvent('response.sync.' + id, {
           survey_id : surveyID,
-          response_id : self.id
+          response_id : id
         });
         return;
       }

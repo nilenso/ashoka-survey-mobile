@@ -141,6 +141,7 @@ var Survey = new Ti.App.joli.model({
 
       var self = this;
       var responseSyncCount = 0;
+      var totalResponseCount =_(this.responses()).size();
 
       var syncHandler = function(data) {
         responseSyncCount++;
@@ -149,7 +150,7 @@ var Survey = new Ti.App.joli.model({
             message : data.message
           });
         } else {
-          if (self.allResponsesSynced(responseSyncCount)) {
+          if (self.allResponsesSynced(responseSyncCount, totalResponseCount)) {
             externalResponseSyncHandler.notifySyncComplete(self.syncSummary());
           }
         }
@@ -162,7 +163,7 @@ var Survey = new Ti.App.joli.model({
         response.sync();
       });
 
-      if (_(this.responses()).isEmpty()) {
+      if (totalResponseCount === 0) {
         Ti.API.info("No responses");
         externalResponseSyncHandler.notifySyncComplete({
           empty : true
@@ -175,8 +176,8 @@ var Survey = new Ti.App.joli.model({
       return this.response_objects;
     },
 
-    allResponsesSynced : function(successCount) {
-      return _(this.responses()).size() === successCount;
+    allResponsesSynced : function(successCount, total) {
+      return total === successCount;
     },
 
     syncSummary : function() {
