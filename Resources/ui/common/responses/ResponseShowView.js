@@ -19,7 +19,8 @@ function ResponseShowView(responseID) {
     var answers = response.answers();
     var responses = _(answers).map(function(answer) {
       var row = Ti.UI.createTableViewRow({
-        layout : 'vertical'
+        layout : 'vertical',
+        className : 'responseShowTableRow'
       });
 
       var questionLabel = Ti.UI.createLabel({
