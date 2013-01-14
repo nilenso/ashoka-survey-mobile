@@ -126,7 +126,7 @@ var Response = new Ti.App.joli.model({
       // for incomplete response
       self.set('web_id', received_response['id']);
       self.set('status', received_response['status']);
-      self.set('updated_at', parseInt(new Date().getTime()/1000, 10));
+      self.set('updated_at', parseInt(new Date(received_response['updated_at']).getTime()/1000, 10));
       self.save();
 
       _(received_response.answers).each(function(received_answer, index) {
@@ -143,7 +143,7 @@ var Response = new Ti.App.joli.model({
           'question_id' : received_answer.question_id,
           'web_id' : received_answer.id,
           'content' : received_answer.content,
-          'updated_at' : parseInt(new Date().getTime()/1000, 10),
+          'updated_at' : parseInt(new Date(received_answer.updated_at).getTime()/1000, 10),
           'image' : file && file.nativePath
         });
         new_answer.save();
