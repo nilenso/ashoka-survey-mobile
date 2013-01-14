@@ -37,10 +37,13 @@ function ResponsesIndexWindow(surveyID) {
     self.removeEventListener('android:back', disableBackButton);
   });
 
-  view.addEventListener('close', function() {
-      Ti.App.removeEventListener('ResponsesNewWindow:closed', view.refresh);
-      Ti.App.removeEventListener('ResponseShowWindow:closed', view.refresh);
-      Ti.App.removeEventListener('ResponseShowWindow:back', view.refresh);
+  self.addEventListener("android:back", function(){
+    Ti.App.removeEventListener('ResponsesNewWindow:closed', view.refresh);
+    Ti.App.removeEventListener('ResponseShowWindow:closed', view.refresh);
+    Ti.App.removeEventListener('ResponseShowWindow:back', view.refresh);
+    view.cleanup();
+    view = null;
+    self.close();
   });
 
   return self;

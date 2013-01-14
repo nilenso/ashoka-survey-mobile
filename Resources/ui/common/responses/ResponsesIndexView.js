@@ -120,6 +120,14 @@ function ResponsesIndexView(surveyID) {
   Ti.App.addEventListener('ResponseNewWindow:closed', self.refresh);
 
   showMessageIfTableIsEmpty();
+
+  self.cleanup = function() {
+    contentView.remove(table);
+    table = null;
+    self.remove(contentView);
+    contentView = null;
+  };
+
   return self;
 }
 
