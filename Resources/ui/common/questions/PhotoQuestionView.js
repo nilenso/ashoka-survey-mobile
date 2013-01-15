@@ -13,8 +13,10 @@ function PhotoQuestionView(question, image) {
   var path, imageView, clearPictureButton;
 
   var deleteImage = function() {
-    var imageFile = Ti.Filesystem.getFile(path);
-    imageFile.deleteFile();
+    if (path) {
+      var imageFile = Ti.Filesystem.getFile(path);
+      imageFile.deleteFile();
+    }
   };
 
   var clearImage = function() {
