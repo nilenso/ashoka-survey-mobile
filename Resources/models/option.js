@@ -6,6 +6,7 @@ var Option = new Ti.App.joli.model({
 		id : 'INTEGER PRIMARY KEY',
 		content : 'TEXT',
 		question_id : 'INTEGER',
+		order_number : 'INTEGER'
 	},
 
 	methods : {
@@ -17,7 +18,8 @@ var Option = new Ti.App.joli.model({
 				var record = that.newRecord({
 					id : option.id,
 					content : option.content,
-					question_id : questionID
+					question_id : questionID,
+					order_number : option.order_number
 				});
 				record.save();
 				var Question = require('models/question');

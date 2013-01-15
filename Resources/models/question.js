@@ -87,7 +87,9 @@ var Question = new Ti.App.joli.model({
     },
 
     options : function() {
-      return Option.findBy('question_id', this.id);
+      return _(Option.findBy('question_id', this.id)).sortBy(function(option) {
+        return option.order_number;
+      });
     },
 
     parentQuestion : function() {
