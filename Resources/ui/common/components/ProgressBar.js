@@ -39,6 +39,15 @@ var ProgressBarView = function() {
     }
   };
 
+  self.hideView = function() {
+    self.reset();
+    self.hide();
+  };
+
+  self.isHidden = function() {
+    return progressBar.hidden;
+  };
+
   self.reset = function() {
     progressBar.hidden = true;
     progressBar.setValue(0);

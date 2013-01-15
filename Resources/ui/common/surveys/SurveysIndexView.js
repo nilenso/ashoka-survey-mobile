@@ -56,13 +56,17 @@ function SurveysIndexView() {
   };
 
   var errorListener = function(data) {
-    progressBarView.hide();
-    self.remove(progressBarView);
     if (data.status >= 400) {
       alert("Your server isn't responding. Sorry about that.");
     } else if (data.status === 0) {
-      alert("Couldn't reach the server.");
+      Survey.truncate();
+      if(!progressBarView.isHidden()) {
+        alert("We have encountered an error fetching your surveys.\nPlease fetch your surveys again.");
+        self.refresh();
+      }
     }
+    progressBarView.hideView();
+    self.remove(progressBarView);
   };
 
   var progressSurveyComplete = function(){
