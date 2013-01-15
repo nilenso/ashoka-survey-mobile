@@ -36,7 +36,7 @@ function OptionView(option, checked, response, number) {
   });
 
   var showSubQuestions = function() {
-    var subQuestions = option.firstLevelSubQuestions();
+    var subQuestions = option.firstLevelSubElements();
     var QuestionView = require('ui/common/questions/QuestionView');
     _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;

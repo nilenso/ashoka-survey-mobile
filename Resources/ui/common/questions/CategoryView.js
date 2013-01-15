@@ -10,7 +10,7 @@ function CategoryView(category, response, number) {
 
   Ti.API.info("Showing sub questions for" + category.content);
   var QuestionView = require('ui/common/questions/QuestionView');
-  var subQuestions = category.firstLevelSubQuestions();
+  var subQuestions = category.firstLevelSubElements();
   _(subQuestions).each(function(subQuestion, index) {
     var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
     var subQuestionNumber = number + '.' + (index + 1);
