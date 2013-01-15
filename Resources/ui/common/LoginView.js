@@ -38,25 +38,23 @@ function LoginView() {
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
 
-  var networkServerUnreachable =  function() {
-    activityIndicator.hide();
-    Ti.App.removeEventListener('network.server.unreachable', networkServerUnreachable);
-  };
-
-  Ti.App.addEventListener('network.server.unreachable', networkServerUnreachable);
-
-  var networkOffline = function() {
-    activityIndicator.hide();
-    Ti.App.removeEventListener('network.offline', networkOffline);
-  };
-
-  Ti.App.addEventListener('network.offline', networkOffline);
-
-  var loginDone = function() {
+  topLevelView.networkServerUnreachable =  function() {
     activityIndicator.hide();
   };
 
-  Ti.App.addEventListener('login.done', loginDone);
+  Ti.App.addEventListener('network.server.unreachable', topLevelView.networkServerUnreachable);
+
+  topLevelView.networkOffline = function() {
+    activityIndicator.hide();
+  };
+
+  Ti.App.addEventListener('network.offline', topLevelView.networkOffline);
+
+  topLevelView.loginDone = function() {
+    activityIndicator.hide();
+  };
+
+  Ti.App.addEventListener('login.done', topLevelView.loginDone);
 
   self.add(activityIndicator);
   self.add(emailField);
