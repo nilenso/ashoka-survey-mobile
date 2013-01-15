@@ -69,7 +69,7 @@ function ResponseViewHelper() {
 
     _(questions).each(function(question, index) {
       //Put categories on their own page. Don't do it if the very first question is a category.
-      if(question.type === undefined && index > 0) {
+      if(question.type === undefined && pages[currentPage]) {
         currentPage++;
       }
 
