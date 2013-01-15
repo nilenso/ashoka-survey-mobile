@@ -201,7 +201,7 @@ var Response = new Ti.App.joli.model({
           access_token : Ti.App.Properties.getString('access_token')
         };
     } catch(err) {
-      alert(err);
+      alert("The application has run out of memory.\nForce Quit and try again.");
       return null;
     }
 
