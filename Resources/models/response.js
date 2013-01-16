@@ -165,13 +165,14 @@ var Response = new Ti.App.joli.model({
       var message;
       var self = data.response;
       var responseText = data.responseText;
-      if (this.status == '410') {// Response deleted on server
+      Ti.API.info("Error response with status " + data.status);
+      if (data.status == '410') {// Response deleted on server
         Ti.API.info("Response deleted on server: " + responseText);
         self.destroyAnswers();
         self.destroy();
-      } else if (this.status >= 400) {
+      } else if (data.status >= 400) {
         message = "Your server isn't responding. Sorry about that.";
-      } else if (this.status === 0) {
+      } else if (data.status === 0) {
         message = "Couldn't reach the server.";
       } else {
         Ti.API.info("Erroneous Response: " + responseText);
@@ -217,7 +218,8 @@ var Response = new Ti.App.joli.model({
         onerror : function() {
           self.syncOnError({
             response : self,
-            responseText : this.responseText
+            responseText : this.responseText,
+            status : this.status
           });
         },
         timeout : 5000 // in milliseconds
