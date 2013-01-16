@@ -64,6 +64,7 @@ function PhotoQuestionView(question, image) {
           var file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
           file.write(event.media);
           event.media = null;
+          path = file.nativePath;
           resize(file);
 
         } else {
@@ -86,14 +87,17 @@ function PhotoQuestionView(question, image) {
     var image = file.read();
     var new_width = 1000;
     var new_height = (image.height / image.width) * new_width;
-    try {
-      file.write(ImageFactory.imageAsResized(image, { width: new_width, height : new_height, quality: 0.7 }));
+    var image_module = require('org.selfkleptomaniac.ti.imageasresized');
+    image = image_module.cameraImageAsResized(image, new_width, new_height, 0);
+    try {      
+      file.write(ImageFactory.compress(image, 0.6));
     } catch(err) {
+      alert("Your phone has run out of memory.\nPlease close other running applications and try again.");
       Ti.API.info("ERROR SAVING IMAGE " + err);
       clearImage();
-      alert("Your phone has run out of memory.\nPlease close other running applications and try again.");
     }
-    path = file.nativePath;
+    file = null;
+    image = null;
   };
 
   if (image) {
