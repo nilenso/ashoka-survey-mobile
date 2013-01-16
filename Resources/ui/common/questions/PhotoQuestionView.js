@@ -10,22 +10,22 @@ function PhotoQuestionView(question, image) {
   });
 
   var pictureButton = new ButtonView('Take a Picture', { 'width' : '48%' });
-  var path, imageView, clearPictureButton;
+  var path, imageView, clearPictureButton, imageView;
 
   var deleteImage = function() {
     if (path) {
       var imageFile = Ti.Filesystem.getFile(path);
       imageFile.deleteFile();
+      path = null;
     }
   };
 
   var clearImage = function() {
     if(imageView) {
       self.remove(imageView);
-      deleteImage();
-      path = null;
       imageView = null;
     }
+    deleteImage();    
     if(clearPictureButton){
       self.remove(clearPictureButton);
       clearPictureButton = null;
