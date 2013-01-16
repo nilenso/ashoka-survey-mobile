@@ -58,7 +58,7 @@ function ResponsesIndexView(surveyID) {
       self.add(progressBar);
       progressBar.init('response.sync.' + survey.id + '.completed', survey.responseCount());
       progressBar.setMessage('Syncing responses...');
-      survey.syncResponses(new SyncHandler(progressBar.incrementValue, function(data) { showSyncSummary(data); self.refresh(); }));
+      survey.syncResponses(new SyncHandler(progressBar.incrementValue, function(data) { showSyncSummary(data); self.refresh(); }), surveyID);
     });
   };
 

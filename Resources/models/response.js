@@ -210,12 +210,15 @@ var Response = new Ti.App.joli.model({
         // function called when the response data is available
 
         onload : function() {
+          Ti.API.info("onLoad Response");
+          Ti.App.fireEvent('response:syncNextResponse' + self.survey_id);
           self.syncOnLoad({
             response : self,
             responseText : this.responseText
           });
         },
         onerror : function() {
+          Ti.App.fireEvent('response:syncNextResponse' + self.survey_id);
           self.syncOnError({
             response : self,
             responseText : this.responseText,

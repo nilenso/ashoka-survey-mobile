@@ -113,7 +113,7 @@ var Survey = new Ti.App.joli.model({
         };
 
         _(self.all()).each(function(survey) {
-          survey.syncResponses(new SyncHandler(externalResponseSyncHandler.notifySyncProgress, generateAllResponsesSyncSummary));
+          survey.syncResponses(new SyncHandler(externalResponseSyncHandler.notifySyncProgress, generateAllResponsesSyncSummary), survey.id);
         });
       });
     },
@@ -136,12 +136,18 @@ var Survey = new Ti.App.joli.model({
     }
   },
   objectMethods : {
-    syncResponses : function(externalResponseSyncHandler) {
+    syncResponses : function(externalResponseSyncHandler, surveyID) {
       Ti.App.fireEvent('responses.sync.start');
 
       var self = this;
       var responseSyncCount = 0;
       var totalResponseCount =_(this.responses()).size();
+      var responseStack = [];
+      var syncNextResponse = function() {
+        if (_.isEmpty(responseStack))
+          return;
+        responseStack.pop().sync();
+      };
 
       var syncHandler = function(data) {
         responseSyncCount++;
@@ -151,6 +157,8 @@ var Survey = new Ti.App.joli.model({
           });
         } else {
           if (self.allResponsesSynced(responseSyncCount, totalResponseCount)) {
+            responseStack = [];
+            Ti.App.removeEventListener("response:syncNextResponse" + surveyID, syncNextResponse);
             externalResponseSyncHandler.notifySyncComplete(self.syncSummary());
           }
         }
@@ -160,9 +168,16 @@ var Survey = new Ti.App.joli.model({
 
       _(this.responses()).each(function(response) {
         Ti.App.addEventListener("response.sync." + response.id, syncHandler);
-        response.sync();
+        responseStack.push(response);
       });
 
+      if(this.responseCount() > 0) {
+      var initialResponse = responseStack.pop();
+      initialResponse.sync();
+    }
+
+      Ti.App.addEventListener("response:syncNextResponse"+ surveyID, syncNextResponse);
+      
       if (totalResponseCount === 0) {
         Ti.API.info("No responses");
         externalResponseSyncHandler.notifySyncComplete({
