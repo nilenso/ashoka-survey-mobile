@@ -50,6 +50,7 @@
         <theme>default</theme>
     </mobileweb>
     <modules>
-      <module version="2.2" platform="android">ti.imagefactory</module>
+        <module platform="android" version="2.2">ti.imagefactory</module>
+        <module platform="android">org.selfkleptomaniac.ti.imageasresized</module>
     </modules>
 </ti:app>
