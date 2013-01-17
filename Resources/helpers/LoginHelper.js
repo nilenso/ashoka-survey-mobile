@@ -21,6 +21,7 @@ var LoginHelper = {
   logout : function(clearDB) {
     var confirmDialog = new ConfirmDialog("Logout", "Are you sure? This will clear all the surveys on this device.", onConfirm = function(e) {
       LoginHelper.expireSession();
+      Ti.App.Properties.setString('loggedIn', null);
       var DatabaseHelper = require('helpers/DatabaseHelper');
       DatabaseHelper.clearDatabase();
       Ti.App.Properties.setString('email', null);
@@ -50,6 +51,7 @@ var LoginHelper = {
         Ti.App.Properties.setString('access_token_created_at', new Date().toString());
         Ti.API.info(response.username);
         Ti.App.Properties.setString('username', response.username);
+        Ti.App.Properties.setString('loggedIn', 'true');
         Ti.App.Properties.setString('email', email);
         Ti.App.Properties.setString('user_id', response.user_id);
         Ti.App.Properties.setString('organization_id', response.organization_id);

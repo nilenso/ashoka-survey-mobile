@@ -56,6 +56,14 @@ function LoginView() {
 
   Ti.App.addEventListener('login.done', topLevelView.loginDone);
 
+  var populateUserName = function() {
+    var oldEmail = Ti.App.Properties.getString('email');
+    var loggedIn = Ti.App.Properties.getString('loggedIn');
+    if (oldEmail && loggedIn)
+      emailField.setValue(oldEmail);
+  }();
+
+
   self.add(activityIndicator);
   self.add(emailField);
   self.add(passwordField);
