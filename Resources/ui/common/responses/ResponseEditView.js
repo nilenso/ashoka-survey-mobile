@@ -42,7 +42,7 @@ function ResponseEditView(responseID) {
       pagesWithErrors = _(pagesWithErrors).map(function(pageNumber) {
         return pageNumber + 1 ;
       });
-      alert("There were errors in page(s) " + pagesWithErrors.toString());
+      alert("There were errors in page(s) " + _(pagesWithErrors).uniq().toString());
     } else {
       var response = Response.findOneById(responseID);
       response.update(status, answersData);

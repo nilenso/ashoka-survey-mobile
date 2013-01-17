@@ -54,7 +54,6 @@ function ResponseViewHelper() {
     _(views).each(function(view) {
       if (view.type == 'question') {
         foo[view.id] = view;
-        Ti.API.info("label and value" + _(view.children).first() + _(view.children).last());
       }
       _(foo).extend(self.getQuestionViews(view));
     });
