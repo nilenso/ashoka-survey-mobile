@@ -9,14 +9,15 @@ var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Measurements = require('ui/common/components/Measurements');
 
-function QuestionView(question, answer, response, number, lastQuestionNumber) {
+function QuestionView(question, answer, response, number, lastQuestionNumber, pageNumber) {
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     layout : 'vertical',
     type : question.type ? 'question' : 'category',
     id : question.id,
     height : Titanium.UI.SIZE,
-    answerID : answer ? answer.id : null
+    answerID : answer ? answer.id : null,
+    pageNumber : pageNumber
   });
 
   var questionText = number + '. ';
