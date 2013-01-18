@@ -18,7 +18,7 @@ var HeaderView = function(title) {
 
   var appNameContainer = Ti.UI.createView({
     top : '10dip',
-    height : Ti.UI.SIZE,
+    height : Ti.UI.SIZE
   });
 
   var loggedIn = require('helpers/LoginHelper').loggedIn;
@@ -28,8 +28,7 @@ var HeaderView = function(title) {
     left : Measurements.PADDING_SMALL,
     width : '50dip',
     height : '50dip',
-    bottom : Measurements.PADDING_SMALL,
-    height : Ti.UI.FILL
+    bottom : Measurements.PADDING_SMALL
   });
 
   var appName = Ti.UI.createLabel({
@@ -48,7 +47,7 @@ var HeaderView = function(title) {
     right : '10dip',
     text : "",
     font : {
-      fontSize : '15dip',
+      fontSize : '15dip'
     },
     height : Ti.UI.SIZE
   });
