@@ -13,7 +13,8 @@ var Survey = new Ti.App.joli.model({
     id : 'INTEGER PRIMARY KEY',
     name : 'TEXT',
     description : 'TEXT',
-    expiry_date : 'TEXT'
+    expiry_date : 'TEXT',
+    published_on : 'TEXT'
   },
 
   methods : {
@@ -55,7 +56,8 @@ var Survey = new Ti.App.joli.model({
         id : surveyData.id,
         name : surveyData.name,
         description : surveyData.description,
-        expiry_date : surveyData.expiry_date
+        expiry_date : surveyData.expiry_date,
+        published_on : parseInt(new Date(surveyData.published_on).getTime()/1000, 10)
       });
       record.save();
       return record;
@@ -133,6 +135,12 @@ var Survey = new Ti.App.joli.model({
         return survey.id;
       })
       .value().join();
+    },
+
+    allSurveys : function() {
+      return _(this.all()).sortBy(function(survey) {
+        return survey.published_on;
+      }).reverse();
     }
   },
   objectMethods : {
@@ -177,7 +185,7 @@ var Survey = new Ti.App.joli.model({
     }
 
       Ti.App.addEventListener("response:syncNextResponse"+ surveyID, syncNextResponse);
-      
+
       if (totalResponseCount === 0) {
         Ti.API.info("No responses");
         externalResponseSyncHandler.notifySyncComplete({

@@ -10,7 +10,7 @@
 */
 
 // Setup database
-Ti.App.joli = require('lib/joli').connect('OrderNumberForOptions', '/db/main.sqlite');
+Ti.App.joli = require('lib/joli').connect('PublishedOnForSurveys', '/db/main.sqlite');
 
 //bootstrap and check dependencies
 if (Ti.version < 1.8) {

@@ -19,7 +19,7 @@ function SurveysIndexView() {
         table.remove(childView);
       });
     }
-    _(Survey.all()).map(function(survey) {
+    _(Survey.allSurveys()).map(function(survey) {
       var row = new SurveyRowView(survey);
       row.addEventListener('surveys_row_view.row_clicked', function() {
         self.fireEvent('surveys_index_view.table_row_clicked', {
