@@ -36,18 +36,19 @@ function ResponseEditView(responseID) {
 			};
 		});
 		var responseErrors = Response.validate(answersData, status);
-    var toast;
-		if (!_.isEmpty(responseErrors)) {
-			responseViewHelper.displayErrors(responseErrors, questionViews);
-			responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
-			toast = new Toast('There were some errors in the response.');
-		} else {
-			var response = Response.findOneById(responseID);
-			response.update(status, answersData);
-			toast = Toast('Response saved');
-			self.fireEvent('ResponsesEditView:savedResponse');
-		}
-    toast.show();
+    if (!_.isEmpty(responseErrors)) {
+      responseViewHelper.displayErrors(responseErrors, questionViews);
+      pagesWithErrors = responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
+      pagesWithErrors = _(pagesWithErrors).map(function(pageNumber) {
+        return pageNumber + 1 ;
+      });
+      alert("There were errors in page(s) " + _(pagesWithErrors).uniq().toString());
+    } else {
+      var response = Response.findOneById(responseID);
+      response.update(status, answersData);
+			Toast('Response saved').show();
+      self.fireEvent('ResponsesEditView:savedResponse');
+    }
 		activityIndicator.hide();
 	};
 

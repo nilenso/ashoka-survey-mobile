@@ -19,7 +19,7 @@ function SurveysIndexView() {
         table.remove(childView);
       });
     }
-    _(Survey.all()).map(function(survey) {
+    _(Survey.allSurveys()).map(function(survey) {
       var row = new SurveyRowView(survey);
       row.addEventListener('surveys_row_view.row_clicked', function() {
         self.fireEvent('surveys_index_view.table_row_clicked', {
@@ -95,11 +95,19 @@ function SurveysIndexView() {
     layout : 'vertical'
   });
 
+  var messageWhenEmpty = function() {
+    var loggedIn = Ti.App.Properties.getString('loggedIn');
+    if(loggedIn === 'true')
+      return "Fetch surveys to use the application.";
+    else
+      return "You're not logged in yet. Please login from the menu and fetch surveys to use the application.";
+  };
+
   var label = Ti.UI.createLabel({
     color : '#333',
     font : {
       fontSize : Measurements.FONT_BIG    },
-      text : 'Nothing here yet. Please fetch surveys from the menu.',
+      text : messageWhenEmpty(),
       textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
       top : '40%',
       width : 'auto',

@@ -15,12 +15,15 @@ var Palette = {
   DANGER : "#C00",
   DANGER_LIGHT : "#FCC",
 
+  GREEN : '#A4C739',
+  RED : '#DA0000',
+
   PRIMARY_COLOR : "#1F4E61",
   PRIMARY_COLOR_LIGHT : "#2E6377",
 
   SECONDARY_COLOR_DARK : "#8C8872",
   SECONDARY_COLOR : "#BFBCA7",
   SECONDARY_COLOR_LIGHT : "#EEEEDF"
-}
+};
 
-module.exports = Palette
+module.exports = Palette;

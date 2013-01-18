@@ -56,6 +56,14 @@ function LoginView() {
 
   Ti.App.addEventListener('login.done', topLevelView.loginDone);
 
+  var populateUserName = function() {
+    var oldEmail = Ti.App.Properties.getString('email');
+    var loggedIn = Ti.App.Properties.getString('loggedIn');
+    if (oldEmail && loggedIn)
+      emailField.setValue(oldEmail);
+  }();
+
+
   self.add(activityIndicator);
   self.add(emailField);
   self.add(passwordField);
@@ -67,7 +75,7 @@ function LoginView() {
     var old_email = Ti.App.Properties.getString('email');
     var password = passwordField.getValue();
     if (old_email && (email.toLowerCase() !== old_email.toLowerCase())) {
-      var confirmDialog = new ConfirmDialog("Login", "This will clear the surveys.\n Are you sure?", onConfirm = function(e) {
+      var confirmDialog = new ConfirmDialog("Login", "Logging out will clear all your surveys. But your responses will remain intact. Are you sure?", onConfirm = function(e) {
         var DatabaseHelper = require("helpers/DatabaseHelper");
         DatabaseHelper.clearDownloadedData();
         activityIndicator.show();

@@ -10,14 +10,14 @@ var DatabaseHelper = {
     DatabaseHelper.clearDownloadedData();
     Response.truncate();
     Answer.truncate();
-    Choice.truncate(); 
+    Choice.truncate();
   },
-  
+
   clearDownloadedData : function() {
     Survey.truncate();
     Question.truncate();
     Option.truncate();
   }
-}
+};
 
 module.exports = DatabaseHelper;
