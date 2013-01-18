@@ -60,7 +60,7 @@ var LoginHelper = {
       client.setTimeout(5000);
       client.onerror = function() {
         Ti.App.fireEvent('login.done');
-        alert("Login failed, sorry!");
+        alert("Login failed, Please check your username and password.");
       };
       client.open('POST', loginUrl);
       client.send({

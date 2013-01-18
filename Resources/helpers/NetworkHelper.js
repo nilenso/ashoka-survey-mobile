@@ -20,7 +20,7 @@ var NetworkHelper = {
       if (error) {
         error.call();
       } else {
-        Ti.App.fireEvent('network.offline');        
+        Ti.App.fireEvent('network.offline');
         alert("Network isn't online.");
       }
       return;
@@ -30,7 +30,7 @@ var NetworkHelper = {
       onerror : error ||
       function() {
         Ti.App.fireEvent('network.server.unreachable');
-        alert("Couldn't reach the server");
+        alert("Please check your internet connection and try again.");
       },
       timeout : 5000
     });

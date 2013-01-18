@@ -100,7 +100,7 @@ function ResponsesIndexView(surveyID) {
     color : '#333',
     font : {
       fontSize : Measurements.FONT_BIG    },
-    text : 'No responses.',
+    text : "You currently don't have any responses, Click the + button to add a response.",
     textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
     top : '40%',
     width : 'auto',

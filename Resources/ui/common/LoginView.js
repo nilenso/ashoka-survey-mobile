@@ -75,7 +75,7 @@ function LoginView() {
     var old_email = Ti.App.Properties.getString('email');
     var password = passwordField.getValue();
     if (old_email && (email.toLowerCase() !== old_email.toLowerCase())) {
-      var confirmDialog = new ConfirmDialog("Login", "This will clear the surveys.\n Are you sure?", onConfirm = function(e) {
+      var confirmDialog = new ConfirmDialog("Login", "Logging out will clear all your surveys. But your responses will remain intact. Are you sure?", onConfirm = function(e) {
         var DatabaseHelper = require("helpers/DatabaseHelper");
         DatabaseHelper.clearDownloadedData();
         activityIndicator.show();
