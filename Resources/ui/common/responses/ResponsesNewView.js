@@ -33,17 +33,18 @@ function ResponsesNewView(surveyID) {
       };
     });
     var responseErrors = Response.validate(answersData, status);
-    var toast;
     if (!_.isEmpty(responseErrors)) {
       responseViewHelper.displayErrors(responseErrors, questionViews);
-      responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
-      toast = new Toast('There were some errors in the response.');
+      pagesWithErrors = responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
+      pagesWithErrors = _(pagesWithErrors).map(function(pageNumber) {
+        return pageNumber + 1 ;
+      });
+      alert("There were errors in page(s) " + _(pagesWithErrors).uniq().toString());
     } else {
       Response.createRecord(surveyID, status, answersData, responseLocation);
-      toast = new Toast('Response saved');
+      new Toast('Response saved').show();
       self.fireEvent('ResponsesNewView:savedResponse');
     }
-    toast.show();
     activityIndicator.hide();
   };
 

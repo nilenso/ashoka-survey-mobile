@@ -9,14 +9,15 @@ var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Measurements = require('ui/common/components/Measurements');
 
-function QuestionView(question, answer, response, number, lastQuestionNumber) {
+function QuestionView(question, answer, response, number, lastQuestionNumber, pageNumber) {
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     layout : 'vertical',
     type : question.type ? 'question' : 'category',
     id : question.id,
     height : Titanium.UI.SIZE,
-    answerID : answer ? answer.id : null
+    answerID : answer ? answer.id : null,
+    pageNumber : pageNumber
   });
 
   var questionText = number + '. ';
@@ -64,7 +65,7 @@ function QuestionView(question, answer, response, number, lastQuestionNumber) {
   var content = answer ? answer.content : null;
 
   if (question.type == 'RadioQuestion' || question.type == 'DropDownQuestion') {
-    valueField = new QuestionWithOptionsView(question, answer, response, number);
+    valueField = new QuestionWithOptionsView(question, answer, response, number, pageNumber);
   } else if (question.type == 'DateQuestion') {
     valueField = new DateQuestionView(question, content);
   } else if (question.type == 'PhotoQuestion') {
@@ -73,9 +74,9 @@ function QuestionView(question, answer, response, number, lastQuestionNumber) {
   } else if (question.type == 'RatingQuestion') {
     valueField = new RatingQuestionView(question, content);
   } else if (question.type == 'MultiChoiceQuestion') {
-    valueField = new MultiChoiceQuestionView(question, answer, response, number);
+    valueField = new MultiChoiceQuestionView(question, answer, response, number, pageNumber);
   } else if (question.type === undefined) { //Category
-    valueField = new CategoryView(question, response, number);
+    valueField = new CategoryView(question, response, number, pageNumber);
   } else {
     valueField = new BasicQuestionView(question, content, constraintsText);
   }

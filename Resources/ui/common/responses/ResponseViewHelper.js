@@ -32,9 +32,7 @@ function ResponseViewHelper() {
 
   self.displayErrors = function(responseErrors, questionViews) {
     self.resetErrors(questionViews);
-    Ti.API.info("All the errors:" + responseErrors);
     for (var question_id in responseErrors) {
-      Ti.API.info("Answer errors for:" + question_id);
       for (var field in responseErrors[question_id]) {
         var question = Question.findOneById(question_id);
         questionViews[question_id].setError(responseErrors[question_id][field]);
@@ -56,7 +54,6 @@ function ResponseViewHelper() {
     _(views).each(function(view) {
       if (view.type == 'question') {
         foo[view.id] = view;
-        Ti.API.info("label and value" + _(view.children).first() + _(view.children).last());
       }
       _(foo).extend(self.getQuestionViews(view));
     });
@@ -120,11 +117,11 @@ function ResponseViewHelper() {
         layout : 'vertical'
       });
 
-        var firstQuestionNumber = currentQuestionNumber;
+      var firstQuestionNumber = currentQuestionNumber;
       _(questions).each(function(question, number) {
         var lastQuestionNumber = questions.length + firstQuestionNumber - 1;
         var answer = response ? response.answerForQuestion(question.id) : undefined;
-        var questionView = new QuestionView(question, answer, response, currentQuestionNumber++, lastQuestionNumber);
+        var questionView = new QuestionView(question, answer, response, currentQuestionNumber++, lastQuestionNumber, pageNumber);
         questionsView.add(questionView);
       });
 
@@ -145,7 +142,14 @@ function ResponseViewHelper() {
 
   self.scrollToFirstErrorPage = function(scrollableView, errors) {
     var views = scrollableView.getViews();
-    scrollableView.scrollToView(views[0]);
+    var questionViews = self.getQuestionViews(views);
+    var pagesWithErrors = [];
+    for (var question_id in errors) {
+      pagesWithErrors.push(questionViews[question_id].pageNumber);
+    }
+    firstPageWithErrors =_(pagesWithErrors).min();
+    scrollableView.scrollToView(views[firstPageWithErrors]);
+    return pagesWithErrors;
   };
 
   return self;
