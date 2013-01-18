@@ -2,7 +2,7 @@
 var _ = require('lib/underscore')._;
 var Option = require('models/option');
 var Response = require('models/response');
-var ButtonView = require('ui/common/components/ButtonView');
+var ButtonViewWithArrow = require('ui/common/components/ButtonViewWithArrow');
 
 function QuestionWithOptionsView(question, answer, response, number) {
   var content = answer ? answer.content : null;
@@ -12,7 +12,7 @@ function QuestionWithOptionsView(question, answer, response, number) {
     height : Titanium.UI.SIZE
   });
 
-  var button = new ButtonView(content || 'None', { 'width' : '80%' });
+  var button = new ButtonViewWithArrow(content || 'None', { 'width' : '80%' });
   self.add(button);
 
   var data = [];
