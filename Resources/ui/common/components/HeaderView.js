@@ -3,8 +3,6 @@ var HeaderView = function(title) {
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Measurements = require('ui/common/components/Measurements');
 
-  var coloredPadding = new SeparatorView(Palette.PRIMARY_COLOR, '10dip');
-
   var osname = Ti.Platform.osname, version = Ti.Platform.version, height = Ti.Platform.displayCaps.platformHeight, width = Ti.Platform.displayCaps.platformWidth;
   var isTablet = osname === 'ipad' || (osname === 'android' && (width > 899 || height > 899));
 
@@ -17,7 +15,7 @@ var HeaderView = function(title) {
   });
 
   var appNameContainer = Ti.UI.createView({
-    top : '10dip',
+    top : '5dip',
     height : Ti.UI.SIZE
   });
 
@@ -26,47 +24,76 @@ var HeaderView = function(title) {
   var logo = Ti.UI.createImageView({
     image : '/images/logo.png',
     left : Measurements.PADDING_SMALL,
-    width : '50dip',
-    height : '50dip',
+    width : '30dip',
+    height : '30dip',
     bottom : Measurements.PADDING_SMALL
   });
 
   var appName = Ti.UI.createLabel({
     color : Palette.SECONDARY_COLOR_LIGHT,
     font : {
-      fontSize : '25dip',
-      fontWeight : 'bold'
+      fontSize : Measurements.FONT_MEDIUM
     },
-    left : '60dip',
+    left : '40dip',
     text : title,
     height : Ti.UI.SIZE
   });
 
-  var usernameView = Ti.UI.createLabel({
-    color : Palette.GRAY_LIGHT,
+  var loginStatusView = Ti.UI.createLabel({
     right : '10dip',
-    text : "",
+    text : "●",
     font : {
-      fontSize : '15dip'
+      fontSize : Measurements.FONT_X_BIG
     },
     height : Ti.UI.SIZE
   });
-  if (isTablet) {
-    appNameContainer.add(usernameView);
-  }
+  appNameContainer.add(loginStatusView);
 
   appNameContainer.add(logo);
   appNameContainer.add(appName);
   self.add(appNameContainer);
 
-  self.updateUserName = function() {
-    //var loggedIn = require('helpers/LoginHelper').loggedIn;
+  var userNameLabel = Ti.UI.createLabel({
+    backgroundColor : Palette.GRAY_LIGHT,
+    height : Ti.UI.SIZE,
+    color : Palette.PRIMARY_COLOR_LIGHT,
+    text : "",
+    width : '100%',
+    font : {
+      fontSize : Measurements.FONT_SMALL
+    }
+  });
+
+  self.add(userNameLabel);
+
+  var setUserName = function() {
     if (loggedIn()) {
-      usernameView.text = "Logged in as " + Ti.App.Properties.getString('username');
+      userNameLabel.text = "Logged in as " + Ti.App.Properties.getString('username');
     } else {
-      usernameView.text = "Not logged in";
+      userNameLabel.text = "Not logged in";
     }
   };
+
+  var setLoginStatus = function() {
+    if (Ti.App.Properties.getString('email')) {
+      if (loggedIn()) {
+        loginStatusView.color = Palette.GREEN;
+      } else {
+        loginStatusView.color = Palette.GRAY;
+      }
+    }
+    else {
+      loginStatusView.color = Palette.RED;
+    }
+  };
+
+  self.updateUserName = function() {
+    setLoginStatus();
+    setUserName();
+  };
+
+  setLoginStatus();
+  setUserName();
 
   return self;
 };

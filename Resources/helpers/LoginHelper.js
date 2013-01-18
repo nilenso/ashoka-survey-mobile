@@ -23,6 +23,7 @@ var LoginHelper = {
       LoginHelper.expireSession();
       var DatabaseHelper = require('helpers/DatabaseHelper');
       DatabaseHelper.clearDatabase();
+      Ti.App.Properties.setString('email', null);
       (new Toast("Successfully logged out.")).show();
       Ti.App.fireEvent('settings.refreshSurveys');
     });
