@@ -97,7 +97,7 @@ function SurveysIndexView() {
 
   var messageWhenEmpty = function() {
     var loggedIn = Ti.App.Properties.getString('loggedIn');
-    if(loggedIn)
+    if(loggedIn === 'true')
       return "Fetch surveys to use the application.";
     else
       return "You're not logged in yet. Please login from the menu and fetch surveys to use the application.";
