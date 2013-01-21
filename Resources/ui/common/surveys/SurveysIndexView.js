@@ -11,7 +11,7 @@ function SurveysIndexView() {
   var Measurements = require('ui/common/components/Measurements');
   var SyncHandler = require('models/syncHandler');
 
-  var self = new TopLevelView('List of Surveys');
+  var self = new TopLevelView(L('list_of_surveys'));
 
   var convertModelDataForTable = function() {
     if (table) {
@@ -51,17 +51,17 @@ function SurveysIndexView() {
     self.remove(progressBarView);
     Ti.API.info("Entity being fetched : " + entityBeingSynced);
     if (entityBeingSynced)
-      (new Toast('Successfully fetched surveys')).show();
+      (new Toast(L('successfully_fetched_surveys'))).show();
     self.fireEvent('progress.finish');
   };
 
   var errorListener = function(data) {
     if (data.status >= 400) {
-      alert("Your server isn't responding. Sorry about that.");
+      alert(L("server_not_responding"));
     } else if (data.status === 0) {
       Survey.truncate();
       if(!progressBarView.isHidden()) {
-        alert("We have encountered an error fetching your surveys.\nPlease fetch your surveys again.");
+        alert(L("survey_fetch_error"));
         self.refresh();
       }
     }
@@ -78,13 +78,13 @@ function SurveysIndexView() {
     var progressBar = progressBarView;
     Survey.fetchAllQuestionsCount(function(number){
       if(number === 0) {
-        (new Toast("No surveys to fetch")).show();
+        (new Toast(L("no_survey_to_fetch"))).show();
         return;
       }
       self.add(progressBar);
       progressBar.addEventListener('surveys.sync.completed', progressSurveyComplete);
       progressBar.init('surveys.sync.completed', number);
-      progressBar.setMessage("Fetching surveys...");
+      progressBar.setMessage(L("fetching_surveys"));
       Survey.fetchSurveys(new SyncHandler(progressBar.incrementValue, function(){}, errorListener));
     });
   };
@@ -98,9 +98,9 @@ function SurveysIndexView() {
   var messageWhenEmpty = function() {
     var loggedIn = Ti.App.Properties.getString('loggedIn');
     if(loggedIn === 'true')
-      return "Fetch surveys to use the application.";
+      return L("logged_in");
     else
-      return "You're not logged in yet. Please login from the menu and fetch surveys to use the application.";
+      return L("not_logged_in");
   };
 
   var label = Ti.UI.createLabel({
@@ -123,14 +123,14 @@ function SurveysIndexView() {
   Ti.App.addEventListener('settings.refreshSurveys', self.refresh);
 
   var showSyncSummary = function(data) {
-    alert((data.successes || 0) + " surveys successfully synced.\n" + (data.errors || 0) + " surveys' sync failed.");
+    alert((data.successes || 0) + L("surveys_sync_success") + (data.errors || 0) + L("surveys_sync_failed"));
   };
 
   self.syncAllResponses = function() {
     var progressBar = progressBarView;
     self.add(progressBar);
     progressBar.init('sync.complete.response', Survey.allResponsesCount());
-    progressBar.setMessage("Syncing Responses...");
+    progressBar.setMessage(L("sync_responses"));
     Survey.syncAllResponses(new SyncHandler(progressBar.incrementValue, function(data) { showSyncSummary(data); progressComplete(); }));
   };
 

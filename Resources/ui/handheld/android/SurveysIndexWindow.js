@@ -33,7 +33,7 @@ function SurveysIndexWindow() {
       onCreateOptionsMenu : function(e) {
         var menu = e.menu;
         var menuItemFetch = menu.add({
-          title : "Fetch Surveys",
+          title : L("fetching_surveys_menu"),
           groupId : FETCH_SURVEYS
         });
 
@@ -41,7 +41,7 @@ function SurveysIndexWindow() {
         menuItemFetch.setIcon("/images/fetch.png");
 
         var menuItemSync = menu.add({
-          title : "Sync Responses",
+          title : L("sync_responses_menu"),
           groupId : SYNC_RESPONSES
         });
 
@@ -50,7 +50,7 @@ function SurveysIndexWindow() {
         menuItemSync.setIcon("/images/refresh.png");
 
         var login = menu.add({
-          title : "Login",
+          title : L("login_menu"),
           groupId : LOGIN
         });
         login.addEventListener('click', function() {
@@ -59,7 +59,7 @@ function SurveysIndexWindow() {
         login.setIcon("/images/login.png");
 
         var logout = menu.add({
-          title : "Logout",
+          title : L("logout_menu"),
           groupId : LOGOUT
         });
         logout.setIcon("/images/logout.png");
@@ -68,7 +68,7 @@ function SurveysIndexWindow() {
         });
 
         var menuItemSettings = menu.add({
-          title : "Settings"
+          title : L("settings_menu")
         });
         menuItemSettings.addEventListener('click', function() {
           settingsWindow.open();
@@ -92,7 +92,7 @@ function SurveysIndexWindow() {
   });
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
-    message : 'Loading...',
+    message : L('activity_indicator'),
     location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
