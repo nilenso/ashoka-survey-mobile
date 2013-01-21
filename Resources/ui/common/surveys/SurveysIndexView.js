@@ -38,6 +38,7 @@ function SurveysIndexView() {
 
   var showMessageIfTableIsEmpty = function() {
     if (Survey.isEmpty()) {
+      setMessageWhenEmpty();
       self.add(label);
       self.remove(table);
     } else {
@@ -95,19 +96,19 @@ function SurveysIndexView() {
     layout : 'vertical'
   });
 
-  var messageWhenEmpty = function() {
+  var setMessageWhenEmpty = function() {
     var loggedIn = Ti.App.Properties.getString('loggedIn');
     if(loggedIn === 'true')
-      return "Fetch surveys to use the application.";
+      label.text = "Fetch surveys to use the application.";
     else
-      return "You're not logged in yet. Please login from the menu and fetch surveys to use the application.";
+      label.text = "You're not logged in yet. Please login from the menu and fetch surveys to use the application.";
   };
 
   var label = Ti.UI.createLabel({
     color : '#333',
     font : {
       fontSize : Measurements.FONT_BIG    },
-      text : messageWhenEmpty(),
+      text : "",
       textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
       top : '40%',
       width : 'auto',
