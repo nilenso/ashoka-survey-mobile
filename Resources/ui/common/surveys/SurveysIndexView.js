@@ -99,9 +99,9 @@ function SurveysIndexView() {
   var setMessageWhenEmpty = function() {
     var loggedIn = Ti.App.Properties.getString('loggedIn');
     if(loggedIn === 'true')
-      return L("logged_in");
+      label.text =  L("logged_in");
     else
-      return L("not_logged_in");
+      label.text =  L("not_logged_in");
   };
 
   var label = Ti.UI.createLabel({
