@@ -201,10 +201,10 @@ var Response = new Ti.App.joli.model({
           organization_id : this.organization_id,
           access_token : Ti.App.Properties.getString('access_token')
         };
-    } catch(err) {
-      alert("The application has run out of memory.\nForce Quit and try again.");
-      return null;
-    }
+      } catch(err) {
+        alert("The application has run out of memory.\nForce Quit and try again.");
+        return null;
+      }
 
       var client = Ti.Network.createHTTPClient({
         // function called when the response data is available
