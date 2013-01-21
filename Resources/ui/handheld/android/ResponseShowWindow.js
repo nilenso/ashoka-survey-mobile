@@ -28,7 +28,8 @@ function ResponseShowWindow(responseID) {
   });
 
   self.addEventListener('android:back', function() {
-    view.cleanup();
+    if (view)
+      view.cleanup();
     view = null;
     self.close();
     Ti.App.fireEvent('ResponseShowWindow:back');
