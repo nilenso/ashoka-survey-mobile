@@ -10,7 +10,7 @@ function ResponseShowWindow(responseID) {
   self.add(view);
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
-    message : 'Loading...',
+    message : L('activity_indicator'),
     location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });

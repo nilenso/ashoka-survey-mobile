@@ -33,7 +33,7 @@ function LoginView() {
   });
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
-    message : 'Logging in...',
+    message : L('login_indicator'),
     location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });

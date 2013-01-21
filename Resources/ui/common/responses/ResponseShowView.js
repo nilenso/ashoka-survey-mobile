@@ -85,7 +85,7 @@ function ResponseShowView(responseID) {
   });
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
-    message : 'Deleting...',
+    message : L('response_delete'),
     location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });

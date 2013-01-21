@@ -20,12 +20,13 @@
     <string name="survey_fetch_error">We have encountered an error fetching your surveys.\nPlease fetch your surveys again.</string>
     <string name="successfully_fetched_surveys">Successfully fetched surveys</string>
 
+
     <string name="no_responses">You currently don't have any responses, Click the + button to add a response.</string>
+    <string name="saving_response">Saving...</string>
+    <string name="response_delete">Deleting...</string>
 
     <string name="login_message">You will automatically be logged out in 10 hours</string>
     <string name="logout_message">Successfully logged out.</string>
     <string name="login_failed">Login failed, Please check your username and password.</string>
     <string name="session_expired">Your session has expired. You need to login again to fetch or sync any data.</string>
-
-
 </resources>
