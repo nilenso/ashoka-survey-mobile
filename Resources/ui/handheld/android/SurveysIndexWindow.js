@@ -33,7 +33,7 @@ function SurveysIndexWindow() {
       onCreateOptionsMenu : function(e) {
         var menu = e.menu;
         var menuItemFetch = menu.add({
-          title : L("fetching_surveys_menu"),
+          title : L("fetch_surveys_menu"),
           groupId : FETCH_SURVEYS
         });
 

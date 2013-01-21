@@ -6,7 +6,7 @@ var NetworkHelper = {
       if (error) {
         error.call();
       } else {
-        alert("You aren't logged in.");
+        alert(L("not_logged_in"));
       }
       return;
     };
@@ -21,7 +21,7 @@ var NetworkHelper = {
         error.call();
       } else {
         Ti.App.fireEvent('network.offline');
-        alert("Network isn't online.");
+        alert(L("network_offline"));
       }
       return;
     };
@@ -30,7 +30,7 @@ var NetworkHelper = {
       onerror : error ||
       function() {
         Ti.App.fireEvent('network.server.unreachable');
-        alert("Please check your internet connection and try again.");
+        alert(L("check_internet"));
       },
       timeout : 5000
     });

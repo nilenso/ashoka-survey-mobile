@@ -10,7 +10,7 @@ var LoginHelper = {
       return false;
 
     if (new Date() - new Date(accessTokenCreatedAt) > 35000000) {//Expire the token after 9.72 hours.
-      alert("Your session has expired. You need to login again to fetch or sync any data.");
+      alert(L("session_expired"));
       LoginHelper.expireSession();
       return false;
     }
@@ -25,7 +25,7 @@ var LoginHelper = {
       var DatabaseHelper = require('helpers/DatabaseHelper');
       DatabaseHelper.clearDatabase();
       Ti.App.Properties.setString('email', null);
-      (new Toast("Successfully logged out.")).show();
+      (new Toast(L("logout_message"))).show();
       Ti.App.fireEvent('settings.refreshSurveys');
     });
     confirmDialog.show();
@@ -46,7 +46,7 @@ var LoginHelper = {
       client.onload = function() {
         Ti.App.fireEvent('login.done');
         var response = JSON.parse(this.responseText);
-        (new Toast('You will automatically be logged out in an hour')).show();
+        (new Toast(L('login_message'))).show();
         Ti.App.Properties.setString('access_token', response.access_token);
         Ti.App.Properties.setString('access_token_created_at', new Date().toString());
         Ti.API.info(response.username);
@@ -60,7 +60,7 @@ var LoginHelper = {
       client.setTimeout(5000);
       client.onerror = function() {
         Ti.App.fireEvent('login.done');
-        alert("Login failed, Please check your username and password.");
+        alert(L("login_failed"));
       };
       client.open('POST', loginUrl);
       client.send({
