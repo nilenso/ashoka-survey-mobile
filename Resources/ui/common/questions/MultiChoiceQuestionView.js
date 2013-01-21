@@ -22,6 +22,10 @@ function MultiChoiceQuestionView(question, answer, response, number, pageNumber)
 		optionViews[option.id] = new OptionView(option, checked, response, optionNumber, pageNumber);
 	});
 
+	optionViews = _(optionViews).sortBy(function(optionRow) {
+		return optionRow.orderNumber;
+	});
+
 	_.chain(optionViews).values().each(function(view, index){
 		self.add(view);
 	});

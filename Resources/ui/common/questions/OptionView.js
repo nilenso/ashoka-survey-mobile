@@ -5,7 +5,8 @@ function OptionView(option, checked, response, number, pageNumber) {
   var Palette = require('ui/common/components/Palette');
   var row = Ti.UI.createView({
     height : Ti.UI.SIZE,
-    layout : 'vertical'
+    layout : 'vertical',
+    orderNumber : option.order_number
   });
 
   var self = Ti.UI.createView({
