@@ -8,14 +8,14 @@ var HeaderView = function(title) {
 
   var self = Ti.UI.createView({
     backgroundColor : Palette.PRIMARY_COLOR,
-    height : '60dip',
+    height : '56dip',
     layout : 'vertical',
-    bottom : '10dip',
-    top : '0dip'
+    bottom : Measurements.PADDING_BIG,
+    top : Measurements.ZERO
   });
 
   var appNameContainer = Ti.UI.createView({
-    top : '5dip',
+    top : Measurements.PADDING_X_SMALL,
     height : Ti.UI.SIZE
   });
 
@@ -40,7 +40,7 @@ var HeaderView = function(title) {
   });
 
   var loginStatusView = Ti.UI.createLabel({
-    right : '10dip',
+    right : Measurements.PADDING_BIG,
     text : "●",
     font : {
       fontSize : Measurements.FONT_X_BIG
@@ -53,24 +53,54 @@ var HeaderView = function(title) {
   appNameContainer.add(appName);
   self.add(appNameContainer);
 
-  var userNameLabel = Ti.UI.createLabel({
+  var userDetailsView = Ti.UI.createView({
     backgroundColor : Palette.GRAY_LIGHT,
-    height : Ti.UI.SIZE,
-    color : Palette.PRIMARY_COLOR_LIGHT,
-    text : "",
     width : '100%',
+    height : Ti.UI.SIZE
+  });
+
+  var userNameLabel = Ti.UI.createLabel({
+    color : Palette.PRIMARY_COLOR_LIGHT,
+    left : Measurements.PADDING_SMALL,
+    text : "",
     font : {
       fontSize : Measurements.FONT_SMALL
     }
   });
 
-  self.add(userNameLabel);
+  var userStatusLabel = Ti.UI.createLabel({
+    color : Palette.PRIMARY_COLOR_LIGHT,
+    right : Measurements.PADDING_MEDIUM,
+    text : "",
+    font : {
+      fontSize : Measurements.FONT_SMALL
+    }
+  });
+
+  userDetailsView.add(userNameLabel);
+  userDetailsView.add(userStatusLabel);
+
+  self.add(userDetailsView);
 
   var setUserName = function() {
     if (loggedIn()) {
       userNameLabel.text = "Logged in as " + Ti.App.Properties.getString('username');
-    } else {
+    }
+    else {
       userNameLabel.text = "Not logged in";
+    }
+  };
+
+  var setUserStatus = function() {
+    if (Ti.App.Properties.getString('email')) {
+      if (loggedIn()) {
+        userStatusLabel.text = "Online";
+      } else {
+        userStatusLabel.text = "Offline";
+      }
+    }
+    else {
+      userStatusLabel.text = "";
     }
   };
 
@@ -90,10 +120,10 @@ var HeaderView = function(title) {
   self.updateUserName = function() {
     setLoginStatus();
     setUserName();
+    setUserStatus();
   };
 
-  setLoginStatus();
-  setUserName();
+  self.updateUserName();
 
   return self;
 };

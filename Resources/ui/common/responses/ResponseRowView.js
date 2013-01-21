@@ -24,7 +24,7 @@ function ResponseRowView(response) {
     width : '90%',
     height : Ti.UI.SIZE,
     layout : 'vertical',
-    left : Measurements.PADDING_MEDIUM
+    left : Measurements.PADDING_BIG
   });
 
   rowContent.add(identifierAnswersView);
