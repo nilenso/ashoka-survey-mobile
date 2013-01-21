@@ -9,7 +9,7 @@ var LoginHelper = {
     if (!accessToken)
       return false;
 
-    if (new Date() - new Date(accessTokenCreatedAt) > 3600000) {//Expire the token after 1 hour.
+    if (new Date() - new Date(accessTokenCreatedAt) > 35000000) {//Expire the token after 9.72 hours.
       alert("Your session has expired. You need to login again to fetch or sync any data.");
       LoginHelper.expireSession();
       return false;
