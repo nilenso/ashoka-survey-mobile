@@ -159,16 +159,10 @@ var Survey = new Ti.App.joli.model({
 
       var syncHandler = function(data) {
         responseSyncCount++;
-        if (data.message) {
-          Ti.App.fireEvent("survey.responses.sync", {
-            message : data.message
-          });
-        } else {
-          if (self.allResponsesSynced(responseSyncCount, totalResponseCount)) {
-            responseStack = [];
-            Ti.App.removeEventListener("response:syncNextResponse" + surveyID, syncNextResponse);
-            externalResponseSyncHandler.notifySyncComplete(self.syncSummary());
-          }
+        if (self.allResponsesSynced(responseSyncCount, totalResponseCount)) {
+          responseStack = [];
+          Ti.App.removeEventListener("response:syncNextResponse" + surveyID, syncNextResponse);
+          externalResponseSyncHandler.notifySyncComplete(self.syncSummary(totalResponseCount));
         }
         externalResponseSyncHandler.notifySyncProgress();
         Ti.App.removeEventListener("response.sync." + data.response_id, syncHandler);
@@ -202,10 +196,14 @@ var Survey = new Ti.App.joli.model({
       return total === successCount;
     },
 
-    syncSummary : function() {
-      return _(this.responses()).countBy(function(response) {
+    syncSummary : function(total) {
+      var summary = _(this.responses()).countBy(function(response) {
         return response.has_error ? 'errors' : 'successes';
       });
+      if(!summary['errors'])
+        summary['errors'] = 0;
+      summary['successes'] = total - summary['errors'];
+      return summary;
     },
 
     fetchCategories : function(externalSyncHandler) {
