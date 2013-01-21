@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="fetch_surveys_menu">Fetch Surveys</string>
+    <string name="sync_responses_menu">Sync Responses</string>
+    <string name="login_menu">Login</string>
+    <string name="logout_menu">Logout</string>
+    <string name="settings_menu">Settings</string>
+    <string name="activity_indicator">Loading...</string>
+
+    
+    <string name="server_not_responding">Your server isn't responding. Sorry about that.</string>
+    <string name="sync_responses">Sync Responses...</string>
+    <string name="surveys_sync_success"> Surveys successfully synced\n</string>
+    <string name="surveys_sync_failed"> Surveys' sync failed</string>
+    <string name="no_survey_to_fetch">No surveys to fetch</string>
+    <string name="list_of_surveys">List of Surveys</string>
+    <string name="not_logged_in">You're not logged in yet. Please login from the menu and fetch surveys to use the application.</string>
+    <string name="logged_in">Fetch surveys to use the application</string>
+    <string name="fetching_surveys">Fetching surveys...</string>
+    <string name="survey_fetch_error">We have encountered an error fetching your surveys.\nPlease fetch your surveys again.</string>
+    <string name="successfully_fetched_surveys">Successfully fetched surveys</string>
+</resources>
