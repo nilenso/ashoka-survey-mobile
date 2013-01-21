@@ -9,7 +9,7 @@
     </deployment-targets>
     <sdk-version>3.0.0.GA</sdk-version>
     <id>com.c42.surveyMobile</id>
-    <name>survey-mobile</name>
+    <name>Ashoka Surveys</name>
     <version>1.0</version>
     <publisher>tim</publisher>
     <url>http://c42.in</url>
@@ -21,7 +21,7 @@
     <statusbar-style>default</statusbar-style>
     <statusbar-hidden>false</statusbar-hidden>
     <fullscreen>false</fullscreen>
-    <navbar-hidden>false</navbar-hidden>
+    <navbar-hidden>true</navbar-hidden>
     <analytics>true</analytics>
     <guid>73691561-a308-4f3f-92c6-a6504616d9a6</guid>
     <property name="ti.ui.defaultunit">system</property>
