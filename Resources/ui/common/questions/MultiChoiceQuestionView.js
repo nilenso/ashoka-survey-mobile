@@ -32,10 +32,7 @@ function MultiChoiceQuestionView(question, answer, response, number, pageNumber)
 			if (row.children[0].children[0].getValue() === true)
 				option_ids.push(option_id);
 		});
-		if (_(option_ids).isEmpty())
-			return "";
-		else
-			return option_ids;
+		return option_ids;
 	};
 
 	return self;
