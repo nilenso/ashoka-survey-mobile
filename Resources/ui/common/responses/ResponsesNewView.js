@@ -51,7 +51,7 @@ function ResponsesNewView(surveyID) {
   responseViewHelper.paginate(questions, scrollableView, null, validateAndSaveAnswers);
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
-    message : 'Saving...',
+    message : L('saving_response'),
     location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
