@@ -38,6 +38,7 @@ function SurveysIndexView() {
 
   var showMessageIfTableIsEmpty = function() {
     if (Survey.isEmpty()) {
+      setMessageWhenEmpty();
       self.add(label);
       self.remove(table);
     } else {
@@ -95,7 +96,7 @@ function SurveysIndexView() {
     layout : 'vertical'
   });
 
-  var messageWhenEmpty = function() {
+  var setMessageWhenEmpty = function() {
     var loggedIn = Ti.App.Properties.getString('loggedIn');
     if(loggedIn === 'true')
       return L("logged_in");
@@ -107,7 +108,7 @@ function SurveysIndexView() {
     color : '#333',
     font : {
       fontSize : Measurements.FONT_BIG    },
-      text : messageWhenEmpty(),
+      text : "",
       textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
       top : '40%',
       width : 'auto',

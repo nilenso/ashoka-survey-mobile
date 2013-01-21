@@ -8,9 +8,12 @@ var Measurements = {
   FONT_SMALL : '10dip',
 
   PADDING_SMALL : '5dip',
+  PADDING_MEDIUM : '7dip',
   PADDING_X_SMALL : '2dip',
   PADDING_XX_SMALL : '1dip',
-  PADDING_MEDIUM : '10dip',
+  PADDING_BIG : '10dip',
+
+  ZERO : '0dip',
 
   BORDER_RADIUS : 5
 };

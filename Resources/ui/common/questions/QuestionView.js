@@ -83,7 +83,7 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
 
   self.add(valueField);
   if(question.parent_id === null && number != lastQuestionNumber) {
-    self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_MEDIUM));
+    self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_BIG));
     self.add(new SeparatorView(Palette.SECONDARY_COLOR, Measurements.PADDING_XX_SMALL, { width : '90%' }));
   }
 
