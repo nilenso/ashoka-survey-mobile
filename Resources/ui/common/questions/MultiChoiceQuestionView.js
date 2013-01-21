@@ -14,23 +14,21 @@ function MultiChoiceQuestionView(question, answer, response, number, pageNumber)
     height : Titanium.UI.SIZE
   });
 
-	var optionViews = {};
+	var optionViews = [];
 
 	_(question.options()).each(function(option, index) {
 		var checked = optionIDs && _(optionIDs).contains(option.id);
 		var optionNumber = number + String.fromCharCode(97 + index);
-		optionViews[option.id] = new OptionView(option, checked, response, optionNumber, pageNumber);
-	});
-
-	_.chain(optionViews).values().each(function(view, index){
-		self.add(view);
+		var optionView = new OptionView(option, checked, response, optionNumber, pageNumber);
+		optionViews.push(optionView);
+		self.add(optionView);
 	});
 
 	self.getValue = function() {
 		var option_ids = [];
-		_(optionViews).each(function(row, option_id) {
+		_(optionViews).each(function(row) {
 			if (row.children[0].children[0].getValue() === true)
-				option_ids.push(option_id);
+				option_ids.push(row.optionId);
 		});
 		return option_ids;
 	};
