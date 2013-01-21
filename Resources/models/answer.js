@@ -18,7 +18,7 @@ var Answer = new Ti.App.joli.model({
 
   methods : {
     createRecord : function(answerData, responseID) {
-      answerData.response_id = responseID
+      answerData.response_id = responseID;
       var question = Question.findOneById(answerData['question_id']);
       var optionIds = [];
 
@@ -30,7 +30,7 @@ var Answer = new Ti.App.joli.model({
         answerData['content'] = "";
         answerData['image'] = image;
       }
-      answerData['updated_at'] = parseInt(new Date().getTime()/1000);
+      answerData['updated_at'] = parseInt(new Date().getTime()/1000, 10);
       var answer = this.newRecord(answerData);
       answer.save();
 
@@ -64,13 +64,14 @@ var Answer = new Ti.App.joli.model({
       Ti.API.info("updating answer");
 
       var question = this.question();
+      var updated_at;
       if (question.isMultiChoiceQuestion()) {
         var optionIds = content;
 
         var existing_optionIDs = _(Choice.findBy('answer_id', this.id)).map(function(choice) {
           return choice.option_id;
-        })
-        var updated_at = optionIds.sort() === existing_optionIDs.sort() ? this.updated_at : parseInt(new Date().getTime()/1000);
+        });
+        updated_at = optionIds.sort() === existing_optionIDs.sort() ? this.updated_at : parseInt(new Date().getTime()/1000, 10);
 
         this.destroyChoices();
         var that = this;
@@ -82,12 +83,12 @@ var Answer = new Ti.App.joli.model({
         this.set('updated_at', updated_at);
       } else if (question.isPhotoQuestion()) {
         var image = content;
-        var updated_at = image === this.image ? this.updated_at : parseInt(new Date().getTime()/1000);
+        updated_at = image === this.image ? this.updated_at : parseInt(new Date().getTime()/1000, 10);
         this.set('content', '');
         this.set('image', image);
         this.set('updated_at', updated_at);
       } else {
-        var updated_at = content === this.content ? this.updated_at : parseInt(new Date().getTime()/1000);
+        updated_at = content === this.content ? this.updated_at : parseInt(new Date().getTime()/1000, 10);
         this.set('content', content);
         this.set('updated_at', updated_at);
       }
