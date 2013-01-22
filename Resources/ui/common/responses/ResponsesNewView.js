@@ -23,7 +23,8 @@ function ResponsesNewView(surveyID) {
 
   var validateAndSaveAnswers = function(e, status) {
     activityIndicator.show();
-    var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
+    if(scrollableView)
+      var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
     var answersData = _(questionViews).map(function(questionView, questionID) {
       Ti.API.info("questionid:" + questionID);
       Ti.API.info("content:" + questionView.getValueField().getValue());
