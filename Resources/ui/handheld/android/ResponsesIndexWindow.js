@@ -38,10 +38,12 @@ function ResponsesIndexWindow(surveyID) {
   });
 
   self.addEventListener("android:back", function(){
-    Ti.App.removeEventListener('ResponseNewWindow:closed', view.refresh);
-    Ti.App.removeEventListener('ResponseShowWindow:closed', view.refresh);
-    Ti.App.removeEventListener('ResponseShowWindow:back', view.refresh);
-    view.cleanup();
+    if(view) {
+      Ti.App.removeEventListener('ResponseNewWindow:closed', view.refresh);
+      Ti.App.removeEventListener('ResponseShowWindow:closed', view.refresh);
+      Ti.App.removeEventListener('ResponseShowWindow:back', view.refresh);
+      view.cleanup();
+    }
     view = null;
     self.close();
   });
