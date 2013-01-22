@@ -117,7 +117,8 @@ function ResponseShowView(responseID) {
   table.setHeaderView(buttonsView);
 
   var refreshView = function() {
-    table.setData(convertResponseDataForTable());
+    if (table)
+      table.setData(convertResponseDataForTable());
   };
 
   Ti.App.addEventListener('updatedResponse', refreshView);
