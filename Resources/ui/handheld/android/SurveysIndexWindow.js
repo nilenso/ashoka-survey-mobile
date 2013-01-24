@@ -76,8 +76,7 @@ function SurveysIndexWindow() {
         menuItemSettings.setIcon("/images/settings.png");
 
         var menuItemAbout = menu.add({
-          title : "About"
-          // title : L("about_menu")
+          title : L("about")
         });
         menuItemAbout.addEventListener('click', function() {
           new AboutWindow().open();

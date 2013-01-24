@@ -6,7 +6,7 @@
     <string name="logout_menu">Logout</string>
     <string name="settings_menu">Settings</string>
     <string name="activity_indicator">Loading...</string>
-    
+
     <string name="server_not_responding">Your server isn't responding. Sorry about that.</string>
     <string name="sync_responses">Sync Responses...</string>
     <string name="surveys_sync_success"> Surveys successfully synced\n</string>
@@ -55,7 +55,7 @@
     <string name="edit_response">Edit Response</string>
     <string name="errors_on_pages">There were errors on page(s)</string>
 
-    
+
     <string name="successes">successes: </string>
     <string name="errors">erros: </string>
 
@@ -64,4 +64,6 @@
 
     <string name="confirm">Confirmation</string>
     <string name="confirm_clear_answers">This will clear the answers,\n Are you sure?</string>
+
+    <string name="about">About</string>
 </resources>
