@@ -7,7 +7,6 @@ function SurveysIndexWindow() {
   var Question = require('models/question');
   var ResponsesIndexWindow = require('ui/handheld/android/ResponsesIndexWindow');
   var ResponsesNewWindow = require('ui/handheld/android/ResponsesNewWindow');
-  var settingsWindow = SettingsWindow();
   var loginWindow = require('ui/handheld/android/LoginWindow');
   var surveysIndexView = new SurveysIndexView();
   var loggedIn = require('helpers/LoginHelper').loggedIn;
@@ -71,7 +70,7 @@ function SurveysIndexWindow() {
           title : L("settings_menu")
         });
         menuItemSettings.addEventListener('click', function() {
-          settingsWindow.open();
+          new SettingsWindow().open();
         });
         menuItemSettings.setIcon("/images/settings.png");
       },
