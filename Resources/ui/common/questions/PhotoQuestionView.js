@@ -92,7 +92,7 @@ function PhotoQuestionView(question, image) {
     try {      
       file.write(ImageFactory.compress(image, 0.6));
     } catch(err) {
-      alert("Your phone has run out of memory.\nPlease close other running applications and try again.");
+      alert(L("out_of_memory"));
       Ti.API.info("ERROR SAVING IMAGE " + err);
       clearImage();
     }

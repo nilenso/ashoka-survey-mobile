@@ -92,7 +92,7 @@ function ResponseShowView(responseID) {
   self.add(activityIndicator);
 
   responseDeleteButton.addEventListener('click', function(e) {
-    var confirmDialog = new ConfirmDialog("Delete", "Are you sure you want to delete the response?", onConfirm = function(e) {
+    var confirmDialog = new ConfirmDialog(L("delete"), L("delete_response_message"), onConfirm = function(e) {
       activityIndicator.show();
       var response = Response.findOneById(responseID);
       response.destroyAnswers();
