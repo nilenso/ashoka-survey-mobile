@@ -5,7 +5,7 @@ var Palette = require('ui/common/components/Palette');
 var Measurements = require('ui/common/components/Measurements');
 
 function AboutView() {
-  var topLevelView = new TopLevelView('About');
+  var topLevelView = new TopLevelView(L('about'));
   var self = Ti.UI.createView({
     layout : 'vertical',
     top : Measurements.HEADER_HEIGHT
