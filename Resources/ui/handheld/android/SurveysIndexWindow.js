@@ -3,6 +3,7 @@ function SurveysIndexWindow() {
   //load component dependencies
   var SurveysIndexView = require('ui/common/surveys/SurveysIndexView');
   var SettingsWindow = require('ui/handheld/android/SettingsWindow');
+  var AboutWindow = require('ui/handheld/android/AboutWindow');
   var Survey = require('models/survey');
   var Question = require('models/question');
   var ResponsesIndexWindow = require('ui/handheld/android/ResponsesIndexWindow');
@@ -73,6 +74,15 @@ function SurveysIndexWindow() {
           new SettingsWindow().open();
         });
         menuItemSettings.setIcon("/images/settings.png");
+
+        var menuItemAbout = menu.add({
+          title : "About"
+          // title : L("about_menu")
+        });
+        menuItemAbout.addEventListener('click', function() {
+          new AboutWindow().open();
+        });
+        menuItemAbout.setIcon("/images/about.png");
       },
 
       onPrepareOptionsMenu : function(e) {
