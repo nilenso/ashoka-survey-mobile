@@ -87,7 +87,7 @@ var HeaderView = function(title) {
       userNameLabel.text = L("logged_in_as") + Ti.App.Properties.getString('username');
     }
     else {
-      userNameLabel.text = L("not_logged_in");
+      userNameLabel.text = L("header_not_logged_in");
     }
   };
 
