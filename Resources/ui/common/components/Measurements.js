@@ -12,6 +12,7 @@ var Measurements = {
   PADDING_X_SMALL : '2dip',
   PADDING_XX_SMALL : '1dip',
   PADDING_BIG : '10dip',
+  PADDING_X_BIG : '20dip',
 
   ZERO : '0dip',
 
