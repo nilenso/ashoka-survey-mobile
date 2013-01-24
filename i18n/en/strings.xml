@@ -6,7 +6,6 @@
     <string name="logout_menu">Logout</string>
     <string name="settings_menu">Settings</string>
     <string name="activity_indicator">Loading...</string>
-
     
     <string name="server_not_responding">Your server isn't responding. Sorry about that.</string>
     <string name="sync_responses">Sync Responses...</string>
@@ -20,7 +19,6 @@
     <string name="survey_fetch_error">We have encountered an error fetching your surveys.\nPlease fetch your surveys again.</string>
     <string name="successfully_fetched_surveys">Successfully fetched surveys</string>
 
-
     <string name="no_responses">You currently don't have any responses, Click the + button to add a response.</string>
     <string name="saving_response">Saving...</string>
     <string name="response_delete">Deleting...</string>
@@ -29,4 +27,41 @@
     <string name="logout_message">Successfully logged out.</string>
     <string name="login_failed">Login failed, Please check your username and password.</string>
     <string name="session_expired">Your session has expired. You need to login again to fetch or sync any data.</string>
+
+    <string name="out_of_memory">The application has run out of memory.\nForce Quit and try again.</string>
+    <string name="server_not_responding">Your server isn't responding. Sorry about that.</string>
+    <string name="could_not_reach_server">Couldn't reach the server.</string>
+    <string name="error_occured">Some error occured</string>
+
+    <string name="error_max_length">You have exceeded the maximum length for this question</string>
+    <string name="error_max_value">The answer is not in the required range</string>
+    <string name="error_min_value">The answer is not in the required range</string>
+    <string name="error_content">You have to enter only a number</string>
+    <string name="error_mandatory">This question is mandatory</string>
+
+    <string name="login_confirm_dialog">Logging out will clear all your surveys. But your responses will remain intact. Are you sure?</string>
+
+    <string name="save">Save</string>
+    <string name="server_location">Server Location</string>
+    <string name="change_server">Change of Server</string>
+    <string name="change_server_message">This will clear the database and log you out,\nAre you sure?</string>
+    <string name="invalid_settings">Your settings are invalid. Please check them before saving.</string>
+
+    <string name="logged_in_as">Logged in as </string>
+    <string name="not_logged_in">Not logged in</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+
+    <string name="edit_response">Edit Response</string>
+    <string name="errors_on_pages">There were errors on page(s)</string>
+
+    
+    <string name="successes">successes: </string>
+    <string name="errors">erros: </string>
+
+    <string name="delete">Delete</string>
+    <string name="delete_response_message">Are you sure you want to delete the response?</string>
+
+    <string name="confirm">Confirmation</string>
+    <string name="confirm_clear_answers">This will clear the answers,\n Are you sure?</string>
 </resources>

@@ -171,13 +171,13 @@ var Response = new Ti.App.joli.model({
         self.destroyAnswers();
         self.destroy();
       } else if (data.status >= 400) {
-        message = "Your server isn't responding. Sorry about that.";
+        message = L("server_not_responding");
       } else if (data.status === 0) {
-        message = "Couldn't reach the server.";
+        message = L("could_not_reach_server");
       } else {
         Ti.API.info("Erroneous Response: " + responseText);
         self.has_error = true;
-        message = "Some error occured";
+        message = L("error_occured");
       }
       Ti.App.fireEvent('response.sync.' + self.id , {
         survey_id : self.survey_id,
@@ -202,7 +202,7 @@ var Response = new Ti.App.joli.model({
           access_token : Ti.App.Properties.getString('access_token')
         };
       } catch(err) {
-        alert("The application has run out of memory.\nForce Quit and try again.");
+        alert(L("out_of_memory"));
         return null;
       }
 

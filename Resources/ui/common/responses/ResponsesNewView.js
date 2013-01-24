@@ -40,7 +40,7 @@ function ResponsesNewView(surveyID) {
       pagesWithErrors = _(pagesWithErrors).map(function(pageNumber) {
         return pageNumber + 1 ;
       });
-      alert("There were errors in page(s) " + _(pagesWithErrors).uniq().toString());
+      alert(L("errors_on_pages") + _(pagesWithErrors).uniq().toString());
     } else {
       Response.createRecord(surveyID, status, answersData, responseLocation);
       new Toast('Response saved').show();
