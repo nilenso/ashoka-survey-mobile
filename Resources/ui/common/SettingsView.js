@@ -9,7 +9,7 @@ var ConfirmDialog = require('ui/common/components/ConfirmDialog');
 var Measurements = require('ui/common/components/Measurements');
 
 function SettingsView() {
-  var topLevelView = new TopLevelView('Settings');
+  var topLevelView = new TopLevelView(L('settings_menu'));
   var self = Ti.UI.createView({
     layout : 'vertical',
     top : '120dip'
@@ -17,7 +17,7 @@ function SettingsView() {
 
   topLevelView.add(self);
 
-  var confirmDialog = new ConfirmDialog("Change of Server", "This will clear the database and log you out,\nAre you sure?", onConfirm = function(e) {
+  var confirmDialog = new ConfirmDialog(L("change_server"), L("change_server_message"), onConfirm = function(e) {
     var server_url = textField.getValue();
     Ti.App.Properties.setString('server_url', server_url);
     DatabaseHelper.clearDatabase();
@@ -29,7 +29,7 @@ function SettingsView() {
   var label = Ti.UI.createLabel({
     top : '20%',
     color : Palette.PRIMARY_COLOR,
-    text : 'Server location',
+    text : L('server_location'),
     left : 5,
     font : { fontSize : Measurements.FONT_MEDIUM }
   });
@@ -45,7 +45,7 @@ function SettingsView() {
   });
   self.add(textField);
 
-  var saveButton = new ButtonView('Save', {
+  var saveButton = new ButtonView(L('save'), {
     width : '80%'
   });
   self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
@@ -53,7 +53,7 @@ function SettingsView() {
   saveButton.addEventListener('click', function(e) {
     var server_url = textField.getValue();
     if (server_url.match(/^https?\:\/\/[\w-.]+(\.\w{2,4}|\:\d{2,5})$/i) == null) {
-      alert("Your settings are invalid. Please check them before saving.");
+      alert(L("invalid_settings"));
     } else if (Ti.App.Properties.getString('server_url') === server_url) {
       topLevelView.fireEvent('settings_saved');
     } else {

@@ -44,15 +44,15 @@ var Answer = new Ti.App.joli.model({
       var errors = {};
       if (answerData.content && !_.isEmpty(answerData.content)) {
         if (question.max_length && (answerData.content.length >= question.max_length))
-          errors['max_length'] = "You have exceeded the maximum length for this question";
+          errors['max_length'] = L("max_length");
         if (question.min_value && answerData.content < question.min_value)
-          errors['min_value'] = "The answer is not in the required range";
+          errors['min_value'] = L("min_value");
         if (question.max_value && answerData.content > question.max_value)
-          errors['max_value'] = "The answer is not in the required range";
+          errors['max_value'] = L("max_value");
         if (question.type === 'NumericQuestion' && isNaN(answerData.content))
-          errors['content'] = "You have to enter only a number";
+          errors['content'] = L("error_content");
       } else if (status === "complete" && question.mandatory)
-        errors['mandatory'] = "This question is mandatory";
+        errors['mandatory'] = L("error_mandatory");
       return errors;
     }
   },
