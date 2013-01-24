@@ -29,4 +29,26 @@
     <string name="logout_message">Successfully logged out.</string>
     <string name="login_failed">Login failed, Please check your username and password.</string>
     <string name="session_expired">Your session has expired. You need to login again to fetch or sync any data.</string>
+
+
+    <string name="out_of_memory">The application has run out of memory.\nForce Quit and try again.</string>
+    <string name="server_not_responding">Your server isn't responding. Sorry about that.</string>
+    <string name="could_not_reach_server">Couldn't reach the server.</string>
+    <string name="error_occured">Some error occured</string>
+
+
+    <string name="error_max_length">You have exceeded the maximum length for this question</string>
+    <string name="error_max_value">The answer is not in the required range</string>
+    <string name="error_min_value">The answer is not in the required range</string>
+    <string name="error_content">You have to enter only a number</string>
+    <string name="error_mandatory">This question is mandatory</string>
+
+    <string name="login_confirm_dialog">Logging out will clear all your surveys. But your responses will remain intact. Are you sure?</string>
+
+
+    <string name="save">Save</string>
+    <string name="server_location">Server Location</string>
+    <string name="change_server">Change of Server</string>
+    <string name="change_server_message">This will clear the database and log you out,\nAre you sure?</string>
+    <string name="invalid_settings">Your settings are invalid. Please check them before saving.</string>
 </resources>
