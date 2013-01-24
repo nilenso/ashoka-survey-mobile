@@ -6,7 +6,8 @@
     <string name="logout_menu">Logout</string>
     <string name="settings_menu">Settings</string>
     <string name="activity_indicator">Loading...</string>
-
+    <string name="login_indicator">Logining in...</string>
+    
     <string name="server_not_responding">Your server isn't responding. Sorry about that.</string>
     <string name="sync_responses">Sync Responses...</string>
     <string name="surveys_sync_success"> Surveys successfully synced\n</string>
