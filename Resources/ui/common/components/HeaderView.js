@@ -84,19 +84,19 @@ var HeaderView = function(title) {
 
   var setUserName = function() {
     if (loggedIn()) {
-      userNameLabel.text = "Logged in as " + Ti.App.Properties.getString('username');
+      userNameLabel.text = L("logged_in_as") + Ti.App.Properties.getString('username');
     }
     else {
-      userNameLabel.text = "Not logged in";
+      userNameLabel.text = L("not_logged_in");
     }
   };
 
   var setUserStatus = function() {
     if (Ti.App.Properties.getString('email')) {
       if (loggedIn()) {
-        userStatusLabel.text = "Online";
+        userStatusLabel.text = L("online");
       } else {
-        userStatusLabel.text = "Offline";
+        userStatusLabel.text = L("offline");
       }
     }
     else {

@@ -12,7 +12,7 @@ function ResponseEditView(responseID) {
   var ButtonView = require('ui/common/components/ButtonView');
   var Toast = require('ui/common/components/Toast');
 
-  var self = new TopLevelView('Edit Response');
+  var self = new TopLevelView(L('edit_response'));
 	var scrollableView = Ti.UI.createScrollableView({
     top : self.headerHeight,
 		showPagingControl : true
@@ -42,7 +42,7 @@ function ResponseEditView(responseID) {
       pagesWithErrors = _(pagesWithErrors).map(function(pageNumber) {
         return pageNumber + 1 ;
       });
-      alert("There were errors in page(s) " + _(pagesWithErrors).uniq().toString());
+      alert(L("errors_on_pages") + _(pagesWithErrors).uniq().toString());
     } else {
       var response = Response.findOneById(responseID);
       response.update(status, answersData);

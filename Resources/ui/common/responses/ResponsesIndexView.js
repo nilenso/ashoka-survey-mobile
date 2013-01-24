@@ -64,7 +64,7 @@ function ResponsesIndexView(surveyID) {
 
   var showSyncSummary = function(data) {
     Ti.API.info("showing sync summary: " + data);
-    alert("successes: " + (data.successes || 0) + "\nerrors: " + (data.errors || 0));
+    alert(L('successes') + (data.successes || 0) + "\n" + L('errors') + (data.errors || 0));
   };
 
   var contentView = Ti.UI.createView({

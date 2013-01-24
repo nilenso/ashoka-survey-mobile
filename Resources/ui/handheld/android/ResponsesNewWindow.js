@@ -17,7 +17,7 @@ function ResponsesNewWindow(surveyID) {
     self.close();
   });
 
-  var confirmDialog = new ConfirmDialog("Confirmation", "This will clear the answers,\n Are you sure?", onConfirm = function(e) {
+  var confirmDialog = new ConfirmDialog(L("confirm"), L("confirm_clear_answers"), onConfirm = function(e) {
     view.cleanup();
     view = null;
     self.close();
