@@ -255,13 +255,12 @@ var Survey = new Ti.App.joli.model({
     },
 
     firstLevelQuestions : function() {
-      var questions = Question.findBy('survey_id', this.id);
-      var questionList = _.select(questions, function(question) {
-        return question.parent_id === null && question.category_id === null;
-      });
-      var sortedQuestionList = _(questionList).sortBy(function(question) {
-        return question.order_number;
-      });
+      var query = new Ti.App.joli.query().select('*').from('questions');
+      query.where('survey_id = ?', this.id);
+      query.where('parent_id IS NULL');
+      query.where('category_id IS NULL');
+      query.order('order_number');
+      var sortedQuestionList = query.execute();
       return sortedQuestionList;
     },
 
