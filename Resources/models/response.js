@@ -239,11 +239,12 @@ var Response = new Ti.App.joli.model({
     questions : function() {
       var Survey = require('models/survey');
       var survey = Survey.findOneById(this.survey_id);
-      var firstLevelQuestions = survey.firstLevelQuestions();
-      var questions = _.chain(firstLevelQuestions).map(function(question) {
+      var firstLevelQuestions = survey.firstLevelQuestionsAndCategories();
+      
+        var questions = _.chain(firstLevelQuestions).map(function(question) {
         return question.withSubQuestions();
       }).flatten().value();
-
+     
       return questions;
     },
 
