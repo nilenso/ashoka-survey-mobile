@@ -60,10 +60,6 @@ var Category = new Ti.App.joli.model({
       });
     },
 
-    number : function() {
-      return 42;
-    },
-
     firstLevelSubQuestions : function() {
       var Question = require('models/question');
       var questions = Question.findBy('category_id', this.id);
@@ -71,6 +67,15 @@ var Category = new Ti.App.joli.model({
       var elements = questions.concat(categories);
       var sortedElements = _(elements).sortBy(function(element){ return element.order_number; });
       return sortedElements;
+    },
+
+    withSubQuestions : function() {
+      firstLevelSubQuestions = this.firstLevelSubQuestions();
+      var subQuestions = _.chain(firstLevelSubQuestions).map(function(question) {
+          return question.withSubQuestions();
+      }).flatten().value();
+
+      return subQuestions;
     }
   }
 });
