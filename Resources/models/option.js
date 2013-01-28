@@ -37,17 +37,17 @@ var Option = new Ti.App.joli.model({
 
 	objectMethods : {
 		firstLevelSubQuestions : function() {
-			var Question = require('models/question');
-			var questions = Question.findBy('parent_id', this.id);
-			var sortedQuestions = _(questions).sortBy(function(question){ return question.order_number; });
-			return sortedQuestions;
+            var query = new Ti.App.joli.query().select('*').from('questions');
+            query.where('parent_id = ?', this.id);
+            query.order('order_number');
+            return query.execute();
 		},
 
 		firstLevelSubCategories : function() {
-			var Category = require('models/category');
-			var categories = Category.findBy('parent_id', this.id);
-			var sortedCategories = _(categories).sortBy(function(category){ return category.order_number; });
-			return sortedCategories;
+            var query = new Ti.App.joli.query().select('*').from('categories');
+            query.where('parent_id = ?', this.id);
+            query.order('order_number');
+            return query.execute();
 		},
 
 		firstLevelSubElements : function() {

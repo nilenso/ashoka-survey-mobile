@@ -266,13 +266,12 @@ var Survey = new Ti.App.joli.model({
     },
 
     firstLevelCategories : function() {
-      var categories = Category.findBy('survey_id', this.id);
-      var categoryList = _.select(categories, function(category) {
-        return category.parent_id === null && category.category_id === null;
-      });
-      var sortedCategoryList = _(categoryList).sortBy(function(category) {
-        return category.order_number;
-      });
+      var query = new Ti.App.joli.query().select('*').from('categories');
+      query.where('survey_id = ?', this.id);
+      query.where('parent_id IS NULL');
+      query.where('category_id IS NULL');
+      query.order('order_number');
+      var sortedCategoryList = query.execute();
       return sortedCategoryList;
     },
 
