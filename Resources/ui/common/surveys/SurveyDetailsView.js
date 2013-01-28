@@ -105,6 +105,7 @@ function SurveysDetailsView(survey) {
   });
 
   syncResponseButton.addEventListener('click', function() {
+    syncResponseButton.enabled = false;
     self.fireEvent('SurveyDetailsView.sync_responses');
   });
 
