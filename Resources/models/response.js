@@ -106,7 +106,6 @@ var Response = new Ti.App.joli.model({
     syncOnLoad : function(data) {
       Ti.API.info("Received response successfully: " + data.responseText);
       var self = data.response;
-      self.has_error = false;
       self.destroyAnswers();
 
       var received_response = JSON.parse(data.responseText);
@@ -156,6 +155,7 @@ var Response = new Ti.App.joli.model({
 
       Ti.App.fireEvent('response.sync.' + self.id, {
         survey_id : self.survey_id,
+        has_error : false,
         response_id : self.id
       });
 
@@ -165,23 +165,15 @@ var Response = new Ti.App.joli.model({
       var message;
       var self = data.response;
       var responseText = data.responseText;
-      self.has_error = true;
       Ti.API.info("Error response with status " + data.status);
       if (data.status == '410') {// Response deleted on server
         Ti.API.info("Response deleted on server: " + responseText);
         self.destroyAnswers();
         self.destroy();
-      } else if (data.status >= 400) {
-        message = L("server_not_responding");
-      } else if (data.status === 0) {
-        message = L("could_not_reach_server");
-      } else {
-        Ti.API.info("Erroneous Response: " + responseText);
-        message = L("error_occured");
       }
       Ti.App.fireEvent('response.sync.' + self.id , {
         survey_id : self.survey_id,
-        message : message,
+        has_error : true,
         response_id : self.id
       });
     },

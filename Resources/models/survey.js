@@ -98,19 +98,14 @@ var Survey = new Ti.App.joli.model({
       NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
         var surveyCount = _(self.all()).size();
 
-        var count = 0, errors = 0, successes = 0;
+        var syncCount = 0;
+        var syncSummary = {'successes':0, 'errors':0};
+
         var generateAllResponsesSyncSummary = function(data) {
-          count++;
-          if (data.message) {
-            errors++;
-          } else {
-            successes++;
-          }
-          if (count === surveyCount) {
-            externalResponseSyncHandler.notifySyncComplete({
-              successes : successes,
-              errors : errors
-            });
+          syncCount++;
+          data.has_error ? syncSummary['errors']++ : syncSummary['successes']++;
+          if (syncCount === surveyCount) {
+            externalResponseSyncHandler.notifySyncComplete(syncSummary);
           }
         };
 
@@ -149,8 +144,7 @@ var Survey = new Ti.App.joli.model({
 
       var self = this;
       var responseSyncCount = 0;
-      var successes = 0;
-      var errors = 0;
+      var syncSummary = {'successes':0, 'errors':0};
       var totalResponseCount =_(this.responses()).size();
       var responseStack = [];
       var syncNextResponse = function() {
@@ -161,15 +155,12 @@ var Survey = new Ti.App.joli.model({
 
       var syncHandler = function(data) {
         responseSyncCount++;
-        if (data.message) {
-          errors++;
-        } else {
-          successes++;
-        }
+
+        data.has_error ? syncSummary['errors']++ : syncSummary['successes']++;
         if (self.allResponsesSynced(responseSyncCount, totalResponseCount)) {
           responseStack = [];
           Ti.App.removeEventListener("response:syncNextResponse" + surveyID, syncNextResponse);
-          externalResponseSyncHandler.notifySyncComplete(self.syncSummary(successes, errors));
+          externalResponseSyncHandler.notifySyncComplete(syncSummary);
         }
         externalResponseSyncHandler.notifySyncProgress();
         Ti.App.removeEventListener("response.sync." + data.response_id, syncHandler);
@@ -202,13 +193,6 @@ var Survey = new Ti.App.joli.model({
 
     allResponsesSynced : function(successCount, total) {
       return total === successCount;
-    },
-
-    syncSummary : function(successes, errors) {
-      var summary = {};
-      summary['errors'] = errors;
-      summary['successes'] = successes;
-      return summary;
     },
 
     fetchCategories : function(externalSyncHandler) {
