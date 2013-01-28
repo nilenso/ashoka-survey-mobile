@@ -149,6 +149,8 @@ var Survey = new Ti.App.joli.model({
 
       var self = this;
       var responseSyncCount = 0;
+      var successes = 0;
+      var errors = 0;
       var totalResponseCount =_(this.responses()).size();
       var responseStack = [];
       var syncNextResponse = function() {
@@ -159,10 +161,15 @@ var Survey = new Ti.App.joli.model({
 
       var syncHandler = function(data) {
         responseSyncCount++;
+        if (data.message) {
+          errors++;
+        } else {
+          successes++;
+        }
         if (self.allResponsesSynced(responseSyncCount, totalResponseCount)) {
           responseStack = [];
           Ti.App.removeEventListener("response:syncNextResponse" + surveyID, syncNextResponse);
-          externalResponseSyncHandler.notifySyncComplete(self.syncSummary(totalResponseCount));
+          externalResponseSyncHandler.notifySyncComplete(self.syncSummary(successes, errors));
         }
         externalResponseSyncHandler.notifySyncProgress();
         Ti.App.removeEventListener("response.sync." + data.response_id, syncHandler);
@@ -197,13 +204,10 @@ var Survey = new Ti.App.joli.model({
       return total === successCount;
     },
 
-    syncSummary : function(total) {
-      var summary = _(this.responses()).countBy(function(response) {
-        return response.has_error ? 'errors' : 'successes';
-      });
-      if(!summary['errors'])
-        summary['errors'] = 0;
-      summary['successes'] = total - summary['errors'];
+    syncSummary : function(successes, errors) {
+      var summary = {};
+      summary['errors'] = errors;
+      summary['successes'] = successes;
       return summary;
     },
 
