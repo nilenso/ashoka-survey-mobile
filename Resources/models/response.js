@@ -165,6 +165,7 @@ var Response = new Ti.App.joli.model({
       var message;
       var self = data.response;
       var responseText = data.responseText;
+      self.has_error = true;
       Ti.API.info("Error response with status " + data.status);
       if (data.status == '410') {// Response deleted on server
         Ti.API.info("Response deleted on server: " + responseText);
@@ -176,7 +177,6 @@ var Response = new Ti.App.joli.model({
         message = L("could_not_reach_server");
       } else {
         Ti.API.info("Erroneous Response: " + responseText);
-        self.has_error = true;
         message = L("error_occured");
       }
       Ti.App.fireEvent('response.sync.' + self.id , {
@@ -240,11 +240,11 @@ var Response = new Ti.App.joli.model({
       var Survey = require('models/survey');
       var survey = Survey.findOneById(this.survey_id);
       var firstLevelQuestions = survey.firstLevelQuestionsAndCategories();
-      
+
         var questions = _.chain(firstLevelQuestions).map(function(question) {
         return question.withSubQuestions();
       }).flatten().value();
-     
+
       return questions;
     },
 
