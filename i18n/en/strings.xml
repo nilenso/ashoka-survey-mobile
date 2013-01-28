@@ -66,4 +66,7 @@
     <string name="confirm_clear_answers">This will clear the answers,\n Are you sure?</string>
 
     <string name="about">About</string>
+
+    <string name="network_offline">Network isn't online.</string>
+    <string name="check_internet">Please check your internet connection and try again.</string>
 </resources>

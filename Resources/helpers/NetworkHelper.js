@@ -9,7 +9,7 @@ var NetworkHelper = {
         alert(L("not_logged_in"));
       }
       return;
-    };
+    }
 
     NetworkHelper.pingSurveyWebWithoutLoggedInCheck(success, error);
 
@@ -24,7 +24,7 @@ var NetworkHelper = {
         alert(L("network_offline"));
       }
       return;
-    };
+    }
     var client = Ti.Network.createHTTPClient({
       onload : success,
       onerror : error ||
@@ -38,6 +38,6 @@ var NetworkHelper = {
     client.open('HEAD', Ti.App.Properties.getString('server_url'));
     client.send();
   }
-}
+};
 
 module.exports = NetworkHelper;
