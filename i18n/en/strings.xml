@@ -6,8 +6,8 @@
     <string name="logout_menu">Logout</string>
     <string name="settings_menu">Settings</string>
     <string name="activity_indicator">Loading...</string>
-    <string name="login_indicator">Logging In...</string>
-
+    <string name="login_indicator">Logging in...</string>
+    
     <string name="server_not_responding">Your server isn't responding. Sorry about that.</string>
     <string name="sync_responses">Sync Responses...</string>
     <string name="surveys_sync_success"> Surveys successfully synced\n</string>
@@ -66,4 +66,7 @@
     <string name="confirm_clear_answers">This will clear the answers,\n Are you sure?</string>
 
     <string name="about">About</string>
+
+    <string name="network_offline">Network isn't online.</string>
+    <string name="check_internet">Please check your internet connection and try again.</string>
 </resources>
