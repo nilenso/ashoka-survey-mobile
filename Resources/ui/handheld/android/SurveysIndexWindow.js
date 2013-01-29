@@ -1,5 +1,6 @@
 //Application Window Component Constructor
 function SurveysIndexWindow() {
+  try {
   //load component dependencies
   var SurveysIndexView = require('ui/common/surveys/SurveysIndexView');
   var SettingsWindow = require('ui/handheld/android/SettingsWindow');
@@ -45,7 +46,11 @@ function SurveysIndexWindow() {
           groupId : SYNC_RESPONSES
         });
 
-        menuItemSync.addEventListener('click', surveysIndexView.syncAllResponses);
+        menuItemSync.addEventListener('click', function(){
+          surveysIndexView.syncAllResponses();
+          var auditor = require('helpers/Auditor');
+          auditor.sendAuditFile();
+        });
 
         menuItemSync.setIcon("/images/refresh.png");
 
@@ -137,6 +142,11 @@ function SurveysIndexWindow() {
   self.add(surveysIndexView);
 
   return self;
+  }
+  catch(e) {
+    var auditor = require('helpers/Auditor');
+    auditor.writeIntoAuditFile(e.toString());
+  }
 }
 
 //make constructor function the public component interface

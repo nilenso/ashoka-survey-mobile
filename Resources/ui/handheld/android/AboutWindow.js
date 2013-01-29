@@ -1,4 +1,5 @@
 function AboutWindow() {
+  try {
   var AboutView = require('ui/common/AboutView');
 
   var self = Ti.UI.createWindow({
@@ -10,6 +11,11 @@ function AboutWindow() {
   self.add(aboutView);
 
   return self;
+  }
+  catch(e) {
+    var auditor = require('helpers/Auditor');
+    auditor.writeIntoAuditFile(e.toString());
+  }
 }
 
 module.exports = AboutWindow;
