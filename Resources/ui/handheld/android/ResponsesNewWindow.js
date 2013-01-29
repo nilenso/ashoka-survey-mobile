@@ -1,4 +1,5 @@
 function ResponsesNewWindow(surveyID) {
+  try {
   var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
   var ResponsesNewView = require('ui/common/responses/ResponsesNewView');
   var ConfirmDialog = require('ui/common/components/ConfirmDialog');
@@ -28,6 +29,11 @@ function ResponsesNewWindow(surveyID) {
   });
 
   return self;
+  }
+  catch(e) {
+    var auditor = require('helpers/Auditor');
+    auditor.writeIntoAuditFile(e.toString());
+  }
 }
 
 module.exports = ResponsesNewWindow;

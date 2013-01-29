@@ -1,4 +1,5 @@
 function ResponsesIndexWindow(surveyID) {
+  try {
   var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
   var ResponseShowView = require('ui/common/responses/ResponseShowView');
   var ResponseShowWindow = require('ui/handheld/android/ResponseShowWindow');
@@ -49,6 +50,11 @@ function ResponsesIndexWindow(surveyID) {
   });
 
   return self;
+  }
+  catch(e) {
+    var auditor = require('helpers/Auditor');
+    auditor.writeIntoAuditFile(e.toString());
+  }
 }
 
 module.exports = ResponsesIndexWindow;

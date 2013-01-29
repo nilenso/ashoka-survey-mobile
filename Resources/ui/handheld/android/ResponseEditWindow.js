@@ -1,4 +1,5 @@
 function ResponseEditWindow(responseID) {
+  try {
 	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
 	var ResponseEditView = require('ui/common/responses/ResponseEditView');
 
@@ -21,8 +22,13 @@ function ResponseEditWindow(responseID) {
     	view = null;
     	self.close();
 	});
-	
+
 	return self;
+  }
+  catch(e) {
+    var auditor = require('helpers/Auditor');
+    auditor.writeIntoAuditFile(e.toString());
+  }
 }
 
 module.exports = ResponseEditWindow;
