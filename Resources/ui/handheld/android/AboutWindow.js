@@ -14,7 +14,7 @@ function AboutWindow() {
   }
   catch(e) {
     var auditor = require('helpers/Auditor');
-    auditor.writeIntoAuditFile(e.toString());
+    auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
   }
 }
 
