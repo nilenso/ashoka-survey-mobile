@@ -9,11 +9,11 @@ function ResponseEditWindow(responseID) {
 	});
 	var view = new ResponseEditView(responseID);
 	self.add(view);
-	
+
 	view.addEventListener('ResponsesEditView:savedResponse', function() {
 		Ti.App.fireEvent('ResponseEditWindow:closed');
     	view.cleanup();
-    	view = null;		
+    	view = null;
 		self.close();
 	});
 
@@ -27,7 +27,7 @@ function ResponseEditWindow(responseID) {
   }
   catch(e) {
     var auditor = require('helpers/Auditor');
-    auditor.writeIntoAuditFile(e.toString());
+    auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
   }
 }
 

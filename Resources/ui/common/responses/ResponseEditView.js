@@ -9,7 +9,6 @@ function ResponseEditView(responseID) {
 	var ResponseViewHelper = require('ui/common/responses/ResponseViewHelper');
   var TopLevelView = require('ui/common/components/TopLevelView');
 	var responseViewHelper = new ResponseViewHelper();
-  var ButtonView = require('ui/common/components/ButtonView');
   var Toast = require('ui/common/components/Toast');
 
   var self = new TopLevelView(L('edit_response'));

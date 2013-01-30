@@ -3,7 +3,8 @@ var Auditor = function() {
   var self = this;
   var deviceId = Ti.Platform.getId();
   var auditFileName = "audit-" + deviceId + ".log";
-  var auditUrl = Ti.App.Properties.getString('server_url') + '/api/audits';
+  var createAuditUrl = Ti.App.Properties.getString('server_url') + '/api/audits';
+  var updateAuditUrl = createAuditUrl + '/' + deviceId;
 
   self.firstAudit = Ti.App.Properties.getString('firstAudit') === null ? true : false;
 
@@ -44,6 +45,10 @@ var Auditor = function() {
     file = null;
   };
 
+  var auditUrl = function() {
+    return self.firstAudit ? createAuditUrl : updateAuditUrl;
+  };
+
   var params = function() {
     var params = {
       device_id : deviceId,
@@ -68,8 +73,10 @@ var Auditor = function() {
       truncateAuditFile();
       setNotFirstAudit();
     };
-    client.onerror = function(){alert("error");};
-    client.open(requestMethod, auditUrl);
+    client.onerror = function() {
+      self.writeIntoAuditFile("Sending audit file failed");
+    };
+    client.open(requestMethod, auditUrl());
     client.send(params());
   };
 
