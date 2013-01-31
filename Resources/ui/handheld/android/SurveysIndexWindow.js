@@ -34,8 +34,7 @@ function SurveysIndexWindow() {
       onCreateOptionsMenu : function(e) {
         var menu = e.menu;
         var menuItemFetch = menu.add({
-          title : L("fetch_surveys_menu"),
-          groupId : FETCH_SURVEYS
+          title : L("fetch_surveys_menu")
         });
 
         menuItemFetch.addEventListener('click', surveysIndexView.fetchAllSurveys);
@@ -91,10 +90,8 @@ function SurveysIndexWindow() {
 
       onPrepareOptionsMenu : function(e) {
         var menu = e.menu;
-        menu.setGroupEnabled(SYNC_RESPONSES, (Survey.allResponsesCount() !== 0) && loggedIn());
-        // Allow syncing responses if logged in AND there are some surveys in the DB.
-        menu.setGroupEnabled(FETCH_SURVEYS, loggedIn());
-        // Allow fetching surveys if logged in.
+        menu.setGroupEnabled(SYNC_RESPONSES, (Survey.allResponsesCount() !== 0));
+        // Allow syncing responses if there is any survey with responses in the DB.
 
         menu.setGroupVisible(LOGIN, !loggedIn());
         //Remove the Login button
