@@ -10,9 +10,11 @@ function LoginWindow() {
 	var loginView = new LoginView();
 	self.add(loginView);
 
-	loginView.addEventListener('login:completed', function() {
-		self.close();
-	});
+  var closeWindow = function() {
+    Ti.App.removeEventListener('login:completed', closeWindow);
+    self.close();
+  };
+  Ti.App.addEventListener('login:completed', closeWindow);
 
 	self.addEventListener('close', function(){
 		Ti.App.removeEventListener('network.server.unreachable', loginView.networkServerUnreachable);
