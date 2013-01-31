@@ -10,7 +10,6 @@ var LoginHelper = {
       return false;
 
     if (new Date() - new Date(accessTokenCreatedAt) > 35000000) {//Expire the token after 9.72 hours.
-      alert(L("session_expired"));
       LoginHelper.expireSession();
       return false;
     }
@@ -25,6 +24,7 @@ var LoginHelper = {
       var DatabaseHelper = require('helpers/DatabaseHelper');
       DatabaseHelper.clearDatabase();
       Ti.App.Properties.setString('email', null);
+      Ti.App.Properties.setString('password', null);
       (new Toast(L("logout_message"))).show();
       Ti.App.fireEvent('settings.refreshSurveys');
     });
@@ -55,7 +55,7 @@ var LoginHelper = {
         if(rememberMe) {
           Ti.App.Properties.setString('password', password);
         } else {
-          Ti.App.Properties.setString('password', '');
+          Ti.App.Properties.setString('password', null);
         }
         Ti.App.Properties.setString('user_id', response.user_id);
         Ti.App.Properties.setString('organization_id', response.organization_id);

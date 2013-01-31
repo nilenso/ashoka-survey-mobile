@@ -12,7 +12,7 @@ var NetworkHelper = {
     if (!loggedIn()) {
       var password = Ti.App.Properties.getString('password');
       var email = Ti.App.Properties.getString('email');
-      if(password !== '') {
+      if(password) {
         activityIndicator.show();
         loginHelper.login(email, password, true, function() { activityIndicator.hide(); success(); }, function() { activityIndicator.hide(); error(); });
       } else {
