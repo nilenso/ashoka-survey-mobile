@@ -27,7 +27,6 @@
     <string name="login_message">You will automatically be logged out in 10 hours</string>
     <string name="logout_message">Successfully logged out.</string>
     <string name="login_failed">Login failed, Please check your username and password.</string>
-    <string name="session_expired">Your session has expired. You need to login again to fetch or sync any data.</string>
 
     <string name="out_of_memory">The application has run out of memory.\nForce Quit and try again.</string>
     <string name="could_not_reach_server">Couldn't reach the server.</string>
