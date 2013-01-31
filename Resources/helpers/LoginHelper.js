@@ -36,7 +36,7 @@ var LoginHelper = {
     Ti.App.Properties.setString('access_token_created_at', null);
   },
 
-  login : function(email, password, rememberMe, topLevelView) {
+  login : function(email, password, rememberMe) {
     var loginUrl = Ti.App.Properties.getString('server_url') + '/api/login';
     var NetworkHelper = require('helpers/NetworkHelper');
     NetworkHelper.pingSurveyWebWithoutLoggedInCheck( onSuccess = function() {
@@ -60,7 +60,7 @@ var LoginHelper = {
         }
         Ti.App.Properties.setString('user_id', response.user_id);
         Ti.App.Properties.setString('organization_id', response.organization_id);
-        topLevelView.fireEvent('login:completed');
+        Ti.App.fireEvent('login:completed');
       };
       client.setTimeout(5000);
       client.onerror = function() {

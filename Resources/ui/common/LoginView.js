@@ -107,12 +107,12 @@ function LoginView() {
         var DatabaseHelper = require("helpers/DatabaseHelper");
         DatabaseHelper.clearDownloadedData();
         activityIndicator.show();
-        loginHelper.login(email, password, rememberMe, topLevelView);
+        loginHelper.login(email, password, rememberMe);
       });
       confirmDialog.show();
     } else {
       activityIndicator.show();
-      loginHelper.login(email, password, rememberMe, topLevelView);
+      loginHelper.login(email, password, rememberMe);
     }
   });
 
