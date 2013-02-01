@@ -19,7 +19,9 @@ function ResponsesNewWindow(surveyID) {
   });
 
   var confirmDialog = new ConfirmDialog(L("confirm"), L("confirm_clear_answers"), onConfirm = function(e) {
+    if(view) {
     view.cleanup();
+  }
     view = null;
     self.close();
   });
