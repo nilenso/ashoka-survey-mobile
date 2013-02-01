@@ -56,30 +56,6 @@ function LoginView() {
     width : '60%'
   });
 
-  var activityIndicator = Ti.UI.Android.createProgressIndicator({
-    message : L('login_indicator'),
-    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
-    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
-  });
-
-  topLevelView.networkServerUnreachable =  function() {
-    activityIndicator.hide();
-  };
-
-  Ti.App.addEventListener('network.server.unreachable', topLevelView.networkServerUnreachable);
-
-  topLevelView.networkOffline = function() {
-    activityIndicator.hide();
-  };
-
-  Ti.App.addEventListener('network.offline', topLevelView.networkOffline);
-
-  topLevelView.loginDone = function() {
-    activityIndicator.hide();
-  };
-
-  Ti.App.addEventListener('login.done', topLevelView.loginDone);
-
   var populateUserName = function() {
     var oldEmail = Ti.App.Properties.getString('email');
     var loggedIn = Ti.App.Properties.getString('loggedIn');
@@ -87,7 +63,6 @@ function LoginView() {
       emailField.setValue(oldEmail);
   }();
 
-  self.add(activityIndicator);
   self.add(emailField);
   self.add(passwordField);
   rememberMeView.add(rememberMeCheckbox);
@@ -106,12 +81,10 @@ function LoginView() {
       var confirmDialog = new ConfirmDialog(L("login_menu"), L("login_confirm_dialog"), onConfirm = function(e) {
         var DatabaseHelper = require("helpers/DatabaseHelper");
         DatabaseHelper.clearDownloadedData();
-        activityIndicator.show();
         loginHelper.login(email, password, rememberMe);
       });
       confirmDialog.show();
     } else {
-      activityIndicator.show();
       loginHelper.login(email, password, rememberMe);
     }
   });

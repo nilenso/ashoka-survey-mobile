@@ -16,12 +16,6 @@ function LoginWindow() {
   };
   Ti.App.addEventListener('login:completed', closeWindow);
 
-	self.addEventListener('close', function(){
-		Ti.App.removeEventListener('network.server.unreachable', loginView.networkServerUnreachable);
-		Ti.App.removeEventListener('network.offline', loginView.networkOffline);
-		Ti.App.removeEventListener('login.done', loginView.loginDone);
-	});
-
 	return self;
   }
   catch(e) {

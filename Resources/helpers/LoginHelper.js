@@ -65,24 +65,16 @@ var LoginHelper = {
         }
         Ti.App.Properties.setString('user_id', response.user_id);
         Ti.App.Properties.setString('organization_id', response.organization_id);
-        if(success) {
-          success();
-        } else {
-          Ti.App.fireEvent('login.done');
-          Ti.App.fireEvent('login:completed');
-        }
+        Ti.App.fireEvent('login.done');
+        Ti.App.fireEvent('login:completed');
+        activityIndicator.hide();
+      };
+      client.onerror = function() {
+        Ti.App.fireEvent('login.done');
+        alert(L("login_failed"));
         activityIndicator.hide();
       };
       client.setTimeout(5000);
-      client.onerror = function() {
-        if(error) {
-          error();
-        } else {
-          Ti.App.fireEvent('login.done');
-          alert(L("login_failed"));
-        }
-        activityIndicator.hide();
-      };
       client.open('POST', loginUrl);
       client.send({
         username : email,
