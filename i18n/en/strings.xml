@@ -68,5 +68,6 @@
 
     <string name="network_offline">Network isn't online.</string>
     <string name="check_internet">Please check your internet connection and try again.</string>
+    <string name="reaching_server">Connecting to server..</string>
     <string name="remember_me">Remember me</string>
 </resources>
