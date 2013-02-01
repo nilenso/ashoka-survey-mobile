@@ -8,18 +8,20 @@ var activityIndicator = Ti.UI.Android.createProgressIndicator({
 
 var NetworkHelper = {
   pingSurveyWebWithLoggedInCheck : function(success, error) {
-    if(loggedIn()) return;
+    if(loggedIn()) {
+      NetworkHelper.pingSurveyWebWithoutLoggedInCheck(success, error);
+      return;
+    }
     var password = Ti.App.Properties.getString('password');
     var email = Ti.App.Properties.getString('email');
     if(password)
       loginHelper.login(email, password, true);
     else
       error ? error.call() : alert(L("not_logged_in"));
-    NetworkHelper.pingSurveyWebWithoutLoggedInCheck(success, error);
   },
 
   pingSurveyWebWithoutLoggedInCheck : function(success, error) {
-    if(!networkOnlineCheck(error)) return;
+    if(!this.networkOnlineCheck(error)) return;
     var client = Ti.Network.createHTTPClient({
       onload : function(){
         activityIndicator.hide();
