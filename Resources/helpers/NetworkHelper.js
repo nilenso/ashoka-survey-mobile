@@ -1,29 +1,15 @@
 var loggedIn = require('helpers/LoginHelper').loggedIn;
 var loginHelper = require('helpers/LoginHelper');
 
-var activityIndicator = Ti.UI.Android.createProgressIndicator({
-  message : L('login_indicator'),
-  location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
-  type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
-});
-
 var NetworkHelper = {
   pingSurveyWebWithLoggedInCheck : function(success, error) {
-    if (!loggedIn()) {
-      var password = Ti.App.Properties.getString('password');
-      var email = Ti.App.Properties.getString('email');
-      if(password) {
-        activityIndicator.show();
-        loginHelper.login(email, password, true, function() { activityIndicator.hide(); success(); }, function() { activityIndicator.hide(); error(); });
-      } else {
-        if (error) {
-          error.call();
-        } else {
-          alert(L("not_logged_in"));
-        }
-      }
-      return;
-    }
+    if(loggedIn()) return;
+    var password = Ti.App.Properties.getString('password');
+    var email = Ti.App.Properties.getString('email');
+    if(password)
+      loginHelper.login(email, password, true);
+    else
+      error ? error.call() : alert(L("not_logged_in"));
     NetworkHelper.pingSurveyWebWithoutLoggedInCheck(success, error);
   },
 
