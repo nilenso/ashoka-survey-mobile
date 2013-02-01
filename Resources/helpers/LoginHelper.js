@@ -1,6 +1,12 @@
 var ConfirmDialog = require('ui/common/components/ConfirmDialog');
 var Toast = require('ui/common/components/Toast');
 
+var activityIndicator = Ti.UI.Android.createProgressIndicator({
+  message : L('login_indicator'),
+  location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+  type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
+});
+
 var LoginHelper = {
   loggedIn : function() {
     var accessToken = Ti.App.Properties.getString('access_token');
@@ -36,7 +42,7 @@ var LoginHelper = {
     Ti.App.Properties.setString('access_token_created_at', null);
   },
 
-  login : function(email, password, rememberMe, success, error) {
+  login : function(email, password, rememberMe) {
     var loginUrl = Ti.App.Properties.getString('server_url') + '/api/login';
     var NetworkHelper = require('helpers/NetworkHelper');
     NetworkHelper.pingSurveyWebWithoutLoggedInCheck( onSuccess = function() {
@@ -65,6 +71,7 @@ var LoginHelper = {
           Ti.App.fireEvent('login.done');
           Ti.App.fireEvent('login:completed');
         }
+        activityIndicator.hide();
       };
       client.setTimeout(5000);
       client.onerror = function() {
@@ -74,12 +81,14 @@ var LoginHelper = {
           Ti.App.fireEvent('login.done');
           alert(L("login_failed"));
         }
+        activityIndicator.hide();
       };
       client.open('POST', loginUrl);
       client.send({
         username : email,
         password : password
       });
+      activityIndicator.show();
     });
   }
 };
