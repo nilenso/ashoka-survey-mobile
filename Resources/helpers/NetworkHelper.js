@@ -14,15 +14,7 @@ var NetworkHelper = {
   },
 
   pingSurveyWebWithoutLoggedInCheck : function(success, error) {
-    if (!Titanium.Network.online) {
-      if (error) {
-        error.call();
-      } else {
-        Ti.App.fireEvent('network.offline');
-        alert(L("network_offline"));
-      }
-      return;
-    }
+    if(!networkOnlineCheck(error)) return;
     var client = Ti.Network.createHTTPClient({
       onload : success,
       onerror : error ||
@@ -35,6 +27,19 @@ var NetworkHelper = {
 
     client.open('HEAD', Ti.App.Properties.getString('server_url'));
     client.send();
+  },
+
+  networkOnlineCheck : function (error) {
+    if (!Titanium.Network.online) {
+      if (error) {
+        error.call();
+      } else {
+        Ti.App.fireEvent('network.offline');
+        alert(L("network_offline"));
+      }
+      return false;
+    }
+    return true;
   }
 };
 
