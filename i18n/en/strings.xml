@@ -46,7 +46,7 @@
     <string name="change_server_message">This will clear the database and log you out,\nAre you sure?</string>
     <string name="invalid_settings">Your settings are invalid. Please check them before saving.</string>
 
-    <string name="logged_in_as">Logged in as </string>
+    <string name="logged_in_as">Logged in as&#160;</string>
     <string name="header_not_logged_in">Not logged in</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
@@ -55,8 +55,8 @@
     <string name="errors_on_pages">There were errors on page(s)</string>
 
 
-    <string name="successes">successes: </string>
-    <string name="errors">erros: </string>
+    <string name="successes">successes:&#160;</string>
+    <string name="errors">erros:&#160;</string>
 
     <string name="delete">Delete</string>
     <string name="delete_response_message">Are you sure you want to delete the response?</string>
