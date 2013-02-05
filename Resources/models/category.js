@@ -10,7 +10,8 @@ var Category = new Ti.App.joli.model({
     survey_id : 'INTEGER',
     parent_id : 'INTEGER',
     order_number : 'INTEGER',
-    category_id : 'INTEGER'
+    category_id : 'INTEGER',
+    type : 'TEXT'
   },
 
   methods : {
@@ -25,7 +26,8 @@ var Category = new Ti.App.joli.model({
           survey_id : surveyID,
           parent_id : parentID,
           category_id : categoryID,
-          order_number : category.order_number
+          order_number : category.order_number,
+          type : category.type || 'Category'
         });
         record.save();
         records.push(record);
