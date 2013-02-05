@@ -12,6 +12,7 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
   var button = new ButtonView('Add a Record', { 'width' : '80%' });
   self.add(button);
 
+  var tempRecordId = 0;
   var QuestionView = require('ui/common/questions/QuestionView');
   var addSubQuestions = function() {
     Ti.API.info("Showing sub questions for" + multiRecordCategory.content);
@@ -19,8 +20,9 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
     _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
       var subQuestionNumber = number + '.' + (index + 1);
-      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber));
+      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, tempRecordId));
     });
+    tempRecordId++;
   };
 
   button.addEventListener('click', addSubQuestions);

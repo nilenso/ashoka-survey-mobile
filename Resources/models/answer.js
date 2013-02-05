@@ -13,12 +13,14 @@ var Answer = new Ti.App.joli.model({
     question_id : 'INTEGER',
     web_id : 'INTEGER',
     updated_at : 'TEXT',
-    image : 'TEXT'
+    image : 'TEXT',
+    record_id : 'INTEGER'
   },
 
   methods : {
-    createRecord : function(answerData, responseID) {
+    createRecord : function(answerData, responseID, recordID) {
       answerData.response_id = responseID;
+      answerData.record_id = recordID;
       var question = Question.findOneById(answerData['question_id']);
       var optionIds = [];
 

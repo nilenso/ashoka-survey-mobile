@@ -1,5 +1,6 @@
 var _ = require('lib/underscore')._;
 var Answer = require('models/answer');
+var Record = require('models/record');
 var Choice = require('models/choice');
 var progressBarView = require('ui/common/components/ProgressBar');
 var Response = new Ti.App.joli.model({
@@ -18,7 +19,7 @@ var Response = new Ti.App.joli.model({
 
   methods : {
     createRecord : function(surveyID, status, answersData, location) {
-      var record = this.newRecord({
+      var response = this.newRecord({
         survey_id : surveyID,
         user_id : Ti.App.Properties.getString('user_id'),
         organization_id : Ti.App.Properties.getString('organization_id'),
@@ -27,9 +28,18 @@ var Response = new Ti.App.joli.model({
         latitude : location.latitude,
         longitude : location.longitude
       });
-      record.save();
-      _(answersData).each(function(answer) {
-        Answer.createRecord(answer, record.id);
+      response.save();
+      var groupedAnswers = _(answersData).groupBy(function(answer) {
+        return answer.record_id;
+      });
+      _(groupedAnswers).each(function(answersInRecord, recordID) {
+        if(recordID === "undefined") { // Answers not belonging to a record
+          _(answersInRecord).each(function(answer) {
+            Answer.createRecord(answer, response.id);
+          });
+        } else {
+          Record.createRecord(answersInRecord, response.id);
+        }
       });
       return true;
     },

@@ -10,7 +10,7 @@ var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Measurements = require('ui/common/components/Measurements');
 
-function QuestionView(question, answer, response, number, lastQuestionNumber, pageNumber) {
+function QuestionView(question, answer, response, number, lastQuestionNumber, pageNumber, recordID) {
   var type = (question.type.search('Question') > 0) ? 'question' : 'category';
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
@@ -19,7 +19,8 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
     id : question.id,
     height : Titanium.UI.SIZE,
     answerID : answer ? answer.id : null,
-    pageNumber : pageNumber
+    pageNumber : pageNumber,
+    recordID : recordID
   });
 
   var questionText = number + '. ';
