@@ -4,16 +4,18 @@ var DateQuestionView = require('ui/common/questions/DateQuestionView');
 var QuestionWithOptionsView = require('ui/common/questions/QuestionWithOptionsView');
 var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionView');
 var CategoryView = require('ui/common/questions/CategoryView');
+var MultiRecordCategoryView = require('ui/common/questions/MultiRecordCategoryView');
 var RatingQuestionView = require('ui/common/questions/RatingQuestionView');
 var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Measurements = require('ui/common/components/Measurements');
 
 function QuestionView(question, answer, response, number, lastQuestionNumber, pageNumber) {
+  var type = (question.type.search('Question') > 0) ? 'question' : 'category';
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     layout : 'vertical',
-    type : question.type ? 'question' : 'category',
+    type : type,
     id : question.id,
     height : Titanium.UI.SIZE,
     answerID : answer ? answer.id : null,
@@ -75,8 +77,10 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
     valueField = new RatingQuestionView(question, content);
   } else if (question.type == 'MultiChoiceQuestion') {
     valueField = new MultiChoiceQuestionView(question, answer, response, number, pageNumber);
-  } else if (question.type === undefined) { //Category
+  } else if (question.type === 'Category') { //Category
     valueField = new CategoryView(question, response, number, pageNumber);
+  } else if (question.type === 'MultiRecordCategory'){
+    valueField = new MultiRecordCategoryView(question, response, number, pageNumber);
   } else {
     valueField = new BasicQuestionView(question, content, constraintsText);
   }
