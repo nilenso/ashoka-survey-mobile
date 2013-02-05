@@ -43,7 +43,7 @@ var Answer = new Ti.App.joli.model({
       var question = Question.findOneById(answerData.question_id);
       var errors = {};
       if (answerData.content && !_.isEmpty(answerData.content)) {
-        if (question.max_length && (answerData.content.length >= question.max_length))
+        if (question.max_length && (answerData.content.length > question.max_length))
           errors['max_length'] = L("error_max_length");
         if (question.min_value && answerData.content < question.min_value)
           errors['min_value'] = L("error_min_value");
