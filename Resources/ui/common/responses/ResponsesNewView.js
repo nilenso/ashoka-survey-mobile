@@ -23,7 +23,7 @@ function ResponsesNewView(surveyID) {
 
   var validateAndSaveAnswers = function(e, status) {
     activityIndicator.show();
-    if(scrollableView)
+    if (scrollableView)
       var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
     var answersData = _(questionViews).map(function(questionView, questionID) {
       Ti.API.info("questionid:" + questionID);
@@ -38,7 +38,7 @@ function ResponsesNewView(surveyID) {
       responseViewHelper.displayErrors(responseErrors, questionViews);
       pagesWithErrors = responseViewHelper.scrollToFirstErrorPage(scrollableView, responseErrors);
       pagesWithErrors = _(pagesWithErrors).map(function(pageNumber) {
-        return pageNumber + 1 ;
+        return pageNumber + 1;
       });
       alert(L("errors_on_pages") + _(pagesWithErrors).uniq().toString());
     } else {
@@ -60,7 +60,8 @@ function ResponsesNewView(surveyID) {
 
   var getCurrentLocation = function() {
     var location = {};
-    Titanium.Geolocation.getCurrentPosition(function(e) {
+    var saveLocation = function(e) {
+      Ti.Geolocation.removeEventListener('location', saveLocation);
       if (e.error) {
         Ti.API.info("Error getting location");
         return;
@@ -69,7 +70,9 @@ function ResponsesNewView(surveyID) {
       location.latitude = e.coords.latitude;
       Ti.API.info("longitude = " + e.coords.longitude);
       Ti.API.info("latitude = " + e.coords.latitude);
-    });
+    };
+    
+    Ti.Geolocation.addEventListener('location', saveLocation);    
     return location;
   };
 

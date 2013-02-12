@@ -31,6 +31,7 @@ if (Ti.version < 1.8) {
 	// Android uses platform-specific properties to create windows.
 	// All other platforms follow a similar UI pattern.
 	if (osname === 'android') {
+	  require('helpers/LocationHelper').setup();
 		Window = require('ui/handheld/android/SurveysIndexWindow');
 		new Window().open();
 	} else {
