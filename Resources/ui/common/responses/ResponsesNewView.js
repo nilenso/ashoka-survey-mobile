@@ -83,6 +83,7 @@ function ResponsesNewView(surveyID) {
       location.latitude = e.coords.latitude;
       Ti.API.info("longitude = " + e.coords.longitude);
       Ti.API.info("latitude = " + e.coords.latitude);
+      Ti.Geolocation.removeEventListener('location', saveLocation);
     };
     
     Ti.Geolocation.addEventListener('location', saveLocation);    
