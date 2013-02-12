@@ -26,11 +26,12 @@ function ResponsesNewView(surveyID) {
     var questionViews;
     if(scrollableView)
       questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
-    var answersData = _(questionViews).map(function(questionView, questionID) {
-      Ti.API.info("questionid:" + questionID);
+    var answersData = _(questionViews).map(function(questionView) {
+      Ti.API.info("Question view: " + questionView);
+      Ti.API.info("questionid:" + questionView.id);
       Ti.API.info("content:" + questionView.getValueField().getValue());
       return {
-        'question_id' : questionID,
+        'question_id' : questionView.id,
         'content' : questionView.getValueField().getValue(),
         'record_id' : questionView.recordID
       };

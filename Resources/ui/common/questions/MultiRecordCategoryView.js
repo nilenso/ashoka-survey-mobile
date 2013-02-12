@@ -15,7 +15,6 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
   var tempRecordId = 0;
   var QuestionView = require('ui/common/questions/QuestionView');
   var addSubQuestions = function() {
-    Ti.API.info("Showing sub questions for" + multiRecordCategory.content);
     var subQuestions = multiRecordCategory.firstLevelSubQuestions();
     _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;

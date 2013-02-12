@@ -42,7 +42,7 @@ function ResponseViewHelper() {
   };
 
   self.getQuestionViews = function(parent) {
-    var foo = {};
+    var foo = [];
     var views;
     if (_(parent).isArray()) {
       views = _.chain(parent).map(function(scrollView) {
@@ -53,7 +53,7 @@ function ResponseViewHelper() {
     }
     _(views).each(function(view) {
       if (view.type == 'question') {
-        foo[view.id] = view;
+        foo.push(view);
       }
       _(foo).extend(self.getQuestionViews(view));
     });
