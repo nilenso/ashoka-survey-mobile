@@ -34,8 +34,10 @@ function ResponseViewHelper() {
     self.resetErrors(questionViews);
     for (var question_id in responseErrors) {
       for (var field in responseErrors[question_id]) {
-        var question = Question.findOneById(question_id);
-        questionViews[question_id].setError(responseErrors[question_id][field]);
+        var questionViewWithError = _(questionViews).find(function(questionView){
+          return questionView.id === question_id;
+        });
+        questionViewWithError.setError(responseErrors[question_id][field]);
         Ti.API.info(responseErrors[question_id][field]);
       }
     }
@@ -145,7 +147,10 @@ function ResponseViewHelper() {
     var questionViews = self.getQuestionViews(views);
     var pagesWithErrors = [];
     for (var question_id in errors) {
-      pagesWithErrors.push(questionViews[question_id].pageNumber);
+      var questionViewWithError = _(questionViews).find(function(questionView) {
+        return questionView.id === question_id;
+      });
+      pagesWithErrors.push(questionViewWithError.pageNumber);
     }
     firstPageWithErrors =_(pagesWithErrors).min();
     scrollableView.scrollToView(views[firstPageWithErrors]);
