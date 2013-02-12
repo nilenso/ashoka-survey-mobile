@@ -60,12 +60,25 @@ function ResponsesNewView(surveyID) {
 
   var getCurrentLocation = function() {
     var location = {};
+    
+    Ti.Geolocation.Android.manualMode = true;
+    
+    gpsProvider = Ti.Geolocation.Android.createLocationProvider({
+      name : Ti.Geolocation.PROVIDER_GPS,
+      minUpdateTime : 60,
+      minUpdateDistance : 100
+    });
+    
+    Ti.Geolocation.Android.addLocationProvider(gpsProvider);
+    
     var saveLocation = function(e) {
-      Ti.Geolocation.removeEventListener('location', saveLocation);
+      Ti.API.info("Location provided by: " + e.provider.name);
+      
       if (e.error) {
         Ti.API.info("Error getting location");
         return;
       }
+      
       location.longitude = e.coords.longitude;
       location.latitude = e.coords.latitude;
       Ti.API.info("longitude = " + e.coords.longitude);
