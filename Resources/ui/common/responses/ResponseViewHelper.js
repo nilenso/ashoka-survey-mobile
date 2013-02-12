@@ -57,9 +57,9 @@ function ResponseViewHelper() {
       if (view.type == 'question') {
         foo.push(view);
       }
-      _(foo).extend(self.getQuestionViews(view));
+      foo.push(self.getQuestionViews(view));
     });
-    return foo;
+    return _(foo).flatten();
   };
 
   var groupQuestionsByPage = function(questions) {
