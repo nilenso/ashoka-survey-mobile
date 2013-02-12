@@ -10,7 +10,7 @@ function PhotoQuestionView(question, image) {
   });
 
   var pictureButton = new ButtonView('Take a Picture', { 'width' : '48%' });
-  var path, imageView, clearPictureButton, imageView;
+  var path, imageView, clearPictureButton;
 
   var deleteImage = function() {
     if (path) {
@@ -86,6 +86,11 @@ function PhotoQuestionView(question, image) {
     var ImageFactory = require('ti.imagefactory');
     var image = file.read();
     var new_width = 1000;
+    if (image.width < new_width) {
+      file = null;
+      image = null;
+      return;
+    }
     var new_height = (image.height / image.width) * new_width;
     var image_module = require('org.selfkleptomaniac.ti.imageasresized');
     image = image_module.cameraImageAsResized(image, new_width, new_height, 0);
