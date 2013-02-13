@@ -14,7 +14,8 @@ var Response = new Ti.App.joli.model({
     status : 'TEXT',
     updated_at : 'TEXT',
     latitude : 'REAL',
-    longitude : 'REAL'
+    longitude : 'REAL',
+    mobile_id : 'TEXT'
   },
 
   methods : {
@@ -26,7 +27,8 @@ var Response = new Ti.App.joli.model({
         status : status,
         updated_at : parseInt(new Date().getTime()/1000, 10),
         latitude : location.latitude,
-        longitude : location.longitude
+        longitude : location.longitude,
+        mobile_id : Titanium.Platform.createUUID()
       });
       response.save();
       var groupedAnswers = _(answersData).groupBy(function(answer) {
@@ -229,7 +231,8 @@ var Response = new Ti.App.joli.model({
           latitude : this.latitude,
           user_id : this.user_id,
           organization_id : this.organization_id,
-          access_token : Ti.App.Properties.getString('access_token')
+          access_token : Ti.App.Properties.getString('access_token'),
+          mobile_id : this.mobile_id
         };
       } catch(err) {
         alert(L("out_of_memory"));
