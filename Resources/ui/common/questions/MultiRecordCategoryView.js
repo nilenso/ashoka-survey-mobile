@@ -12,19 +12,27 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
   var button = new ButtonView('Add a Record', { 'width' : '80%' });
   self.add(button);
 
-  var tempRecordId = 0;
   var QuestionView = require('ui/common/questions/QuestionView');
-  var addSubQuestions = function() {
+  var tempRecordId = 0;
+  var addRecord = function(recordID) {
     var subQuestions = multiRecordCategory.firstLevelSubQuestions();
     _(subQuestions).each(function(subQuestion, index) {
-      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
+      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
       var subQuestionNumber = number + '.' + (index + 1);
-      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, tempRecordId));
+      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, (recordID || tempRecordId)));
     });
     tempRecordId++;
   };
 
-  button.addEventListener('click', addSubQuestions);
+  var records;
+  if(response) {
+    records = response.recordsForMultiRecordCategory(multiRecordCategory.id);
+    _(records).each(function(record){
+      addRecord(record.id);
+    });
+  }
+
+  button.addEventListener('click', addRecord);
 
   self.getValue = function() {
     return null;

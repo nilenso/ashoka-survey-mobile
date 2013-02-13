@@ -271,7 +271,7 @@ var Response = new Ti.App.joli.model({
       });
     },
 
-    answerForQuestion : function(questionID) {
+    answerForQuestion : function(questionID, recordID) {
       var response = this;
       var answers = Ti.App.joli.models.get('answers').all({
         where: {
@@ -279,7 +279,23 @@ var Response = new Ti.App.joli.model({
           'question_id = ?': questionID
         }
       });
+      if(recordID) {
+        answers = _(answers).filter(function(answer) {
+          return answer.record_id === recordID;
+        });
+      }
       return answers[0];
+    },
+
+    recordsForMultiRecordCategory : function(multiRecordCategoryID) {
+      var response = this;
+      var records = Ti.App.joli.models.get('records').all({
+        where: {
+          'response_id = ?': response.id,
+          'category_id = ?': multiRecordCategoryID
+        }
+      });
+      return records;
     },
 
     hasImageAnswer : function() {
