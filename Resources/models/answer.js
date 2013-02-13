@@ -29,7 +29,10 @@ var Answer = new Ti.App.joli.model({
         var image = answerData['content'];
         answerData['content'] = "";
         answerData['image'] = image;
+      } else if (question.isNumericQuestion()) {
+        answerData['content'] = parseFloat(answerData['content']);
       }
+
       answerData['updated_at'] = parseInt(new Date().getTime()/1000, 10);
       var answer = this.newRecord(answerData);
       answer.save();
@@ -49,7 +52,7 @@ var Answer = new Ti.App.joli.model({
           errors['min_value'] = L("error_min_value");
         if (question.max_value && answerData.content > question.max_value)
           errors['max_value'] = L("error_max_value");
-        if (question.type === 'NumericQuestion' && isNaN(answerData.content))
+        if (question.isNumericQuestion() && isNaN(answerData.content))
           errors['content'] = L("error_content");
       } else if (status === "complete" && question.mandatory)
         errors['mandatory'] = L("error_mandatory");

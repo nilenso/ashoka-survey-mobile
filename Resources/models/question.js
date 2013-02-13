@@ -120,6 +120,10 @@ var Question = new Ti.App.joli.model({
 
     isMultiChoiceQuestion : function() {
       return this.type === 'MultiChoiceQuestion';
+    },
+
+    isNumericQuestion : function() {
+      return this.type === 'NumericQuestion';
     }
   }
 });
