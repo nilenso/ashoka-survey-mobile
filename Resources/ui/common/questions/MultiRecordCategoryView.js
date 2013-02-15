@@ -14,12 +14,17 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
 
   var QuestionView = require('ui/common/questions/QuestionView');
   var tempRecordId = 0;
-  var addRecord = function(recordID) {
+  var addRecord = function(e, recordID) {
     var subQuestions = multiRecordCategory.firstLevelSubQuestions();
     _(subQuestions).each(function(subQuestion, index) {
-      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
+      Ti.API.info("Record id is : " + recordID);
+      var tempRecord = function(recordID) {
+        this.tempRecordId = tempRecordId;
+        this.recordID = recordID || null;
+      };
+      var subQuestionAnswer = response && recordID ? response.answerForQuestion(subQuestion.id, recordID) : null;
       var subQuestionNumber = number + '.' + (index + 1);
-      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, (recordID || tempRecordId)));
+      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, new tempRecord(recordID)));
     });
     tempRecordId++;
   };
@@ -28,7 +33,7 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
   if(response) {
     records = response.recordsForMultiRecordCategory(multiRecordCategory.id);
     _(records).each(function(record){
-      addRecord(record.id);
+      addRecord(null, record.id);
     });
   }
 

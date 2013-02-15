@@ -30,10 +30,10 @@ var Response = new Ti.App.joli.model({
       });
       response.save();
       var groupedAnswers = _(answersData).groupBy(function(answer) {
-        return answer.record_id;
+        return answer.record;
       });
-      _(groupedAnswers).each(function(answersInRecord, recordID) {
-        if(recordID === "undefined") { // Answers not belonging to a record
+      _(groupedAnswers).each(function(answersInRecord, record) {
+        if(record === "undefined") { // Answers not belonging to a record
           _(answersInRecord).each(function(answer) {
             Answer.createRecord(answer, response.id);
           });
@@ -86,13 +86,41 @@ var Response = new Ti.App.joli.model({
       self.set('organization_id', Ti.App.Properties.getString('organization_id'));
       self.deleteObsoleteAnswers(answersData);
 
-      _(answersData).each(function(answerData) {
-        var answer = Answer.findOneById(answerData.id);
-        if (answer)
-          answer.update(answerData.content);
-        else
-          Answer.createRecord(answerData, self.id);
+      var groupedAnswers = _(answersData).groupBy(function(answer) {
+        return answer.record;
       });
+
+      // TODO : Refactor!
+
+      _(groupedAnswers).each(function(answersInRecord, record) {
+        if(record === "undefined") { // Answers not belonging to a record
+          _(answersInRecord).each(function(answerData) {
+            var answer = Answer.findOneById(answerData.id);
+            if (answer)
+              answer.update(answerData.content);
+            else
+              Answer.createRecord(answerData, self.id);
+          });
+        } else { // Answers belonging to records
+          var groupedRecordAnwers = _(answersInRecord).groupBy(function(answer) {
+            return answer.record.recordID;
+          });
+          _(groupedRecordAnwers).each(function(recordAnswers, recordID) {
+            if(recordID === "null") { // Answers belonging to a new records
+              var groupedNewRecordAnwers = _(recordAnswers).groupBy(function(answer) {
+                return answer.record.tempRecordId;
+              }); // Grouping each new record with its answers
+              _(groupedNewRecordAnwers).each(function(newRecordAnswers, tempRecordId) {
+                Record.createRecord(newRecordAnswers, self.id);
+              });
+            } else { // Answers of an existing record
+              var record = Record.findOneById(recordID);
+              record.update(recordAnswers);
+            }
+          });
+        }
+      });
+
       self.save();
       Ti.App.fireEvent('updatedResponse');
       Ti.API.info("response updated at" + self.updated_at);

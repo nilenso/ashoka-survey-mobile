@@ -25,13 +25,14 @@ function ResponseEditView(responseID) {
   var validateAndUpdateAnswers = function(e, status) {
     activityIndicator.show();
 		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
-		var answersData = _(questionViews).map(function(questionView, questionID) {
-			Ti.API.info("questionid:" + questionID);
+		var answersData = _(questionViews).map(function(questionView) {
+			Ti.API.info("questionid:" + questionView.id);
 			Ti.API.info("content:" + questionView.getValueField().getValue());
 			return {
 				'id' : questionView.answerID,
-				'question_id' : questionID,
-				'content' : questionView.getValueField().getValue()
+				'question_id' : questionView.id,
+        'content' : questionView.getValueField().getValue(),
+        'record' : questionView.record
 			};
 		});
 		var responseErrors = Response.validate(answersData, status);

@@ -33,7 +33,7 @@ function ResponsesNewView(surveyID) {
       return {
         'question_id' : questionView.id,
         'content' : questionView.getValueField().getValue(),
-        'record_id' : questionView.recordID
+        'record' : questionView.record
       };
     });
     var responseErrors = Response.validate(answersData, status);

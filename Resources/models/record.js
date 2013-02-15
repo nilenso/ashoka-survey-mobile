@@ -26,6 +26,14 @@ var Record = new Ti.App.joli.model({
         Answer.createRecord(answer, responseID, record.id);
       });
     }
+  },
+  objectMethods : {
+    update : function(recordData) {
+      _(recordData).each(function(answerData) {
+        var answer = Answer.findOneById(answerData.id);
+        answer.update(answerData.content);
+      });
+    }
   }
 });
 
