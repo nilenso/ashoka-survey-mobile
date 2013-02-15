@@ -72,8 +72,6 @@ function ResponsesNewView(surveyID) {
     Ti.Geolocation.Android.addLocationProvider(gpsProvider);
     
     var saveLocation = function(e) {
-      Ti.API.info("Location provided by: " + e.provider.name);
-      
       if (e.error) {
         Ti.API.info("Error getting location");
         return;
@@ -81,8 +79,6 @@ function ResponsesNewView(surveyID) {
       
       location.longitude = e.coords.longitude;
       location.latitude = e.coords.latitude;
-      Ti.API.info("longitude = " + e.coords.longitude);
-      Ti.API.info("latitude = " + e.coords.latitude);
       Ti.Geolocation.removeEventListener('location', saveLocation);
     };
     
