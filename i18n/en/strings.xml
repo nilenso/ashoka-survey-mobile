@@ -56,7 +56,7 @@
 
 
     <string name="successes">successes:&#160;</string>
-    <string name="errors">erros:&#160;</string>
+    <string name="errors">errors:&#160;</string>
 
     <string name="delete">Delete</string>
     <string name="delete_response_message">Are you sure you want to delete the response?</string>
