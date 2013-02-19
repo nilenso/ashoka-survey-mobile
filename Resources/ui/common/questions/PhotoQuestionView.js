@@ -103,6 +103,7 @@ function PhotoQuestionView(question, image) {
     }
     file = null;
     image = null;
+    image_module = null;
   };
 
   if (image) {
