@@ -42,11 +42,18 @@ function ResponsesNewView(surveyID) {
       });
       alert(L("errors_on_pages") + _(pagesWithErrors).uniq().toString());
     } else {
-      Response.createRecord(surveyID, status, answersData, responseLocation);
-      new Toast('Response saved').show();
-      self.fireEvent('ResponsesNewView:savedResponse');
+      Ti.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
+      var location = require('helpers/Location');
+      location.start({ 
+        action: function(responseLocation) {
+          Response.createRecord(surveyID, status, answersData, responseLocation);
+          new Toast('Response saved').show();
+          self.fireEvent('ResponsesNewView:savedResponse');
+          activityIndicator.hide();
+          location.stop();
+        }
+      });
     }
-    activityIndicator.hide();
   };
 
   responseViewHelper.paginate(questions, scrollableView, null, validateAndSaveAnswers);
@@ -57,36 +64,6 @@ function ResponsesNewView(surveyID) {
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
   self.add(activityIndicator);
-
-  var getCurrentLocation = function() {
-    var location = {};
-    
-    Ti.Geolocation.Android.manualMode = true;
-    
-    gpsProvider = Ti.Geolocation.Android.createLocationProvider({
-      name : Ti.Geolocation.PROVIDER_GPS,
-      minUpdateTime : 60,
-      minUpdateDistance : 100
-    });
-    
-    Ti.Geolocation.Android.addLocationProvider(gpsProvider);
-    
-    var saveLocation = function(e) {
-      if (e.error) {
-        Ti.API.info("Error getting location");
-        return;
-      }
-      
-      location.longitude = e.coords.longitude;
-      location.latitude = e.coords.latitude;
-      Ti.Geolocation.removeEventListener('location', saveLocation);
-    };
-    
-    Ti.Geolocation.addEventListener('location', saveLocation);    
-    return location;
-  };
-
-  var responseLocation = getCurrentLocation();
 
   self.cleanup = function() {
     self.remove(scrollableView);
