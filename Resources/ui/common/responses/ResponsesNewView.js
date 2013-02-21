@@ -40,11 +40,12 @@ function ResponsesNewView(surveyID) {
       pagesWithErrors = _(pagesWithErrors).map(function(pageNumber) {
         return pageNumber + 1;
       });
+      activityIndicator.hide();
       alert(L("errors_on_pages") + _(pagesWithErrors).uniq().toString());
     } else {
       Ti.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
       var location = require('helpers/Location');
-      location.start({ 
+      location.start({
         action: function(responseLocation) {
           Response.createRecord(surveyID, status, answersData, responseLocation);
           new Toast('Response saved').show();
