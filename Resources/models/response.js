@@ -40,7 +40,12 @@ var Response = new Ti.App.joli.model({
             Answer.createRecord(answer, response.id);
           });
         } else {
-          Record.createRecord(answersInRecord, response.id);
+          var groupedRecordAnwers = _(answersInRecord).groupBy(function(answer) {
+            return answer.record.tempRecordId;
+          });
+          _(groupedRecordAnwers).each(function(recordAnswers, tempRecordId) {
+            Record.createRecord(recordAnswers, response.id);
+          });
         }
       });
       return true;
