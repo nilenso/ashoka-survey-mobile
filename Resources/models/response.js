@@ -151,7 +151,7 @@ var Response = new Ti.App.joli.model({
       var received_response = JSON.parse(data.responseText);
 
       // for complete response
-      if (received_response['status'] === "complete") {
+      if (received_response['status'] === "complete" && received_response['mobile_id'] == self.mobile_id) {
         var surveyID = self.survey_id;
         var id = self.id;
         self.destroy();
