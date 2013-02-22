@@ -53,6 +53,7 @@
 
     <string name="edit_response">Edit Response</string>
     <string name="errors_on_pages">There were errors on page(s)</string>
+    <string name="location_not_found">We were unable to find the location</string>
 
 
     <string name="successes">successes:&#160;</string>

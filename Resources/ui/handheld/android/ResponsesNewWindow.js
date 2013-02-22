@@ -1,4 +1,4 @@
-function ResponsesNewWindow(surveyID) {
+function ResponsesNewWindow(surveyID, responseLocation) {
   try {
   var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
   var ResponsesNewView = require('ui/common/responses/ResponsesNewView');
@@ -8,7 +8,7 @@ function ResponsesNewWindow(surveyID) {
     navBarHidden : true,
     backgroundColor : "#fff"
   });
-  var view = new ResponsesNewView(surveyID);
+  var view = new ResponsesNewView(surveyID, responseLocation);
   self.add(view);
 
   view.addEventListener('ResponsesNewView:savedResponse', function() {

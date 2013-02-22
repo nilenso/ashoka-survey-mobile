@@ -1,5 +1,5 @@
 //All the questoin in a survey
-function ResponsesNewView(surveyID) {
+function ResponsesNewView(surveyID, responseLocation) {
   var _ = require('lib/underscore')._;
   var Question = require('models/question');
   var Survey = require('models/survey');
@@ -24,7 +24,7 @@ function ResponsesNewView(surveyID) {
   var validateAndSaveAnswers = function(e, status) {
     activityIndicator.show();
     if (scrollableView)
-      var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
+    var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
     var answersData = _(questionViews).map(function(questionView, questionID) {
       Ti.API.info("questionid:" + questionID);
       Ti.API.info("content:" + questionView.getValueField().getValue());
@@ -40,21 +40,13 @@ function ResponsesNewView(surveyID) {
       pagesWithErrors = _(pagesWithErrors).map(function(pageNumber) {
         return pageNumber + 1;
       });
-      activityIndicator.hide();
       alert(L("errors_on_pages") + _(pagesWithErrors).uniq().toString());
     } else {
-      Ti.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
-      var location = require('helpers/Location');
-      location.start({
-        action: function(responseLocation) {
-          Response.createRecord(surveyID, status, answersData, responseLocation);
-          new Toast('Response saved').show();
-          self.fireEvent('ResponsesNewView:savedResponse');
-          activityIndicator.hide();
-          location.stop();
-        }
-      });
+      Response.createRecord(surveyID, status, answersData, responseLocation);
+      new Toast('Response saved').show();
+      self.fireEvent('ResponsesNewView:savedResponse');
     }
+    activityIndicator.hide();
   };
 
   responseViewHelper.paginate(questions, scrollableView, null, validateAndSaveAnswers);
