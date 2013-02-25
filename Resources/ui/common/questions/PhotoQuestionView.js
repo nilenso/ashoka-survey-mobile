@@ -92,9 +92,9 @@ function PhotoQuestionView(question, image) {
       return;
     }
     var new_height = (image.height / image.width) * new_width;
-    var image_module = require('org.selfkleptomaniac.ti.imageasresized');
-    image = image_module.cameraImageAsResized(image, new_width, new_height, 0);
     try {      
+      var image_module = require('org.selfkleptomaniac.ti.imageasresized');
+      image = image_module.cameraImageAsResized(image, new_width, new_height, 0);
       file.write(ImageFactory.compress(image, 0.6));
     } catch(err) {
       alert(L("out_of_memory"));
