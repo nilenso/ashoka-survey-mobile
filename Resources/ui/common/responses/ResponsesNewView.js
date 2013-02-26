@@ -43,6 +43,7 @@ function ResponsesNewView(surveyID, responseLocation) {
       alert(L("errors_on_pages") + _(pagesWithErrors).uniq().toString());
     } else {
       Response.createRecord(surveyID, status, answersData, responseLocation);
+      require('helpers/Location').stop();
       new Toast('Response saved').show();
       self.fireEvent('ResponsesNewView:savedResponse');
     }

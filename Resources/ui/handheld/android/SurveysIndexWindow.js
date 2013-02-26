@@ -123,7 +123,6 @@ function SurveysIndexWindow() {
         action: function(responseLocation) { 
           ResponsesNewWindow(surveyID, responseLocation).open();
           activityIndicator.hide();
-          location.stop();
         },
         error: function() { 
           ResponsesNewWindow(surveyID, {}).open();
