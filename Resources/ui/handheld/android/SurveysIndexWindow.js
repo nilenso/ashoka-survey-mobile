@@ -115,9 +115,20 @@ function SurveysIndexWindow() {
   });
 
   surveysIndexView.addEventListener('surveys_index_view.add_response_clicked', function(e) {
-    activityIndicator.show();
-    ResponsesNewWindow(e.surveyID).open();
-    activityIndicator.hide();
+      activityIndicator.show();
+      Ti.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
+      var location = require('helpers/Location');
+      var surveyID = e.surveyID;
+      location.start({
+        action: function(responseLocation) { 
+          ResponsesNewWindow(surveyID, responseLocation).open();
+          activityIndicator.hide();
+        },
+        error: function() { 
+          ResponsesNewWindow(surveyID, {}).open();
+          activityIndicator.hide();
+        }
+      });
   });
 
   var disableBackButton = function() {

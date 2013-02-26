@@ -29,6 +29,7 @@ function ResponsesNewWindow(surveyID) {
   });
 
   self.addEventListener('android:back', function() {
+    require('helpers/Location').stop();
     confirmDialog.show();
   });
 
