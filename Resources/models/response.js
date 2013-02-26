@@ -40,12 +40,7 @@ var Response = new Ti.App.joli.model({
             Answer.createRecord(answer, response.id);
           });
         } else {
-          var groupedRecordAnwers = _(answersInRecord).groupBy(function(answer) {
-            return answer.record.tempRecordId;
-          });
-          _(groupedRecordAnwers).each(function(recordAnswers, tempRecordId) {
-            Record.createRecord(recordAnswers, response.id);
-          });
+          Record.createRecords(answersInRecord, response.id);
         }
       });
       return true;
@@ -102,24 +97,16 @@ var Response = new Ti.App.joli.model({
       _(groupedAnswers).each(function(answersInRecord, record) {
         if(record === "undefined") { // Answers not belonging to a record
           _(answersInRecord).each(function(answerData) {
-            var answer = Answer.findOneById(answerData.id);
-            if (answer)
-              answer.update(answerData.content);
-            else
-              Answer.createRecord(answerData, self.id);
+            var id = answerData.id;
+            Answer.updateOrCreateById(id, answerData, self.id);
           });
         } else { // Answers belonging to records
           var groupedRecordAnwers = _(answersInRecord).groupBy(function(answer) {
             return answer.record.recordID;
           });
           _(groupedRecordAnwers).each(function(recordAnswers, recordID) {
-            if(recordID === "null") { // Answers belonging to a new records
-              var groupedNewRecordAnwers = _(recordAnswers).groupBy(function(answer) {
-                return answer.record.tempRecordId;
-              }); // Grouping each new record with its answers
-              _(groupedNewRecordAnwers).each(function(newRecordAnswers, tempRecordId) {
-                Record.createRecord(newRecordAnswers, self.id);
-              });
+            if(recordID === "null") { // Answers belonging to new records
+              Record.createRecords(recordAnswers, self.id);
             } else { // Answers of an existing record
               var record = Record.findOneById(recordID);
               record.update(recordAnswers);

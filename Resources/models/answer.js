@@ -41,6 +41,14 @@ var Answer = new Ti.App.joli.model({
       });
     },
 
+    updateOrCreateById : function(id, answerData, responseID) {
+      var answer = Answer.findOneById(id);
+      if (answer)
+        answer.update(answerData.content);
+      else
+        Answer.createRecord(answerData, responseID);
+    },
+
     validate : function(answerData, status) {
       var question = Question.findOneById(answerData.question_id);
       var errors = {};

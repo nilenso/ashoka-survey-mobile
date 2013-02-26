@@ -11,6 +11,15 @@ var Record = new Ti.App.joli.model({
   },
 
   methods : {
+    createRecords : function(answersInRecord, responseID){
+      var groupedRecordAnwers = _(answersInRecord).groupBy(function(answer) {
+        return answer.record.tempRecordId;
+      });
+      _(groupedRecordAnwers).each(function(recordAnswers, tempRecordId) {
+        Record.createRecord(recordAnswers, responseID);
+      });
+    },
+
     createRecord : function(recordData, responseID){
       var Question = require('models/question');
       var question = Question.findOneById(recordData[0]['question_id']);
@@ -29,9 +38,10 @@ var Record = new Ti.App.joli.model({
   },
   objectMethods : {
     update : function(recordData) {
+      var self = this;
       _(recordData).each(function(answerData) {
-        var answer = Answer.findOneById(answerData.id);
-        answer.update(answerData.content);
+        var id = answerData.id;
+        Answer.updateOrCreateById(id, answerData, self.response_id);
       });
     }
   }
