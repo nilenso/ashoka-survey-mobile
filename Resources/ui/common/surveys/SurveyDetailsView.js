@@ -105,7 +105,6 @@ function SurveysDetailsView(survey) {
           action: function(responseLocation) {
             ResponsesNewWindow(survey.id, responseLocation).open();
             activityIndicator.hide();
-            location.stop();
           },
           error: function() {
             ResponsesNewWindow(survey.id, {}).open();

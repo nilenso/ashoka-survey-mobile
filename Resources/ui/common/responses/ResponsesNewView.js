@@ -1,5 +1,5 @@
 //All the questoin in a survey
-function ResponsesNewView(surveyID) {
+function ResponsesNewView(surveyID, responseLocation) {
   var _ = require('lib/underscore')._;
   var Question = require('models/question');
   var Survey = require('models/survey');
@@ -48,6 +48,7 @@ function ResponsesNewView(surveyID) {
       alert(L("errors_on_pages") + _(pagesWithErrors).uniq().toString());
     } else {
       Response.createRecord(surveyID, status, answersData, responseLocation);
+      require('helpers/Location').stop();
       new Toast('Response saved').show();
       self.fireEvent('ResponsesNewView:savedResponse');
     }
@@ -112,23 +113,6 @@ function ResponsesNewView(surveyID) {
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
   self.add(activityIndicator);
-
-  var getCurrentLocation = function() {
-    var location = {};
-    Titanium.Geolocation.getCurrentPosition(function(e) {
-      if (e.error) {
-        Ti.API.info("Error getting location");
-        return;
-      }
-      location.longitude = e.coords.longitude;
-      location.latitude = e.coords.latitude;
-      Ti.API.info("longitude = " + e.coords.longitude);
-      Ti.API.info("latitude = " + e.coords.latitude);
-    });
-    return location;
-  };
-
-  var responseLocation = getCurrentLocation();
 
   self.cleanup = function() {
     Ti.App.removeEventListener('show.sub.questions', paginate);
