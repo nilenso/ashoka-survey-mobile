@@ -127,7 +127,6 @@ function SurveysIndexWindow() {
         error: function() { 
           ResponsesNewWindow(surveyID, {}).open();
           activityIndicator.hide();
-          alert(L("location_not_found"));
         }
       });
     });

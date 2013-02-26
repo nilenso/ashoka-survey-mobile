@@ -5,7 +5,7 @@ var location = {};
 function firstLocation(e) {
   if (e.success === undefined || e.success) {
     if (typeof (callback) === 'function') {
-      clearTimeout(timeout);
+      if (timout) clearTimeout(timeout);
       setLocation(e);
       log();      
       callback(location);      
@@ -45,9 +45,9 @@ function start(obj) {
   error = obj.error || function(){};
   
   timeout = setTimeout(function() { 
-    stop();
     error(); 
-  }, 15000);
+    stop();
+  }, 25000);
   
   Ti.Geolocation.Android.manualMode = true;
   gpsProvider = Ti.Geolocation.Android.createLocationProvider({
@@ -62,7 +62,7 @@ function start(obj) {
   function stop() {
     callback = undefined;
     error = undefined;
-    clearTimeout(timeout);
+    if (timeout) clearTimeout(timeout);
     timeout = undefined;    
     location = {};
     
