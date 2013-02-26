@@ -5,7 +5,7 @@ var location = {};
 function firstLocation(e) {
   if (e.success === undefined || e.success) {
     if (typeof (callback) === 'function') {
-      if (timout) clearTimeout(timeout);
+      if (timeout) clearTimeout(timeout);
       setLocation(e);
       log();      
       callback(location);      
