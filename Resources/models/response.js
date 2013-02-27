@@ -32,15 +32,16 @@ var Response = new Ti.App.joli.model({
       });
       response.save();
       var groupedAnswers = _(answersData).groupBy(function(answer) {
-        return answer.record;
+        return answer.record_id;
       });
-      _(groupedAnswers).each(function(answersInRecord, record) {
-        if(record === "undefined") { // Answers not belonging to a record
+      _(groupedAnswers).each(function(answersInRecord, recordID) {
+        if(recordID === "undefined") { // Answers not belonging to a record
           _(answersInRecord).each(function(answer) {
             Answer.createRecord(answer, response.id);
           });
         } else {
-          Record.createRecords(answersInRecord, response.id);
+          var record = Record.findOneById(recordID);
+          record.update(answersInRecord, response.id);
         }
       });
       return true;

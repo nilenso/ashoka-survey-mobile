@@ -13,20 +13,21 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
   self.add(button);
 
   var QuestionView = require('ui/common/questions/QuestionView');
-  var tempRecordId = 0;
   var addRecord = function(e, recordID) {
+    if(!recordID) {
+      var Record = require('models/record');
+      var record = Record.createRecord({
+        category_id : multiRecordCategory.id
+      });
+      recordID = record.id;
+    }
     var subQuestions = multiRecordCategory.firstLevelSubQuestions();
     _(subQuestions).each(function(subQuestion, index) {
       Ti.API.info("Record id is : " + recordID);
-      var tempRecord = function(recordID) {
-        this.tempRecordId = tempRecordId;
-        this.recordID = recordID || null;
-      };
       var subQuestionAnswer = response && recordID ? response.answerForQuestion(subQuestion.id, recordID) : null;
       var subQuestionNumber = number + '.' + (index + 1);
-      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, new tempRecord(recordID)));
+      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
     });
-    tempRecordId++;
   };
 
   var records;

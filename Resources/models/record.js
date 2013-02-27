@@ -20,25 +20,19 @@ var Record = new Ti.App.joli.model({
       });
     },
 
-    createRecord : function(recordData, responseID){
-      var Question = require('models/question');
-      var question = Question.findOneById(recordData[0]['question_id']);
-      var multiRecordCategoryID = question.category_id;
-      Ti.API.info("Creating a record");
-      var record = this.newRecord({
-        response_id : responseID,
-        category_id : multiRecordCategoryID
-      });
+    createRecord : function(attributes){
+      var record = this.newRecord(attributes);
       record.save();
-      Ti.API.info(record.id);
-      _(recordData).each(function(answer) {
-        Answer.createRecord(answer, responseID, record.id);
-      });
+      Ti.API.info("MR id : " + record.category_id);
+      return record;
     }
   },
   objectMethods : {
-    update : function(recordData) {
+    update : function(recordData, responseID) {
       var self = this;
+      Ti.API.info("Response id getting set for reord: " + responseID);
+      self.set('response_id', responseID);
+      self.save();
       _(recordData).each(function(answerData) {
         var id = answerData.id;
         Answer.updateOrCreateById(id, answerData, self.response_id);

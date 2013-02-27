@@ -1,7 +1,7 @@
 var _ = require('lib/underscore')._;
 var Response = require('models/response');
 
-function CategoryView(category, response, number, pageNumber, record) {
+function CategoryView(category, response, number, pageNumber, recordID) {
   var view_height = 400;
   var self = Ti.UI.createView({
     layout : 'vertical',
@@ -12,9 +12,9 @@ function CategoryView(category, response, number, pageNumber, record) {
   var QuestionView = require('ui/common/questions/QuestionView');
   var subQuestions = category.firstLevelSubQuestions();
   _(subQuestions).each(function(subQuestion, index) {
-    var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
+    var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
     var subQuestionNumber = number + '.' + (index + 1);
-    self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, record));
+    self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
   });
 
   self.getValue = function() {

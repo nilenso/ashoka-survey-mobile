@@ -10,7 +10,7 @@ var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Measurements = require('ui/common/components/Measurements');
 
-function QuestionView(question, answer, response, number, lastQuestionNumber, pageNumber, record) {
+function QuestionView(question, answer, response, number, lastQuestionNumber, pageNumber, recordID) {
   var type = (question.type.search('Question') > 0) ? 'question' : 'category';
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
@@ -20,7 +20,7 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
     height : Titanium.UI.SIZE,
     answerID : answer ? answer.id : null,
     pageNumber : pageNumber,
-    record : record
+    recordID : recordID
   });
 
   var questionText = number + '. ';
@@ -68,7 +68,7 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
   var content = answer ? answer.content : null;
 
   if (question.type == 'RadioQuestion' || question.type == 'DropDownQuestion') {
-    valueField = new QuestionWithOptionsView(question, answer, response, number, pageNumber, record);
+    valueField = new QuestionWithOptionsView(question, answer, response, number, pageNumber, recordID);
   } else if (question.type == 'DateQuestion') {
     valueField = new DateQuestionView(question, content);
   } else if (question.type == 'PhotoQuestion') {
@@ -77,9 +77,9 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
   } else if (question.type == 'RatingQuestion') {
     valueField = new RatingQuestionView(question, content);
   } else if (question.type == 'MultiChoiceQuestion') {
-    valueField = new MultiChoiceQuestionView(question, answer, response, number, pageNumber);
+    valueField = new MultiChoiceQuestionView(question, answer, response, number, pageNumber, recordID);
   } else if (question.type === 'Category') { //Category
-    valueField = new CategoryView(question, response, number, pageNumber, record);
+    valueField = new CategoryView(question, response, number, pageNumber, recordID);
   } else if (question.type === 'MultiRecordCategory'){
     valueField = new MultiRecordCategoryView(question, response, number, pageNumber);
   } else {
