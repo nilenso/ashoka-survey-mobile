@@ -32,7 +32,7 @@ function ResponseEditView(responseID) {
 				'id' : questionView.answerID,
 				'question_id' : questionView.id,
         'content' : questionView.getValueField().getValue(),
-        'record' : questionView.record
+        'record_id' : questionView.recordID
 			};
 		});
 		var responseErrors = Response.validate(answersData, status);

@@ -31,19 +31,8 @@ var Response = new Ti.App.joli.model({
         mobile_id : Titanium.Platform.createUUID()
       });
       response.save();
-      var groupedAnswers = _(answersData).groupBy(function(answer) {
-        return answer.record_id;
-      });
-      _(groupedAnswers).each(function(answersInRecord, recordID) {
-        if(recordID === "undefined") { // Answers not belonging to a record
-          _(answersInRecord).each(function(answer) {
-            Answer.createRecord(answer, response.id);
-          });
-        } else {
-          var record = Record.findOneById(recordID);
-          record.update(answersInRecord, response.id);
-        }
-      });
+
+      response.updateOrCreateAnswers(answersData);
       return true;
     },
 
@@ -80,6 +69,24 @@ var Response = new Ti.App.joli.model({
       return answer_attributes;
     },
 
+    updateOrCreateAnswers : function(answersData) {
+      var self = this;
+      var groupedAnswers = _(answersData).groupBy(function(answer) {
+        return answer.record_id;
+      });
+      _(groupedAnswers).each(function(answersInRecord, recordID) {
+        if(recordID === "undefined") { // Answers not belonging to a record
+          _(answersInRecord).each(function(answerData) {
+            var id = answerData.id;
+            Answer.updateOrCreateById(id, answerData, self.id);
+          });
+        } else {
+          var record = Record.findOneById(recordID);
+          record.update(answersInRecord, self.id);
+        }
+      });
+    },
+
     update : function(status, answersData) {
       Ti.API.info("updating response");
       var self = this;
@@ -89,32 +96,7 @@ var Response = new Ti.App.joli.model({
       self.set('organization_id', Ti.App.Properties.getString('organization_id'));
       self.deleteObsoleteAnswers(answersData);
 
-      var groupedAnswers = _(answersData).groupBy(function(answer) {
-        return answer.record;
-      });
-
-      // TODO : Refactor!
-
-      _(groupedAnswers).each(function(answersInRecord, record) {
-        if(record === "undefined") { // Answers not belonging to a record
-          _(answersInRecord).each(function(answerData) {
-            var id = answerData.id;
-            Answer.updateOrCreateById(id, answerData, self.id);
-          });
-        } else { // Answers belonging to records
-          var groupedRecordAnwers = _(answersInRecord).groupBy(function(answer) {
-            return answer.record.recordID;
-          });
-          _(groupedRecordAnwers).each(function(recordAnswers, recordID) {
-            if(recordID === "null") { // Answers belonging to new records
-              Record.createRecords(recordAnswers, self.id);
-            } else { // Answers of an existing record
-              var record = Record.findOneById(recordID);
-              record.update(recordAnswers);
-            }
-          });
-        }
-      });
+      self.updateOrCreateAnswers(answersData);
 
       self.save();
       Ti.App.fireEvent('updatedResponse');
