@@ -11,26 +11,15 @@ var Record = new Ti.App.joli.model({
   },
 
   methods : {
-    createRecords : function(answersInRecord, responseID){
-      var groupedRecordAnwers = _(answersInRecord).groupBy(function(answer) {
-        return answer.record.tempRecordId;
-      });
-      _(groupedRecordAnwers).each(function(recordAnswers, tempRecordId) {
-        Record.createRecord(recordAnswers, responseID);
-      });
-    },
-
     createRecord : function(attributes){
       var record = this.newRecord(attributes);
       record.save();
-      Ti.API.info("MR id : " + record.category_id);
       return record;
     }
   },
   objectMethods : {
     update : function(recordData, responseID) {
       var self = this;
-      Ti.API.info("Response id getting set for reord: " + responseID);
       self.set('response_id', responseID);
       self.save();
       _(recordData).each(function(answerData) {
