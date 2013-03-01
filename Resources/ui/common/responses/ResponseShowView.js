@@ -97,6 +97,7 @@ function ResponseShowView(responseID) {
     var confirmDialog = new ConfirmDialog(L("delete"), L("delete_response_message"), onConfirm = function(e) {
       activityIndicator.show();
       var response = Response.findOneById(responseID);
+      response.destroyRecords();
       response.destroyAnswers();
       response.destroy();
       (new Toast('Response deleted')).show();

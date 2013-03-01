@@ -188,6 +188,7 @@ var Response = new Ti.App.joli.model({
       Ti.API.info("Error response with status " + data.status);
       if (data.status == '410') {// Response deleted on server
         Ti.API.info("Response deleted on server: " + responseText);
+        self.destroyRecords();
         self.destroyAnswers();
         self.destroy();
       }
@@ -314,6 +315,12 @@ var Response = new Ti.App.joli.model({
     destroyAnswers : function() {
       _(this.unsortedAnswers()).each(function(answer) {
         answer.destroyAll();
+      });
+    },
+
+    destroyRecords : function() {
+      _(this.records()).each(function(record) {
+        record.destroy();
       });
     },
 
