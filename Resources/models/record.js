@@ -38,6 +38,45 @@ var Record = new Ti.App.joli.model({
         var id = answerData.id;
         Answer.updateOrCreateById(id, answerData, self.response_id);
       });
+    },
+
+    sync : function() {
+      var self = this;
+      
+      if(self.web_id) {
+        Ti.App.fireEvent('record.sync.' + self.id, {
+          has_error : false,
+          id : self.id
+        });
+        return;
+      }
+      
+      var url = Ti.App.Properties.getString('server_url') + '/api/records';
+      var params = { category_id : this.category_id };
+
+      var client = Ti.Network.createHTTPClient({
+        onload : function() {
+          Ti.API.info("success!");
+          var response = JSON.parse(this.responseText);
+          self.set('web_id', response['id']);
+          self.save();
+          Ti.App.fireEvent('record.sync.' + self.id, {
+            has_error : false,
+            id : self.id
+          });
+        },
+        onerror : function() {
+          Ti.API.info("error!");
+          Ti.API.info(this.responseText);
+          Ti.App.fireEvent('record.sync.' + self.id, {
+            has_error : true,
+            id : self.id
+          });
+        }
+      });
+      client.open('POST', url);
+      client.setRequestHeader("Content-Type", "application/json");
+      client.send(JSON.stringify(params));
     }
   }
 });

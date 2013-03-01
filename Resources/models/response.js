@@ -244,6 +244,37 @@ var Response = new Ti.App.joli.model({
       client.send(JSON.stringify(params));
     },
 
+    syncRecords : function() {
+      var self = this;
+      var recordCount = _(this.records()).size();
+
+      if(recordCount === 0) {
+        this.sync();
+        return;
+      }
+
+      var successCount = 0;
+      var errorCount = 0;
+
+      var syncHandler = function(data) {
+        Ti.API.info("got to sync handler");
+        data.has_error ? errorCount++ : successCount++;
+        if(successCount === recordCount) {
+          self.sync();
+        } else if ((successCount + errorCount) === recordCount) {
+          // TODO: Error. Don't sync response.
+        }
+        Ti.App.removeEventListener('record.sync.' + data.id, syncHandler);
+      };
+
+      Ti.API.info("Syncing records");
+
+      _(this.records()).each(function(record) {
+        Ti.App.addEventListener('record.sync.' + record.id, syncHandler);
+        record.sync();
+      });
+    },
+
     questions : function() {
       var Survey = require('models/survey');
       var survey = Survey.findOneById(this.survey_id);
@@ -265,6 +296,10 @@ var Response = new Ti.App.joli.model({
         return questionIDs.indexOf(answer.question_id);
       });
       return sortedAnswers;
+    },
+
+    records : function() {
+      return Record.findBy('response_id', this.id);
     },
 
     unsortedAnswers : function() {

@@ -150,7 +150,7 @@ var Survey = new Ti.App.joli.model({
       var syncNextResponse = function() {
         if (_.isEmpty(responseStack))
           return;
-        responseStack.pop().sync();
+        responseStack.pop().syncRecords();
       };
 
       var syncHandler = function(data) {
@@ -173,7 +173,7 @@ var Survey = new Ti.App.joli.model({
 
       if(this.responseCount() > 0) {
       var initialResponse = responseStack.pop();
-      initialResponse.sync();
+      initialResponse.syncRecords();
     }
 
       Ti.App.addEventListener("response:syncNextResponse"+ surveyID, syncNextResponse);
