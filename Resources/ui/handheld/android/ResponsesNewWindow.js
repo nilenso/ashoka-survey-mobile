@@ -19,9 +19,11 @@ function ResponsesNewWindow(surveyID) {
   });
 
   var confirmDialog = new ConfirmDialog(L("confirm"), L("confirm_clear_answers"), onConfirm = function(e) {
+    var Record = require('models/record');
+    Record.deleteOrphanRecords();
     if(view) {
-    view.cleanup();
-  }
+      view.cleanup();
+    }
     view = null;
     self.close();
   });

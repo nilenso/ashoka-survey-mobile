@@ -15,6 +15,18 @@ var Record = new Ti.App.joli.model({
       var record = this.newRecord(attributes);
       record.save();
       return record;
+    },
+
+    deleteOrphanRecords : function() {
+      var orphanRecords = new Ti.App.joli.query()
+        .select()
+        .from('records')
+        .where('response_id is NULL')
+        .execute();
+      _(orphanRecords).each(function(record) {
+        Ti.API.info("Orphan record : " + record.id);
+        record.destroy();
+      });
     }
   },
   objectMethods : {
