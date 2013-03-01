@@ -54,9 +54,13 @@ var Response = new Ti.App.joli.model({
       _(this.answers()).each(function(answer, index) {
         answer_attributes[index] = {};
         answer_attributes[index]['question_id'] = answer.question_id;
-        answer_attributes[index]['updated_at'] = answer.updated_at;
+        answer_attributes[index]['updated_at'] = answer.updated_at;        
         if (answer.web_id)
           answer_attributes[index]['id'] = answer.web_id;
+        if(answer.record_id) {
+          var record = Record.findOneById(answer.record_id);
+          answer_attributes[index]['record_id'] = record.web_id;
+        }
         if (answer.hasChoices())
           answer_attributes[index]['option_ids'] = answer.optionIDs();
         else
@@ -157,6 +161,7 @@ var Response = new Ti.App.joli.model({
           'question_id' : received_answer.question_id,
           'web_id' : received_answer.id,
           'content' : received_answer.content,
+          'record_id' : received_answer.record_id,
           'updated_at' : parseInt(new Date(received_answer.updated_at).getTime()/1000, 10),
           'image' : file && file.nativePath
         });
