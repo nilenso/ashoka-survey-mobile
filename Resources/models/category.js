@@ -1,6 +1,7 @@
 var _ = require('lib/underscore')._;
 var Question = require('models/question');
 var progressBarView = require('ui/common/components/ProgressBar');
+var Option = require('models/option');
 
 var Category = new Ti.App.joli.model({
   table : 'categories',
@@ -78,6 +79,33 @@ var Category = new Ti.App.joli.model({
       }).flatten().value();
 
       return subQuestions;
+    },
+
+    isMR : function() {
+      return (this.type === 'MultiRecordCategory');
+    },
+
+    parentCategory : function() {
+      return Category.findOneById(this.category_id);
+    },
+
+    parentMR : function() {
+      if(this.category_id) {
+        if(this.parentCategory().isMR())
+          return this.parentCategory();
+        else
+          return this.parentCategory().parentMR();
+      }
+      else if (this.parent_id) {
+        return this.parentQuestion().parentMR();
+      }
+      return null;
+    },
+
+    parentQuestion : function() {
+      var parentOption = Option.findOneById(this.parent_id);
+      var parentQuestion = Question.findOneById(parentOption.question_id);
+      return parentQuestion;
     }
   }
 });

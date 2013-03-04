@@ -155,7 +155,22 @@ var Response = new Ti.App.joli.model({
           file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
           file.write(image);
         }
-        var record = Record.findOneBy('web_id', received_answer.record_id);
+
+        var Question = require('models/question');
+        var question = Question.findOneById(received_answer.question_id);
+
+        var record;
+        if(received_answer.record_id) {
+          Ti.API.info("Record is i s: " + received_answer.record_id);
+          record = Record.findOneBy('web_id', received_answer.record_id);
+          if(!record) {
+            record = Record.createRecord({
+              'response_id' : self.id,
+              'web_id' : received_answer.record_id,
+              'category_id' :  question.parentMR().id
+            });
+          }
+        }
 
         var new_answer = Answer.newRecord({
           'response_id' : self.id,
