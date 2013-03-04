@@ -155,13 +155,14 @@ var Response = new Ti.App.joli.model({
           file = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, filename);
           file.write(image);
         }
+        var record = Record.findOneBy('web_id', received_answer.record_id);
 
         var new_answer = Answer.newRecord({
           'response_id' : self.id,
           'question_id' : received_answer.question_id,
           'web_id' : received_answer.id,
           'content' : received_answer.content,
-          'record_id' : received_answer.record_id,
+          'record_id' : record ? record.id : null,
           'updated_at' : parseInt(new Date(received_answer.updated_at).getTime()/1000, 10),
           'image' : file && file.nativePath
         });
@@ -268,7 +269,12 @@ var Response = new Ti.App.joli.model({
         if(successCount === recordCount) {
           self.sync();
         } else if ((successCount + errorCount) === recordCount) {
-          // TODO: Error. Don't sync response.
+          // Error. Don't sync response.
+          Ti.App.fireEvent('response.sync.' + self.id , {
+            survey_id : self.survey_id,
+            has_error : true,
+            response_id : self.id
+          });
         }
         Ti.App.removeEventListener('record.sync.' + data.id, syncHandler);
       };
