@@ -82,7 +82,6 @@ function SurveysDetailsView(survey) {
       });
 
       var canSync = function() {
-        Ti.API.info("Login Info" + loggedIn());
         return (survey.responseCount() > 0);
       };
 

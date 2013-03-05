@@ -8,7 +8,7 @@ var activityIndicator = Ti.UI.Android.createProgressIndicator({
 });
 
 var LoginHelper = {
-  loggedIn : function() {
+  tokenExpired : function() {
     var accessToken = Ti.App.Properties.getString('access_token');
     var accessTokenCreatedAt = Ti.App.Properties.getString('access_token_created_at');
 
@@ -21,6 +21,13 @@ var LoginHelper = {
     }
 
     return true;
+  },
+
+  loggedIn : function() {
+    if(Ti.App.Properties.getString('email'))
+      return true;
+    else
+      return false;
   },
 
   logout : function(clearDB) {
