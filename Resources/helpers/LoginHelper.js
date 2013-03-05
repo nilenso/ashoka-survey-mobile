@@ -28,7 +28,7 @@ var LoginHelper = {
       LoginHelper.expireSession();
       Ti.App.Properties.setString('loggedIn', null);
       var DatabaseHelper = require('helpers/DatabaseHelper');
-      DatabaseHelper.clearDatabase();
+      DatabaseHelper.clearDownloadedData();
       Ti.App.Properties.setString('email', null);
       Ti.App.Properties.setString('password', null);
       (new Toast(L("logout_message"))).show();
