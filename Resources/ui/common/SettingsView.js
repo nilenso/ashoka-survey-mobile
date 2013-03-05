@@ -22,6 +22,8 @@ function SettingsView() {
     Ti.App.Properties.setString('server_url', server_url);
     DatabaseHelper.clearDatabase();
     LoginHelper.expireSession();
+    Ti.App.Properties.setString('email', null);
+    Ti.App.Properties.setString('password', null);
     topLevelView.fireEvent('settings_saved');
     Ti.App.fireEvent('settings.refreshSurveys');
   });
