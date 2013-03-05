@@ -24,7 +24,7 @@
     <string name="saving_response">Saving...</string>
     <string name="response_delete">Deleting...</string>
 
-    <string name="login_message">You will automatically be logged out in 10 hours</string>
+    <string name="login_message">Successfully logged in.</string>
     <string name="logout_message">Successfully logged out.</string>
     <string name="login_failed">Login failed, Please check your username and password.</string>
 
