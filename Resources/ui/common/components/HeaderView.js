@@ -3,12 +3,9 @@ var HeaderView = function(title) {
   var SeparatorView = require('ui/common/components/SeparatorView');
   var Measurements = require('ui/common/components/Measurements');
 
-  var osname = Ti.Platform.osname, version = Ti.Platform.version, height = Ti.Platform.displayCaps.platformHeight, width = Ti.Platform.displayCaps.platformWidth;
-  var isTablet = osname === 'ipad' || (osname === 'android' && (width > 899 || height > 899));
-
   var self = Ti.UI.createView({
     backgroundColor : Palette.PRIMARY_COLOR,
-    height : '56dip',
+    height : '51dip',
     layout : 'vertical',
     bottom : Measurements.PADDING_BIG,
     top : Measurements.ZERO
@@ -39,16 +36,6 @@ var HeaderView = function(title) {
     height : Ti.UI.SIZE
   });
 
-  var loginStatusView = Ti.UI.createLabel({
-    right : Measurements.PADDING_BIG,
-    text : "●",
-    font : {
-      fontSize : Measurements.FONT_X_BIG
-    },
-    height : Ti.UI.SIZE
-  });
-  appNameContainer.add(loginStatusView);
-
   appNameContainer.add(logo);
   appNameContainer.add(appName);
   self.add(appNameContainer);
@@ -68,17 +55,7 @@ var HeaderView = function(title) {
     }
   });
 
-  var userStatusLabel = Ti.UI.createLabel({
-    color : Palette.PRIMARY_COLOR_LIGHT,
-    right : Measurements.PADDING_MEDIUM,
-    text : "",
-    font : {
-      fontSize : Measurements.FONT_SMALL
-    }
-  });
-
   userDetailsView.add(userNameLabel);
-  userDetailsView.add(userStatusLabel);
 
   self.add(userDetailsView);
 
@@ -91,36 +68,8 @@ var HeaderView = function(title) {
     }
   };
 
-  var setUserStatus = function() {
-    if (Ti.App.Properties.getString('email')) {
-      if (loggedIn()) {
-        userStatusLabel.text = L("online");
-      } else {
-        userStatusLabel.text = L("offline");
-      }
-    }
-    else {
-      userStatusLabel.text = "";
-    }
-  };
-
-  var setLoginStatus = function() {
-    if (Ti.App.Properties.getString('email')) {
-      if (loggedIn()) {
-        loginStatusView.color = Palette.GREEN;
-      } else {
-        loginStatusView.color = Palette.GRAY;
-      }
-    }
-    else {
-      loginStatusView.color = Palette.RED;
-    }
-  };
-
   self.updateUserName = function() {
-    setLoginStatus();
     setUserName();
-    setUserStatus();
   };
 
   self.updateUserName();
