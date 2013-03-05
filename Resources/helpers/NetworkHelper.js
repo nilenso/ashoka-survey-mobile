@@ -15,7 +15,7 @@ var NetworkHelper = {
     var password = Ti.App.Properties.getString('password');
     var email = Ti.App.Properties.getString('email');
     if(password)
-      loginHelper.login(email, password, true, success, error);
+      loginHelper.login(email, password, success, error);
     else
       error ? error.call() : alert(L("not_logged_in"));
   },
