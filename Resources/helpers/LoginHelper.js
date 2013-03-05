@@ -42,7 +42,7 @@ var LoginHelper = {
     Ti.App.Properties.setString('access_token_created_at', null);
   },
 
-  login : function(email, password, rememberMe) {
+  login : function(email, password, rememberMe, success, error) {
     var loginUrl = Ti.App.Properties.getString('server_url') + '/api/login';
     var NetworkHelper = require('helpers/NetworkHelper');
     NetworkHelper.pingSurveyWebWithoutLoggedInCheck( onSuccess = function() {
@@ -65,13 +65,21 @@ var LoginHelper = {
         }
         Ti.App.Properties.setString('user_id', response.user_id);
         Ti.App.Properties.setString('organization_id', response.organization_id);
-        Ti.App.fireEvent('login.done');
-        Ti.App.fireEvent('login:completed');
+        if(success) {
+          success();
+        } else {
+          Ti.App.fireEvent('login.done');
+          Ti.App.fireEvent('login:completed');
+        }
         activityIndicator.hide();
       };
       client.onerror = function() {
-        Ti.App.fireEvent('login.done');
-        alert(L("login_failed"));
+        if(error) {
+          error();
+        } else {
+          Ti.App.fireEvent('login.done');
+          alert(L("login_failed"));
+        }
         activityIndicator.hide();
       };
       client.setTimeout(5000);
