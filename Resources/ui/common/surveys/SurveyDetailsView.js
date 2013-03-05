@@ -47,83 +47,92 @@ function SurveysDetailsView(survey) {
     right : Measurements.PADDING_SMALL,
     font : {
       fontSize : Measurements.FONT_MEDIUM }
-  });
-  var date = ((new Date(survey.expiry_date)).toDateString()).substring(4);
+    });
+    var date = ((new Date(survey.expiry_date)).toDateString()).substring(4);
 
-  var expiryDateLabel = Ti.UI.createLabel({
-    text : 'Expires on: ' + date,
-    color : Palette.PRIMARY_COLOR_LIGHT,
-    left : Measurements.PADDING_SMALL,
-    font : {
-      fontSize : Measurements.FONT_MEDIUM }
-  });
+    var expiryDateLabel = Ti.UI.createLabel({
+      text : 'Expires on: ' + date,
+      color : Palette.PRIMARY_COLOR_LIGHT,
+      left : Measurements.PADDING_SMALL,
+      font : {
+        fontSize : Measurements.FONT_MEDIUM }
+      });
 
-  var buttons = Ti.UI.createView({
-    layout : 'vertical',
-    height : '95%',
-    width : '15%',
-    right : Measurements.PADDING_X_SMALL
-  });
+      var buttons = Ti.UI.createView({
+        layout : 'vertical',
+        height : '95%',
+        width : '15%',
+        right : Measurements.PADDING_X_SMALL
+      });
 
-  var addResponseButton = new ButtonView('+', {
-    font : {
-      fontSize : Measurements.FONT_BIG
-    },
-    width : '100%',
-    height : '45%'
-  });
+      var addResponseButton = new ButtonView('+', {
+        font : {
+          fontSize : Measurements.FONT_BIG
+        },
+        width : '100%',
+        height : '45%'
+      });
 
-  var syncResponseButton = new ButtonView('↻', {
-    font : {
-      fontSize : Measurements.FONT_BIG
-    },
-    width : '100%',
-    height : '45%'
-  });
+      var syncResponseButton = new ButtonView('↻', {
+        font : {
+          fontSize : Measurements.FONT_BIG
+        },
+        width : '100%',
+        height : '45%'
+      });
 
-  var canSync = function() {
-    Ti.API.info("Login Info" + loggedIn());
-    return (survey.responseCount() > 0);
-  };
+      var canSync = function() {
+        return (survey.responseCount() > 0);
+      };
 
-  buttons.add(addResponseButton);
-  buttons.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
-  buttons.add(syncResponseButton);
-  syncResponseButton.enabled = canSync();
+      buttons.add(addResponseButton);
+      buttons.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL));
+      buttons.add(syncResponseButton);
+      syncResponseButton.enabled = canSync();
 
-  var activityIndicator = Ti.UI.Android.createProgressIndicator({
-    message : L('activity_indicator'),
-    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
-    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
-  });
-  self.add(activityIndicator);
+      var activityIndicator = Ti.UI.Android.createProgressIndicator({
+        message : L('activity_indicator'),
+        location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+        type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
+      });
+      self.add(activityIndicator);
 
-  addResponseButton.addEventListener('click', function() {
-    activityIndicator.show();
-    ResponsesNewWindow(survey.id).open();
-    activityIndicator.hide();
-  });
+      addResponseButton.addEventListener('click', function() {
+        activityIndicator.show();
+        Ti.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
+        var location = require('helpers/Location');
+        location.start({
+          action: function(responseLocation) {
+            ResponsesNewWindow(survey.id, responseLocation).open();
+            activityIndicator.hide();
+            location.stop();
+          },
+          error: function() {
+            ResponsesNewWindow(survey.id, {}).open();
+            activityIndicator.hide();
+          }
+        });
+      });
 
-  syncResponseButton.addEventListener('click', function() {
-    syncResponseButton.enabled = false;
-    self.fireEvent('SurveyDetailsView.sync_responses');
-  });
+      syncResponseButton.addEventListener('click', function() {
+        self.fireEvent('SurveyDetailsView.sync_responses');
+      });
 
-  self.refresh = function() {
-    responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
-    syncResponseButton.enabled = canSync();
-  };
+      self.refresh = function() {
+        responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
+        syncResponseButton.enabled = canSync();
+      };
 
-  labelsView.add(surveyNameLabel);
-  labelsView.add(surveyDescriptionLabel);
+      labelsView.add(surveyNameLabel);
+      labelsView.add(surveyDescriptionLabel);
 
-  surveyInfoView.add(expiryDateLabel);
-  surveyInfoView.add(responseCountLabel);
+      surveyInfoView.add(expiryDateLabel);
+      surveyInfoView.add(responseCountLabel);
 
-  labelsView.add(surveyInfoView);
-  self.add(labelsView);
-  self.add(buttons);
-  return (self);
-}
+      labelsView.add(surveyInfoView);
+      self.add(labelsView);
+      self.add(buttons);
+      return (self);
+    }
 
-module.exports = SurveysDetailsView;
+    module.exports = SurveysDetailsView;

@@ -1,4 +1,4 @@
-var loggedIn = require('helpers/LoginHelper').loggedIn;
+var tokenExpired = require('helpers/LoginHelper').tokenExpired;
 var loginHelper = require('helpers/LoginHelper');
 var activityIndicator = Ti.UI.Android.createProgressIndicator({
   message : L('reaching_server'),
@@ -8,7 +8,7 @@ var activityIndicator = Ti.UI.Android.createProgressIndicator({
 
 var NetworkHelper = {
   pingSurveyWebWithLoggedInCheck : function(success, error) {
-    if(loggedIn()) {
+    if(tokenExpired()) {
       NetworkHelper.pingSurveyWebWithoutLoggedInCheck(success, error);
       return;
     }
