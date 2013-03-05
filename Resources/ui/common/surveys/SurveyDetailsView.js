@@ -111,7 +111,6 @@ function SurveysDetailsView(survey) {
           error: function() { 
             ResponsesNewWindow(survey.id, {}).open();
             activityIndicator.hide();
-            alert(L("location_not_found"));
           }
         });
       });
