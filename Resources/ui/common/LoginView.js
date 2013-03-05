@@ -81,11 +81,11 @@ function LoginView() {
       var confirmDialog = new ConfirmDialog(L("login_menu"), L("login_confirm_dialog"), onConfirm = function(e) {
         var DatabaseHelper = require("helpers/DatabaseHelper");
         DatabaseHelper.clearDownloadedData();
-        loginHelper.login(email, password, rememberMe);
+        loginHelper.login(email, password);
       });
       confirmDialog.show();
     } else {
-      loginHelper.login(email, password, rememberMe);
+      loginHelper.login(email, password);
     }
   });
 
