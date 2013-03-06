@@ -42,24 +42,18 @@ var Record = new Ti.App.joli.model({
 
     sync : function() {
       var self = this;
-      
-      if(self.web_id) {
-        Ti.App.fireEvent('record.sync.' + self.id, {
-          has_error : false,
-          id : self.id
-        });
-        return;
-      }
-      
+
       var url = Ti.App.Properties.getString('server_url') + '/api/records';
       var params = { category_id : this.category_id };
 
       var client = Ti.Network.createHTTPClient({
         onload : function() {
           Ti.API.info("success!");
-          var response = JSON.parse(this.responseText);
-          self.set('web_id', response['id']);
-          self.save();
+          if(!self.web_id) {
+            var response = JSON.parse(this.responseText);
+            self.set('web_id', response['id']);
+            self.save();
+          }
           Ti.App.fireEvent('record.sync.' + self.id, {
             has_error : false,
             id : self.id
@@ -68,13 +62,23 @@ var Record = new Ti.App.joli.model({
         onerror : function() {
           Ti.API.info("error!");
           Ti.API.info(this.responseText);
-          Ti.App.fireEvent('record.sync.' + self.id, {
-            has_error : true,
-            id : self.id
+          var recordId = self.id;
+          var hasError = true;
+          if (this.status == '410') {// Record deleted on server
+            Ti.API.info("Record deleted on server");
+            self.destroyWithAnswers();
+            hasError = false;
+          }
+          Ti.App.fireEvent('record.sync.' + recordId, {
+            has_error : hasError,
+            id : recordId
           });
         }
       });
-      client.open('POST', url);
+      var method = self.web_id ? "PUT" : "POST";
+      url += self.web_id ? "/" + self.web_id : "";
+      url += ".json";
+      client.open(method, url);
       client.setRequestHeader("Content-Type", "application/json");
       client.send(JSON.stringify(params));
     },
