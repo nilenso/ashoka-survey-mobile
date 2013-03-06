@@ -49,11 +49,9 @@ var Record = new Ti.App.joli.model({
       var client = Ti.Network.createHTTPClient({
         onload : function() {
           Ti.API.info("success!");
-          if(!self.web_id) {
-            var response = JSON.parse(this.responseText);
-            self.set('web_id', response['id']);
-            self.save();
-          }
+          var response = JSON.parse(this.responseText);
+          self.set('web_id', response['id']);
+          self.save();
           Ti.App.fireEvent('record.sync.' + self.id, {
             has_error : false,
             id : self.id
