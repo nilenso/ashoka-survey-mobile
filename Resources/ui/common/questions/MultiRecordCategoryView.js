@@ -12,6 +12,10 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
   var button = new ButtonView('Add a Record', { 'width' : '80%' });
   self.add(button);
 
+  var getDeleteRecordButton = function() {
+    return new ButtonView("Delete the record");
+  };
+
   var QuestionView = require('ui/common/questions/QuestionView');
   var addRecord = function(e, recordID) {
     if(!recordID) {
@@ -27,6 +31,8 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
       var subQuestionNumber = number + '.' + (index + 1);
       self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
     });
+    var deleteRecordButton = getDeleteRecordButton();
+    self.add(deleteRecordButton);
   };
 
   var records;
