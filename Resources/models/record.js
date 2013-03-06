@@ -61,12 +61,7 @@ var Record = new Ti.App.joli.model({
           Ti.API.info("error!");
           Ti.API.info(this.responseText);
           var recordId = self.id;
-          var hasError = true;
-          if (this.status == '410') {// Record deleted on server
-            Ti.API.info("Record deleted on server");
-            self.destroyWithAnswers();
-            hasError = false;
-          }
+          var hasError = deleteRecordOnGone(this.status);
           Ti.App.fireEvent('record.sync.' + recordId, {
             has_error : hasError,
             id : recordId
@@ -79,6 +74,16 @@ var Record = new Ti.App.joli.model({
       client.open(method, url);
       client.setRequestHeader("Content-Type", "application/json");
       client.send(JSON.stringify(params));
+
+      var deleteRecordOnGone = function(status) {
+        if (status == '410') {// Record deleted on server
+          Ti.API.info("Record deleted on server");
+          self.destroyWithAnswers();
+          return false;
+        } else {
+          return true;
+        }
+      };
     },
 
     answers : function() {
