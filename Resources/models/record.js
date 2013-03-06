@@ -77,6 +77,17 @@ var Record = new Ti.App.joli.model({
       client.open('POST', url);
       client.setRequestHeader("Content-Type", "application/json");
       client.send(JSON.stringify(params));
+    },
+
+    answers : function() {
+      return Answer.findBy('record_id', this.id);
+    },
+
+    destroyWithAnswers : function() {
+      _(this.answers()).each(function(answer) {
+        answer.destroyAll();
+      });
+      this.destroy();
     }
   }
 });
