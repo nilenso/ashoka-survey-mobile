@@ -50,6 +50,9 @@ function RatingQuestionView(question, content) {
     return rating;
   };
 
+  self.getSubQuestions = function() {
+    return null;
+  }
   return self;
 };
 
