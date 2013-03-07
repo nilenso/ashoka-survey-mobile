@@ -62,7 +62,7 @@ function ResponseViewHelper() {
     return _(foo).flatten();
   };
 
-  var groupQuestionsByPage = function(questions) {
+  self.groupQuestionsByPage = function(questions) {
     var pages = [];
     var currentPage = 0;
 
@@ -109,9 +109,9 @@ function ResponseViewHelper() {
     return completeButtonView;
   };
 
-  self.paginate = function(questions, scrollableView, response, buttonClickHandler) {
+  self.paginate = function(questionViews, scrollableView, response, buttonClickHandler) {
 
-     var pagedQuestions = groupQuestionsByPage(questions);
+     var pagedQuestions = self.groupQuestionsByPage(questionViews);
      var currentQuestionNumber = 1;
 
     _(pagedQuestions).each(function(questions, pageNumber) {
@@ -120,10 +120,7 @@ function ResponseViewHelper() {
       });
 
       var firstQuestionNumber = currentQuestionNumber;
-      _(questions).each(function(question, number) {
-        var lastQuestionNumber = questions.length + firstQuestionNumber - 1;
-        var answer = response ? response.answerForQuestion(question.id) : undefined;
-        var questionView = new QuestionView(question, answer, response, currentQuestionNumber++, lastQuestionNumber, pageNumber);
+      _(questions).each(function(questionView, number) {        
         questionsView.add(questionView);
       });
 
