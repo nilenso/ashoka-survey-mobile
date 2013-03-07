@@ -11,6 +11,8 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber,
     layout : 'vertical',
     height : Titanium.UI.SIZE
   });
+  
+  var childrenViews = [];
 
   var button = new ButtonViewWithArrow(content || 'None', { 'width' : '80%' });
   self.add(button);
@@ -61,19 +63,29 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber,
     }
   };
   
-  self.getSubQuestions = function() {
-    var option = options[1];
-    Ti.API.info("Getting sub questions for" + option.content);    
+  self.getSubQuestions = function() {    
+    if(childrenViews[selectedIndex]) { 
+      return _.chain(childrenViews[selectedIndex]).map(function(view){
+        return _([view, view.getSubQuestions()]).compact();
+      }).flatten().value();
+    }
+    
+    childrenViews[selectedIndex] = [];
+    var option = options[selectedIndex];
+        
     if(option.content == "None" && selectedIndex === 0) return null; //No sub-questions for the "None" option
+    
     var QuestionView = require('ui/common/questions/QuestionView');
     var subQuestions = option.firstLevelSubElements();
-    var sub_questions = _(subQuestions).map(function(subQuestion, index) {
+    var subQuestionsWithChildren = _(subQuestions).map(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
-      var subQuestionNumber = number + '.' + (index + 1);
+      var subQuestionNumber = number + '.' + (index + 1);      
       var questionView = new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID);
+      
+      _(childrenViews[selectedIndex]).push(questionView);
       return _([questionView]).union(questionView.getSubQuestions());
     });
-    return sub_questions;    
+    return subQuestionsWithChildren;    
   }
 
   return self;
