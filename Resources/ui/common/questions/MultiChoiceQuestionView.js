@@ -32,6 +32,10 @@ function MultiChoiceQuestionView(question, answer, response, number, pageNumber,
 		});
 		return option_ids;
 	};
+	
+	self.getSubQuestions = function() {
+	  return null;
+	};
 
 	return self;
 }

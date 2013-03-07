@@ -68,7 +68,7 @@ function ResponseViewHelper() {
 
     _(questions).each(function(question, index) {
       //Put categories on their own page. Don't do it if the very first question is a category.
-      if(question.type === undefined && pages[currentPage]) {
+      if(question.type === 'category' && pages[currentPage]) {
         currentPage++;
       }
 
@@ -76,7 +76,7 @@ function ResponseViewHelper() {
       pages[currentPage].push(question);
 
       //Page break after a category as well
-      if(question.type === undefined) {
+      if(question.type === 'category') {
         currentPage++;
       }
       else if(pages[currentPage].length == PAGE_SIZE) {
