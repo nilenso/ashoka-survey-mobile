@@ -46,20 +46,7 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber,
   });
 
   var showSubQuestions = function(selectedRowID) {
-    var option = options[selectedRowID];
-    Ti.API.info("Showing sub questions for" + option.content);
-    _(self.getChildren()).each(function(childView) {
-      if (childView != button)
-        self.remove(childView);
-    });
-    if(option.content == "None" && selectedRowID === 0) return; //No sub-questions for the "None" option
-    var QuestionView = require('ui/common/questions/QuestionView');
-    var subQuestions = option.firstLevelSubElements();
-    _(subQuestions).each(function(subQuestion, index) {
-      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
-      var subQuestionNumber = number + '.' + (index + 1);
-      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
-    });
+    Ti.App.fireEvent('show.sub.questions');
   };
 
   if (content) {
@@ -73,6 +60,21 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber,
       return optionTitles[selectedIndex];
     }
   };
+  
+  self.getSubQuestions = function() {
+    var option = options[1];
+    Ti.API.info("Getting sub questions for" + option.content);    
+    if(option.content == "None" && selectedIndex === 0) return null; //No sub-questions for the "None" option
+    var QuestionView = require('ui/common/questions/QuestionView');
+    var subQuestions = option.firstLevelSubElements();
+    var sub_questions = _(subQuestions).map(function(subQuestion, index) {
+      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
+      var subQuestionNumber = number + '.' + (index + 1);
+      var questionView = new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID);
+      return _([questionView]).union(questionView.getSubQuestions());
+    });
+    return sub_questions;    
+  }
 
   return self;
 }
