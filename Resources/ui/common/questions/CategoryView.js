@@ -8,17 +8,21 @@ function CategoryView(category, response, number, pageNumber, recordID) {
     height : Titanium.UI.SIZE
   });
 
-  Ti.API.info("Showing sub questions for" + category.content);
-  var QuestionView = require('ui/common/questions/QuestionView');
-  var subQuestions = category.firstLevelSubQuestions();
-  _(subQuestions).each(function(subQuestion, index) {
-    var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
-    var subQuestionNumber = number + '.' + (index + 1);
-    self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
-  });
+  Ti.API.info("Showing sub questions for" + category.content);  
 
   self.getValue = function() {
     return null;
+  };
+  
+  self.getSubQuestions = function() {
+    var QuestionView = require('ui/common/questions/QuestionView');
+    var subQuestions = category.firstLevelSubQuestions();
+    return _(subQuestions).map(function(subQuestion, index) {
+      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
+      var subQuestionNumber = number + '.' + (index + 1);
+      var questionView = (new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
+      return _([questionView]).union(questionView.getSubQuestions());
+    });    
   };
 
   return self;
