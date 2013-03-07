@@ -12,10 +12,10 @@ function ResponseEditView(responseID) {
   var Toast = require('ui/common/components/Toast');
 
   var self = new TopLevelView(L('edit_response'));
-	var scrollableView = Ti.UI.createScrollableView({
+  var scrollableView = Ti.UI.createScrollableView({
     top : self.headerHeight,
-		showPagingControl : true
-	});
+    showPagingControl : true
+  });
   self.add(scrollableView);
 
 	var response = Response.findOneById(responseID);
@@ -52,7 +52,24 @@ function ResponseEditView(responseID) {
 		activityIndicator.hide();
 	};
 
-  responseViewHelper.paginate(questions, scrollableView,response, validateAndUpdateAnswers);
+  var pages = responseViewHelper.groupQuestionsByPage(questions);
+  
+  var questionViews = [];
+  var questionNumber = 1;
+  _(pages).each(function(questions, pageNumber) {
+    _(questions).each(function(question, number) {
+      var lastQuestionNumber = questions.length + number - 1;
+      var answer = response.answerForQuestion(question.id);
+      var questionView = new QuestionView(question, answer, response, questionNumber++, lastQuestionNumber, pageNumber);
+      questionViews.push(questionView);
+    });
+  });  
+  
+  Ti.App.addEventListener('show.sub.questions', function(){
+    responseViewHelper.paginate(questionViews, scrollableView, response, validateAndUpdateAnswers);
+  });
+  
+  responseViewHelper.paginate(questionViews, scrollableView, response, validateAndUpdateAnswers);
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
     message : L('saving_response'),

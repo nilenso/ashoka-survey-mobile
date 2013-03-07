@@ -63,7 +63,7 @@ function ResponsesNewView(surveyID) {
       var response = undefined;
       var questionView = new QuestionView(question, answer, response, questionNumber++, lastQuestionNumber, pageNumber);
       questionViews.push(questionView);               
-    }) 
+    }); 
   });  
   
   Ti.App.addEventListener('show.sub.questions', function(){
