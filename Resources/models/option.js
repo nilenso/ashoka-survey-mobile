@@ -68,6 +68,15 @@ var Option = new Ti.App.joli.model({
 				return element.withSubQuestions();
 			}).flatten().value();
 			return subElements;
+		},
+		
+		hasSubQuestions : function() {
+		  var count = require('models/question').count({
+		    where : {
+		      'parent_id = ?': this.id
+		    }
+		  });
+		  return count > 0;
 		}
 	}
 });
