@@ -66,8 +66,16 @@ function ResponsesNewView(surveyID) {
     }); 
   });  
   
+  var subQuestionIndicator = Ti.UI.Android.createProgressIndicator({
+    message : L('loading_sub_questions'),
+    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
+  });
+    
   Ti.App.addEventListener('show.sub.questions', function(){
+    subQuestionIndicator.show();
     responseViewHelper.paginate(questionViews, scrollableView, null, validateAndSaveAnswers);  
+    subQuestionIndicator.hide();
   });
   
 

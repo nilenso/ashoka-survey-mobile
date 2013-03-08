@@ -22,6 +22,7 @@
 
     <string name="no_responses">You currently don't have any responses, Click the + button to add a response.</string>
     <string name="saving_response">Saving...</string>
+    <string name="loading_sub_questions">Loading...</string>
     <string name="response_delete">Deleting...</string>
 
     <string name="login_message">Successfully logged in.</string>
