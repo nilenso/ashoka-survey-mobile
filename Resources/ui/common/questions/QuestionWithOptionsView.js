@@ -65,7 +65,10 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber,
   
   self.getSubQuestions = function() {
     var option = options[selectedIndex];
-    if(option.content == "None" && selectedIndex === 0) return null; //No sub-questions for the "None" option
+     
+    //No sub-questions for "None" option.
+    if(selectedIndex === 0 || !option.hasSubQuestions()) 
+      return null;
     
     if(childrenViews[selectedIndex]) { 
       return _.chain(childrenViews[selectedIndex]).map(function(view){
