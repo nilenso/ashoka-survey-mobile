@@ -48,12 +48,7 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber,
   });
 
   var showSubQuestions = function(selectedRowID) {
-    if(options[selectedIndex].hasSubQuestions()) {
-      Ti.API.info('Has sub questions. Firing event to show them.');
-      Ti.App.fireEvent('show.sub.questions');
-    } else {
-      Ti.API.info('No sub questions. No need to fire the event.');
-    }
+    Ti.App.fireEvent('show.sub.questions');
   };
 
   if (content) {
