@@ -68,17 +68,18 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber,
     }
   };
   
-  self.getSubQuestions = function() {    
+  self.getSubQuestions = function() {
+    var option = options[selectedIndex];
+    if(option.content == "None" && selectedIndex === 0) return null; //No sub-questions for the "None" option
+    
     if(childrenViews[selectedIndex]) { 
       return _.chain(childrenViews[selectedIndex]).map(function(view){
         return _([view, view.getSubQuestions()]).compact();
       }).flatten().value();
     }
     
-    childrenViews[selectedIndex] = [];
-    var option = options[selectedIndex];
+    childrenViews[selectedIndex] = [];    
         
-    if(option.content == "None" && selectedIndex === 0) return null; //No sub-questions for the "None" option
     
     var QuestionView = require('ui/common/questions/QuestionView');
     var subQuestions = option.firstLevelSubElements();
