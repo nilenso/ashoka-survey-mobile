@@ -41,6 +41,20 @@ function OptionView(option, checked, response, number, pageNumber, recordID) {
   var addSubQuestions = function() {
     var subQuestions = option.firstLevelSubElements();
     var QuestionView = require('ui/common/questions/QuestionView');
+    if (!_(subQuestions).isEmpty()) {
+      var optionLabelView = Ti.UI.createLabel({
+        text : "Questions for " + option.content,
+        color : Palette.BLACK,
+        font : {
+          fontSize : Measurements.FONT_MEDIUM
+        },
+        top : Measurements.PADDING_XX_SMALL
+      });
+      optionLabelView.getSubQuestions = function() {
+        return null;
+      };
+      childrenViews.push(optionLabelView);
+    }
     _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
       Ti.API.info("Showing the sub question: " + subQuestion.content);
