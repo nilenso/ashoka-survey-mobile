@@ -62,22 +62,23 @@ function ResponsesNewView(surveyID) {
       var answer = undefined;
       var response = undefined;
       var questionView = new QuestionView(question, answer, response, questionNumber++, lastQuestionNumber, pageNumber);
-      questionViews.push(questionView);               
-    }); 
-  });  
-  
+      questionViews.push(questionView);
+    });
+  });
+
   var subQuestionIndicator = Ti.UI.Android.createProgressIndicator({
     message : L('loading_sub_questions'),
     location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
-    
-  Ti.App.addEventListener('show.sub.questions', function(){
+
+  var paginate = function(){
     subQuestionIndicator.show();
-    responseViewHelper.paginate(questionViews, scrollableView, null, validateAndSaveAnswers);  
+    responseViewHelper.paginate(questionViews, scrollableView, null, validateAndSaveAnswers);
     subQuestionIndicator.hide();
-  });
-  
+  };
+
+  Ti.App.addEventListener('show.sub.questions', paginate);
 
   responseViewHelper.paginate(questionViews, scrollableView, null, validateAndSaveAnswers);
 
@@ -106,8 +107,8 @@ function ResponsesNewView(surveyID) {
   var responseLocation = getCurrentLocation();
 
   self.cleanup = function() {
+    Ti.App.removeEventListener('show.sub.questions', paginate);
     self.remove(scrollableView);
-    scrollableView = null;
   };
   return self;
 }
