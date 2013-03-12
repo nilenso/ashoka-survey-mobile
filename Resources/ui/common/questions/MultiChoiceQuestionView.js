@@ -32,9 +32,13 @@ function MultiChoiceQuestionView(question, answer, response, number, pageNumber,
 		});
 		return option_ids;
 	};
-	
+
 	self.getSubQuestions = function() {
-	  return null;
+		var subQuestionViews = [];
+		_(optionViews).each(function(optionView) {
+			subQuestionViews.push(optionView.getSubQuestions());
+		});
+		return _(subQuestionViews).flatten();
 	};
 
 	return self;
