@@ -114,10 +114,14 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
   self.getValueField = function() {
     return valueField;
   };
-  
+
   self.getSubQuestions = function() {
     var _ = require('lib/underscore')._;
     return _.chain(valueField.getSubQuestions()).flatten().compact().value();
+  };
+
+  self.isFirstLevel = function() {
+    return question.isFirstLevel();
   };
 
   return self;

@@ -106,6 +106,10 @@ var Category = new Ti.App.joli.model({
       var parentOption = Option.findOneById(this.parent_id);
       var parentQuestion = Question.findOneById(parentOption.question_id);
       return parentQuestion;
+    },
+
+    isFirstLevel : function() {
+      return (this.parent_id === null && this.category_id === null);
     }
   }
 });

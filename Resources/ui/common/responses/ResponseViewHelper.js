@@ -63,20 +63,18 @@ function ResponseViewHelper() {
     var pages = [];
     var currentPage = 0;
 
-    _(questions).each(function(question, index) {
-      //Put categories on their own page. Don't do it if the very first question is a category.
+    _(questions).each(function(question) {
+      //Put first level categories on their own page. Don't do it if the very first question is a category.
       if(question.type === 'category' && pages[currentPage]) {
-        currentPage++;
+        if(question.isFirstLevel() || pages[currentPage].length === (PAGE_SIZE -1)) {
+          currentPage++;
+        }
       }
 
       pages[currentPage] = pages[currentPage] || [];
       pages[currentPage].push(question);
 
-      //Page break after a category as well
-      if(question.type === 'category') {
-        currentPage++;
-      }
-      else if(pages[currentPage].length == PAGE_SIZE) {
+     if(question.type === 'question' && pages[currentPage].length === PAGE_SIZE) {
         currentPage++;
       }
     });
