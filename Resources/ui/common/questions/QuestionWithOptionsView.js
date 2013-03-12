@@ -62,34 +62,34 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber,
       return optionTitles[selectedIndex];
     }
   };
-  
+
   self.getSubQuestions = function() {
     var option = options[selectedIndex];
-     
+
     //No sub-questions for "None" option.
-    if(selectedIndex === 0 || !option.hasSubQuestions()) 
+    if(selectedIndex === 0 || !option.hasSubQuestions())
       return null;
-    
-    if(childrenViews[selectedIndex]) { 
+
+    if(childrenViews[selectedIndex]) {
       return _.chain(childrenViews[selectedIndex]).map(function(view){
         return _([view, view.getSubQuestions()]).compact();
       }).flatten().value();
     }
-    
-    childrenViews[selectedIndex] = [];    
-        
-    
+
+    childrenViews[selectedIndex] = [];
+
+
     var QuestionView = require('ui/common/questions/QuestionView');
     var subQuestions = option.firstLevelSubElements();
     var subQuestionsWithChildren = _(subQuestions).map(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
-      var subQuestionNumber = number + '.' + (index + 1);      
+      var subQuestionNumber = number + '.' + (index + 1);
       var questionView = new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID);
-      
+
       _(childrenViews[selectedIndex]).push(questionView);
       return _([questionView]).union(questionView.getSubQuestions());
     });
-    return subQuestionsWithChildren;    
+    return subQuestionsWithChildren;
   }
 
   return self;

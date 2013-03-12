@@ -9,11 +9,13 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
     height : Titanium.UI.SIZE
   });
 
-  var button = new ButtonView('Add a Record', { 'width' : '80%' });
+  var childrenViews = [];
+
+  var button = new ButtonView('Add a Record', { 'width' : '50%' });
   self.add(button);
 
   var getDeleteRecordButton = function() {
-    return new ButtonView("Delete the record");
+    return new ButtonView("Delete the record", { 'width' : '50%' });
   };
 
   var QuestionView = require('ui/common/questions/QuestionView');
@@ -26,10 +28,10 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
   };
 
   var removeRecordFromView = function(recordID) {
-    _(self.getChildren()).each(function(childView) {
-      if (childView.recordID === recordID)
-        self.remove(childView);
+    childrenViews = _(childrenViews).reject(function(childView) {
+      return childView.recordID == recordID;
     });
+    showSubQuestions();
   };
 
   var addRecord = function(e, recordID) {
@@ -40,23 +42,24 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
       });
       recordID = record.id;
     }
-    var recordView = Ti.UI.createView({
-      layout : 'vertical',
-      height : Ti.UI.SIZE,
-      recordID : recordID
-    });
+
     var subQuestions = multiRecordCategory.firstLevelSubQuestions();
     _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response && recordID ? response.answerForQuestion(subQuestion.id, recordID) : null;
       var subQuestionNumber = number + '.' + (index + 1);
-      recordView.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
+      childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
     });
+    var lastQuestionInRecord = _(childrenViews).last();
     var deleteRecordButton = getDeleteRecordButton();
-    recordView.add(deleteRecordButton);
+    lastQuestionInRecord.add(deleteRecordButton);
     deleteRecordButton.addEventListener('click', function() {
       deleteRecord(recordID);
     });
-    self.add(recordView);
+    showSubQuestions();
+  };
+
+  var showSubQuestions = function(selectedRowID) {
+    Ti.App.fireEvent('show.sub.questions');
   };
 
   var records;
@@ -70,6 +73,16 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
   button.addEventListener('click', addRecord);
 
   self.getValue = function() {
+    return null;
+  };
+
+  self.getSubQuestions = function() {
+    if(childrenViews) {
+      return _.chain(childrenViews).map(function(view){
+        return _([view, view.getSubQuestions()]).compact();
+      }).flatten().value();
+    }
+
     return null;
   };
 
