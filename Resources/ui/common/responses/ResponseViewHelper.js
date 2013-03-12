@@ -35,7 +35,7 @@ function ResponseViewHelper() {
     for (var question_id in responseErrors) {
       for (var field in responseErrors[question_id]) {
         var questionViewWithError = _(questionViews).find(function(questionView){
-          return questionView.id === question_id;
+          return parseInt(questionView.id) === parseInt(question_id);
         });
         questionViewWithError.setError(responseErrors[question_id][field]);
         Ti.API.info(responseErrors[question_id][field]);
@@ -44,22 +44,19 @@ function ResponseViewHelper() {
   };
 
   self.getQuestionViews = function(parent) {
-    var foo = [];
+    var questionViews = [];
     var views;
-    if (_(parent).isArray()) {
+    if (parent) {
       views = _.chain(parent).map(function(scrollView) {
         return scrollView.children;
       }).flatten().value();
-    } else {
-      views = parent.getChildren() || [];
     }
     _(views).each(function(view) {
-      if (view.type == 'question') {
-        foo.push(view);
+      if (view.type === 'question') {
+        questionViews.push(view);
       }
-      foo.push(self.getQuestionViews(view));
     });
-    return _(foo).flatten();
+    return questionViews ;
   };
 
   self.groupQuestionsByPage = function(questions) {
@@ -155,7 +152,7 @@ function ResponseViewHelper() {
     var pagesWithErrors = [];
     for (var question_id in errors) {
       var questionViewWithError = _(questionViews).find(function(questionView) {
-        return questionView.id === question_id;
+        return parseInt(questionView.id) === parseInt(question_id);
       });
       pagesWithErrors.push(questionViewWithError.pageNumber);
     }
