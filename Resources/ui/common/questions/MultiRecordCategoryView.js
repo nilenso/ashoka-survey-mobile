@@ -47,7 +47,7 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
     _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response && recordID ? response.answerForQuestion(subQuestion.id, recordID) : null;
       var subQuestionNumber = number + '.' + (index + 1);
-      childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
+      childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, pageNumber, recordID));
     });
     var deleteRecordButton = getDeleteRecordButton();
     deleteRecordButton.recordID = recordID;

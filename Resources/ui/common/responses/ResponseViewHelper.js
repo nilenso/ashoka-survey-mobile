@@ -74,7 +74,7 @@ function ResponseViewHelper() {
       pages[currentPage] = pages[currentPage] || [];
       pages[currentPage].push(question);
 
-     if(question.type === 'question' && pages[currentPage].length === PAGE_SIZE) {
+      if(question.type === 'question' && pages[currentPage].length >= PAGE_SIZE) {
         currentPage++;
       }
     });

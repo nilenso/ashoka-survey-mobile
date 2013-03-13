@@ -59,7 +59,7 @@ function OptionView(option, checked, response, number, pageNumber, recordID) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
       Ti.API.info("Showing the sub question: " + subQuestion.content);
       var subQuestionNumber = number + '.' + (index + 1);
-      childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
+      childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, pageNumber, recordID));
     });
     showSubQuestions();
   };

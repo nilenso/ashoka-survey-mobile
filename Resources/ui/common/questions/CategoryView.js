@@ -30,7 +30,7 @@ function CategoryView(category, response, number, pageNumber, recordID) {
     return _(subQuestions).map(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
       var subQuestionNumber = number + '.' + (index + 1);
-      var questionView = (new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber, recordID));
+      var questionView = (new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, pageNumber, recordID));
       childrenViews.push(questionView);
       return _([questionView]).union(questionView.getSubQuestions());
     });

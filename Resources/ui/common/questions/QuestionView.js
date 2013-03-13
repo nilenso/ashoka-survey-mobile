@@ -10,7 +10,7 @@ var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Measurements = require('ui/common/components/Measurements');
 
-function QuestionView(question, answer, response, number, lastQuestionNumber, pageNumber, recordID) {
+function QuestionView(question, answer, response, number, pageNumber, recordID) {
   var type = (question.type.search('Question') > 0) ? 'question' : 'category';
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
@@ -85,9 +85,8 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
   } else {
     valueField = new BasicQuestionView(question, content, constraintsText);
   }
-
   self.add(valueField);
-  if(question.parent_id === null && number != lastQuestionNumber) {
+  if(question.parent_id === null && question.category_id === null) {
     self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_BIG));
     self.add(new SeparatorView(Palette.SECONDARY_COLOR, Measurements.PADDING_XX_SMALL, { width : '90%' }));
   }

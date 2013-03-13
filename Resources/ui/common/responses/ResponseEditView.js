@@ -53,14 +53,13 @@ function ResponseEditView(responseID) {
 	};
 
   var pages = responseViewHelper.groupQuestionsByPage(questions);
-  
+
   var questionViews = [];
   var questionNumber = 1;
   _(pages).each(function(questions, pageNumber) {
     _(questions).each(function(question, number) {
-      var lastQuestionNumber = questions.length + number - 1;
       var answer = response.answerForQuestion(question.id);
-      var questionView = new QuestionView(question, answer, response, questionNumber++, lastQuestionNumber, pageNumber);
+      var questionView = new QuestionView(question, answer, response, questionNumber++, pageNumber);
       questionViews.push(questionView);
     });
   });

@@ -51,17 +51,16 @@ function ResponsesNewView(surveyID) {
     }
     activityIndicator.hide();
   };
-  
+
   var pages = responseViewHelper.groupQuestionsByPage(questions);
-  
+
   var questionViews = [];
   var questionNumber = 1;
   _(pages).each(function(questions, pageNumber) {
     _(questions).each(function(question, number) {
-      var lastQuestionNumber = questions.length + number - 1;
       var answer = undefined;
       var response = undefined;
-      var questionView = new QuestionView(question, answer, response, questionNumber++, lastQuestionNumber, pageNumber);
+      var questionView = new QuestionView(question, answer, response, questionNumber++, pageNumber);
       questionViews.push(questionView);
     });
   });
