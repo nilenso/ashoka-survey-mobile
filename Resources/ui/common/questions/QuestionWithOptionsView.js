@@ -71,9 +71,8 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber,
       return null;
 
     if(childrenViews[selectedIndex]) {
-      return _.chain(childrenViews[selectedIndex]).map(function(view){
-        return _([view, view.getSubQuestions()]).compact();
-      }).flatten().value();
+      var flatMap = require('helpers/Utility').flatMap;
+      return flatMap(childrenViews[selectedIndex]);
     }
 
     childrenViews[selectedIndex] = [];

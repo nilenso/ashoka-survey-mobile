@@ -18,9 +18,8 @@ function CategoryView(category, response, number, pageNumber, recordID) {
 
   self.getSubQuestions = function() {
     if(childrenViews) {
-      return _.chain(childrenViews).map(function(view){
-        return _([view, view.getSubQuestions()]).compact();
-      }).flatten().value();
+      var flatMap = require('helpers/Utility').flatMap;
+      return flatMap(childrenViews[selectedIndex]);
     }
 
     childrenViews = [];

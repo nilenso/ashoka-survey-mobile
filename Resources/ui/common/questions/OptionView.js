@@ -75,9 +75,8 @@ function OptionView(option, checked, response, number, pageNumber, recordID) {
 
   row.getSubQuestions = function() {
     if(childrenViews) {
-      return _.chain(childrenViews).map(function(view){
-        return _([view, view.getSubQuestions()]).compact();
-      }).flatten().value();
+      var flatMap = require('helpers/Utility').flatMap;
+      return flatMap(childrenViews[selectedIndex]);
     }
 
     return [];
