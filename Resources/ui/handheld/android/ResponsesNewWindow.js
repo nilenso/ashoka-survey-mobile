@@ -13,7 +13,7 @@ function ResponsesNewWindow(surveyID) {
 
   view.addEventListener('ResponsesNewView:savedResponse', function() {
     Ti.App.fireEvent('ResponseNewWindow:closed');
-    view.cleanup();
+    if(view) { view.cleanup(); }
     view = null;
     self.close();
   });

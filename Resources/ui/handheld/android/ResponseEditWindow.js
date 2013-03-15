@@ -12,8 +12,8 @@ function ResponseEditWindow(responseID) {
 
 	view.addEventListener('ResponsesEditView:savedResponse', function() {
 		Ti.App.fireEvent('ResponseEditWindow:closed');
-      view.cleanup();
-      view = null;
+    if(view) { view.cleanup(); }
+    view = null;
 		self.close();
 	});
 
