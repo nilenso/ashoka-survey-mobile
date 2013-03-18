@@ -1,5 +1,5 @@
 function SettingsWindow() {
-  try {
+  // try {
     var SettingsView = require('ui/common/SettingsView');
     var self = Ti.UI.createWindow({
       navBarHidden : true,
@@ -14,11 +14,11 @@ function SettingsWindow() {
     });
 
     return self;
-  }
-  catch(e) {
-    var auditor = require('helpers/Auditor');
-    auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
-  }
+  // }
+  // catch(e) {
+  //   var auditor = require('helpers/Auditor');
+  //   auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
+  // }
 }
 
 module.exports = SettingsWindow;

@@ -1,5 +1,5 @@
 function ResponseShowWindow(responseID) {
-  try {
+  // try {
   var ResponseShowView = require('ui/common/responses/ResponseShowView');
   var ResponseEditWindow = require('ui/handheld/android/ResponseEditWindow');
 
@@ -37,11 +37,11 @@ function ResponseShowWindow(responseID) {
   });
 
   return self;
-  }
-  catch(e) {
-    var auditor = require('helpers/Auditor');
-    auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
-  }
+  // }
+  // catch(e) {
+  //   var auditor = require('helpers/Auditor');
+  //   auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
+  // }
 }
 
 module.exports = ResponseShowWindow;

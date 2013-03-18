@@ -1,5 +1,5 @@
 function LoginWindow() {
-	try {
+	// try {
 	var LoginView = require('ui/common/LoginView');
 
 	var self = Ti.UI.createWindow({
@@ -17,11 +17,11 @@ function LoginWindow() {
   Ti.App.addEventListener('login:completed', closeWindow);
 
 	return self;
-  }
-  catch(e) {
-    var auditor = require('helpers/Auditor');
-    auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
-  }
+  // }
+  // catch(e) {
+  //   var auditor = require('helpers/Auditor');
+  //   auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
+  // }
 }
 
 module.exports = LoginWindow;
