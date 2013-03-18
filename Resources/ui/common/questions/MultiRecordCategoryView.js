@@ -2,7 +2,7 @@ var _ = require('lib/underscore')._;
 var Response = require('models/response');
 var ButtonView = require('ui/common/components/ButtonView');
 
-function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumber) {
+function MultiRecordCategoryView(multiRecordCategory, response, number) {
   var view_height = 400;
   var self = Ti.UI.createView({
     layout : 'vertical',
@@ -47,7 +47,7 @@ function MultiRecordCategoryView(multiRecordCategory, response, number, pageNumb
     _(subQuestions).each(function(subQuestion, index) {
       var subQuestionAnswer = response && recordID ? response.answerForQuestion(subQuestion.id, recordID) : null;
       var subQuestionNumber = number + '.' + (index + 1);
-      childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, pageNumber, recordID));
+      childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, recordID));
     });
     var deleteRecordButton = getDeleteRecordButton();
     deleteRecordButton.recordID = recordID;

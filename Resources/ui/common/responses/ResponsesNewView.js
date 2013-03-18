@@ -52,17 +52,14 @@ function ResponsesNewView(surveyID) {
     activityIndicator.hide();
   };
 
-  var pages = responseViewHelper.groupQuestionsByPage(questions);
 
   var questionViews = [];
   var questionNumber = 1;
-  _(pages).each(function(questions, pageNumber) {
-    _(questions).each(function(question, number) {
-      var answer = undefined;
-      var response = undefined;
-      var questionView = new QuestionView(question, answer, response, questionNumber++, pageNumber);
-      questionViews.push(questionView);
-    });
+  _(questions).each(function(question, number) {
+    var answer = undefined;
+    var response = undefined;
+    var questionView = new QuestionView(question, answer, response, questionNumber++);
+    questionViews.push(questionView);
   });
 
   var subQuestionIndicator = Ti.UI.Android.createProgressIndicator({

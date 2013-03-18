@@ -5,7 +5,7 @@ var SeparatorView = require('ui/common/components/SeparatorView');
 var Palette = require('ui/common/components/Palette');
 var Response = require('models/response');
 
-function MultiChoiceQuestionView(question, answer, response, number, pageNumber, recordID) {
+function MultiChoiceQuestionView(question, answer, response, number, recordID) {
 
   var optionIDs = answer ? answer.optionIDs() : null;
 
@@ -19,7 +19,7 @@ function MultiChoiceQuestionView(question, answer, response, number, pageNumber,
 	_(question.options()).each(function(option, index) {
 		var checked = optionIDs && _(optionIDs).contains(option.id);
 		var optionNumber = number + String.fromCharCode(97 + index);
-		var optionView = new OptionView(option, checked, response, optionNumber, pageNumber, recordID);
+		var optionView = new OptionView(option, checked, response, optionNumber, recordID);
 		optionViews.push(optionView);
 		self.add(optionView);
 	});

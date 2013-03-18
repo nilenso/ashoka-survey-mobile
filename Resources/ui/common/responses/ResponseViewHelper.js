@@ -72,6 +72,7 @@ function ResponseViewHelper() {
       }
 
       pages[currentPage] = pages[currentPage] || [];
+      question.pageNumber = currentPage;
       pages[currentPage].push(question);
 
       if(question.type === 'question' && pages[currentPage].length >= PAGE_SIZE) {
@@ -105,26 +106,24 @@ function ResponseViewHelper() {
   };
 
   self.paginate = function(questionViews, scrollableView, response, buttonClickHandler) {
-    
+
     questionViews = _.chain(questionViews).map(function(view){
       var children = view.getSubQuestions();
         if(children)
           return [view,children];
         else
-          return [view];            
+          return [view];
     }).flatten().value();
-    
-     var pagedQuestions = self.groupQuestionsByPage(questionViews);
-     var currentQuestionNumber = 1;
+
+    var pagedQuestions = self.groupQuestionsByPage(questionViews);
 
     var views = _(pagedQuestions).map(function(questions, pageNumber) {
       var questionsView = Ti.UI.createScrollView({
         layout : 'vertical'
       });
 
-      var firstQuestionNumber = currentQuestionNumber;
-      _(questions).each(function(questionView, number) {        
-        questionsView.add(questionView);        
+      _(questions).each(function(questionView, number) {
+        questionsView.add(questionView);
       });
 
       if (!response || response.isNotComplete()) {

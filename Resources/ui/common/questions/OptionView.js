@@ -1,7 +1,7 @@
 //OptionView Component Constructor
 var _ = require('lib/underscore')._;
 
-function OptionView(option, checked, response, number, pageNumber, recordID) {
+function OptionView(option, checked, response, number, recordID) {
   var Palette = require('ui/common/components/Palette');
   var row = Ti.UI.createView({
     height : Ti.UI.SIZE,
@@ -59,7 +59,7 @@ function OptionView(option, checked, response, number, pageNumber, recordID) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
       Ti.API.info("Showing the sub question: " + subQuestion.content);
       var subQuestionNumber = number + '.' + (index + 1);
-      childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, pageNumber, recordID));
+      childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, recordID));
     });
     showSubQuestions();
   };

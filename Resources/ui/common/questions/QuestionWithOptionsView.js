@@ -4,14 +4,14 @@ var Option = require('models/option');
 var Response = require('models/response');
 var ButtonViewWithArrow = require('ui/common/components/ButtonViewWithArrow');
 
-function QuestionWithOptionsView(question, answer, response, number, pageNumber, recordID) {
+function QuestionWithOptionsView(question, answer, response, number, recordID) {
   var content = answer ? answer.content : null;
   var view_height = 400;
   var self = Ti.UI.createView({
     layout : 'vertical',
     height : Titanium.UI.SIZE
   });
-  
+
   var childrenViews = [];
 
   var button = new ButtonViewWithArrow(content || 'None', { 'width' : '80%' });
@@ -84,7 +84,7 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber,
     var subQuestionsWithChildren = _(subQuestions).map(function(subQuestion, index) {
       var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
       var subQuestionNumber = number + '.' + (index + 1);
-      var questionView = new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, pageNumber, recordID);
+      var questionView = new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, recordID);
 
       _(childrenViews[selectedIndex]).push(questionView);
       return _([questionView]).union(questionView.getSubQuestions());
