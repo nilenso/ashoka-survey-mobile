@@ -72,7 +72,7 @@ function ResponseEditView(responseID) {
 
   var paginate = function(){
     subQuestionIndicator.show();
-    responseViewHelper.paginate(questionViews, scrollableView, response, validateAndSaveAnswers);
+    responseViewHelper.paginate(questionViews, scrollableView, response, validateAndUpdateAnswers);
     subQuestionIndicator.hide();
   };
 
