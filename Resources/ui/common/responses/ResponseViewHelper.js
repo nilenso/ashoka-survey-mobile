@@ -141,7 +141,12 @@ function ResponseViewHelper() {
     });
     
     scrollableView.views = views;
-  };
+
+    _(scrollableView.views).each(function(scrollView) { scrollView.addEventListener('scroll', function(e) {
+      Ti.App.fireEvent("scrollView.offSet", { x: e.x, y: e.y });
+    });
+  });
+};
 
   self.scrollToFirstErrorPage = function(scrollableView, errors) {
     var views = scrollableView.getViews();
