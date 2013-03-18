@@ -1,6 +1,6 @@
 //Application Window Component Constructor
 function SurveysIndexWindow() {
-  try {
+  // try {
   //load component dependencies
   var SurveysIndexView = require('ui/common/surveys/SurveysIndexView');
   var SettingsWindow = require('ui/handheld/android/SettingsWindow');
@@ -139,11 +139,11 @@ function SurveysIndexWindow() {
   self.add(surveysIndexView);
 
   return self;
-  }
-  catch(e) {
-    var auditor = require('helpers/Auditor');
-    auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
-  }
+  // }
+  // catch(e) {
+  //   var auditor = require('helpers/Auditor');
+  //   auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
+  // }
 }
 
 //make constructor function the public component interface
