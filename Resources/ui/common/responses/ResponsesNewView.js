@@ -68,9 +68,20 @@ function ResponsesNewView(surveyID) {
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
 
+  var getCurrentViewPosition = function(scrollableView) {
+    var currentPage = scrollableView.currentPage;
+    return scrollableView.views[currentPage].getCenter();
+  };
+
+  var setCurrentViewPosition = function(scrollableView, currentViewPosition) {
+    var currentPage = scrollableView.currentPage;
+    scrollableView.views[currentPage].scrollTo(currentViewPosition.x, currentViewPosition.y);
+  };
+
   var paginate = function(){
     subQuestionIndicator.show();
     responseViewHelper.paginate(questionViews, scrollableView, null, validateAndSaveAnswers);
+    setCurrentViewPosition(scrollableView, {x: 200, y: 0 });
     subQuestionIndicator.hide();
   };
 
