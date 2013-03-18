@@ -66,9 +66,15 @@ function ResponseEditView(responseID) {
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
 
+  var setCurrentViewPosition = function(scrollableView, currentViewPosition) {
+    var currentPage = scrollableView.currentPage;
+    scrollableView.views[currentPage].scrollTo(currentViewPosition.x, currentViewPosition.y);
+  };
+
   var paginate = function(){
     subQuestionIndicator.show();
     responseViewHelper.paginate(questionViews, scrollableView, response, validateAndUpdateAnswers);
+    setCurrentViewPosition(scrollableView, {x: 200, y: 0 });
     subQuestionIndicator.hide();
   };
 
