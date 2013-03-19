@@ -118,8 +118,10 @@ function SurveysDetailsView(survey) {
       });
 
       self.refresh = function() {
-        responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
-        syncResponseButton.enabled = canSync();
+        if(survey) {
+          responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
+          syncResponseButton.enabled = canSync();
+        }
       };
 
       labelsView.add(surveyNameLabel);
