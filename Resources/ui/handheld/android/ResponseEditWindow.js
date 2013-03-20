@@ -19,8 +19,10 @@ function ResponseEditWindow(responseID) {
 
 	self.addEventListener('android:back', function() {
       require('models/record').deleteOrphanRecords();
-      view.cleanup();
-      view = null;
+      if (view) {
+        view.cleanup();
+        view = null;
+      }
       self.close();
 	});
 
