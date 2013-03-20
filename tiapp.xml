@@ -37,7 +37,7 @@
         </orientations>
     </iphone>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-        <manifest>
+        <manifest android:versionCode="2" android:versionName="2.0Beta1">
             <supports-screens android:anyDensity="true"/>
         </manifest>
     </android>
