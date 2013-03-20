@@ -71,11 +71,6 @@ function ResponsesNewView(surveyID, responseLocation) {
     type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
   });
 
-  var getCurrentViewPosition = function(scrollableView) {
-    var currentPage = scrollableView.currentPage;
-    return scrollableView.views[currentPage].getCenter();
-  };
-
   var setCurrentViewPosition = function(scrollableView, currentViewPosition) {
     var currentPage = scrollableView.currentPage;
     scrollableView.views[currentPage].scrollTo(currentViewPosition.x, currentViewPosition.y);

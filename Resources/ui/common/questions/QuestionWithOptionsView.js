@@ -41,18 +41,18 @@ function QuestionWithOptionsView(question, answer, response, number, recordID) {
       selectedIndex = e.index;
       if(selectedIndex < 0 || selectedIndex > _(options).size()) selectedIndex = 0;
       button.setTitle(optionTitles[selectedIndex]);
-      showSubQuestions(selectedIndex);
+      showSubQuestions();
     });
 
     optionsDialog.show();
   });
 
-  var showSubQuestions = function(selectedRowID) {
+  var showSubQuestions = function() {
     Ti.App.fireEvent('show.sub.questions');
   };
 
   if (content) {
-    showSubQuestions(selectedIndex);
+    showSubQuestions();
   }
 
   self.getValue = function() {
@@ -67,7 +67,7 @@ function QuestionWithOptionsView(question, answer, response, number, recordID) {
     var option = options[selectedIndex];
 
     //No sub-questions for "None" option.
-    if(selectedIndex === 0 || !option.hasSubQuestions())
+    if(selectedIndex === 0 || !option.hasSubElements())
       return null;
 
     if(childrenViews[selectedIndex]) {

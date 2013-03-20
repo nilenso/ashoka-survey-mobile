@@ -21,6 +21,8 @@ function ResponseEditView(responseID) {
 	var response = Response.findOneById(responseID);
 	var survey = Survey.findOneById(response.survey_id);
 	var questions = survey.firstLevelQuestionsAndCategories();
+    var x = 0;
+    var y = 0;
 
   var validateAndUpdateAnswers = function(e, status) {
     activityIndicator.show();
@@ -71,16 +73,31 @@ function ResponseEditView(responseID) {
     scrollableView.views[currentPage].scrollTo(currentViewPosition.x, currentViewPosition.y);
   };
 
+  var setXY = function(data) {
+    x = data.x;
+    y = data.y;
+  };
+
+  Ti.App.addEventListener('scrollView.offSet', setXY);
+
+
   var paginate = function(){
     subQuestionIndicator.show();
     responseViewHelper.paginate(questionViews, scrollableView, response, validateAndUpdateAnswers);
-    setCurrentViewPosition(scrollableView, {x: 200, y: 0 });
+    setCurrentViewPosition(scrollableView, {x: x, y: y });
     subQuestionIndicator.hide();
   };
 
   Ti.App.addEventListener('show.sub.questions', paginate);
 
   responseViewHelper.paginate(questionViews, scrollableView, response, validateAndUpdateAnswers);
+
+  var initXY = function() {
+    x = 0;
+    y = 0;
+  };
+
+  scrollableView.addEventListener('dragEnd', initXY);
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
     message : L('saving_response'),
