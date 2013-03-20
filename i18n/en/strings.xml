@@ -22,6 +22,7 @@
 
     <string name="no_responses">You currently don't have any responses, Click the + button to add a response.</string>
     <string name="saving_response">Saving...</string>
+    <string name="loading_sub_questions">Loading...</string>
     <string name="response_delete">Deleting...</string>
 
     <string name="login_message">Successfully logged in.</string>
@@ -53,11 +54,10 @@
 
     <string name="edit_response">Edit Response</string>
     <string name="errors_on_pages">There were errors on page(s)</string>
-    <string name="location_not_found">We were unable to find the location</string>
 
 
     <string name="successes">successes:&#160;</string>
-    <string name="errors">errors:&#160;</string>
+    <string name="errors">erros:&#160;</string>
 
     <string name="delete">Delete</string>
     <string name="delete_response_message">Are you sure you want to delete the response?</string>

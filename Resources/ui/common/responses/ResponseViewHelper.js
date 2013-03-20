@@ -34,50 +34,48 @@ function ResponseViewHelper() {
     self.resetErrors(questionViews);
     for (var question_id in responseErrors) {
       for (var field in responseErrors[question_id]) {
-        var question = Question.findOneById(question_id);
-        questionViews[question_id].setError(responseErrors[question_id][field]);
+        var questionViewWithError = _(questionViews).find(function(questionView){
+          return parseInt(questionView.id) === parseInt(question_id);
+        });
+        questionViewWithError.setError(responseErrors[question_id][field]);
         Ti.API.info(responseErrors[question_id][field]);
       }
     }
   };
 
   self.getQuestionViews = function(parent) {
-    var foo = {};
+    var questionViews = [];
     var views;
-    if (_(parent).isArray()) {
+    if (parent) {
       views = _.chain(parent).map(function(scrollView) {
         return scrollView.children;
       }).flatten().value();
-    } else {
-      views = parent.getChildren() || [];
     }
     _(views).each(function(view) {
-      if (view.type == 'question') {
-        foo[view.id] = view;
+      if (view.type === 'question') {
+        questionViews.push(view);
       }
-      _(foo).extend(self.getQuestionViews(view));
     });
-    return foo;
+    return questionViews ;
   };
 
-  var groupQuestionsByPage = function(questions) {
+  self.groupQuestionsByPage = function(questions) {
     var pages = [];
     var currentPage = 0;
 
-    _(questions).each(function(question, index) {
-      //Put categories on their own page. Don't do it if the very first question is a category.
-      if(question.type === undefined && pages[currentPage]) {
-        currentPage++;
+    _(questions).each(function(question) {
+      //Put first level categories on their own page. Don't do it if the very first question is a category.
+      if(question.type === 'category' && pages[currentPage]) {
+        if(question.isFirstLevel() || pages[currentPage].length === (PAGE_SIZE -1)) {
+          currentPage++;
+        }
       }
 
       pages[currentPage] = pages[currentPage] || [];
+      question.pageNumber = currentPage;
       pages[currentPage].push(question);
 
-      //Page break after a category as well
-      if(question.type === undefined) {
-        currentPage++;
-      }
-      else if(pages[currentPage].length == PAGE_SIZE) {
+      if(question.type === 'question' && pages[currentPage].length >= PAGE_SIZE) {
         currentPage++;
       }
     });
@@ -107,21 +105,24 @@ function ResponseViewHelper() {
     return completeButtonView;
   };
 
-  self.paginate = function(questions, scrollableView, response, buttonClickHandler) {
+  self.paginate = function(questionViews, scrollableView, response, buttonClickHandler) {
 
-     var pagedQuestions = groupQuestionsByPage(questions);
-     var currentQuestionNumber = 1;
+    questionViews = _.chain(questionViews).map(function(view){
+      var children = view.getSubQuestions();
+        if(children)
+          return [view,children];
+        else
+          return [view];
+    }).flatten().value();
 
-    _(pagedQuestions).each(function(questions, pageNumber) {
+    var pagedQuestions = self.groupQuestionsByPage(questionViews);
+
+    var views = _(pagedQuestions).map(function(questions, pageNumber) {
       var questionsView = Ti.UI.createScrollView({
         layout : 'vertical'
       });
 
-      var firstQuestionNumber = currentQuestionNumber;
-      _(questions).each(function(question, number) {
-        var lastQuestionNumber = questions.length + firstQuestionNumber - 1;
-        var answer = response ? response.answerForQuestion(question.id) : undefined;
-        var questionView = new QuestionView(question, answer, response, currentQuestionNumber++, lastQuestionNumber, pageNumber);
+      _(questions).each(function(questionView, number) {
         questionsView.add(questionView);
       });
 
@@ -136,16 +137,26 @@ function ResponseViewHelper() {
       } else {
         questionsView.add(footerView(pageNumber + 1, pagedQuestions.length));
       }
-      scrollableView.addView(questionsView);
+      return questionsView;
     });
-  };
+    
+    scrollableView.views = views;
+
+    _(scrollableView.views).each(function(scrollView) { scrollView.addEventListener('scroll', function(e) {
+      Ti.App.fireEvent("scrollView.offSet", { x: e.x, y: e.y });
+    });
+  });
+};
 
   self.scrollToFirstErrorPage = function(scrollableView, errors) {
     var views = scrollableView.getViews();
     var questionViews = self.getQuestionViews(views);
     var pagesWithErrors = [];
     for (var question_id in errors) {
-      pagesWithErrors.push(questionViews[question_id].pageNumber);
+      var questionViewWithError = _(questionViews).find(function(questionView) {
+        return parseInt(questionView.id) === parseInt(question_id);
+      });
+      pagesWithErrors.push(questionViewWithError.pageNumber);
     }
     firstPageWithErrors =_(pagesWithErrors).min();
     scrollableView.scrollToView(views[firstPageWithErrors]);

@@ -102,12 +102,11 @@ function SurveysDetailsView(survey) {
         Ti.Geolocation.accuracy = Titanium.Geolocation.ACCURACY_BEST;
         var location = require('helpers/Location');
         location.start({
-          action: function(responseLocation) { 
+          action: function(responseLocation) {
             ResponsesNewWindow(survey.id, responseLocation).open();
             activityIndicator.hide();
-            location.stop();
           },
-          error: function() { 
+          error: function() {
             ResponsesNewWindow(survey.id, {}).open();
             activityIndicator.hide();
           }
@@ -119,8 +118,10 @@ function SurveysDetailsView(survey) {
       });
 
       self.refresh = function() {
-        responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
-        syncResponseButton.enabled = canSync();
+        if(survey) {
+          responseCountLabel.setText(survey.incompleteResponseCount() + ' | ' +  survey.completeResponseCount());
+          syncResponseButton.enabled = canSync();
+        }
       };
 
       labelsView.add(surveyNameLabel);

@@ -1,5 +1,6 @@
 var _ = require('lib/underscore')._;
 var Answer = require('models/answer');
+var Record = require('models/record');
 var Choice = require('models/choice');
 var progressBarView = require('ui/common/components/ProgressBar');
 var Response = new Ti.App.joli.model({
@@ -19,7 +20,7 @@ var Response = new Ti.App.joli.model({
 
   methods : {
     createRecord : function(surveyID, status, answersData, location) {
-      var record = this.newRecord({
+      var response = this.newRecord({
         survey_id : surveyID,
         user_id : Ti.App.Properties.getString('user_id'),
         organization_id : Ti.App.Properties.getString('organization_id'),
@@ -29,10 +30,9 @@ var Response = new Ti.App.joli.model({
         longitude : location.longitude,
         mobile_id : Titanium.Platform.createUUID()
       });
-      record.save();
-      _(answersData).each(function(answer) {
-        Answer.createRecord(answer, record.id);
-      });
+      response.save();
+
+      response.updateOrCreateAnswers(answersData);
       return true;
     },
 
@@ -54,9 +54,13 @@ var Response = new Ti.App.joli.model({
       _(this.answers()).each(function(answer, index) {
         answer_attributes[index] = {};
         answer_attributes[index]['question_id'] = answer.question_id;
-        answer_attributes[index]['updated_at'] = answer.updated_at;
+        answer_attributes[index]['updated_at'] = answer.updated_at;        
         if (answer.web_id)
           answer_attributes[index]['id'] = answer.web_id;
+        if(answer.record_id) {
+          var record = Record.findOneById(answer.record_id);
+          answer_attributes[index]['record_id'] = record.web_id;
+        }
         if (answer.hasChoices())
           answer_attributes[index]['option_ids'] = answer.optionIDs();
         else
@@ -69,6 +73,24 @@ var Response = new Ti.App.joli.model({
       return answer_attributes;
     },
 
+    updateOrCreateAnswers : function(answersData) {
+      var self = this;
+      var groupedAnswers = _(answersData).groupBy(function(answer) {
+        return answer.record_id;
+      });
+      _(groupedAnswers).each(function(answersInRecord, recordID) {
+        if(recordID === "undefined") { // Answers not belonging to a record
+          _(answersInRecord).each(function(answerData) {
+            var id = answerData.id;
+            Answer.updateOrCreateById(id, answerData, self.id);
+          });
+        } else {
+          var record = Record.findOneById(recordID);
+          record.update(answersInRecord, self.id);
+        }
+      });
+    },
+
     update : function(status, answersData) {
       Ti.API.info("updating response");
       var self = this;
@@ -78,13 +100,8 @@ var Response = new Ti.App.joli.model({
       self.set('organization_id', Ti.App.Properties.getString('organization_id'));
       self.deleteObsoleteAnswers(answersData);
 
-      _(answersData).each(function(answerData) {
-        var answer = Answer.findOneById(answerData.id);
-        if (answer)
-          answer.update(answerData.content);
-        else
-          Answer.createRecord(answerData, self.id);
-      });
+      self.updateOrCreateAnswers(answersData);
+
       self.save();
       Ti.App.fireEvent('updatedResponse');
       Ti.API.info("response updated at" + self.updated_at);
@@ -113,7 +130,7 @@ var Response = new Ti.App.joli.model({
       var received_response = JSON.parse(data.responseText);
 
       // for complete response
-      if (received_response['status'] === "complete") {
+      if (received_response['status'] === "complete" && received_response['mobile_id'] == self.mobile_id) {
         var surveyID = self.survey_id;
         var id = self.id;
         self.destroy();
@@ -139,11 +156,28 @@ var Response = new Ti.App.joli.model({
           file.write(image);
         }
 
+        var Question = require('models/question');
+        var question = Question.findOneById(received_answer.question_id);
+
+        var record;
+        if(received_answer.record_id) {
+          Ti.API.info("Record is i s: " + received_answer.record_id);
+          record = Record.findOneBy('web_id', received_answer.record_id);
+          if(!record) {
+            record = Record.createRecord({
+              'response_id' : self.id,
+              'web_id' : received_answer.record_id,
+              'category_id' :  question.parentMR().id
+            });
+          }
+        }
+
         var new_answer = Answer.newRecord({
           'response_id' : self.id,
           'question_id' : received_answer.question_id,
           'web_id' : received_answer.id,
           'content' : received_answer.content,
+          'record_id' : record ? record.id : null,
           'updated_at' : parseInt(new Date(received_answer.updated_at).getTime()/1000, 10),
           'image' : file && file.nativePath
         });
@@ -170,6 +204,7 @@ var Response = new Ti.App.joli.model({
       Ti.API.info("Error response with status " + data.status);
       if (data.status == '410') {// Response deleted on server
         Ti.API.info("Response deleted on server: " + responseText);
+        self.destroyRecords();
         self.destroyAnswers();
         self.destroy();
       }
@@ -231,6 +266,42 @@ var Response = new Ti.App.joli.model({
       client.send(JSON.stringify(params));
     },
 
+    syncRecords : function() {
+      var self = this;
+      var recordCount = _(this.records()).size();
+
+      if(recordCount === 0) {
+        this.sync();
+        return;
+      }
+
+      var successCount = 0;
+      var errorCount = 0;
+
+      var syncHandler = function(data) {
+        Ti.API.info("got to sync handler");
+        data.has_error ? errorCount++ : successCount++;
+        if(successCount === recordCount) {
+          self.sync();
+        } else if ((successCount + errorCount) === recordCount) {
+          // Error. Don't sync response.
+          Ti.App.fireEvent('response.sync.' + self.id , {
+            survey_id : self.survey_id,
+            has_error : true,
+            response_id : self.id
+          });
+        }
+        Ti.App.removeEventListener('record.sync.' + data.id, syncHandler);
+      };
+
+      Ti.API.info("Syncing records");
+
+      _(this.records()).each(function(record) {
+        Ti.App.addEventListener('record.sync.' + record.id, syncHandler);
+        record.sync();
+      });
+    },
+
     questions : function() {
       var Survey = require('models/survey');
       var survey = Survey.findOneById(this.survey_id);
@@ -254,6 +325,10 @@ var Response = new Ti.App.joli.model({
       return sortedAnswers;
     },
 
+    records : function() {
+      return Record.findBy('response_id', this.id);
+    },
+
     unsortedAnswers : function() {
       return Answer.findBy('response_id', this.id);
     },
@@ -264,7 +339,13 @@ var Response = new Ti.App.joli.model({
       });
     },
 
-    answerForQuestion : function(questionID) {
+    destroyRecords : function() {
+      _(this.records()).each(function(record) {
+        record.destroy();
+      });
+    },
+
+    answerForQuestion : function(questionID, recordID) {
       var response = this;
       var answers = Ti.App.joli.models.get('answers').all({
         where: {
@@ -272,7 +353,23 @@ var Response = new Ti.App.joli.model({
           'question_id = ?': questionID
         }
       });
+      if(recordID) {
+        answers = _(answers).filter(function(answer) {
+          return answer.record_id === recordID;
+        });
+      }
       return answers[0];
+    },
+
+    recordsForMultiRecordCategory : function(multiRecordCategoryID) {
+      var response = this;
+      var records = Ti.App.joli.models.get('records').all({
+        where: {
+          'response_id = ?': response.id,
+          'category_id = ?': multiRecordCategoryID
+        }
+      });
+      return records;
     },
 
     hasImageAnswer : function() {

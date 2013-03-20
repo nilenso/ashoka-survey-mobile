@@ -119,6 +119,7 @@ function ResponsesIndexView(surveyID) {
   showMessageIfTableIsEmpty();
 
   self.cleanup = function() {
+    surveyDetailsView = null;
     contentView.remove(table);
     table = null;
     self.remove(contentView);

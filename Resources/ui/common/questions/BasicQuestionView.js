@@ -22,6 +22,11 @@ function BasicQuestionView(question, content, hintText) {
 	if (content) props['value'] = content;
 
 	var self = Ti.UI.createTextField(props);
+	
+	self.getSubQuestions = function() {
+    return null;
+  }
+	
 	return self;
 }
 

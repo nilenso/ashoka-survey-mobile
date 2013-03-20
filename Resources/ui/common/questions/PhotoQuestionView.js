@@ -120,6 +120,9 @@ function PhotoQuestionView(question, image) {
     return null;
   };
 
+  self.getSubQuestions = function() {
+    return null;
+  }
   return self;
 }
 

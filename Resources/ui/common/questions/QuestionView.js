@@ -4,20 +4,23 @@ var DateQuestionView = require('ui/common/questions/DateQuestionView');
 var QuestionWithOptionsView = require('ui/common/questions/QuestionWithOptionsView');
 var MultiChoiceQuestionView = require('ui/common/questions/MultiChoiceQuestionView');
 var CategoryView = require('ui/common/questions/CategoryView');
+var MultiRecordCategoryView = require('ui/common/questions/MultiRecordCategoryView');
 var RatingQuestionView = require('ui/common/questions/RatingQuestionView');
 var Palette = require('ui/common/components/Palette');
 var SeparatorView = require('ui/common/components/SeparatorView');
 var Measurements = require('ui/common/components/Measurements');
 
-function QuestionView(question, answer, response, number, lastQuestionNumber, pageNumber) {
+function QuestionView(question, answer, response, number, recordID) {
+  var type = (question.type.search('Question') > 0) ? 'question' : 'category';
   var self = Ti.UI.createView({
     backgroundColor : Palette.SECONDARY_COLOR_LIGHT,
     layout : 'vertical',
-    type : question.type ? 'question' : 'category',
+    type : type,
     id : question.id,
     height : Titanium.UI.SIZE,
     answerID : answer ? answer.id : null,
-    pageNumber : pageNumber
+    pageNumber : null,
+    recordID : recordID
   });
 
   var questionText = number + '. ';
@@ -65,7 +68,7 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
   var content = answer ? answer.content : null;
 
   if (question.type == 'RadioQuestion' || question.type == 'DropDownQuestion') {
-    valueField = new QuestionWithOptionsView(question, answer, response, number, pageNumber);
+    valueField = new QuestionWithOptionsView(question, answer, response, number, recordID);
   } else if (question.type == 'DateQuestion') {
     valueField = new DateQuestionView(question, content);
   } else if (question.type == 'PhotoQuestion') {
@@ -74,15 +77,16 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
   } else if (question.type == 'RatingQuestion') {
     valueField = new RatingQuestionView(question, content);
   } else if (question.type == 'MultiChoiceQuestion') {
-    valueField = new MultiChoiceQuestionView(question, answer, response, number, pageNumber);
-  } else if (question.type === undefined) { //Category
-    valueField = new CategoryView(question, response, number, pageNumber);
+    valueField = new MultiChoiceQuestionView(question, answer, response, number, recordID);
+  } else if (question.type === 'Category') { //Category
+    valueField = new CategoryView(question, response, number, recordID);
+  } else if (question.type === 'MultiRecordCategory'){
+    valueField = new MultiRecordCategoryView(question, response, number);
   } else {
     valueField = new BasicQuestionView(question, content, constraintsText);
   }
-
   self.add(valueField);
-  if(question.parent_id === null && number != lastQuestionNumber) {
+  if(question.parent_id === null && question.category_id === null) {
     self.add(new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_BIG));
     self.add(new SeparatorView(Palette.SECONDARY_COLOR, Measurements.PADDING_XX_SMALL, { width : '90%' }));
   }
@@ -108,6 +112,15 @@ function QuestionView(question, answer, response, number, lastQuestionNumber, pa
 
   self.getValueField = function() {
     return valueField;
+  };
+
+  self.getSubQuestions = function() {
+    var _ = require('lib/underscore')._;
+    return _.chain(valueField.getSubQuestions()).flatten().compact().value();
+  };
+
+  self.isFirstLevel = function() {
+    return question.isFirstLevel();
   };
 
   return self;

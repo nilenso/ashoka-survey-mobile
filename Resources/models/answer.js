@@ -13,7 +13,8 @@ var Answer = new Ti.App.joli.model({
     question_id : 'INTEGER',
     web_id : 'INTEGER',
     updated_at : 'TEXT',
-    image : 'TEXT'
+    image : 'TEXT',
+    record_id : 'INTEGER'
   },
 
   methods : {
@@ -32,7 +33,6 @@ var Answer = new Ti.App.joli.model({
       } else if (question.isNumericQuestion()) {
         answerData['content'] = parseFloat(answerData['content']);
       }
-
       answerData['updated_at'] = parseInt(new Date().getTime()/1000, 10);
       var answer = this.newRecord(answerData);
       answer.save();
@@ -40,6 +40,14 @@ var Answer = new Ti.App.joli.model({
       _(optionIds).each(function(option_id) {
         Choice.createRecord(answer.id, option_id);
       });
+    },
+
+    updateOrCreateById : function(id, answerData, responseID) {
+      var answer = Answer.findOneById(id);
+      if (answer)
+        answer.update(answerData.content);
+      else
+        Answer.createRecord(answerData, responseID);
     },
 
     validate : function(answerData, status) {
@@ -52,7 +60,7 @@ var Answer = new Ti.App.joli.model({
           errors['min_value'] = L("error_min_value");
         if (question.max_value && answerData.content > question.max_value)
           errors['max_value'] = L("error_max_value");
-        if (question.isNumericQuestion() && isNaN(answerData.content))
+        if (question.type === 'NumericQuestion' && isNaN(answerData.content))
           errors['content'] = L("error_content");
       } else if (status === "complete" && question.mandatory)
         errors['mandatory'] = L("error_mandatory");

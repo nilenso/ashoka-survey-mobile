@@ -12,10 +12,10 @@ function ResponseEditView(responseID) {
   var Toast = require('ui/common/components/Toast');
 
   var self = new TopLevelView(L('edit_response'));
-	var scrollableView = Ti.UI.createScrollableView({
+  var scrollableView = Ti.UI.createScrollableView({
     top : self.headerHeight,
-		showPagingControl : true
-	});
+    showPagingControl : true
+  });
   self.add(scrollableView);
 
 	var response = Response.findOneById(responseID);
@@ -25,13 +25,14 @@ function ResponseEditView(responseID) {
   var validateAndUpdateAnswers = function(e, status) {
     activityIndicator.show();
 		var questionViews = responseViewHelper.getQuestionViews(scrollableView.getViews());
-		var answersData = _(questionViews).map(function(questionView, questionID) {
-			Ti.API.info("questionid:" + questionID);
+		var answersData = _(questionViews).map(function(questionView) {
+			Ti.API.info("questionid:" + questionView.id);
 			Ti.API.info("content:" + questionView.getValueField().getValue());
 			return {
 				'id' : questionView.answerID,
-				'question_id' : questionID,
-				'content' : questionView.getValueField().getValue()
+				'question_id' : questionView.id,
+        'content' : questionView.getValueField().getValue(),
+        'record_id' : questionView.recordID
 			};
 		});
 		var responseErrors = Response.validate(answersData, status);
@@ -51,7 +52,35 @@ function ResponseEditView(responseID) {
 		activityIndicator.hide();
 	};
 
-  responseViewHelper.paginate(questions, scrollableView,response, validateAndUpdateAnswers);
+  var questionViews = [];
+  var questionNumber = 1;
+  _(questions).each(function(question, number) {
+    var answer = response.answerForQuestion(question.id);
+    var questionView = new QuestionView(question, answer, response, questionNumber++);
+    questionViews.push(questionView);
+  });
+
+  var subQuestionIndicator = Ti.UI.Android.createProgressIndicator({
+    message : L('loading_sub_questions'),
+    location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+    type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
+  });
+
+  var setCurrentViewPosition = function(scrollableView, currentViewPosition) {
+    var currentPage = scrollableView.currentPage;
+    scrollableView.views[currentPage].scrollTo(currentViewPosition.x, currentViewPosition.y);
+  };
+
+  var paginate = function(){
+    subQuestionIndicator.show();
+    responseViewHelper.paginate(questionViews, scrollableView, response, validateAndUpdateAnswers);
+    setCurrentViewPosition(scrollableView, {x: 200, y: 0 });
+    subQuestionIndicator.hide();
+  };
+
+  Ti.App.addEventListener('show.sub.questions', paginate);
+
+  responseViewHelper.paginate(questionViews, scrollableView, response, validateAndUpdateAnswers);
 
   var activityIndicator = Ti.UI.Android.createProgressIndicator({
     message : L('saving_response'),
@@ -61,8 +90,8 @@ function ResponseEditView(responseID) {
   self.add(activityIndicator);
 
   self.cleanup = function() {
+    Ti.App.removeEventListener('show.sub.questions', paginate);
     self.remove(scrollableView);
-    scrollableView = null;
   };
 
 	return self;

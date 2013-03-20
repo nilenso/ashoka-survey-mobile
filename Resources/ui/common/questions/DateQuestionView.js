@@ -13,6 +13,10 @@ function DateQuestionView(question, content) {
 		var val = self.value;
 		return val.getFullYear() + '/' + (val.getMonth() + 1) + '/' + val.getDate()
 	};
+	
+	self.getSubQuestions = function() {
+    return null;
+  }
 
 	return self;
 }

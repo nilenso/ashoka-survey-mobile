@@ -1,5 +1,5 @@
 function ResponsesNewWindow(surveyID, responseLocation) {
-  try {
+  // try {
   var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
   var ResponsesNewView = require('ui/common/responses/ResponsesNewView');
   var ConfirmDialog = require('ui/common/components/ConfirmDialog');
@@ -13,15 +13,17 @@ function ResponsesNewWindow(surveyID, responseLocation) {
 
   view.addEventListener('ResponsesNewView:savedResponse', function() {
     Ti.App.fireEvent('ResponseNewWindow:closed');
-    view.cleanup();
+    if(view) { view.cleanup(); }
     view = null;
     self.close();
   });
 
   var confirmDialog = new ConfirmDialog(L("confirm"), L("confirm_clear_answers"), onConfirm = function(e) {
+    var Record = require('models/record');
+    Record.deleteOrphanRecords();
     if(view) {
-    view.cleanup();
-  }
+      view.cleanup();
+    }
     view = null;
     self.close();
   });
@@ -32,11 +34,11 @@ function ResponsesNewWindow(surveyID, responseLocation) {
   });
 
   return self;
-  }
-  catch(e) {
-    var auditor = require('helpers/Auditor');
-    auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
-  }
+  // }
+  // catch(e) {
+  //   var auditor = require('helpers/Auditor');
+  //   auditor.writeIntoAuditFile(arguments.callee.name + " - " + e.toString());
+  // }
 }
 
 module.exports = ResponsesNewWindow;

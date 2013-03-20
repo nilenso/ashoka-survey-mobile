@@ -1,6 +1,7 @@
 var _ = require('lib/underscore')._;
 var Question = require('models/question');
 var progressBarView = require('ui/common/components/ProgressBar');
+var Option = require('models/option');
 
 var Category = new Ti.App.joli.model({
   table : 'categories',
@@ -10,7 +11,8 @@ var Category = new Ti.App.joli.model({
     survey_id : 'INTEGER',
     parent_id : 'INTEGER',
     order_number : 'INTEGER',
-    category_id : 'INTEGER'
+    category_id : 'INTEGER',
+    type : 'TEXT'
   },
 
   methods : {
@@ -25,7 +27,8 @@ var Category = new Ti.App.joli.model({
           survey_id : surveyID,
           parent_id : parentID,
           category_id : categoryID,
-          order_number : category.order_number
+          order_number : category.order_number,
+          type : category.type || 'Category'
         });
         record.save();
         records.push(record);
@@ -76,6 +79,37 @@ var Category = new Ti.App.joli.model({
       }).flatten().value();
 
       return subQuestions;
+    },
+
+    isMR : function() {
+      return (this.type === 'MultiRecordCategory');
+    },
+
+    parentCategory : function() {
+      return Category.findOneById(this.category_id);
+    },
+
+    parentMR : function() {
+      if(this.category_id) {
+        if(this.parentCategory().isMR())
+          return this.parentCategory();
+        else
+          return this.parentCategory().parentMR();
+      }
+      else if (this.parent_id) {
+        return this.parentQuestion().parentMR();
+      }
+      return null;
+    },
+
+    parentQuestion : function() {
+      var parentOption = Option.findOneById(this.parent_id);
+      var parentQuestion = Question.findOneById(parentOption.question_id);
+      return parentQuestion;
+    },
+
+    isFirstLevel : function() {
+      return (this.parent_id === null && this.category_id === null);
     }
   }
 });

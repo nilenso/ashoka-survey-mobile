@@ -4,13 +4,15 @@ var Option = require('models/option');
 var Response = require('models/response');
 var ButtonViewWithArrow = require('ui/common/components/ButtonViewWithArrow');
 
-function QuestionWithOptionsView(question, answer, response, number, pageNumber) {
+function QuestionWithOptionsView(question, answer, response, number, recordID) {
   var content = answer ? answer.content : null;
   var view_height = 400;
   var self = Ti.UI.createView({
     layout : 'vertical',
     height : Titanium.UI.SIZE
   });
+
+  var childrenViews = [];
 
   var button = new ButtonViewWithArrow(content || 'None', { 'width' : '80%' });
   self.add(button);
@@ -46,20 +48,7 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber)
   });
 
   var showSubQuestions = function(selectedRowID) {
-    var option = options[selectedRowID];
-    Ti.API.info("Showing sub questions for" + option.content);
-    _(self.getChildren()).each(function(childView) {
-      if (childView != button)
-        self.remove(childView);
-    });
-    if(option.content == "None" && selectedRowID === 0) return; //No sub-questions for the "None" option
-    var QuestionView = require('ui/common/questions/QuestionView');
-    var subQuestions = option.firstLevelSubElements();
-    _(subQuestions).each(function(subQuestion, index) {
-      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
-      var subQuestionNumber = number + '.' + (index + 1);
-      self.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber));
-    });
+    Ti.App.fireEvent('show.sub.questions');
   };
 
   if (content) {
@@ -73,6 +62,35 @@ function QuestionWithOptionsView(question, answer, response, number, pageNumber)
       return optionTitles[selectedIndex];
     }
   };
+
+  self.getSubQuestions = function() {
+    var option = options[selectedIndex];
+
+    //No sub-questions for "None" option.
+    if(selectedIndex === 0 || !option.hasSubQuestions())
+      return null;
+
+    if(childrenViews[selectedIndex]) {
+      return _.chain(childrenViews[selectedIndex]).map(function(view){
+        return _([view, view.getSubQuestions()]).compact();
+      }).flatten().value();
+    }
+
+    childrenViews[selectedIndex] = [];
+
+
+    var QuestionView = require('ui/common/questions/QuestionView');
+    var subQuestions = option.firstLevelSubElements();
+    var subQuestionsWithChildren = _(subQuestions).map(function(subQuestion, index) {
+      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
+      var subQuestionNumber = number + '.' + (index + 1);
+      var questionView = new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, recordID);
+
+      _(childrenViews[selectedIndex]).push(questionView);
+      return _([questionView]).union(questionView.getSubQuestions());
+    });
+    return subQuestionsWithChildren;
+  }
 
   return self;
 }

@@ -1,7 +1,7 @@
 //OptionView Component Constructor
 var _ = require('lib/underscore')._;
 
-function OptionView(option, checked, response, number, pageNumber) {
+function OptionView(option, checked, response, number, recordID) {
   var Palette = require('ui/common/components/Palette');
   var row = Ti.UI.createView({
     height : Ti.UI.SIZE,
@@ -14,6 +14,8 @@ function OptionView(option, checked, response, number, pageNumber) {
     height : Titanium.UI.SIZE
   });
   row.add(self);
+
+  var childrenViews = [];
 
   var Measurements = require('ui/common/components/Measurements');
 
@@ -30,29 +32,57 @@ function OptionView(option, checked, response, number, pageNumber) {
     var checked = e.value;
     if (checked) {
       Ti.API.info("Showing sub questions for" + option.content);
-      showSubQuestions();
+      addSubQuestions();
     } else {
-      hideSubQuestions();
+      removeSubQuestions();
     }
   });
 
-  var showSubQuestions = function() {
+  var addSubQuestions = function() {
     var subQuestions = option.firstLevelSubElements();
     var QuestionView = require('ui/common/questions/QuestionView');
+    if (!_(subQuestions).isEmpty()) {
+      var optionLabelView = Ti.UI.createLabel({
+        text : "Questions for " + option.content,
+        color : Palette.BLACK,
+        font : {
+          fontSize : Measurements.FONT_MEDIUM
+        },
+        top : Measurements.PADDING_XX_SMALL
+      });
+      optionLabelView.getSubQuestions = function() {
+        return null;
+      };
+      childrenViews.push(optionLabelView);
+    }
     _(subQuestions).each(function(subQuestion, index) {
-      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id) : null;
+      var subQuestionAnswer = response ? response.answerForQuestion(subQuestion.id, recordID) : null;
       Ti.API.info("Showing the sub question: " + subQuestion.content);
       var subQuestionNumber = number + '.' + (index + 1);
-      row.add(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, null, pageNumber));
+      childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, recordID));
     });
+    showSubQuestions();
   };
 
-  var hideSubQuestions = function() {
-    _(row.getChildren()).each(function(childView) {
-      if (childView != self)
-        row.remove(childView);
-    });
+  var showSubQuestions = function(selectedRowID) {
+    Ti.App.fireEvent('show.sub.questions');
   };
+
+  var removeSubQuestions = function() {
+    childrenViews = [];
+    showSubQuestions();
+  };
+
+  row.getSubQuestions = function() {
+    if(childrenViews) {
+      return _.chain(childrenViews).map(function(view){
+        return _([view, view.getSubQuestions()]).compact();
+      }).flatten().value();
+    }
+
+    return [];
+  };
+
   var size = Ti.Platform.displayCaps.platformHeight * 0.05;
   var label = Ti.UI.createLabel({
     color : Palette.PRIMARY_COLOR,

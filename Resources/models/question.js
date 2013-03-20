@@ -93,10 +93,30 @@ var Question = new Ti.App.joli.model({
       return query.execute();
     },
 
+    parentCategory : function() {
+      return require('models/category').findOneById(this.category_id);
+    },
+
     parentQuestion : function() {
       var parentOption = Option.findOneById(this.parent_id);
       var parentQuestion = Question.findOneById(parentOption.question_id);
       return parentQuestion;
+    },
+
+    parentMR : function() {
+      if(this.category_id) {
+        if(this.parentCategory().isMR()) {
+          Ti.API.info("Should be here!");
+          return this.parentCategory();
+        }
+        else {
+          return this.parentCategory().parentMR();
+        }
+      }
+      else if (this.parent_id) {
+        return this.parentQuestion().parentMR();
+      }
+      return null;
     },
 
     parentOption : function() {
