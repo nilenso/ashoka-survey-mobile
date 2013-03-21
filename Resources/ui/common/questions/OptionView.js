@@ -25,11 +25,10 @@ function OptionView(option, checked, response, number, recordID) {
   } else {
     checkbox = iPhoneCheckbox(checked);
   }
-
   self.add(checkbox);
 
   checkbox.addEventListener('change', function(e) {
-    var checked = e.value;
+    checked = e.value;
     if (checked) {
       Ti.API.info("Showing sub questions for" + option.content);
       addSubQuestions();
@@ -72,6 +71,10 @@ function OptionView(option, checked, response, number, recordID) {
     childrenViews = [];
     showSubQuestions();
   };
+
+  if(checked) {
+    addSubQuestions();
+  }
 
   row.getSubQuestions = function() {
     if(childrenViews) {
