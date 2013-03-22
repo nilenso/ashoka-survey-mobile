@@ -1,6 +1,9 @@
 var _ = require('lib/underscore')._;
 var Response = require('models/response');
 var ButtonView = require('ui/common/components/ButtonView');
+var SeparatorView = require('ui/common/components/SeparatorView');
+var Palette = require('ui/common/components/Palette');
+var Measurements = require('ui/common/components/Measurements');
 
 function MultiRecordCategoryView(multiRecordCategory, response, number) {
   var view_height = 400;
@@ -51,7 +54,12 @@ function MultiRecordCategoryView(multiRecordCategory, response, number) {
     });
     var deleteRecordButton = getDeleteRecordButton();
     deleteRecordButton.recordID = recordID;
+    var separatorView = new SeparatorView(Palette.SECONDARY_COLOR_LIGHT, Measurements.PADDING_SMALL);
+    childrenViews.push(separatorView);
     childrenViews.push(deleteRecordButton);
+    separatorView.getSubQuestions = function() {
+      return null;
+    };
     deleteRecordButton.getSubQuestions = function() {
       return null;
     };
