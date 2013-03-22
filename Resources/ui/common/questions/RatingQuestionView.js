@@ -4,7 +4,7 @@ function RatingQuestionView(question, content) {
 
   var self = Ti.UI.createView({
     layout : 'horizontal',
-    height : 30
+    height : 52
   });
 
   var rating;
@@ -23,8 +23,8 @@ function RatingQuestionView(question, content) {
   var noOfStars = question.max_length ? question.max_length : 5;
   for (var i = 0; i < noOfStars; i++) {
     var star = Ti.UI.createImageView({
-      height : 24,
-      width : 24,
+      height : 48,
+      width : 48,
       image : '/images/star_off.png'
     });
 
