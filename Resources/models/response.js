@@ -31,8 +31,8 @@ var Response = new Ti.App.joli.model({
         mobile_id : Titanium.Platform.createUUID()
       });
       response.save();
-
       response.updateOrCreateAnswers(answersData);
+      response.createBlankAnswers();
       return true;
     },
 
@@ -71,6 +71,28 @@ var Response = new Ti.App.joli.model({
         }
       });
       return answer_attributes;
+    },
+
+    createBlankAnswers : function() {
+      var self = this;
+      var Survey = require('models/survey');
+      var survey = Survey.findOneById(self.survey_id);
+      _(survey.questions()).each(function(question) {
+        var parentMR = question.parentMR();
+        if(!parentMR) {
+          var answer = self.answerForQuestion(question.id);
+          if(!answer) {
+            Answer.createRecord({content: '', question_id: question.id}, self.id);
+          }
+        } else {
+          var records = self.recordsForMultiRecordCategory(parentMR.id);
+          _(records).each(function(record) {
+            var answer = self.answerForQuestion(question.id, record.id);
+            if(!answer)
+              Answer.createRecord({content: '', question_id: question.id, record_id: record.id}, self.id);
+          });
+        }
+      });
     },
 
     updateOrCreateAnswers : function(answersData) {

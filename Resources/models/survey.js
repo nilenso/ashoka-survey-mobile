@@ -297,6 +297,10 @@ var Survey = new Ti.App.joli.model({
 
     isExpired : function() {
       return new Date(this.expiry_date) < new Date();
+    },
+
+    questions : function() {
+      return Question.findBy('survey_id', this.id);
     }
   }
 });
