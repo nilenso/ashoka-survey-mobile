@@ -40,7 +40,10 @@ var Record = new Ti.App.joli.model({
       var self = this;
 
       var url = Ti.App.Properties.getString('server_url') + '/api/records';
-      var params = { category_id : this.category_id };
+      var params = {
+        category_id : this.category_id,
+        access_token : Ti.App.Properties.getString('access_token')
+      };
 
       var client = Ti.Network.createHTTPClient({
         onload : function() {
