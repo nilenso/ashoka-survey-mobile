@@ -51,10 +51,6 @@ function QuestionWithOptionsView(question, answer, response, number, recordID) {
     Ti.App.fireEvent('show.sub.questions');
   };
 
-  if (content) {
-    showSubQuestions();
-  }
-
   self.getValue = function() {
     if (selectedIndex === 0) {
       return '';
