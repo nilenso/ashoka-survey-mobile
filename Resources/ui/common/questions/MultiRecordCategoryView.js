@@ -37,7 +37,7 @@ function MultiRecordCategoryView(multiRecordCategory, response, number) {
     showSubQuestions();
   };
 
-  var addRecord = function(e, recordID) {
+  var addRecord = function(recordID) {
     if(!recordID) {
       var Record = require('models/record');
       var record = Record.createRecord({
@@ -66,7 +66,6 @@ function MultiRecordCategoryView(multiRecordCategory, response, number) {
     deleteRecordButton.addEventListener('click', function() {
       deleteRecord(recordID);
     });
-    showSubQuestions();
   };
 
   var showSubQuestions = function(selectedRowID) {
@@ -77,11 +76,14 @@ function MultiRecordCategoryView(multiRecordCategory, response, number) {
   if(response) {
     records = response.recordsForMultiRecordCategory(multiRecordCategory.id);
     _(records).each(function(record){
-      addRecord(null, record.id);
+      addRecord(record.id);
     });
   }
 
-  button.addEventListener('click', addRecord);
+  button.addEventListener('click', function() {
+    addRecord();
+    showSubQuestions();
+  });
 
   self.getValue = function() {
     return null;

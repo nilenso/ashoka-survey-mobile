@@ -32,8 +32,10 @@ function OptionView(option, checked, response, number, recordID) {
     if (checked) {
       Ti.API.info("Showing sub questions for" + option.content);
       addSubQuestions();
+      showSubQuestions();
     } else {
       removeSubQuestions();
+      showSubQuestions();
     }
   });
 
@@ -60,7 +62,6 @@ function OptionView(option, checked, response, number, recordID) {
       var subQuestionNumber = number + '.' + (index + 1);
       childrenViews.push(new QuestionView(subQuestion, subQuestionAnswer, response, subQuestionNumber, recordID));
     });
-    showSubQuestions();
   };
 
   var showSubQuestions = function(selectedRowID) {
@@ -69,7 +70,6 @@ function OptionView(option, checked, response, number, recordID) {
 
   var removeSubQuestions = function() {
     childrenViews = [];
-    showSubQuestions();
   };
 
   if(checked) {
@@ -99,10 +99,6 @@ function OptionView(option, checked, response, number, recordID) {
   });
 
   self.add(label);
-
-  if (checked) {
-    showSubQuestions();
-  }
 
   return row;
 
