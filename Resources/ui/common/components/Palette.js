@@ -8,6 +8,9 @@ var Palette = {
   GRAY_XLIGHT : "#EEE",
   GRAY_XXLIGHT : "#F7F7F7",
   WHITE : "#FFF",
+  
+  USERNAME_LABEL_TEXT: "#F2F2F2",
+  USERNAME_LABEL_BG: "#287D7D",
 
   HIGHLIGHT : "#FFE",
   YELLOW : "#FF0",

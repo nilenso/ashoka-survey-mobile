@@ -41,13 +41,13 @@ var HeaderView = function(title) {
   self.add(appNameContainer);
 
   var userDetailsView = Ti.UI.createView({
-    backgroundColor : Palette.GRAY_LIGHT,
+    backgroundColor : Palette.USERNAME_LABEL_BG,
     width : '100%',
     height : Ti.UI.SIZE
   });
 
   var userNameLabel = Ti.UI.createLabel({
-    color : Palette.PRIMARY_COLOR_LIGHT,
+    color : Palette.USERNAME_LABEL_TEXT,
     left : Measurements.PADDING_SMALL,
     text : "",
     font : {
