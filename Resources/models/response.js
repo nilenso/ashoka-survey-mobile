@@ -32,7 +32,9 @@ var Response = new Ti.App.joli.model({
       });
       response.save();
       response.updateOrCreateAnswers(answersData);
-      response.createBlankAnswers();
+      // TODO: Fix this. By creating balnk answers, we are sending blank answers
+      // for even mandatory questions to the server which causes response sync to fail.
+      // response.createBlankAnswers();
       return true;
     },
 
