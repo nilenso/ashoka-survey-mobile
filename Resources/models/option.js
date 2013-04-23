@@ -10,7 +10,7 @@ var Option = new Ti.App.joli.model({
 	},
 
 	methods : {
-		createRecords : function(data, questionID, externalSyncHandler) {
+		createRecords : function(data, externalSyncHandler) {
 			var _ = require('lib/underscore')._;
 			var that = this;
 			var records = [];
@@ -18,17 +18,10 @@ var Option = new Ti.App.joli.model({
 				var record = that.newRecord({
 					id : option.id,
 					content : option.content,
-					question_id : questionID,
+					question_id : option.question_id,
 					order_number : option.order_number
 				});
-				record.save();
-				var Question = require('models/question');
-				var surveyID = Question.findOneById(questionID).survey_id;
-				if (!_.isEmpty(option.questions)) {
-					Question.createRecords(option.questions, surveyID, record.id, externalSyncHandler, null);
-				}
-				var Category = require('models/category');
-				Category.createRecords(option.categories, surveyID, record.id, externalSyncHandler, null);
+				record.save();				
 				records.push(record);
 			});
 			return records;

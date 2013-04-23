@@ -21,7 +21,7 @@ var Question = new Ti.App.joli.model({
   },
 
   methods : {
-    createRecords : function(data, surveyID, parentID, externalSyncHandler, categoryID) {
+    createRecords : function(data, externalSyncHandler) {
       var _ = require('lib/underscore')._;
       var that = this;
       var records = [];
@@ -32,21 +32,7 @@ var Question = new Ti.App.joli.model({
           file.write(image);
         }
 
-        var record = that.newRecord({
-          id : question.id,
-          content : question.content,
-          survey_id : surveyID,
-          max_length : question.max_length,
-          mandatory : question.mandatory,
-          image_url : question.image_url,
-          type : question.type,
-          min_value : question.min_value,
-          max_value : question.max_value,
-          parent_id : parentID,
-          category_id : categoryID,
-          identifier : question.identifier,
-          order_number : question.order_number
-        });
+        var record = that.newRecord(question);
         record.save();
         records.push(record);
         record.fetchOptions(externalSyncHandler);
@@ -69,7 +55,7 @@ var Question = new Ti.App.joli.model({
         onload : function(e) {
           Ti.API.info("Received text for options: " + this.responseText);
           var data = JSON.parse(this.responseText);
-          var records = Option.createRecords(data, self.id, externalSyncHandler);
+          var records = Option.createRecords(data, externalSyncHandler);
           externalSyncHandler.notifySyncProgress();
         },
         onerror : function(e) {

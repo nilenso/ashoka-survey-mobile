@@ -21,7 +21,7 @@ var Survey = new Ti.App.joli.model({
     fetchSurveys : function(externalSyncHandler) {
       var that = this;
       NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
-        var url = Ti.App.Properties.getString('server_url') + '/api/surveys';
+        var url = Ti.App.Properties.getString('server_url') + '/api/deep_surveys';
         var client = Ti.Network.createHTTPClient({
           onload : function(e) {
             var data = JSON.parse(this.responseText);
@@ -31,8 +31,8 @@ var Survey = new Ti.App.joli.model({
             Option.truncate();
             _(data).each(function(surveyData) {
               var survey = that.createRecord(surveyData);
-              survey.fetchQuestions(externalSyncHandler);
-              survey.fetchCategories(externalSyncHandler);
+              Question.createRecords(surveyData.questions, externalSyncHandler);
+              Category.createRecords(surveyData.categories, externalSyncHandler);
             });
           },
           onerror : function(e) {
