@@ -35,42 +35,14 @@ var Question = new Ti.App.joli.model({
         var record = that.newRecord(question);
         record.save();
         records.push(record);
-        record.fetchOptions(externalSyncHandler);
+        Option.createRecords(question.options, externalSyncHandler);
+        externalSyncHandler.notifySyncProgress();
       });
       return records;
     }
   },
 
   objectMethods : {
-    fetchOptions : function(externalSyncHandler) {
-      Ti.API.info("In survey model fetchOptions Increment Sync handler is " + externalSyncHandler);
-      var self = this;
-      if (self.type != 'RadioQuestion' && self.type != 'DropDownQuestion' && self.type != 'MultiChoiceQuestion') {
-        externalSyncHandler.notifySyncProgress();
-        return;
-      }
-      var url = Ti.App.Properties.getString('server_url') + '/api/options?question_id=' + self.id;
-      var client = Ti.Network.createHTTPClient({
-        // function called when the response data is available
-        onload : function(e) {
-          Ti.API.info("Received text for options: " + this.responseText);
-          var data = JSON.parse(this.responseText);
-          var records = Option.createRecords(data, externalSyncHandler);
-          externalSyncHandler.notifySyncProgress();
-        },
-        onerror : function(e) {
-          Ti.API.info("Error");
-          externalSyncHandler.notifySyncError({
-            status : this.status
-          });
-        },
-        timeout : 5000 // in milliseconds
-      });
-      client.open("GET", url);
-      client.send({
-        access_token : Ti.App.Properties.getString('access_token')
-      });
-    },
 
     options : function() {
       var query = new Ti.App.joli.query().select('*').from('options');
