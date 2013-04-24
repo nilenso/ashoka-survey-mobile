@@ -78,6 +78,14 @@ var ProgressBarView = function() {
       hideProgressBarIfComplete();
     }
   };
+  
+  self.setValue = function(value) {
+    if(!progressBar.hidden) {
+      progressBar.setValue(value);
+      Ti.API.info("Progress bar value is now: " + progressBar.getValue());
+      hideProgressBarIfComplete();
+    }  
+  }
 
   self.incrementValue = function() {
     if(!progressBar.hidden)

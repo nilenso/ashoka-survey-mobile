@@ -36,7 +36,6 @@ var Question = new Ti.App.joli.model({
         record.save();
         records.push(record);
         Option.createRecords(question.options, externalSyncHandler);
-        externalSyncHandler.notifySyncProgress();
       });
       return records;
     }

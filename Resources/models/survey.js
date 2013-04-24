@@ -40,6 +40,10 @@ var Survey = new Ti.App.joli.model({
             externalSyncHandler.notifySyncError({
               status : this.status
             });
+          },
+          ondatastream : function(e) {
+            Ti.API.info('On Data Stream: ' + e.progress);
+            externalSyncHandler.notifySyncProgress(e.progress);            
           }
         });
         client.setTimeout(5000);

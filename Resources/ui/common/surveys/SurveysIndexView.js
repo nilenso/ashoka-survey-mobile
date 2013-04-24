@@ -77,17 +77,11 @@ function SurveysIndexView() {
 
   self.fetchAllSurveys = function() {
     var progressBar = progressBarView;
-    Survey.fetchAllQuestionsCount(function(number){
-      if(number === 0) {
-        (new Toast(L("no_survey_to_fetch"))).show();
-        return;
-      }
-      self.add(progressBar);
-      progressBar.addEventListener('surveys.sync.completed', progressSurveyComplete);
-      progressBar.init('surveys.sync.completed', number);
-      progressBar.setMessage(L("fetching_surveys"));
-      Survey.fetchSurveys(new SyncHandler(progressBar.incrementValue, function(){}, errorListener));
-    });
+    self.add(progressBar);
+    progressBar.addEventListener('surveys.sync.completed', progressSurveyComplete);
+    progressBar.init('surveys.sync.completed', 1.0);
+    progressBar.setMessage(L("fetching_surveys"));
+    Survey.fetchSurveys(new SyncHandler(progressBar.setValue, function(){}, errorListener));
   };
 
   var table = Titanium.UI.createScrollView({
