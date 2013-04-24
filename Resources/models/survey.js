@@ -20,10 +20,18 @@ var Survey = new Ti.App.joli.model({
   methods : {
     fetchSurveys : function(externalSyncHandler) {
       var that = this;
+
+      var activityIndicator = Ti.UI.Android.createProgressIndicator({
+        message : 'Saving your surveys on this device. Please wait.',
+        location : Ti.UI.Android.PROGRESS_INDICATOR_DIALOG,
+        type : Ti.UI.Android.PROGRESS_INDICATOR_INDETERMINANT
+      });
+
       NetworkHelper.pingSurveyWebWithLoggedInCheck( onSuccess = function() {
         var url = Ti.App.Properties.getString('server_url') + '/api/deep_surveys';
         var client = Ti.Network.createHTTPClient({
           onload : function(e) {
+            activityIndicator.show();
             var data = JSON.parse(this.responseText);
             that.truncate();
             Question.truncate();
@@ -34,6 +42,8 @@ var Survey = new Ti.App.joli.model({
               Question.createRecords(surveyData.questions, externalSyncHandler);
               Category.createRecords(surveyData.categories, externalSyncHandler);
             });
+            externalSyncHandler.notifySyncComplete();
+            activityIndicator.hide();
           },
           onerror : function(e) {
             Ti.API.debug(e.error);

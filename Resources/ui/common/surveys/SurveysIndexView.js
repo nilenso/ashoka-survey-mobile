@@ -78,10 +78,9 @@ function SurveysIndexView() {
   self.fetchAllSurveys = function() {
     var progressBar = progressBarView;
     self.add(progressBar);
-    progressBar.addEventListener('surveys.sync.completed', progressSurveyComplete);
     progressBar.init('surveys.sync.completed', 1.0);
     progressBar.setMessage(L("fetching_surveys"));
-    Survey.fetchSurveys(new SyncHandler(progressBar.setValue, function(){}, errorListener));
+    Survey.fetchSurveys(new SyncHandler(progressBar.setValue, function(){ progressComplete('surveys'); }, errorListener));
   };
 
   var table = Titanium.UI.createScrollView({
