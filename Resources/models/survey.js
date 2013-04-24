@@ -56,7 +56,7 @@ var Survey = new Ti.App.joli.model({
             externalSyncHandler.notifySyncProgress(e.progress);            
           }
         });
-        client.setTimeout(5000);
+        client.setTimeout(30000);
         client.open("GET", url);
         client.send({
           access_token : Ti.App.Properties.getString('access_token'),
