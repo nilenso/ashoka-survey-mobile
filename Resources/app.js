@@ -44,5 +44,13 @@ if (Ti.version < 1.8) {
 	if (Ti.App.Properties.getString('server_url') === null) {
 		Ti.App.Properties.setString('server_url', 'http://thesurveys.org');
 	}
+
+	//Move to HTTPS
+	var server_url = Ti.App.Properties.getString('server_url');
+	if(server_url.match("http:\/\/")) {
+	  server_url = server_url.replace(/^(http)(:\/\/)/, "https$2")
+	  Ti.App.Properties.setString('server_url', server_url);
+	}
+
 	Ti.include('/test/tests.js');
 })();
