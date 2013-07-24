@@ -64,6 +64,7 @@
 
     <string name="confirm">Confirmation</string>
     <string name="confirm_clear_answers">This will clear the answers,\n Are you sure?</string>
+    <string name="confirm_clear_unsaved_answers">This will clear all the unsaved answers,\n Are you sure?</string>
 
     <string name="about">About</string>
 

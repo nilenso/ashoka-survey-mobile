@@ -2,6 +2,7 @@ function ResponseEditWindow(responseID) {
   // try {
 	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
 	var ResponseEditView = require('ui/common/responses/ResponseEditView');
+	var ConfirmDialog = require('ui/common/components/ConfirmDialog');
 
 	var self = Ti.UI.createWindow({
 		navBarHidden : true,
@@ -16,14 +17,18 @@ function ResponseEditWindow(responseID) {
     view = null;
 		self.close();
 	});
-
-	self.addEventListener('android:back', function() {
+	
+	var confirmDialog = new ConfirmDialog(L("confirm"), L("confirm_clear_unsaved_answers"), onConfirm = function(e) {
       require('models/record').deleteOrphanRecords();
       if (view) {
         view.cleanup();
         view = null;
       }
       self.close();
+  });
+
+	self.addEventListener('android:back', function() {
+    confirmDialog.show();
 	});
 
 	return self;
