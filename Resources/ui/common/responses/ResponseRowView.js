@@ -8,8 +8,7 @@ function ResponseRowView(response) {
   var self = Ti.UI.createTableViewRow({
     height : Titanium.UI.SIZE,
     layout : 'vertical',
-    responseID : response.id,
-    className : 'responseIndexRow'
+    responseID : response.id
   });
 
   var rowContent = Ti.UI.createView({

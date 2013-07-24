@@ -1,6 +1,5 @@
 function ResponseEditWindow(responseID) {
   // try {
-	var ResponsesIndexView = require('ui/common/responses/ResponsesIndexView');
 	var ResponseEditView = require('ui/common/responses/ResponseEditView');
 
 	var self = Ti.UI.createWindow({

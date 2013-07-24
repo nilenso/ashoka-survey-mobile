@@ -1,4 +1,3 @@
-//ResponsesIndexView Component Constructor
 function ResponsesIndexView(surveyID) {
   var _ = require('lib/underscore')._;
   var Response = require('models/response');
