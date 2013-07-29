@@ -1,5 +1,3 @@
-//A single survey
-
 function ResponseShowView(responseID) {
   var _ = require('lib/underscore')._;
   var Survey = require('models/survey');
@@ -21,8 +19,7 @@ function ResponseShowView(responseID) {
     var answers = response.answers();
     var responses = _(answers).map(function(answer) {
       var row = Ti.UI.createTableViewRow({
-        layout : 'vertical',
-        className : 'responseShowTableRow'
+        layout : 'vertical'
       });
 
       var questionLabel = Ti.UI.createLabel({
