@@ -279,7 +279,7 @@ var Response = new Ti.App.joli.model({
             status : this.status
           });
         },
-        timeout : 60000 // in milliseconds
+        timeout : 120000 // in milliseconds
       });
 
       var method = self.web_id ? "PUT" : "POST";
