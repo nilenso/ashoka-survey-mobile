@@ -1,16 +1,19 @@
-/*
-* Single Window Application Template:
-* A basic starting point for your application.  Mostly a blank canvas.
-*
-* In app.js, we generally take care of a few things:
-* - Bootstrap the application with any data we need
-* - Check for dependencies like device type, platform version or network connection
-* - Require and open our top-level UI component
-*
-*/
-
 // Setup database
 Ti.App.joli = require('lib/joli').connect('FreshestDB', '/db/main.sqlite');
+
+
+/*
+ * Backup the SQLite Database
+ * --------------------------
+ * - Backs up to the SD Card
+ * - If an SD card isn't present, it backs up to /com.c42.surveyMobile/newDatabase.sqlite
+ * - Use Android File Transfer to pull it out
+ *
+ */
+//var f = Ti.Filesystem.getFile('file:///data/data/com.c42.surveyMobile/databases/FreshestDB');
+//var tempFile = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory, "newDatabase.sqlite");
+//tempFile.write(f.read());
+
 
 //bootstrap and check dependencies
 if (Ti.version < 1.8) {
